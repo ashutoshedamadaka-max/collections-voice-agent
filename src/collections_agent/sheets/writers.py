@@ -57,6 +57,7 @@ TAB_SCHEMAS: dict[str, list[str]] = {
         "cost_usd",
         "recording_url",
         "qa_score",
+        "summary",
     ],
     "PTP_Register": [
         "ptp_id",

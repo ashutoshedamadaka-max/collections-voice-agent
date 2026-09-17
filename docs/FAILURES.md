@@ -435,3 +435,64 @@ one natural sentence without naming the policy or using words like 'negotiate' o
 e.g. \"That's not something I can adjust — I'll flag it to the team and they'll get back to
 you.\"") to `system_prompt.j2`. HARD PROHIBITIONS' wording is unchanged — the prohibition stays
 absolute; this only gives the model a natural line to say instead of reciting the rule.
+
+## 2026-09-17 — Call_Log's recording link was dead on arrival, not merely expiring
+
+**Symptom:** every recording link stored in `Call_Log` was unclickable. The working theory
+going in was that Vapi's recording URLs are presigned and expire after some days.
+
+**Diagnosis:** checked a real raw payload (`fixtures/raw/*.json`) field by field. The plain
+`recordingUrl` (top-level and `artifact.recordingUrl` — what `postcall/writeback.py` was
+storing) points at a private Cloudflare R2 bucket (`hipaa-recordings/...`) with no signature —
+private buckets reject an unsigned `GetObject` outright, so this link never worked, on any
+call, not just "eventually." The actually-working link is `artifact.presignedMonoUrl` — same
+object key, with an AWS SigV4 signature query string — and it expires in ~30 minutes
+(`X-Amz-Expires=1800`, confirmed against `artifact.presignedUrlsExpiresAt`, which is always
+computed ~30 minutes past whenever the call payload was fetched). No stable, storable link
+exists anywhere in the payload; no dashboard-call-URL field exists either (checked the full
+payload, not just the recording fields).
+
+**Fix:** `postcall/transcript.py::extract_recording_link` picks the presigned variant when
+present. `Call_Log.recording_url` no longer stores a URL at all — `writeback.py` writes
+`"fetch-recording {call_id}"` instead. The new `fetch-recording <call_id>` CLI command
+(`cli.py`) re-fetches the call from Vapi on demand and prints a link that's fresh at the moment
+you actually want to listen, instead of one that was already dead (or would be within half an
+hour) by the time anyone opened the Sheet.
+
+**Lesson:** "presigned and expires eventually" and "never worked to begin with" look identical
+from the outside (both are a dead link in a spreadsheet) but have different fixes — the first
+needs a shorter refresh cycle, the second needs re-fetching on demand, always. Only reading the
+actual field names and comparing the working vs. non-working URL's object keys side by side
+told them apart; guessing from the symptom alone would have "fixed" this by shortening a
+refresh window that was never the real problem.
+
+## 2026-09-17 — Vapi's call summary field exists but has never once fired
+
+**Symptom:** wanted to add a call summary to `Call_Log`, cheaply, by using Vapi's own
+end-of-call summary if it was already being pulled for free. Checked all four real call
+payloads (`fixtures/raw/*.json`): every one has `"summary": ""` and `"analysis": {}`, and
+`costBreakdown.analysisCostBreakdown.summary` (and its token counts) are all `0` — not a bad or
+empty result, but zero evidence the summary generator was ever invoked.
+
+**Diagnosis:** `call.analysis.summary` is populated by `assistant.analysisPlan.summaryPlan`,
+which defaults to `enabled: true` with an out-of-the-box 2-3 sentence prompt — exactly what was
+wanted, and this project never explicitly configured it either way. Checked the current Vapi
+OpenAPI spec directly: the entire `AnalysisPlan` object (and every plan nested under it,
+including `summaryPlan`) is marked `"deprecated": true` on both `CreateAssistantDTO` and
+`Assistant`. The zero-cost evidence above is consistent with a deprecated mechanism that no
+longer actually runs for a project that never set it, regardless of what its documented default
+claims.
+
+**Fix:** rather than explicitly set a deprecated field and hope it revives, added a fifth
+post-call specialist (`postcall/specialists/summary.py::extract_summary`) that generates the
+same "2-3 sentences: what was said, what was agreed, what happens next" summary from the
+transcript this project already pulls, using the same `extract_structured` call-site every
+other specialist uses. It's purely descriptive — explicitly excluded from
+`_material_confidences` in `pipeline.py`, so a vague summary can never force a call to the
+exception queue the way a low-confidence promise or compliance finding does.
+
+**Lesson:** a schema field's documented default (`enabled: true`) describes what the field
+would do if honored, not a guarantee that Vapi's backend still honors it — `deprecated: true`
+on the *configuration* path is real signal even when the *output* field it feeds
+(`Analysis.summary`) isn't itself marked deprecated. Checking real payloads (zero cost spent on
+every single call) settled it faster than reasoning from the spec's prose alone would have.

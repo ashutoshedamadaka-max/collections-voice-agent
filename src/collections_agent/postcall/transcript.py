@@ -121,6 +121,22 @@ def parse_transcript(raw: dict[str, Any]) -> Transcript:
     )
 
 
+def extract_recording_link(raw: dict[str, Any]) -> tuple[str | None, str | None]:
+    """The plain `recordingUrl` field (top-level and `artifact.recordingUrl`) points at a
+    private Cloudflare R2 bucket and is never independently fetchable — confirmed against real
+    pulled payloads, where it shares the same object key as `artifact.presignedMonoUrl` but
+    without the signature query string a private bucket requires. Only the presigned variant
+    works, and only until `artifact.presignedUrlsExpiresAt` (~30 minutes after Vapi generated
+    it). There is no way to derive a link here that is still good days later — see
+    docs/FAILURES.md and cli.py's `fetch-recording`, which re-fetches the call fresh instead of
+    reading a stored link.
+    """
+    artifact = raw.get("artifact", {})
+    url = artifact.get("presignedMonoUrl") or raw.get("recordingUrl") or artifact.get("recordingUrl")
+    expires_at = artifact.get("presignedUrlsExpiresAt")
+    return url, expires_at
+
+
 def _parse_iso(value: Any) -> datetime | None:
     if not isinstance(value, str):
         return None

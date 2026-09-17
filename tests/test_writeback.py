@@ -56,6 +56,7 @@ def _analysis(**overrides) -> PostCallAnalysis:
         promise=PromiseValidation(has_promise=False, is_complete=False, confidence=0.95),
         dispute=DisputeClassification(has_dispute=False, confidence=0.95),
         compliance=CLEAN_COMPLIANCE,
+        summary="Customer confirmed the invoice, no promise or dispute recorded.",
         overall_confidence=0.95,
         write_decision=WriteDecision.AUTO_WRITE,
     )
@@ -71,6 +72,25 @@ def test_every_call_gets_a_call_log_row_regardless_of_write_decision(fake_sheets
     assert len(rows) == 1
     assert rows[0]["call_id"] == "call-1"
     assert rows[0]["duration_seconds"] == "90"
+
+
+def test_call_log_recording_url_points_at_fetch_recording_not_a_stored_link(fake_sheets_backend):
+    """Vapi's recording links are presigned and expire in ~30 minutes — never store one, even
+    if the transcript carries one (see docs/FAILURES.md)."""
+    ensure_all_tabs(fake_sheets_backend)
+    write_back(fake_sheets_backend, _analysis(), _transcript(recording_url="https://dead-link.example/x.wav"))
+
+    row = fake_sheets_backend.tabs["Call_Log"][0]
+    assert row["recording_url"] == "fetch-recording call-1"
+    assert "dead-link" not in row["recording_url"]
+
+
+def test_call_log_carries_the_summary(fake_sheets_backend):
+    ensure_all_tabs(fake_sheets_backend)
+    write_back(fake_sheets_backend, _analysis(summary="Agreed to pay by Friday via NEFT."), _transcript())
+
+    row = fake_sheets_backend.tabs["Call_Log"][0]
+    assert row["summary"] == "Agreed to pay by Friday via NEFT."
 
 
 def test_auto_write_complete_promise_writes_ptp_not_soft_commitment(fake_sheets_backend):

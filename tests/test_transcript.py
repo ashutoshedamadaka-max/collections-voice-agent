@@ -11,7 +11,12 @@ from __future__ import annotations
 
 import json
 
-from collections_agent.postcall.transcript import parse_transcript, save_parsed, save_raw
+from collections_agent.postcall.transcript import (
+    extract_recording_link,
+    parse_transcript,
+    save_parsed,
+    save_raw,
+)
 
 SYNTHETIC_RAW_PAYLOAD = {
     "id": "call-abc123",
@@ -159,6 +164,36 @@ def test_save_parsed_round_trips(tmp_path):
     path = save_parsed(transcript, parsed_dir=tmp_path)
     reloaded = json.loads(path.read_text(encoding="utf-8"))
     assert reloaded["call_id"] == "call-abc123"
+
+
+class TestExtractRecordingLink:
+    """See docs/FAILURES.md: the bare recordingUrl field is never independently fetchable
+    against a private bucket — only the presigned variant works, and only briefly. These fixture
+    shapes mirror real payloads pulled from fixtures/raw/*.json."""
+
+    def test_prefers_presigned_mono_url_when_present(self):
+        raw = {
+            "recordingUrl": "https://acct.r2.cloudflarestorage.com/hipaa-recordings/x-mono.wav",
+            "artifact": {
+                "recordingUrl": "https://acct.r2.cloudflarestorage.com/hipaa-recordings/x-mono.wav",
+                "presignedMonoUrl": "https://hipaa-recordings.acct.r2.cloudflarestorage.com/x-mono.wav?X-Amz-Signature=abc",
+                "presignedUrlsExpiresAt": "2026-09-17T08:32:57.009Z",
+            },
+        }
+        url, expires_at = extract_recording_link(raw)
+        assert url == raw["artifact"]["presignedMonoUrl"]
+        assert expires_at == "2026-09-17T08:32:57.009Z"
+
+    def test_falls_back_to_bare_url_when_no_presigned_variant_exists(self):
+        raw = {"recordingUrl": "https://example.com/rec.wav"}
+        url, expires_at = extract_recording_link(raw)
+        assert url == "https://example.com/rec.wav"
+        assert expires_at is None
+
+    def test_returns_none_when_no_recording_fields_exist(self):
+        url, expires_at = extract_recording_link({"id": "call-no-recording"})
+        assert url is None
+        assert expires_at is None
 
 
 def test_raw_is_saved_even_if_shape_is_totally_unexpected(tmp_path):

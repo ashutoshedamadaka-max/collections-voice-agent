@@ -10,13 +10,14 @@ from datetime import date
 import pytest
 
 from collections_agent.models.domain import (
+    CallSummary,
     ComplianceExtraction,
     DisputeClassification,
     OutcomeExtraction,
     PromiseExtraction,
 )
 from collections_agent.postcall import openai_client as openai_client_module
-from collections_agent.postcall.specialists import compliance, dispute, outcome, promise
+from collections_agent.postcall.specialists import compliance, dispute, outcome, promise, summary
 from collections_agent.postcall.transcript import ToolCallRecord, Transcript, TranscriptTurn
 
 TRANSCRIPT = Transcript(
@@ -174,6 +175,17 @@ def test_classify_dispute_returns_specialist_result(capture_call):
     assert captured["schema"] is DisputeClassification
 
 
+def test_extract_summary_returns_specialist_result(capture_call):
+    expected = CallSummary(summary="Customer agreed to pay 50000 by NEFT on 2026-10-01.")
+    captured = capture_call(summary, expected)
+
+    result = summary.extract_summary(TRANSCRIPT, api_key="key-123")
+
+    assert result == expected
+    assert captured["schema"] is CallSummary
+    assert "50000" in captured["user_content"]
+
+
 CLEAN_EXTRACTION = ComplianceExtraction(
     disclosed_automated=True,
     verified_authority=True,
@@ -282,7 +294,7 @@ def test_openai_client_module_is_the_single_call_site():
     contain in one place."""
     import inspect
 
-    for module in (outcome, promise, dispute, compliance):
+    for module in (outcome, promise, dispute, compliance, summary):
         source = inspect.getsource(module)
         assert "OpenAI(" not in source
         assert openai_client_module.extract_structured.__name__ in source

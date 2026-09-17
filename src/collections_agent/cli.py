@@ -316,6 +316,34 @@ def pull_transcripts(call_id: str) -> None:
         )
 
 
+@app.command("fetch-recording")
+def fetch_recording(call_id: str) -> None:
+    """Mints a fresh, working recording link for a call. Vapi's recording URLs are presigned
+    and expire in ~30 minutes, and the bare `recordingUrl` field is never independently
+    fetchable (it points at a private storage bucket) — see docs/FAILURES.md. Call_Log stores
+    a pointer to this command instead of a link that would already be dead by the time anyone
+    reads the row. Run within 14 days — Vapi's retention limit.
+    """
+    from collections_agent.postcall.transcript import extract_recording_link
+    from collections_agent.voice.vapi_client import VapiClient
+
+    settings = get_settings()
+    if not settings.vapi_api_key:
+        typer.echo("Set VAPI_API_KEY in .env first.", err=True)
+        raise typer.Exit(code=1)
+
+    client = VapiClient(api_key=settings.vapi_api_key)
+    raw = client.get_call(call_id)
+    url, expires_at = extract_recording_link(raw)
+    if not url:
+        typer.echo(f"No recording URL found in call {call_id}'s payload.", err=True)
+        raise typer.Exit(code=1)
+
+    typer.echo(url)
+    if expires_at:
+        typer.echo(f"(expires {expires_at} — re-run this command for a fresh link after that)")
+
+
 @app.command("run-postcall")
 def run_postcall_cmd(
     call_id: str,

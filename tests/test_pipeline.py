@@ -6,6 +6,7 @@ calls OpenAI; that boundary is already covered by test_specialists.py and test_o
 from __future__ import annotations
 
 from collections_agent.models.domain import (
+    CallSummary,
     ComplianceReview,
     DisputeClassification,
     OutcomeExtraction,
@@ -31,15 +32,19 @@ CLEAN_COMPLIANCE = ComplianceReview(
     qa_score=1.0,
     confidence=0.95,
 )
+DEFAULT_SUMMARY = CallSummary(summary="Customer agreed to pay in full by 2026-10-01 via NEFT.")
 
 
-def _patch_specialists(monkeypatch, *, outcome=None, promise=None, dispute=None, compliance=None):
+def _patch_specialists(
+    monkeypatch, *, outcome=None, promise=None, dispute=None, compliance=None, summary=None
+):
     monkeypatch.setattr(
         pipeline, "extract_outcome", lambda *a, **k: outcome or HIGH_CONFIDENCE_PROMISE_TO_PAY
     )
     monkeypatch.setattr(pipeline, "validate_promise", lambda *a, **k: promise or HIGH_CONFIDENCE_PROMISE)
     monkeypatch.setattr(pipeline, "classify_dispute", lambda *a, **k: dispute or NO_DISPUTE)
     monkeypatch.setattr(pipeline, "review_compliance", lambda *a, **k: compliance or CLEAN_COMPLIANCE)
+    monkeypatch.setattr(pipeline, "extract_summary", lambda *a, **k: summary or DEFAULT_SUMMARY)
 
 
 def _run(monkeypatch, *, confidence_threshold=0.75, **specialist_overrides):
@@ -205,7 +210,7 @@ def test_clean_compliance_does_not_force_exception_queue(monkeypatch):
     assert analysis.write_decision == WriteDecision.AUTO_WRITE
 
 
-def test_result_carries_the_call_id_and_all_four_specialist_outputs(monkeypatch):
+def test_result_carries_the_call_id_and_all_five_specialist_outputs(monkeypatch):
     analysis = _run(monkeypatch)
     assert analysis.call_id == "call-1"
     assert analysis.account_id == "ACC-0001"
@@ -213,6 +218,14 @@ def test_result_carries_the_call_id_and_all_four_specialist_outputs(monkeypatch)
     assert analysis.promise == HIGH_CONFIDENCE_PROMISE
     assert analysis.dispute == NO_DISPUTE
     assert analysis.compliance == CLEAN_COMPLIANCE
+    assert analysis.summary == DEFAULT_SUMMARY.summary
+
+
+def test_summary_never_gates_write_decision(monkeypatch):
+    """Purely descriptive — unlike the other four, a summary's own confidence isn't even a
+    field, and it must never be able to force exception_queue on its own."""
+    analysis = _run(monkeypatch, summary=CallSummary(summary="Vague or unhelpful summary text."))
+    assert analysis.write_decision == WriteDecision.AUTO_WRITE
 
 
 class TestExceptionReason:

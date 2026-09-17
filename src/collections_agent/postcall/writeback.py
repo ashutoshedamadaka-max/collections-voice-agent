@@ -66,8 +66,12 @@ def write_back(backend: SheetsBackend, analysis: PostCallAnalysis, transcript: T
         outcome=analysis.outcome.outcome,
         reason_code=analysis.outcome.reason_code,
         cost_usd=transcript.cost_usd,
-        recording_url=transcript.recording_url,
+        # Not transcript.recording_url — Vapi's recording links are presigned and expire in
+        # ~30 minutes, so anything stored here would already be dead by the time a human reads
+        # this row. Point at the command that mints a fresh one instead. See docs/FAILURES.md.
+        recording_url=f"fetch-recording {analysis.call_id}",
         qa_score=analysis.compliance.qa_score,
+        summary=analysis.summary,
     )
     write_call_log(backend, [call_log_entry])
 

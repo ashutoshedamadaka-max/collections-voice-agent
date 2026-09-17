@@ -1,4 +1,4 @@
-"""Runs the four post-call specialists and merges their outputs (design doc Stage 3).
+"""Runs the post-call specialists and merges their outputs (design doc Stage 3).
 
 Specialists are independent, network-bound LLM calls, so they run in parallel via a thread
 pool rather than sequentially — the design doc's diagram draws them side by side for exactly
@@ -9,11 +9,15 @@ violation (see _hard_compliance_violations) — the last of these overrides conf
 by design, not by omission. This is what makes the human-in-the-loop story honest rather than
 decorative.
 
-"Material" matters because plain min()-across-all-four is too blunt: a confident "no dispute"
-on a clean call would otherwise drag every call through the same gate as a genuine dispute a
+"Material" matters because plain min()-across-all is too blunt: a confident "no dispute" on a
+clean call would otherwise drag every call through the same gate as a genuine dispute a
 specialist is unsure about. Promise/dispute confidence only counts when that specialist
 actually found something relevant to write back; outcome and compliance always count, since
 every call gets a Call_Log row and a QA score regardless of what else happened.
+
+A fifth specialist, `summary` (added 2026-09-17), is purely descriptive — it never gates
+write-back and isn't part of `_material_confidences` at all, since a vague summary doesn't
+misstate money or violate a rule the way the four gating specialists' findings would.
 """
 
 from __future__ import annotations
@@ -35,6 +39,7 @@ from collections_agent.postcall.specialists.compliance import review_compliance
 from collections_agent.postcall.specialists.dispute import classify_dispute
 from collections_agent.postcall.specialists.outcome import extract_outcome
 from collections_agent.postcall.specialists.promise import validate_promise
+from collections_agent.postcall.specialists.summary import extract_summary
 from collections_agent.postcall.transcript import Transcript
 
 
@@ -105,16 +110,18 @@ def run_postcall(
     api_key: str,
     confidence_threshold: float,
 ) -> PostCallAnalysis:
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=5) as pool:
         outcome_future = pool.submit(extract_outcome, transcript, api_key)
         promise_future = pool.submit(validate_promise, transcript, invoices, as_of, api_key)
         dispute_future = pool.submit(classify_dispute, transcript, api_key)
         compliance_future = pool.submit(review_compliance, transcript, invoices, api_key)
+        summary_future = pool.submit(extract_summary, transcript, api_key)
 
         outcome = outcome_future.result()
         promise = promise_future.result()
         dispute = dispute_future.result()
         compliance = compliance_future.result()
+        summary = summary_future.result()
 
     overall_confidence = min(_material_confidences(outcome, promise, dispute, compliance))
     disagreements = _disagreements(outcome, promise, dispute)
@@ -150,6 +157,7 @@ def run_postcall(
         promise=promise,
         dispute=dispute,
         compliance=compliance,
+        summary=summary.summary,
         overall_confidence=overall_confidence,
         write_decision=write_decision,
         supervisor_notes=supervisor_notes,
