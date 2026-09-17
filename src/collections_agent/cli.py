@@ -19,28 +19,33 @@ def gen_data(
     seed: int = 42,
     out: Path = FAKE_DATA_PATH,
 ) -> None:
-    """Generate ~25 fake accounts / ~60 fake invoices and write them to a local JSON file."""
-    accounts, invoices = generate_fake_ar_data(seed=seed)
+    """Generate ~25 fake accounts / ~60 fake invoices (plus a handful of sample disputes) and
+    write them to a local JSON file."""
+    accounts, invoices, disputes = generate_fake_ar_data(seed=seed)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
         json.dumps(
             {
                 "accounts": [a.model_dump(mode="json") for a in accounts],
                 "invoices": [i.model_dump(mode="json") for i in invoices],
+                "disputes": [d.model_dump(mode="json") for d in disputes],
             },
             indent=2,
         ),
         encoding="utf-8",
     )
-    typer.echo(f"Wrote {len(accounts)} accounts and {len(invoices)} invoices to {out}")
+    typer.echo(
+        f"Wrote {len(accounts)} accounts, {len(invoices)} invoices, "
+        f"and {len(disputes)} sample disputes to {out}"
+    )
 
 
 @app.command("seed-sheet")
 def seed_sheet(data_file: Path = FAKE_DATA_PATH) -> None:
-    """Create the 8 CRM tabs (if missing) in the configured Google Sheet and seed fake AR data."""
-    from collections_agent.models.domain import Account, Invoice
+    """Create the CRM tabs (if missing) in the configured Google Sheet and seed fake AR data."""
+    from collections_agent.models.domain import Account, Dispute, Invoice
     from collections_agent.sheets.client import build_sheets_backend
-    from collections_agent.sheets.writers import ensure_all_tabs, seed_accounts, seed_invoices
+    from collections_agent.sheets.writers import ensure_all_tabs, seed_accounts, seed_invoices, write_disputes
 
     settings = get_settings()
     if not settings.google_sheet_id or not settings.google_service_account_json:
@@ -58,12 +63,18 @@ def seed_sheet(data_file: Path = FAKE_DATA_PATH) -> None:
     raw = json.loads(data_file.read_text(encoding="utf-8"))
     accounts = [Account.model_validate(a) for a in raw["accounts"]]
     invoices = [Invoice.model_validate(i) for i in raw["invoices"]]
+    disputes = [Dispute.model_validate(d) for d in raw.get("disputes", [])]
 
     backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
     ensure_all_tabs(backend)
     seed_accounts(backend, accounts)
     seed_invoices(backend, invoices)
-    typer.echo(f"Seeded {len(accounts)} accounts and {len(invoices)} invoices into the sheet.")
+    if disputes:
+        write_disputes(backend, disputes)
+    typer.echo(
+        f"Seeded {len(accounts)} accounts, {len(invoices)} invoices, "
+        f"and {len(disputes)} disputes into the sheet."
+    )
 
 
 @app.command("serve-webhook")
@@ -308,16 +319,17 @@ def pull_transcripts(call_id: str) -> None:
 @app.command("run-postcall")
 def run_postcall_cmd(
     call_id: str,
-    account_id: str | None = typer.Option(
-        None,
+    account_id: str = typer.Option(
+        ...,
         "--account-id",
-        help="Load this account's invoices, for the promise validator's outstanding-balance check.",
+        help="Required — Step 5 write-back needs this for every tab it writes, and the "
+        "promise validator needs it for the outstanding-balance check.",
     ),
 ) -> None:
     """Step 4: run the four post-call specialists (outcome, promise, dispute, compliance)
     against a transcript already pulled by `pull-transcripts`, and have the supervisor merge
     them. Costs real OpenAI credit (~$0.01-0.05/call on gpt-4o-mini). Writes
-    fixtures/postcall/<call_id>.json; does not touch Sheets (that's Step 5).
+    fixtures/postcall/<call_id>.json; does not touch Sheets (that's `write-back`).
     """
     from datetime import date
 
@@ -336,19 +348,18 @@ def run_postcall_cmd(
         raise typer.Exit(code=1)
     transcript = Transcript.model_validate_json(transcript_path.read_text(encoding="utf-8"))
 
-    invoices = []
-    if account_id:
-        try:
-            _, all_invoices = load_accounts_and_invoices(settings)
-            invoices = [inv for inv in all_invoices if inv.account_id == account_id]
-        except (FileNotFoundError, NotImplementedError) as e:
-            typer.echo(str(e), err=True)
-            raise typer.Exit(code=1) from e
-        if not invoices:
-            typer.echo(f"No invoices found for account {account_id} — continuing without them.", err=True)
+    try:
+        _, all_invoices = load_accounts_and_invoices(settings)
+        invoices = [inv for inv in all_invoices if inv.account_id == account_id]
+    except (FileNotFoundError, NotImplementedError) as e:
+        typer.echo(str(e), err=True)
+        raise typer.Exit(code=1) from e
+    if not invoices:
+        typer.echo(f"No invoices found for account {account_id} — continuing without them.", err=True)
 
     analysis = run_postcall(
         call_id=call_id,
+        account_id=account_id,
         transcript=transcript,
         invoices=invoices,
         as_of=date.today(),
@@ -373,9 +384,71 @@ def run_postcall_cmd(
     )
     typer.echo(f"\noverall_confidence: {analysis.overall_confidence:.2f}")
     typer.echo(f"write_decision: {analysis.write_decision.value}")
+    if analysis.exception_reason:
+        typer.echo(f"exception_reason: {analysis.exception_reason}")
     if analysis.supervisor_notes:
         typer.echo(f"supervisor_notes: {analysis.supervisor_notes}")
     typer.echo(f"\nWrote {out_path}")
+
+
+@app.command("write-back")
+def write_back_cmd(call_id: str) -> None:
+    """Step 5: write a completed post-call analysis to Google Sheets. Reads
+    fixtures/postcall/<call_id>.json (from `run-postcall`) and
+    fixtures/transcripts/<call_id>.json (from `pull-transcripts`). Costs nothing to re-run — no
+    OpenAI or Vapi calls — and is safe to re-run: every write is keyed so it upserts rather than
+    duplicates (see postcall/writeback.py).
+    """
+    from collections_agent.models.domain import PostCallAnalysis
+    from collections_agent.postcall.transcript import PARSED_DIR, Transcript
+    from collections_agent.postcall.writeback import write_back
+    from collections_agent.sheets.client import build_sheets_backend
+
+    settings = get_settings()
+    if not settings.google_sheet_id or not settings.google_service_account_json:
+        typer.echo(
+            "Set GOOGLE_SHEET_ID and GOOGLE_SERVICE_ACCOUNT_JSON in .env first "
+            "(share the sheet with the service account's client_email as Editor).",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+    analysis_path = Path("fixtures/postcall") / f"{call_id}.json"
+    if not analysis_path.exists():
+        typer.echo(
+            f"{analysis_path} not found — run `run-postcall {call_id} --account-id <id>` first.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    analysis = PostCallAnalysis.model_validate_json(analysis_path.read_text(encoding="utf-8"))
+
+    transcript_path = PARSED_DIR / f"{call_id}.json"
+    if not transcript_path.exists():
+        typer.echo(f"{transcript_path} not found — run `pull-transcripts {call_id}` first.", err=True)
+        raise typer.Exit(code=1)
+    transcript = Transcript.model_validate_json(transcript_path.read_text(encoding="utf-8"))
+
+    if transcript.started_at is None:
+        typer.echo(
+            f"{transcript_path} has no started_at (parsed before that field existed) — "
+            f"re-run `pull-transcripts {call_id}` to backfill it, then try again.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+    backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
+    write_back(backend, analysis, transcript)
+
+    typer.echo(f"Wrote Call_Log row for {call_id}.")
+    if analysis.write_decision.value == "exception_queue":
+        typer.echo(f"Routed to Exceptions ({analysis.exception_reason}) — no PTP/Dispute rows written.")
+    else:
+        if analysis.promise.has_promise and not analysis.promise.downgraded_to_soft_commitment:
+            typer.echo(f"Wrote PTP_Register row PTP-{call_id}.")
+        elif analysis.promise.has_promise:
+            typer.echo(f"Wrote Soft_Commitments row SC-{call_id}.")
+        if analysis.dispute.has_dispute:
+            typer.echo(f"Wrote Disputes row DSP-{call_id}.")
 
 
 @app.command("test-webhook")

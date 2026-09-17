@@ -46,6 +46,7 @@ def _run(monkeypatch, *, confidence_threshold=0.75, **specialist_overrides):
     _patch_specialists(monkeypatch, **specialist_overrides)
     return pipeline.run_postcall(
         call_id="call-1",
+        account_id="ACC-0001",
         transcript=TRANSCRIPT,
         invoices=[],
         as_of=None,
@@ -207,10 +208,60 @@ def test_clean_compliance_does_not_force_exception_queue(monkeypatch):
 def test_result_carries_the_call_id_and_all_four_specialist_outputs(monkeypatch):
     analysis = _run(monkeypatch)
     assert analysis.call_id == "call-1"
+    assert analysis.account_id == "ACC-0001"
     assert analysis.outcome == HIGH_CONFIDENCE_PROMISE_TO_PAY
     assert analysis.promise == HIGH_CONFIDENCE_PROMISE
     assert analysis.dispute == NO_DISPUTE
     assert analysis.compliance == CLEAN_COMPLIANCE
+
+
+class TestExceptionReason:
+    """The Exceptions tab's `reason` column — short structured tags, not a re-parse of
+    supervisor_notes free text."""
+
+    def test_clean_call_has_empty_exception_reason(self, monkeypatch):
+        analysis = _run(monkeypatch)
+        assert analysis.exception_reason == ""
+
+    def test_low_confidence_tags_low_confidence(self, monkeypatch):
+        low = OutcomeExtraction(outcome="dispute", next_action="x", confidence=0.3)
+        real_dispute = DisputeClassification(has_dispute=True, confidence=0.95)
+        analysis = _run(monkeypatch, outcome=low, dispute=real_dispute)
+        assert analysis.exception_reason == "low_confidence"
+
+    def test_disagreement_tags_disagreement(self, monkeypatch):
+        no_promise = PromiseValidation(has_promise=False, is_complete=False, confidence=0.95)
+        analysis = _run(monkeypatch, promise=no_promise)
+        assert analysis.exception_reason == "disagreement"
+
+    def test_hard_violation_tags_compliance_violation(self, monkeypatch):
+        discount = ComplianceReview(
+            disclosed_automated=True,
+            verified_authority=True,
+            stayed_within_permitted_facts=True,
+            promised_discount_or_waiver=True,
+            threatened_consequences=False,
+            qa_score=0.9,
+            confidence=1.0,
+        )
+        analysis = _run(monkeypatch, compliance=discount)
+        assert analysis.exception_reason == "compliance_violation"
+
+    def test_multiple_reasons_all_tagged(self, monkeypatch):
+        # outcome type deliberately not promise_to_pay/dispute — isolates this test to just
+        # low_confidence + compliance_violation, without also tripping a disagreement.
+        low = OutcomeExtraction(outcome="soft_commitment", next_action="x", confidence=0.3)
+        discount = ComplianceReview(
+            disclosed_automated=True,
+            verified_authority=True,
+            stayed_within_permitted_facts=True,
+            promised_discount_or_waiver=True,
+            threatened_consequences=False,
+            qa_score=0.9,
+            confidence=1.0,
+        )
+        analysis = _run(monkeypatch, outcome=low, compliance=discount)
+        assert analysis.exception_reason == "low_confidence,compliance_violation"
 
 
 class TestHardComplianceViolations:

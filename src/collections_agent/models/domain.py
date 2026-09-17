@@ -299,6 +299,7 @@ class PostCallAnalysis(BaseModel):
     """The supervisor's merged output — what Step 5's write-back actually consumes."""
 
     call_id: str
+    account_id: str
     outcome: OutcomeExtraction
     promise: PromiseValidation
     dispute: DisputeClassification
@@ -306,6 +307,25 @@ class PostCallAnalysis(BaseModel):
     overall_confidence: float = Field(ge=0.0, le=1.0)
     write_decision: WriteDecision
     supervisor_notes: str = ""
+    exception_reason: str = Field(
+        default="",
+        description="Comma-joined short tags (low_confidence, disagreement, "
+        "compliance_violation) for the Exceptions tab's `reason` column — computed from the "
+        "same buckets that produced supervisor_notes, not re-parsed from that free text.",
+    )
+
+
+class ExceptionEntry(BaseModel):
+    """Backs the `Exceptions` tab — the only tab that didn't already have a typed domain model.
+    `resolved` starts blank; a human fills it in directly in the Sheet (see docs/FAILURES.md-
+    style reasoning: no review UI is being built in Step 5, the Sheet itself is the surface)."""
+
+    call_id: str
+    account_id: str
+    reason: str
+    supervisor_notes: str
+    created_at: datetime
+    resolved: str = ""
 
 
 class ContextPack(BaseModel):

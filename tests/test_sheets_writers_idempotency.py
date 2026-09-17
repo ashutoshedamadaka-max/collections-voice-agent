@@ -10,7 +10,7 @@ def test_ensure_all_tabs_creates_every_schema(fake_sheets_backend):
 
 
 def test_seed_accounts_and_invoices_row_counts(fake_sheets_backend):
-    accounts, invoices = generate_fake_ar_data()
+    accounts, invoices, _ = generate_fake_ar_data()
     ensure_all_tabs(fake_sheets_backend)
     seed_accounts(fake_sheets_backend, accounts)
     seed_invoices(fake_sheets_backend, invoices)
@@ -20,7 +20,7 @@ def test_seed_accounts_and_invoices_row_counts(fake_sheets_backend):
 
 
 def test_reseeding_is_idempotent_no_duplicates(fake_sheets_backend):
-    accounts, invoices = generate_fake_ar_data()
+    accounts, invoices, _ = generate_fake_ar_data()
     ensure_all_tabs(fake_sheets_backend)
 
     seed_accounts(fake_sheets_backend, accounts)
@@ -33,7 +33,7 @@ def test_reseeding_is_idempotent_no_duplicates(fake_sheets_backend):
 
 
 def test_reseeding_updates_changed_fields(fake_sheets_backend):
-    accounts, invoices = generate_fake_ar_data()
+    accounts, invoices, _ = generate_fake_ar_data()
     ensure_all_tabs(fake_sheets_backend)
     seed_accounts(fake_sheets_backend, accounts)
 

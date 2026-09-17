@@ -1,0 +1,51 @@
+{
+  "call_id": "01a0a883-a8b4-7667-be53-3cb44b5377aa",
+  "account_id": "ACC-0001",
+  "outcome": {
+    "outcome": "promise_to_pay",
+    "reason_code": null,
+    "next_action": "Confirm payment details provided by the user and update records accordingly.",
+    "confidence": 0.9
+  },
+  "promise": {
+    "has_promise": false,
+    "is_complete": false,
+    "is_future_dated": false,
+    "amount_within_outstanding": false,
+    "method_valid": false,
+    "downgraded_to_soft_commitment": false,
+    "amount": null,
+    "promised_date": null,
+    "method": null,
+    "invoice_ids": [
+      "3281",
+      "7558"
+    ],
+    "confidence": 0.9,
+    "notes": "No specific promise was made for a payment; the response was vague."
+  },
+  "dispute": {
+    "has_dispute": false,
+    "invoice_id": null,
+    "reason_code": null,
+    "detail": "",
+    "evidence_requested": null,
+    "routing_target": null,
+    "confidence": 0.9
+  },
+  "compliance": {
+    "disclosed_automated": true,
+    "verified_authority": true,
+    "stayed_within_permitted_facts": true,
+    "promised_discount_or_waiver": false,
+    "threatened_consequences": false,
+    "misstated_total": false,
+    "qa_score": 1.0,
+    "notes": "",
+    "confidence": 1.0
+  },
+  "overall_confidence": 0.9,
+  "write_decision": "exception_queue",
+  "supervisor_notes": "outcome says promise_to_pay but the promise specialist found no promise",
+  "exception_reason": "disagreement"
+}

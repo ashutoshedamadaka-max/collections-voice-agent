@@ -15,7 +15,11 @@ from collections_agent.postcall.transcript import parse_transcript, save_parsed,
 
 SYNTHETIC_RAW_PAYLOAD = {
     "id": "call-abc123",
-    "durationSeconds": 87,
+    # No real Vapi payload has a top-level "durationSeconds" field — duration is derived from
+    # startedAt/endedAt instead (see transcript.py). 87 seconds apart, to match what this
+    # fixture asserted before that was discovered.
+    "startedAt": "2026-01-01T00:00:00.000Z",
+    "endedAt": "2026-01-01T00:01:27.000Z",
     "cost": 0.12,
     "endedReason": "customer-ended-call",
     "recordingUrl": "https://example.com/rec.wav",
@@ -128,6 +132,19 @@ def test_parse_transcript_extracts_call_metadata():
     assert transcript.cost_usd == 0.12
     assert transcript.ended_reason == "customer-ended-call"
     assert transcript.recording_url == "https://example.com/rec.wav"
+
+
+def test_parse_transcript_extracts_started_at():
+    from datetime import UTC, datetime
+
+    transcript = parse_transcript(SYNTHETIC_RAW_PAYLOAD)
+    assert transcript.started_at == datetime(2026, 1, 1, 0, 0, 0, tzinfo=UTC)
+
+
+def test_parse_transcript_duration_is_none_without_started_or_ended_at():
+    transcript = parse_transcript({"id": "call-no-times"})
+    assert transcript.started_at is None
+    assert transcript.duration_seconds is None
 
 
 def test_parse_transcript_handles_missing_fields_gracefully():

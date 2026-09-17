@@ -50,6 +50,7 @@ uv run collections-agent create-assistant  # Step 2: create the Vapi assistant, 
 uv run collections-agent test-call         # Step 2: render + optionally dial a test call with real context
 uv run collections-agent pull-transcripts  # Step 3: fetch a call, save raw + fixed parse
 uv run collections-agent run-postcall      # Step 4: 4 specialists + supervisor against a pulled transcript
+uv run collections-agent write-back        # Step 5: write a post-call analysis back to the Sheet
 ```
 
 More commands (`build-queue`, `followthrough`, `eval`, `metrics`) land as later build steps

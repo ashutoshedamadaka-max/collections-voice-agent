@@ -98,15 +98,17 @@ def build_sheets_backend(sheet_id: str, service_account_json_path: str) -> Sheet
 def load_accounts_and_invoices(settings: Settings) -> tuple[list[Account], list[Invoice]]:
     """Account/invoice data for the pre-call engine and the `lookup_invoices` tool.
 
-    Real Sheets reading lands in Step 5 (before write-back). Until `GOOGLE_SHEET_ID` is set,
-    this always reads the local file `gen-data` writes, so calls can be tested end to end
+    Reads from the real Sheet once `GOOGLE_SHEET_ID` is set (Step 5) — Sheets is the single
+    source of truth, so write-back writing real state there while this kept reading a static
+    local snapshot forever would be an incoherent half-migration. Until `GOOGLE_SHEET_ID` is
+    set, this reads the local file `gen-data` writes instead, so calls can be tested end to end
     without the service-account setup.
     """
     if settings.google_sheet_id:
-        raise NotImplementedError(
-            "Reading accounts/invoices from Google Sheets isn't wired yet (lands in Step 5). "
-            "Unset GOOGLE_SHEET_ID to use the local fixtures/fake_ar_data.json fallback instead."
-        )
+        from collections_agent.sheets.readers import read_accounts, read_invoices
+
+        backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
+        return read_accounts(backend), read_invoices(backend)
     if not FAKE_DATA_PATH.exists():
         raise FileNotFoundError(f"{FAKE_DATA_PATH} not found — run `gen-data` first.")
     raw = json.loads(FAKE_DATA_PATH.read_text(encoding="utf-8"))

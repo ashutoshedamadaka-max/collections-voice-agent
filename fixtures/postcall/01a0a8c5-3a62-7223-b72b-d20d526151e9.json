@@ -1,0 +1,50 @@
+{
+  "call_id": "01a0a8c5-3a62-7223-b72b-d20d526151e9",
+  "account_id": "ACC-0001",
+  "outcome": {
+    "outcome": "dispute",
+    "reason_code": "quantity_dispute",
+    "next_action": "Send documentation regarding correct quantity for invoice Cummins 3281.",
+    "confidence": 0.9
+  },
+  "promise": {
+    "has_promise": false,
+    "is_complete": false,
+    "is_future_dated": false,
+    "amount_within_outstanding": false,
+    "method_valid": false,
+    "downgraded_to_soft_commitment": false,
+    "amount": null,
+    "promised_date": null,
+    "method": null,
+    "invoice_ids": [
+      "3281"
+    ],
+    "confidence": 0.9,
+    "notes": "No specific promise was made; the user mentioned a dispute with the invoice."
+  },
+  "dispute": {
+    "has_dispute": true,
+    "invoice_id": "3281",
+    "reason_code": "quantity_dispute",
+    "detail": "The caller indicated a problem with the quantity on invoice 3281.",
+    "evidence_requested": "Documentation to confirm the correct quantity.",
+    "routing_target": "logistics",
+    "confidence": 0.9
+  },
+  "compliance": {
+    "disclosed_automated": true,
+    "verified_authority": true,
+    "stayed_within_permitted_facts": false,
+    "promised_discount_or_waiver": false,
+    "threatened_consequences": false,
+    "misstated_total": false,
+    "qa_score": 0.8,
+    "notes": "The agent disclosed that it was an automated call and that the call may be recorded. It verified the user's authority over accounts payable before discussing invoice details. However, the agent mentioned an invoice amount and details (the specific amounts for the invoices) that were not independently confirmed by the user and were given as fact without prior validation from the user. The agent did not offer any discounts or waivers, nor did it mention any potential consequences. Overall, while there was one critical issue with staying within permitted facts, the call was largely compliant.",
+    "confidence": 0.9
+  },
+  "overall_confidence": 0.9,
+  "write_decision": "exception_queue",
+  "supervisor_notes": "agent stated a fact not given to it as context",
+  "exception_reason": "compliance_violation"
+}

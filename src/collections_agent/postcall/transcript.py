@@ -14,6 +14,7 @@ data — but treat this as ground-truth-checked now, not a guess.
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +39,7 @@ class Transcript(BaseModel):
     call_id: str
     turns: list[TranscriptTurn]
     tool_calls: list[ToolCallRecord]
+    started_at: datetime | None = None
     duration_seconds: float | None = None
     cost_usd: float | None = None
     ended_reason: str | None = None
@@ -100,15 +102,32 @@ def parse_transcript(raw: dict[str, Any]) -> Transcript:
     cost = raw.get("cost")
     cost_usd = cost if isinstance(cost, (int, float)) else None
 
+    # There is no top-level "durationSeconds" field on a real Vapi call payload — verified
+    # against every payload pulled so far — so this always silently returned None before.
+    # startedAt/endedAt are both always present; derive duration from them instead.
+    started_at = _parse_iso(raw.get("startedAt"))
+    ended_at = _parse_iso(raw.get("endedAt"))
+    duration_seconds = (ended_at - started_at).total_seconds() if started_at and ended_at else None
+
     return Transcript(
         call_id=call_id,
         turns=turns,
         tool_calls=tool_calls,
-        duration_seconds=raw.get("durationSeconds"),
+        started_at=started_at,
+        duration_seconds=duration_seconds,
         cost_usd=cost_usd,
         ended_reason=raw.get("endedReason"),
         recording_url=raw.get("recordingUrl") or raw.get("artifact", {}).get("recordingUrl"),
     )
+
+
+def _parse_iso(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
 
 
 def save_parsed(transcript: Transcript, parsed_dir: Path = PARSED_DIR) -> Path:

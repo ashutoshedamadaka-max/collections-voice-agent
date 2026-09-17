@@ -7,7 +7,15 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from collections_agent.models.domain import PTP, Account, Dispute, Invoice, SoftCommitment
+from collections_agent.models.domain import (
+    PTP,
+    Account,
+    CallLogEntry,
+    Dispute,
+    ExceptionEntry,
+    Invoice,
+    SoftCommitment,
+)
 from collections_agent.sheets.client import SheetsBackend
 
 TAB_SCHEMAS: dict[str, list[str]] = {
@@ -168,3 +176,11 @@ def write_soft_commitments(backend: SheetsBackend, commitments: list[SoftCommitm
 
 def write_disputes(backend: SheetsBackend, disputes: list[Dispute]) -> None:
     upsert_models(backend, "Disputes", disputes)
+
+
+def write_call_log(backend: SheetsBackend, entries: list[CallLogEntry]) -> None:
+    upsert_models(backend, "Call_Log", entries)
+
+
+def write_exceptions(backend: SheetsBackend, exceptions: list[ExceptionEntry]) -> None:
+    upsert_models(backend, "Exceptions", exceptions)

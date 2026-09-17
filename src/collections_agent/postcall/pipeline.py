@@ -98,6 +98,7 @@ def _material_confidences(
 
 def run_postcall(
     call_id: str,
+    account_id: str,
     transcript: Transcript,
     invoices: list[Invoice],
     as_of: date,
@@ -119,22 +120,32 @@ def run_postcall(
     disagreements = _disagreements(outcome, promise, dispute)
     hard_violations = _hard_compliance_violations(compliance)
 
-    if overall_confidence < confidence_threshold or disagreements or hard_violations:
+    below_threshold = overall_confidence < confidence_threshold
+    if below_threshold or disagreements or hard_violations:
         write_decision = WriteDecision.EXCEPTION_QUEUE
         notes = []
-        if overall_confidence < confidence_threshold:
+        categories = []
+        if below_threshold:
             notes.append(
                 f"overall confidence {overall_confidence:.2f} below threshold {confidence_threshold:.2f}"
             )
-        notes.extend(disagreements)
-        notes.extend(hard_violations)
+            categories.append("low_confidence")
+        if disagreements:
+            notes.extend(disagreements)
+            categories.append("disagreement")
+        if hard_violations:
+            notes.extend(hard_violations)
+            categories.append("compliance_violation")
         supervisor_notes = "; ".join(notes)
+        exception_reason = ",".join(categories)
     else:
         write_decision = WriteDecision.AUTO_WRITE
         supervisor_notes = ""
+        exception_reason = ""
 
     return PostCallAnalysis(
         call_id=call_id,
+        account_id=account_id,
         outcome=outcome,
         promise=promise,
         dispute=dispute,
@@ -142,4 +153,5 @@ def run_postcall(
         overall_confidence=overall_confidence,
         write_decision=write_decision,
         supervisor_notes=supervisor_notes,
+        exception_reason=exception_reason,
     )
