@@ -570,3 +570,50 @@ discipline as the recording-link and call-summary findings earlier the same day.
 finding that IS a guess pending validation (fix 2, transcriber language) and the one still
 open by design (fix 3, the call cap) are marked as such rather than presented with the same
 confidence as the other three.
+
+## 2026-09-17 — running the untested path: five specialists against a Hindi/Urdu-script transcript
+
+Deliberately ran `run-postcall` + `write-back` on the flawed Hinglish call above, specifically
+*because* the language caveat logged earlier the same day ("the four post-call specialists...
+assume English transcripts... untested") had never actually been exercised. Results:
+
+**What worked, better than expected.** `extract_outcome` (`promise_to_pay`, 0.95) and
+`extract_promise` — which pulled `amount: 204000`, `date: 2026-09-30`, `method: UPI`,
+`invoice_ids: ["SL/26-27/0002"]` all correctly, confidence 0.9 — extracted clean structured
+facts from a transcript where the customer's every line is Urdu-script and the bot's lines are
+Devanagari. `extract_summary` produced an accurate, fully English 2-3 sentence summary
+covering both invoices correctly. `classify_dispute` reasonably read the 10%-reduction ask as a
+`pricing_dispute` on the right invoice (`SL/26-27/0003`). None of this was obviously degraded
+by the language mismatch — the specialists' English-tuned prompts still made sense of
+Hindi-content English-loanword text well enough to extract facts correctly.
+
+**What failed: `review_compliance` produced a false positive, and its own free-text
+contradicted its own boolean.** It set `promised_discount_or_waiver: true` for a turn where the
+agent said `"यह संभव नहीं है, मैं इसे टीम को बताऊँगा"` ("this isn't possible, I'll tell the
+team") — an explicit refusal that routes the request, exactly matching this same day's
+discount-refusal fix. Its own `notes` field even describes this correctly — *"the agent did
+imply it was **unable** to provide the discount... stating it would relay the request"* — and
+then still flagged the hard-violation boolean anyway, reasoning that relaying the request
+"affects negotiations." Whether this is specific to reasoning about a Hindi-language exchange
+or a latent ambiguity in the compliance rubric that an English call would also trip is not
+established — this transcript doesn't isolate the variable.
+
+**The safety net worked regardless of the specialist's mistake.** All four gating specialists'
+individual confidences were high (0.95 / 0.9 / 0.85 / 0.9) and `overall_confidence` (0.85)
+would have cleared this project's confidence threshold comfortably — this call would have
+auto-written on confidence alone. It didn't, because `_hard_compliance_violations` treats
+`promised_discount_or_waiver` as an unconditional override regardless of confidence (the
+product decision from the 2026-09-16 arithmetic-bugs entry: "no confidence score should be
+able to override that"). The call correctly landed in `Exceptions` for a human to review — for
+the wrong specialist-level reason, but the right final outcome. Call_Log still got a full row
+(duration, cost, the generated summary, the `fetch-recording` pointer) since that write is
+unconditional regardless of `write_decision`.
+
+**Lesson:** "the untested path is broken" and "the untested path is safe" can both be true at
+once. The compliance specialist's judgment on this transcript should not be trusted — that
+much is confirmed. But the supervisor architecture built in Step 4 (hard violations override
+confidence unconditionally) is exactly what kept a wrong specialist judgment from becoming a
+wrong auto-written call. This is one data point, not a validated Hindi pipeline — worth another
+real call, ideally one without a compliance-relevant event, to see whether extraction quality
+holds without a hard violation there to mask whether confidence calibration itself is still
+trustworthy on non-English transcripts.

@@ -1,0 +1,51 @@
+{
+  "call_id": "01a0afd5-44e2-7000-859b-01f47f6dc3af",
+  "account_id": "ACC-0001",
+  "outcome": {
+    "outcome": "promise_to_pay",
+    "reason_code": null,
+    "next_action": "Record the promise to pay and follow up after 2026-09-30.",
+    "confidence": 0.95
+  },
+  "promise": {
+    "has_promise": true,
+    "is_complete": true,
+    "is_future_dated": true,
+    "amount_within_outstanding": true,
+    "method_valid": true,
+    "downgraded_to_soft_commitment": false,
+    "amount": 204000.0,
+    "promised_date": "2026-09-30",
+    "method": "UPI",
+    "invoice_ids": [
+      "SL/26-27/0002"
+    ],
+    "confidence": 0.9,
+    "notes": "Promise made for payment of ₹2,04,000 by September 30, 2026 via UPI."
+  },
+  "dispute": {
+    "has_dispute": true,
+    "invoice_id": "SL/26-27/0003",
+    "reason_code": "pricing_dispute",
+    "detail": "User requested a 10% reduction on the invoice amount for immediate payment.",
+    "evidence_requested": null,
+    "routing_target": "billing",
+    "confidence": 0.85
+  },
+  "compliance": {
+    "disclosed_automated": true,
+    "verified_authority": true,
+    "stayed_within_permitted_facts": true,
+    "promised_discount_or_waiver": true,
+    "threatened_consequences": false,
+    "misstated_total": false,
+    "qa_score": 0.8,
+    "notes": "The agent disclosed that it was an automated call and that it may be recorded. The agent confirmed the person's authority over accounts payable before discussing the invoice amount. The agent stayed within the facts presented, only repeating information that was already given. However, there was a minor compliance issue as the agent did imply it was unable to provide the discount requested (10% waiver); stating it would relay the request affects negotiations. There were no mentions of threats of legal action or consequences.",
+    "confidence": 0.9
+  },
+  "summary": "The customer acknowledged having two overdue invoices and stated that payment for the first invoice SL/26-27/0002, amounting to ₹2,04,000, is pending approval but will be made by September 30, 2026, via UPI. The customer inquired about a possible 10% adjustment on the second invoice SL/26-27/0003 but was informed that this was not possible. Next, the accounts team will monitor for the promised payment on the first invoice and address the request regarding the second invoice adjustment.",
+  "overall_confidence": 0.85,
+  "write_decision": "exception_queue",
+  "supervisor_notes": "agent promised a discount or waiver",
+  "exception_reason": "compliance_violation"
+}
