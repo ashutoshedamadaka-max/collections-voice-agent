@@ -1,0 +1,942 @@
+{
+  "id": "01a0a883-a8b4-7667-be53-3cb44b5377aa",
+  "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+  "type": "webCall",
+  "startedAt": "2026-09-16T04:39:56.337Z",
+  "endedAt": "2026-09-16T04:42:12.291Z",
+  "transcript": "AI: Hello. This is an automated call from Acme Supplies' accounts team regarding an overdue invoice call may be recorded.\nUser: Okay.\nAI: Can you confirm that you handle accounts payable for Rodriguez Figueroa and Sanchez?\nUser: Yes. Hello?\nAI: I will proceed. You have 2 overdue invoices. 3281, due August 24th, thousand 26. For 8 5 0 0 0 0. 0 0 and w I minus 7558 due July 16th 2026. For 2 8 0. 5 0 0 0 0 0. The total outstanding is 3 6 5 5. 0 0 0. 0 0. Can you provide a specific promise to pay including the amount, date, and method?\nUser: I took my payment to it.\nAI: Can you specify the amount, date, and method of that payment?\nAI: Please provide the specific amount date, and method of the payment you made.\nUser: Okay. Full amount. You see the\nAI: Please\n",
+  "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734891-43cbffb8-1788-4c86-b1f2-a7f653e1ee05-mono.wav",
+  "summary": "",
+  "createdAt": "2026-09-16T04:39:55.828Z",
+  "updatedAt": "2026-09-16T04:42:16.397Z",
+  "orgId": "0a32cbab-c2aa-494a-b61b-decd4db3ff77",
+  "cost": 0.1787,
+  "webCallUrl": "https://vapi.daily.co/cX0Ddi8RPUX7vmYLLy8X",
+  "status": "ended",
+  "endedReason": "silence-timed-out",
+  "messages": [
+    {
+      "role": "system",
+      "time": 1789533596060,
+      "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nBrian Yang at Rodriguez, Figueroa and Sanchez about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# YOUR ONLY FACTS\nYou are speaking with Brian Yang (Purchase Manager) at Rodriguez, Figueroa and Sanchez.\nInvoices: KA-3281 (due 2026-08-24, outstanding 85,000.00); WI-7558 (due 2026-07-16, outstanding 280,500.00)\nTotal outstanding: 365,500.00\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method.\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise.\nAsk once for the specific date and amount. If they still won't commit,\nrecord it as a soft commitment and move on. Do not ask a third time.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Rodriguez, Figueroa and Sanchez. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- One question per turn. Then stop.\n- Read amounts and dates slowly. Confirm them back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 ask for the reference number and date, call log_payment_claim, end.\nWill pay \u2192 pin down amount + date + method, confirm back, call record_ptp.\nDispute \u2192 ask what specifically and what they need from us, call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 ask when they expect to, and why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end.",
+      "secondsFromStart": 0
+    },
+    {
+      "role": "bot",
+      "time": 1789533598977,
+      "source": "",
+      "endTime": 1789533607467,
+      "message": "Hello. This is an automated call from Acme Supplies' accounts team regarding an overdue invoice call may be recorded.",
+      "duration": 6840,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 2.64
+    },
+    {
+      "role": "user",
+      "time": 1789533612737,
+      "endTime": 1789533613237,
+      "message": "Okay.",
+      "duration": 500,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 16.9,
+            "word": "okay",
+            "start": 16.4,
+            "confidence": 0.829834,
+            "punctuated_word": "Okay."
+          }
+        ]
+      },
+      "secondsFromStart": 16.4
+    },
+    {
+      "role": "bot",
+      "time": 1789533614387,
+      "source": "",
+      "endTime": 1789533618917,
+      "message": "Can you confirm that you handle accounts payable for Rodriguez Figueroa and Sanchez?",
+      "duration": 4530,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 18.05
+    },
+    {
+      "role": "user",
+      "time": 1789533628187,
+      "endTime": 1789533628947,
+      "message": "Yes. Hello?",
+      "duration": 760,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 32.17,
+            "word": "yes",
+            "start": 31.85,
+            "confidence": 0.6850586,
+            "punctuated_word": "Yes."
+          },
+          {
+            "end": 32.61,
+            "word": "hello",
+            "start": 32.17,
+            "confidence": 0.7792969,
+            "punctuated_word": "Hello?"
+          }
+        ]
+      },
+      "secondsFromStart": 31.85
+    },
+    {
+      "role": "bot",
+      "time": 1789533629896.998,
+      "source": "",
+      "endTime": 1789533665717,
+      "message": "I will proceed. You have 2 overdue invoices. 3281, due August 24th, thousand 26. For 8 5 0 0 0 0. 0 0 and w I minus 7558 due July 16th 2026. For 2 8 0. 5 0 0 0 0 0. The total outstanding is 3 6 5 5. 0 0 0. 0 0. Can you provide a specific promise to pay including the amount, date, and method?",
+      "duration": 27829.998046875,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 33.559998046875
+    },
+    {
+      "role": "user",
+      "time": 1789533669417,
+      "endTime": 1789533671167,
+      "message": "I took my payment to it.",
+      "duration": 1750,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 73.4,
+            "word": "i",
+            "start": 73.08,
+            "confidence": 0.71875,
+            "punctuated_word": "I"
+          },
+          {
+            "end": 73.64,
+            "word": "took",
+            "start": 73.4,
+            "confidence": 0.76953125,
+            "punctuated_word": "took"
+          },
+          {
+            "end": 73.8,
+            "word": "my",
+            "start": 73.64,
+            "confidence": 0.9667969,
+            "punctuated_word": "my"
+          },
+          {
+            "end": 74.3,
+            "word": "payment",
+            "start": 73.8,
+            "confidence": 0.47143555,
+            "punctuated_word": "payment"
+          },
+          {
+            "end": 74.76,
+            "word": "to",
+            "start": 74.52,
+            "confidence": 0.51660156,
+            "punctuated_word": "to"
+          },
+          {
+            "end": 74.83,
+            "word": "it",
+            "start": 74.76,
+            "confidence": 0.77856445,
+            "punctuated_word": "it."
+          }
+        ]
+      },
+      "secondsFromStart": 73.08
+    },
+    {
+      "role": "bot",
+      "time": 1789533671996.996,
+      "source": "",
+      "endTime": 1789533674867,
+      "message": "Can you specify the amount, date, and method of that payment?",
+      "duration": 2870.00390625,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 75.65999609375
+    },
+    {
+      "role": "bot",
+      "time": 1789533683307,
+      "source": "",
+      "endTime": 1789533688027,
+      "message": "Please provide the specific amount date, and method of the payment you made.",
+      "duration": 3979.9951171875,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 86.97
+    },
+    {
+      "role": "user",
+      "time": 1789533691777,
+      "endTime": 1789533695207,
+      "message": "Okay. Full amount. You see the",
+      "duration": 2320,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 95.76,
+            "word": "okay",
+            "start": 95.44,
+            "confidence": 0.6022339,
+            "punctuated_word": "Okay."
+          },
+          {
+            "end": 96.08,
+            "word": "full",
+            "start": 95.76,
+            "confidence": 0.63671875,
+            "punctuated_word": "Full"
+          },
+          {
+            "end": 96.58,
+            "word": "amount",
+            "start": 96.08,
+            "confidence": 0.9055176,
+            "punctuated_word": "amount."
+          }
+        ]
+      },
+      "secondsFromStart": 95.44
+    },
+    {
+      "role": "bot",
+      "time": 1789533694087,
+      "source": "",
+      "endTime": 1789533694587,
+      "message": "Please",
+      "duration": 500,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 97.75
+    }
+  ],
+  "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-d39c47b6-9f2b-40d1-9dad-cc524233bc76-stereo.wav",
+  "costBreakdown": {
+    "transport": 0.0025,
+    "stt": 0.0226,
+    "llm": 0.0013,
+    "tts": 0.039,
+    "vapi": 0.1133,
+    "chat": 0,
+    "total": 0.1787,
+    "llmPromptTokens": 7884,
+    "llmCompletionTokens": 173,
+    "llmCachedPromptTokens": 6144,
+    "ttsCharacters": 780,
+    "analysisCostBreakdown": {
+      "summary": 0,
+      "structuredData": 0,
+      "structuredOutput": 0,
+      "successEvaluation": 0,
+      "summaryPromptTokens": 0,
+      "summaryCompletionTokens": 0,
+      "summaryCachedPromptTokens": 0,
+      "structuredDataPromptTokens": 0,
+      "structuredOutputPromptTokens": 0,
+      "successEvaluationPromptTokens": 0,
+      "structuredDataCompletionTokens": 0,
+      "structuredDataCachedPromptTokens": 0,
+      "structuredOutputCompletionTokens": 0,
+      "successEvaluationCompletionTokens": 0,
+      "structuredOutputCachedPromptTokens": 0,
+      "successEvaluationCachedPromptTokens": 0
+    },
+    "knowledgeBaseCost": 0,
+    "voicemailDetectionCost": 0
+  },
+  "assistantOverrides": {
+    "model": {
+      "model": "gpt-4o-mini",
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "lookup_invoices",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "account_id"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Read-only, idempotent. Look up the invoice list for an account."
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_ids",
+                "amount",
+                "date",
+                "method"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "ISO 8601 date, e.g. 2026-09-30"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "method": {
+                  "enum": [
+                    "NEFT",
+                    "RTGS",
+                    "UPI",
+                    "cheque",
+                    "portal"
+                  ],
+                  "type": "string"
+                },
+                "invoice_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Record a specific promise to pay: an amount, a date, and a method. Only call this once amount, date, and method have all been confirmed back."
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_dispute",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reason_code",
+                "detail"
+              ],
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                },
+                "reason_code": {
+                  "enum": [
+                    "invoice_not_received",
+                    "awaiting_internal_approval",
+                    "po_mismatch",
+                    "missing_documentation",
+                    "quality_dispute",
+                    "quantity_dispute",
+                    "pricing_dispute",
+                    "payment_run_timing",
+                    "cash_flow",
+                    "wrong_contact",
+                    "paid_already"
+                  ],
+                  "type": "string"
+                },
+                "evidence_requested": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Record a dispute. Never argue the claim \u2014 just capture and route it."
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_payment_claim",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reference",
+                "paid_on"
+              ],
+              "properties": {
+                "paid_on": {
+                  "type": "string",
+                  "description": "ISO 8601 date"
+                },
+                "reference": {
+                  "type": "string",
+                  "description": "UTR or cheque number"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Record a claim that an invoice was already paid, with a reference."
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "send_document",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "doc_type"
+              ],
+              "properties": {
+                "doc_type": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Queue a document to be sent (drafted, not sent automatically)."
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "schedule_callback",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "priority": {
+                  "enum": [
+                    "normal",
+                    "high"
+                  ],
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Hand off to a human: wrong person, escalation request, or unanswerable question."
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "mark_opt_out",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "contact_id",
+                "scope"
+              ],
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "this_contact",
+                    "whole_account"
+                  ],
+                  "type": "string"
+                },
+                "contact_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Record an opt-out request. Acknowledge immediately, then end the call."
+          }
+        }
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nBrian Yang at Rodriguez, Figueroa and Sanchez about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# YOUR ONLY FACTS\nYou are speaking with Brian Yang (Purchase Manager) at Rodriguez, Figueroa and Sanchez.\nInvoices: KA-3281 (due 2026-08-24, outstanding 85,000.00); WI-7558 (due 2026-07-16, outstanding 280,500.00)\nTotal outstanding: 365,500.00\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method.\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise.\nAsk once for the specific date and amount. If they still won't commit,\nrecord it as a soft commitment and move on. Do not ask a third time.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Rodriguez, Figueroa and Sanchez. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- One question per turn. Then stop.\n- Read amounts and dates slowly. Confirm them back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 ask for the reference number and date, call log_payment_claim, end.\nWill pay \u2192 pin down amount + date + method, confirm back, call record_ptp.\nDispute \u2192 ask what specifically and what they need from us, call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 ask when they expect to, and why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end."
+        }
+      ],
+      "provider": "openai"
+    }
+  },
+  "analysis": {},
+  "artifact": {
+    "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734891-43cbffb8-1788-4c86-b1f2-a7f653e1ee05-mono.wav",
+    "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-d39c47b6-9f2b-40d1-9dad-cc524233bc76-stereo.wav",
+    "recording": {
+      "stereoUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-d39c47b6-9f2b-40d1-9dad-cc524233bc76-stereo.wav",
+      "mono": {
+        "combinedUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734891-43cbffb8-1788-4c86-b1f2-a7f653e1ee05-mono.wav",
+        "assistantUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-11563ba3-0597-4782-beca-bab64adce1b6-mono.wav",
+        "customerUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-6db14a1d-dd42-4818-ba79-15a2448c6abb-mono.wav"
+      }
+    },
+    "messages": [
+      {
+        "role": "system",
+        "time": 1789533596060,
+        "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nBrian Yang at Rodriguez, Figueroa and Sanchez about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# YOUR ONLY FACTS\nYou are speaking with Brian Yang (Purchase Manager) at Rodriguez, Figueroa and Sanchez.\nInvoices: KA-3281 (due 2026-08-24, outstanding 85,000.00); WI-7558 (due 2026-07-16, outstanding 280,500.00)\nTotal outstanding: 365,500.00\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method.\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise.\nAsk once for the specific date and amount. If they still won't commit,\nrecord it as a soft commitment and move on. Do not ask a third time.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Rodriguez, Figueroa and Sanchez. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- One question per turn. Then stop.\n- Read amounts and dates slowly. Confirm them back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 ask for the reference number and date, call log_payment_claim, end.\nWill pay \u2192 pin down amount + date + method, confirm back, call record_ptp.\nDispute \u2192 ask what specifically and what they need from us, call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 ask when they expect to, and why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end.",
+        "secondsFromStart": 0
+      },
+      {
+        "role": "bot",
+        "time": 1789533598977,
+        "source": "",
+        "endTime": 1789533607467,
+        "message": "Hello. This is an automated call from Acme Supplies' accounts team regarding an overdue invoice call may be recorded.",
+        "duration": 6840,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 2.64
+      },
+      {
+        "role": "user",
+        "time": 1789533612737,
+        "endTime": 1789533613237,
+        "message": "Okay.",
+        "duration": 500,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 16.9,
+              "word": "okay",
+              "start": 16.4,
+              "confidence": 0.829834,
+              "punctuated_word": "Okay."
+            }
+          ]
+        },
+        "secondsFromStart": 16.4
+      },
+      {
+        "role": "bot",
+        "time": 1789533614387,
+        "source": "",
+        "endTime": 1789533618917,
+        "message": "Can you confirm that you handle accounts payable for Rodriguez Figueroa and Sanchez?",
+        "duration": 4530,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 18.05
+      },
+      {
+        "role": "user",
+        "time": 1789533628187,
+        "endTime": 1789533628947,
+        "message": "Yes. Hello?",
+        "duration": 760,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 32.17,
+              "word": "yes",
+              "start": 31.85,
+              "confidence": 0.6850586,
+              "punctuated_word": "Yes."
+            },
+            {
+              "end": 32.61,
+              "word": "hello",
+              "start": 32.17,
+              "confidence": 0.7792969,
+              "punctuated_word": "Hello?"
+            }
+          ]
+        },
+        "secondsFromStart": 31.85
+      },
+      {
+        "role": "bot",
+        "time": 1789533629896.998,
+        "source": "",
+        "endTime": 1789533665717,
+        "message": "I will proceed. You have 2 overdue invoices. 3281, due August 24th, thousand 26. For 8 5 0 0 0 0. 0 0 and w I minus 7558 due July 16th 2026. For 2 8 0. 5 0 0 0 0 0. The total outstanding is 3 6 5 5. 0 0 0. 0 0. Can you provide a specific promise to pay including the amount, date, and method?",
+        "duration": 27829.998046875,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 33.559998046875
+      },
+      {
+        "role": "user",
+        "time": 1789533669417,
+        "endTime": 1789533671167,
+        "message": "I took my payment to it.",
+        "duration": 1750,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 73.4,
+              "word": "i",
+              "start": 73.08,
+              "confidence": 0.71875,
+              "punctuated_word": "I"
+            },
+            {
+              "end": 73.64,
+              "word": "took",
+              "start": 73.4,
+              "confidence": 0.76953125,
+              "punctuated_word": "took"
+            },
+            {
+              "end": 73.8,
+              "word": "my",
+              "start": 73.64,
+              "confidence": 0.9667969,
+              "punctuated_word": "my"
+            },
+            {
+              "end": 74.3,
+              "word": "payment",
+              "start": 73.8,
+              "confidence": 0.47143555,
+              "punctuated_word": "payment"
+            },
+            {
+              "end": 74.76,
+              "word": "to",
+              "start": 74.52,
+              "confidence": 0.51660156,
+              "punctuated_word": "to"
+            },
+            {
+              "end": 74.83,
+              "word": "it",
+              "start": 74.76,
+              "confidence": 0.77856445,
+              "punctuated_word": "it."
+            }
+          ]
+        },
+        "secondsFromStart": 73.08
+      },
+      {
+        "role": "bot",
+        "time": 1789533671996.996,
+        "source": "",
+        "endTime": 1789533674867,
+        "message": "Can you specify the amount, date, and method of that payment?",
+        "duration": 2870.00390625,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 75.65999609375
+      },
+      {
+        "role": "bot",
+        "time": 1789533683307,
+        "source": "",
+        "endTime": 1789533688027,
+        "message": "Please provide the specific amount date, and method of the payment you made.",
+        "duration": 3979.9951171875,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 86.97
+      },
+      {
+        "role": "user",
+        "time": 1789533691777,
+        "endTime": 1789533695207,
+        "message": "Okay. Full amount. You see the",
+        "duration": 2320,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 95.76,
+              "word": "okay",
+              "start": 95.44,
+              "confidence": 0.6022339,
+              "punctuated_word": "Okay."
+            },
+            {
+              "end": 96.08,
+              "word": "full",
+              "start": 95.76,
+              "confidence": 0.63671875,
+              "punctuated_word": "Full"
+            },
+            {
+              "end": 96.58,
+              "word": "amount",
+              "start": 96.08,
+              "confidence": 0.9055176,
+              "punctuated_word": "amount."
+            }
+          ]
+        },
+        "secondsFromStart": 95.44
+      },
+      {
+        "role": "bot",
+        "time": 1789533694087,
+        "source": "",
+        "endTime": 1789533694587,
+        "message": "Please",
+        "duration": 500,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 97.75
+      }
+    ],
+    "messagesOpenAIFormatted": [
+      {
+        "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nBrian Yang at Rodriguez, Figueroa and Sanchez about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# YOUR ONLY FACTS\nYou are speaking with Brian Yang (Purchase Manager) at Rodriguez, Figueroa and Sanchez.\nInvoices: KA-3281 (due 2026-08-24, outstanding 85,000.00); WI-7558 (due 2026-07-16, outstanding 280,500.00)\nTotal outstanding: 365,500.00\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method.\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise.\nAsk once for the specific date and amount. If they still won't commit,\nrecord it as a soft commitment and move on. Do not ask a third time.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Rodriguez, Figueroa and Sanchez. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- One question per turn. Then stop.\n- Read amounts and dates slowly. Confirm them back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 ask for the reference number and date, call log_payment_claim, end.\nWill pay \u2192 pin down amount + date + method, confirm back, call record_ptp.\nDispute \u2192 ask what specifically and what they need from us, call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 ask when they expect to, and why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end.",
+        "role": "system"
+      },
+      {
+        "content": "Hello. This is an automated call from Acme Supplies' accounts team regarding an overdue invoice call may be recorded.",
+        "role": "assistant"
+      },
+      {
+        "content": "Okay.",
+        "role": "user"
+      },
+      {
+        "content": "Can you confirm that you handle accounts payable for Rodriguez Figueroa and Sanchez?",
+        "role": "assistant"
+      },
+      {
+        "content": "Yes. Hello?",
+        "role": "user"
+      },
+      {
+        "content": "I will proceed. You have 2 overdue invoices. 3281, due August 24th, thousand 26. For 8 5 0 0 0 0. 0 0 and w I minus 7558 due July 16th 2026. For 2 8 0. 5 0 0 0 0 0. The total outstanding is 3 6 5 5. 0 0 0. 0 0. Can you provide a specific promise to pay including the amount, date, and method?",
+        "role": "assistant"
+      },
+      {
+        "content": "I took my payment to it.",
+        "role": "user"
+      },
+      {
+        "content": "Can you specify the amount, date, and method of that payment? Please provide the specific amount date, and method of the payment you made.",
+        "role": "assistant"
+      },
+      {
+        "content": "Okay. Full amount. You see the",
+        "role": "user"
+      },
+      {
+        "content": "Please",
+        "role": "assistant"
+      }
+    ],
+    "transcript": "AI: Hello. This is an automated call from Acme Supplies' accounts team regarding an overdue invoice call may be recorded.\nUser: Okay.\nAI: Can you confirm that you handle accounts payable for Rodriguez Figueroa and Sanchez?\nUser: Yes. Hello?\nAI: I will proceed. You have 2 overdue invoices. 3281, due August 24th, thousand 26. For 8 5 0 0 0 0. 0 0 and w I minus 7558 due July 16th 2026. For 2 8 0. 5 0 0 0 0 0. The total outstanding is 3 6 5 5. 0 0 0. 0 0. Can you provide a specific promise to pay including the amount, date, and method?\nUser: I took my payment to it.\nAI: Can you specify the amount, date, and method of that payment?\nAI: Please provide the specific amount date, and method of the payment you made.\nUser: Okay. Full amount. You see the\nAI: Please\n",
+    "logUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-calllogs/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0a883-a8b4-7667-be53-3cb44b5377aa-024033f6-e531-4445-bfa1-2b1d2b907931-1789533735949.jsonl.gz",
+    "nodes": [],
+    "assistantActivations": [
+      {
+        "assistantName": "collections-agent-v1",
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantVersion": "v4"
+      }
+    ],
+    "variableValues": {
+      "day": "16",
+      "now": "Sep 16, 2026, 4:39 AM UTC",
+      "call": {
+        "id": "01a0a883-a8b4-7667-be53-3cb44b5377aa",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-16T04:39:55.828Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/cX0Ddi8RPUX7vmYLLy8X",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 16, 2026 UTC",
+      "time": "4:39 AM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/cX0Ddi8RPUX7vmYLLy8X",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Wednesday, September 16, 2026 at 4:39 AM UTC"
+    },
+    "variables": {
+      "day": "16",
+      "now": "Sep 16, 2026, 4:39 AM UTC",
+      "call": {
+        "id": "01a0a883-a8b4-7667-be53-3cb44b5377aa",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-16T04:39:55.828Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/cX0Ddi8RPUX7vmYLLy8X",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 16, 2026 UTC",
+      "time": "4:39 AM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/cX0Ddi8RPUX7vmYLLy8X",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Wednesday, September 16, 2026 at 4:39 AM UTC"
+    },
+    "performanceMetrics": {
+      "turnLatencies": [
+        {
+          "modelLatency": 340,
+          "voiceLatency": 686,
+          "transcriberLatency": 188,
+          "endpointingLatency": 101,
+          "turnLatency": 1321
+        },
+        {
+          "modelLatency": 421,
+          "voiceLatency": 461,
+          "transcriberLatency": 226,
+          "endpointingLatency": 100,
+          "turnLatency": 1244
+        },
+        {
+          "modelLatency": 383,
+          "voiceLatency": 306,
+          "transcriberLatency": 231,
+          "endpointingLatency": 102,
+          "turnLatency": 1068
+        },
+        {
+          "modelLatency": 331,
+          "voiceLatency": 344,
+          "transcriberLatency": 0,
+          "endpointingLatency": 1501,
+          "turnLatency": 2216
+        },
+        {
+          "modelLatency": 354,
+          "voiceLatency": 372,
+          "transcriberLatency": 503,
+          "endpointingLatency": 100,
+          "turnLatency": 1376
+        },
+        {
+          "modelLatency": 379,
+          "voiceLatency": 320,
+          "transcriberLatency": 165,
+          "endpointingLatency": 1502,
+          "turnLatency": 2409
+        }
+      ],
+      "modelLatencyAverage": 368,
+      "voiceLatencyAverage": 414.83,
+      "transcriberLatencyAverage": 218.83,
+      "endpointingLatencyAverage": 567.67,
+      "turnLatencyAverage": 1605.67,
+      "fromTransportLatencyAverage": 20,
+      "toTransportLatencyAverage": 43,
+      "numAssistantInterrupted": 1
+    },
+    "scorecards": {},
+    "transfers": [],
+    "presignedMonoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734891-43cbffb8-1788-4c86-b1f2-a7f653e1ee05-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260916%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260916T044411Z&X-Amz-Expires=1800&X-Amz-Signature=524532956ad624b54d23f6fec1ebf65fa82036bf83087e6ff7c972c403bce283&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedStereoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-d39c47b6-9f2b-40d1-9dad-cc524233bc76-stereo.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260916%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260916T044411Z&X-Amz-Expires=1800&X-Amz-Signature=169b4d452000ae071634b86df04e27f09131adfb29b157b31e05a2fe163082f1&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedAssistantUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-11563ba3-0597-4782-beca-bab64adce1b6-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260916%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260916T044411Z&X-Amz-Expires=1800&X-Amz-Signature=8a69c60dda80a5e5ed92f0425b493a2d3c22cfcbe5784f3995b799d16d2e38a7&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedCustomerUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0a883-a8b4-7667-be53-3cb44b5377aa-1789533734892-6db14a1d-dd42-4818-ba79-15a2448c6abb-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260916%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260916T044411Z&X-Amz-Expires=1800&X-Amz-Signature=98008ad88d8b37d1a097877b77bb1587ee20f5ce65ada9b5c022d900f53a1636&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedLogUrl": "https://hipaa-calllogs.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0a883-a8b4-7667-be53-3cb44b5377aa-024033f6-e531-4445-bfa1-2b1d2b907931-1789533735949.jsonl.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260916%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260916T044411Z&X-Amz-Expires=1800&X-Amz-Signature=5c2362300d32fc91f17745e4c8a9318155c4a316e19ed32bb126cf16ca39a879&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedUrlsExpiresAt": "2026-09-16T05:14:11.639Z"
+  },
+  "costs": [
+    {
+      "cost": 0.02261889,
+      "type": "transcriber",
+      "minutes": 2.153316666666667,
+      "transcriber": {
+        "model": "nova-2",
+        "provider": "deepgram"
+      }
+    },
+    {
+      "cost": 0.0012864,
+      "type": "model",
+      "model": {
+        "model": "gpt-4o-mini",
+        "provider": "openai"
+      },
+      "promptTokens": 7884,
+      "reasoningTokens": 0,
+      "completionTokens": 173,
+      "cachedPromptTokens": 6144
+    },
+    {
+      "cost": 0.039,
+      "type": "voice",
+      "voice": {
+        "model": "vapi-v1",
+        "voiceId": "Elliot",
+        "provider": "vapi"
+      },
+      "characters": 780
+    },
+    {
+      "cost": 0.113295,
+      "type": "vapi",
+      "minutes": 2.2659,
+      "subType": "normal"
+    },
+    {
+      "cost": 0,
+      "type": "knowledge-base",
+      "model": {
+        "model": "gemini-2.5-flash",
+        "provider": "google"
+      },
+      "promptTokens": 0,
+      "completionTokens": 0
+    },
+    {
+      "cost": 0.00253324,
+      "type": "transport",
+      "minutes": 135954,
+      "provider": "daily"
+    }
+  ],
+  "monitor": {
+    "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production3.vapi.ai/01a0a883-a8b4-7667-be53-3cb44b5377aa/listen",
+    "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production3.vapi.ai/01a0a883-a8b4-7667-be53-3cb44b5377aa/control"
+  },
+  "transport": {
+    "callUrl": "https://vapi.daily.co/cX0Ddi8RPUX7vmYLLy8X",
+    "provider": "daily",
+    "conversationType": "voice",
+    "assistantVideoEnabled": false,
+    "videoRecordingEnabled": false,
+    "roomDeleteOnUserLeaveEnabled": true
+  },
+  "assistantVersion": "v4"
+}
