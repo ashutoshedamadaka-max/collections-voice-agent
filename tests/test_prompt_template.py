@@ -151,3 +151,58 @@ def test_never_reask_rule_and_cannot_pay_now_branch_reference_it(sample_context_
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     assert "Never ask again" in prompt
     assert "If they haven't already told you why" in prompt
+
+
+class TestPrimaryInvoiceOnly:
+    """Regression coverage for the 2026-09-17 redesign: a call that tried to resolve every
+    invoice at once ran out of time mid-negotiation on the second and stumbled
+    (docs/FAILURES.md). A call should now work exactly one invoice to a complete outcome and
+    schedule a callback for the rest."""
+
+    def _two_invoice_pack(self, base_account, make_invoice, as_of):
+        from collections_agent.precall.context_pack import build_context_pack
+
+        primary = make_invoice(base_account.account_id, days_overdue=70, amount=500_000)
+        other = make_invoice(base_account.account_id, days_overdue=10, amount=50_000)
+        pack = build_context_pack(base_account, [primary, other], [], [], [], as_of=as_of)
+        return pack, primary, other
+
+    def test_single_invoice_account_has_no_other_invoices_section(self, sample_context_pack):
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        assert "Other overdue invoices" not in prompt
+
+    def test_multi_invoice_account_separates_primary_from_others(
+        self, base_account, make_invoice, as_of
+    ):
+        pack, primary, other = self._two_invoice_pack(base_account, make_invoice, as_of)
+        prompt = render_system_prompt(pack, "Acme Supplies")
+
+        assert pack.primary_invoice_id == primary.invoice_id
+        assert "Other overdue invoices" in prompt
+        # Both invoice numbers appear somewhere (allowed_facts covers both), but only the
+        # primary section should tell the agent to work it to a complete outcome.
+        assert primary.invoice_number in prompt
+        assert other.invoice_number in prompt
+
+    def test_multi_invoice_prompt_forbids_negotiating_other_invoices(
+        self, base_account, make_invoice, as_of
+    ):
+        pack, _primary, _other = self._two_invoice_pack(base_account, make_invoice, as_of)
+        prompt = render_system_prompt(pack, "Acme Supplies")
+        assert "Do not negotiate, ask about, or" in prompt
+
+    def test_multi_invoice_prompt_instructs_callback_before_ending(
+        self, base_account, make_invoice, as_of
+    ):
+        pack, _primary, _other = self._two_invoice_pack(base_account, make_invoice, as_of)
+        prompt = render_system_prompt(pack, "Acme Supplies")
+        assert "schedule_callback once, with a reason naming them" in prompt
+
+    def test_single_invoice_prompt_has_no_callback_closing_instruction(self, sample_context_pack):
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        assert "schedule_callback once, with a reason naming them" not in prompt
+
+    def test_goal_section_scopes_to_primary_invoice_only(self, sample_context_pack):
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        assert "FOR THE PRIMARY INVOICE ONLY" in prompt
+        assert "This call is about the primary invoice only" in prompt

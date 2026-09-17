@@ -14,7 +14,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from collections_agent.models.domain import ContextPack
+from collections_agent.models.domain import ContextPack, Invoice
 from collections_agent.voice.language import prompt_instruction
 from collections_agent.voice.speakable import amount_to_words, invoice_number_to_words
 
@@ -28,14 +28,32 @@ _env = Environment(
 )
 
 
-def _format_invoice_table(context_pack: ContextPack) -> str:
-    rows = [
+def _format_invoice_fact(inv: Invoice) -> str:
+    return (
         f'{inv.invoice_number} (say "{invoice_number_to_words(inv.invoice_number)}"), due '
         f'{inv.due_date.isoformat()}, outstanding {inv.outstanding():,.2f} '
         f'(say "{amount_to_words(inv.outstanding())}")'
-        for inv in context_pack.invoices
-    ]
-    return "; ".join(rows) if rows else "none"
+    )
+
+
+def _primary_invoice(context_pack: ContextPack) -> Invoice:
+    return next(inv for inv in context_pack.invoices if inv.invoice_id == context_pack.primary_invoice_id)
+
+
+def _other_invoices(context_pack: ContextPack) -> list[Invoice]:
+    return [inv for inv in context_pack.invoices if inv.invoice_id != context_pack.primary_invoice_id]
+
+
+def _format_primary_invoice(context_pack: ContextPack) -> str:
+    return _format_invoice_fact(_primary_invoice(context_pack))
+
+
+def _format_other_invoices(context_pack: ContextPack) -> str:
+    """Empty string (not "none") when there are none — the template's {% if %} on this value
+    omits the whole "other invoices" section rather than printing a "none" line for the common
+    single-invoice case."""
+    others = _other_invoices(context_pack)
+    return "; ".join(_format_invoice_fact(inv) for inv in others)
 
 
 def _format_ptp_history(context_pack: ContextPack) -> str:
@@ -69,7 +87,8 @@ def render_system_prompt(
         contact_name=context_pack.contact_name,
         contact_role=context_pack.contact_role,
         customer_name=context_pack.customer_name,
-        invoice_table=_format_invoice_table(context_pack),
+        primary_invoice_line=_format_primary_invoice(context_pack),
+        other_invoices_line=_format_other_invoices(context_pack),
         total_outstanding=(
             f'{context_pack.total_outstanding:,.2f} '
             f'(say "{amount_to_words(context_pack.total_outstanding)}")'

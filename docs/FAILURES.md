@@ -617,3 +617,57 @@ wrong auto-written call. This is one data point, not a validated Hindi pipeline 
 real call, ideally one without a compliance-relevant event, to see whether extraction quality
 holds without a hard violation there to mask whether confidence calibration itself is still
 trustworthy on non-English transcripts.
+
+## 2026-09-17 — one-invoice-per-call redesign, and the compliance false positive fixed
+
+Two follow-ups to the Hinglish call findings above, once the product decision on the 180s cap
+was made.
+
+**Decision on the call-duration cap: don't raise it, redesign the call instead.** Raising
+`MAX_CALL_DURATION_SECONDS` (e.g. to 240s) only relocates the failure — any fixed cap runs out
+eventually against a chattier customer or a third invoice, and a chunk of tonight's overrun was
+the barge-in loop and bad transcription (both fixed above), not inherent conversation length.
+Instead: **the agent now works exactly one invoice — the most overdue unpaid one — to a
+complete outcome per call, and schedules a callback for any others**, rather than walking every
+invoice in sequence. This also matches actual collections practice better: a clean resolution
+plus a booked callback beats several rushed, vague commitments squeezed into one call.
+`MAX_CALL_DURATION_SECONDS` stays at 180 — if the redesign works, the cap should stop being hit
+at all, which is itself the check that it worked.
+
+**Implementation:** `ContextPack` gains `primary_invoice_id` (`precall/context_pack.py`'s new
+`_worst_invoice` — the same "most overdue, ties broken by larger outstanding" selection that
+already drove the account's aging bucket, reused rather than inventing a second notion of
+priority). `prompt_template.py` renders the primary invoice separately from any others, and the
+FACTS section explicitly tells the model not to negotiate, ask about, or read out details for
+the others — just acknowledge them and route to a callback. GOAL is now scoped to "the primary
+invoice only," and CLOSING adds a step to call `schedule_callback` (naming the deferred
+invoices) before ending, when there are any. Not yet validated against a real multi-invoice
+call — the next Hinglish (or any multi-invoice account) test call should confirm the agent
+actually stops after the primary invoice instead of continuing on its own.
+
+**Compliance false positive, fixed.** The rubric line — *"did it offer, hint at, or negotiate
+any discount or waiver"* — never distinguished the agent proposing a discount from the topic
+merely coming up; the specialist conflated "a discount was discussed" with "a discount was
+granted," flagging a clean refusal as a violation. The fix adds an explicit distinction
+(`promised_discount_or_waiver` means the agent *proposed, suggested, or agreed to* reduce or
+waive an amount — a refusal is compliant regardless of phrasing or language) plus two worked
+examples the model can pattern-match against: the actual refusal line from the flawed call in
+English ("that's not something I can adjust, I'll flag it to the team") and in the Hindi it was
+actually spoken in ("यह संभव नहीं है, मैं इसे टीम को बताऊँगा"), both explicitly marked
+compliant. Re-ran `run-postcall` on the same call afterward to confirm — see below.
+
+**The framing that matters here, and why it's being written down explicitly:** the hard-
+violation override exists to stop a *confident wrong auto-write* — a call where every
+specialist feels sure of itself but something specific and dangerous happened anyway (a
+discount actually offered, a threat actually made). Here, that same override caught a
+*confidently wrong violation* instead: nothing dangerous happened, but the mechanism built to
+catch danger regardless of confidence did its job on a false alarm just as unconditionally as
+it would have on a real one. That's the system behaving exactly as designed — but a compliance
+rubric that can't tell "a discount was discussed" from "a discount was granted" will produce
+this exact false positive on every future call where a customer merely asks. A queue that's
+full of calls where nothing was actually wrong is a queue nobody reads carefully by the third
+one — the identical lesson already learned from the arithmetic-consistency regex's own false
+positive on garbled digit-by-digit transcription (2026-09-16, "two follow-on bugs found by
+re-running the fix above"). A deterministic check and an LLM rubric can both cry wolf; both
+need their own false-positive testing before being trusted enough to gate a queue, and finding
+out via a real call is exactly what happened here.

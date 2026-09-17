@@ -394,6 +394,13 @@ class ContextPack(BaseModel):
     contact_role: str
     customer_name: str
     invoices: list[Invoice]
+    primary_invoice_id: str = Field(
+        description="Which invoice this call should resolve to a complete outcome — the most "
+        "overdue unpaid invoice. Added 2026-09-17 after a real call tried to walk every "
+        "invoice in one call, ran out of time mid-negotiation on the second, and produced a "
+        "stutter loop and a rushed dispute instead of a clean outcome. Every other invoice in "
+        "`invoices` gets a schedule_callback, not a negotiation, in the same call.",
+    )
     total_outstanding: float
     payment_terms: str
     preferred_language: str

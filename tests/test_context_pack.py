@@ -45,6 +45,35 @@ def test_bucket_reflects_most_overdue_invoice(base_account, make_invoice, as_of)
     assert pack.bucket == AgingBucket.D61_90
 
 
+def test_primary_invoice_is_the_most_overdue_one(base_account, make_invoice, as_of):
+    """Added 2026-09-17: a call that tried to resolve every invoice at once ran out of time
+    mid-negotiation on the second one (docs/FAILURES.md). primary_invoice_id tells the prompt
+    which single invoice this call should actually work to a complete outcome."""
+    inv_recent = make_invoice(base_account.account_id, days_overdue=5)
+    inv_old = make_invoice(base_account.account_id, days_overdue=70)
+
+    pack = build_context_pack(base_account, [inv_recent, inv_old], [], [], [], as_of=as_of)
+
+    assert pack.primary_invoice_id == inv_old.invoice_id
+
+
+def test_primary_invoice_tie_broken_by_larger_outstanding_amount(base_account, make_invoice, as_of):
+    inv_small = make_invoice(base_account.account_id, days_overdue=30, amount=50_000)
+    inv_large = make_invoice(base_account.account_id, days_overdue=30, amount=500_000)
+
+    pack = build_context_pack(base_account, [inv_small, inv_large], [], [], [], as_of=as_of)
+
+    assert pack.primary_invoice_id == inv_large.invoice_id
+
+
+def test_single_invoice_is_its_own_primary(base_account, make_invoice, as_of):
+    inv = make_invoice(base_account.account_id, days_overdue=10)
+
+    pack = build_context_pack(base_account, [inv], [], [], [], as_of=as_of)
+
+    assert pack.primary_invoice_id == inv.invoice_id
+
+
 def test_excludes_resolved_disputes(base_account, make_invoice, as_of, now):
     inv = make_invoice(base_account.account_id, days_overdue=10)
     open_dispute = Dispute(

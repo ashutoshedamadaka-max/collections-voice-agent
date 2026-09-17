@@ -20,11 +20,22 @@ from collections_agent.models.domain import (
 )
 
 
-def _account_bucket(invoices: list[Invoice], as_of: date):
+def _worst_invoice(invoices: list[Invoice], as_of: date) -> Invoice | None:
+    """The single most overdue unpaid invoice, ties broken by larger outstanding amount. Drives
+    both the account's aging bucket and — since a call tried to resolve every invoice at once,
+    ran out of time, and stumbled (docs/FAILURES.md, 2026-09-17) — which invoice a call should
+    actually work to a complete outcome. The invoice most responsible for the account's urgency
+    is also the one most worth resolving cleanly, rather than rushing all of them."""
     unpaid = [inv for inv in invoices if inv.outstanding() > 0]
     if not unpaid:
-        return unpaid  # empty -> caller handles
-    worst = max(unpaid, key=lambda inv: (as_of - inv.due_date).days)
+        return None
+    return max(unpaid, key=lambda inv: ((as_of - inv.due_date).days, inv.outstanding()))
+
+
+def _account_bucket(invoices: list[Invoice], as_of: date):
+    worst = _worst_invoice(invoices, as_of)
+    if worst is None:
+        return []  # empty -> caller handles
     return worst.aging_bucket(as_of)
 
 
@@ -60,12 +71,16 @@ def build_context_pack(
     )
     last_call = account_calls[0] if account_calls else None
 
+    primary_invoice = _worst_invoice(unpaid_invoices, as_of)
+    assert primary_invoice is not None  # unpaid_invoices was already confirmed non-empty above
+
     return ContextPack(
         account_id=account.account_id,
         contact_name=account.contact_name,
         contact_role=account.contact_role,
         customer_name=account.customer_name,
         invoices=unpaid_invoices,
+        primary_invoice_id=primary_invoice.invoice_id,
         total_outstanding=round(sum(inv.outstanding() for inv in unpaid_invoices), 2),
         payment_terms=account.payment_terms,
         preferred_language=account.preferred_language,
