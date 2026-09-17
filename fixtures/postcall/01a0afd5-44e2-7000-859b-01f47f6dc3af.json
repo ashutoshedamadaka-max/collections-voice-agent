@@ -4,7 +4,7 @@
   "outcome": {
     "outcome": "promise_to_pay",
     "reason_code": null,
-    "next_action": "Record the promise to pay and follow up after 2026-09-30.",
+    "next_action": "Confirm payment details with the client on the agreed date of 2026-09-30.",
     "confidence": 0.95
   },
   "promise": {
@@ -21,31 +21,31 @@
       "SL/26-27/0002"
     ],
     "confidence": 0.9,
-    "notes": "Promise made for payment of ₹2,04,000 by September 30, 2026 via UPI."
+    "notes": "Promise made for invoice SL/26-27/0002."
   },
   "dispute": {
     "has_dispute": true,
     "invoice_id": "SL/26-27/0003",
     "reason_code": "pricing_dispute",
-    "detail": "User requested a 10% reduction on the invoice amount for immediate payment.",
+    "detail": "User requested a 10% discount on the invoice amount before making payment.",
     "evidence_requested": null,
     "routing_target": "billing",
-    "confidence": 0.85
+    "confidence": 0.8
   },
   "compliance": {
     "disclosed_automated": true,
     "verified_authority": true,
     "stayed_within_permitted_facts": true,
-    "promised_discount_or_waiver": true,
+    "promised_discount_or_waiver": false,
     "threatened_consequences": false,
     "misstated_total": false,
-    "qa_score": 0.8,
-    "notes": "The agent disclosed that it was an automated call and that it may be recorded. The agent confirmed the person's authority over accounts payable before discussing the invoice amount. The agent stayed within the facts presented, only repeating information that was already given. However, there was a minor compliance issue as the agent did imply it was unable to provide the discount requested (10% waiver); stating it would relay the request affects negotiations. There were no mentions of threats of legal action or consequences.",
-    "confidence": 0.9
+    "qa_score": 1.0,
+    "notes": "",
+    "confidence": 1.0
   },
-  "summary": "The customer acknowledged having two overdue invoices and stated that payment for the first invoice SL/26-27/0002, amounting to ₹2,04,000, is pending approval but will be made by September 30, 2026, via UPI. The customer inquired about a possible 10% adjustment on the second invoice SL/26-27/0003 but was informed that this was not possible. Next, the accounts team will monitor for the promised payment on the first invoice and address the request regarding the second invoice adjustment.",
-  "overall_confidence": 0.85,
-  "write_decision": "exception_queue",
-  "supervisor_notes": "agent promised a discount or waiver",
-  "exception_reason": "compliance_violation"
+  "summary": "The customer, representing Satpura Logistics Private Limited, acknowledged having two overdue invoices, with the first invoice SL/26-27/0002 amounting to ₹2,04,000 due on 2026-08-26. The customer agreed to pay this amount by September 30, 2026, via UPI, although they requested a 10% adjustment on the second invoice, SL/26-27/0003, which was not accepted at the moment. Next, the customer's payment promise for the first invoice has been recorded, and further communication regarding the second invoice will follow.",
+  "overall_confidence": 0.8,
+  "write_decision": "auto_write",
+  "supervisor_notes": "",
+  "exception_reason": ""
 }

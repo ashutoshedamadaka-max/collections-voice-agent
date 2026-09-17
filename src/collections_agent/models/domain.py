@@ -61,6 +61,7 @@ class DisputeStatus(StrEnum):
     OPEN = "open"
     ROUTED = "routed"
     RESOLVED = "resolved"
+    SUPERSEDED = "superseded"
 
 
 class RoutingTarget(StrEnum):
@@ -149,6 +150,12 @@ class SoftCommitment(BaseModel):
     captured_at: datetime
     captured_by: str
     call_id: str
+    superseded: bool = Field(
+        default=False,
+        description="Set true when a re-analysis of the same call_id no longer produces this "
+        "soft commitment (e.g. it's now a complete promise instead) — see writeback.py's "
+        "reconciliation logic and docs/FAILURES.md.",
+    )
 
 
 class Dispute(BaseModel):

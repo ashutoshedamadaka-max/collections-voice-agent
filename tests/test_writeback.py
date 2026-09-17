@@ -205,3 +205,108 @@ def test_missing_routing_target_falls_back_to_ops(fake_sheets_backend):
     write_back(fake_sheets_backend, _analysis(dispute=dispute), _transcript())
 
     assert fake_sheets_backend.tabs["Disputes"][0]["routing_target"] == "ops"
+
+
+class TestReAnalysisReconciliation:
+    """2026-09-17: a corrected re-analysis of the same call_id can flip write_decision, promise
+    completeness, or dispute presence between runs. SheetsBackend has no delete verb, so a
+    stale row from the first run must be marked superseded/resolved, not left silently
+    contradicting the corrected one (see docs/FAILURES.md and writeback.py's module docstring).
+    """
+
+    _COMPLETE_PROMISE = PromiseValidation(
+        has_promise=True,
+        is_complete=True,
+        is_future_dated=True,
+        amount_within_outstanding=True,
+        method_valid=True,
+        downgraded_to_soft_commitment=False,
+        amount=50000,
+        promised_date=STARTED_AT.date(),
+        method="NEFT",
+        invoice_ids=["INV-1"],
+        confidence=0.9,
+    )
+    _REAL_DISPUTE = DisputeClassification(
+        has_dispute=True,
+        invoice_id="INV-1",
+        reason_code="quantity_dispute",
+        detail="short shipment",
+        routing_target="logistics",
+        confidence=0.9,
+    )
+
+    def test_exception_resolved_when_reanalysis_auto_writes(self, fake_sheets_backend):
+        ensure_all_tabs(fake_sheets_backend)
+        first = _analysis(
+            write_decision=WriteDecision.EXCEPTION_QUEUE,
+            exception_reason="compliance_violation",
+            supervisor_notes="agent promised a discount or waiver",
+        )
+        write_back(fake_sheets_backend, first, _transcript())
+        assert fake_sheets_backend.tabs["Exceptions"][0]["resolved"] == ""
+
+        corrected = _analysis(promise=self._COMPLETE_PROMISE)
+        write_back(fake_sheets_backend, corrected, _transcript())
+
+        exception_row = fake_sheets_backend.tabs["Exceptions"][0]
+        assert "resolved_by_reanalysis" in exception_row["resolved"]
+        assert len(fake_sheets_backend.tabs["PTP_Register"]) == 1
+        assert fake_sheets_backend.tabs["PTP_Register"][0]["status"] == "open"
+
+    def test_a_human_resolved_exception_is_never_overwritten(self, fake_sheets_backend):
+        ensure_all_tabs(fake_sheets_backend)
+        first = _analysis(write_decision=WriteDecision.EXCEPTION_QUEUE)
+        write_back(fake_sheets_backend, first, _transcript())
+        # A human resolves it by hand directly in the sheet before any re-analysis happens.
+        fake_sheets_backend.tabs["Exceptions"][0]["resolved"] = "handled manually — see notes"
+
+        corrected = _analysis(promise=self._COMPLETE_PROMISE)
+        write_back(fake_sheets_backend, corrected, _transcript())
+
+        assert fake_sheets_backend.tabs["Exceptions"][0]["resolved"] == "handled manually — see notes"
+
+    def test_ptp_superseded_when_reanalysis_routes_to_exception_queue(self, fake_sheets_backend):
+        ensure_all_tabs(fake_sheets_backend)
+        write_back(fake_sheets_backend, _analysis(promise=self._COMPLETE_PROMISE), _transcript())
+        assert fake_sheets_backend.tabs["PTP_Register"][0]["status"] == "open"
+
+        corrected = _analysis(write_decision=WriteDecision.EXCEPTION_QUEUE)
+        write_back(fake_sheets_backend, corrected, _transcript())
+
+        assert fake_sheets_backend.tabs["PTP_Register"][0]["status"] == "superseded"
+        assert len(fake_sheets_backend.tabs["Exceptions"]) == 1
+
+    def test_ptp_superseded_when_reanalysis_downgrades_to_soft_commitment(self, fake_sheets_backend):
+        ensure_all_tabs(fake_sheets_backend)
+        write_back(fake_sheets_backend, _analysis(promise=self._COMPLETE_PROMISE), _transcript())
+
+        downgraded = PromiseValidation(
+            has_promise=True, is_complete=False, downgraded_to_soft_commitment=True, confidence=0.9
+        )
+        write_back(fake_sheets_backend, _analysis(promise=downgraded), _transcript())
+
+        assert fake_sheets_backend.tabs["PTP_Register"][0]["status"] == "superseded"
+        assert len(fake_sheets_backend.tabs["Soft_Commitments"]) == 1
+        assert fake_sheets_backend.tabs["Soft_Commitments"][0]["superseded"] == "False"
+
+    def test_dispute_superseded_when_reanalysis_finds_no_dispute(self, fake_sheets_backend):
+        ensure_all_tabs(fake_sheets_backend)
+        write_back(fake_sheets_backend, _analysis(dispute=self._REAL_DISPUTE), _transcript())
+        assert fake_sheets_backend.tabs["Disputes"][0]["status"] == "open"
+
+        no_dispute = DisputeClassification(has_dispute=False, confidence=0.9)
+        write_back(fake_sheets_backend, _analysis(dispute=no_dispute), _transcript())
+
+        assert fake_sheets_backend.tabs["Disputes"][0]["status"] == "superseded"
+
+    def test_rerunning_the_same_decision_does_not_supersede_anything(self, fake_sheets_backend):
+        ensure_all_tabs(fake_sheets_backend)
+        analysis = _analysis(promise=self._COMPLETE_PROMISE, dispute=self._REAL_DISPUTE)
+        write_back(fake_sheets_backend, analysis, _transcript())
+        write_back(fake_sheets_backend, analysis, _transcript())
+
+        assert fake_sheets_backend.tabs["PTP_Register"][0]["status"] == "open"
+        assert fake_sheets_backend.tabs["Disputes"][0]["status"] == "open"
+        assert len(fake_sheets_backend.tabs["PTP_Register"]) == 1
+        assert len(fake_sheets_backend.tabs["Disputes"]) == 1

@@ -671,3 +671,47 @@ positive on garbled digit-by-digit transcription (2026-09-16, "two follow-on bug
 re-running the fix above"). A deterministic check and an LLM rubric can both cry wolf; both
 need their own false-positive testing before being trusted enough to gate a queue, and finding
 out via a real call is exactly what happened here.
+
+## 2026-09-17 — stale rows across re-analysis, fixed with an audit trail, not deletion
+
+Fixing the compliance false positive above and re-running `run-postcall` on the same call
+exposed the gap `writeback.py` had already flagged as a known limitation: the corrected
+analysis (`auto_write`) needed to write a `PTP_Register` row and a `Disputes` row, but the
+*first* analysis's `Exceptions` row (`compliance_violation`, now wrong) was still sitting there
+with nothing marking it superseded. Two rows, same call_id, contradicting each other, with
+nothing in the Sheet distinguishing "this was the answer" from "this used to be the answer."
+
+**Options considered:** (1) a status/timestamp marker on the stale row, or (2) have write-back
+delete rows in tabs the new decision doesn't target. Went with (1). `SheetsBackend` has no
+delete verb at all — building one (Google Sheets' API deletes by row *index*, not by key,
+which is a meaningfully different and riskier operation than the upsert-by-key writes this
+project has done everywhere so far) would be new surface area to get right just to make the
+sheet look clean. An audit trail matters more than a clean sheet in a collections system
+anyway: "this call was flagged, then a re-analysis cleared it" is exactly the kind of thing
+someone reviewing the account later needs to see, not something worth erasing.
+
+**Scope turned out to be bigger than the one tab that surfaced the bug.** The same staleness
+can hit `PTP_Register` (a promise re-analyzed into a soft commitment, or into nothing), a
+brand-new `Soft_Commitments` (a soft commitment re-analyzed into a complete promise), and
+`Disputes` (a dispute that a re-analysis no longer finds) — not just `Exceptions`. Fixed all
+four the same way, reusing scaffolding that mostly already existed and was simply never wired
+up: `PTPStatus.SUPERSEDED` was already a defined enum value nothing ever set;
+`ExceptionEntry.resolved` was already a free-text field a human was expected to fill in by
+hand — an automated `"resolved_by_reanalysis (<timestamp>)"` note fits the same field without a
+new column. Only `Disputes` (`DisputeStatus.SUPERSEDED`, new enum value — `RESOLVED` already
+means something else: a human handled it) and `Soft_Commitments` (`superseded: bool`, a new
+field — it had no status concept at all before this) needed anything new.
+
+**Mechanism** (`postcall/writeback.py`'s `_reconcile_stale_rows`, called at the start of every
+`write_back`): compute what the *current* analysis says should exist in each of the four
+tabs for this `call_id`, and for whichever ones it says should *not* exist, check for a
+previous row (same deterministic id: `PTP-{call_id}`, `SC-{call_id}`, `DSP-{call_id}`, or
+`Exceptions` keyed by `call_id` directly) and mark it superseded/resolved — but only if it
+isn't already marked, so a human's own manual resolution note is never overwritten. Re-running
+the *same* decision twice remains a true no-op, exactly as before.
+
+**Lesson:** a "known limitation" noted in a docstring is still a real bug waiting for the
+re-analysis that triggers it — this one had been sitting there since Step 5, wasn't
+hypothetical, and surfaced the first time a genuine specialist mistake was actually fixed and
+re-run. Documenting a limitation is not the same as it being acceptable to leave open once
+there's a concrete instance of it in front of you.

@@ -15,10 +15,17 @@ of a duplicate row. This is a different, unrelated id space from the live in-cal
 random ids (webhooks/handlers.py) — those are ephemeral, used only for the spoken confirmation
 and fixtures/tool_calls.jsonl, and were never written to Sheets.
 
-Known limitation: SheetsBackend has no delete verb. If a call's classification changes across
-re-runs (e.g. a re-analysis flips promise -> soft commitment), the stale row in the other tab
-isn't cleaned up automatically. Acceptable today since that only happens on manual re-analysis
-— noted here so it isn't mistaken for a bug later.
+Re-analysis reconciliation (2026-09-17, see docs/FAILURES.md): a corrected re-analysis of the
+same call_id can flip write_decision, promise completeness, or dispute presence between runs.
+`SheetsBackend` has no delete verb, so `_reconcile_stale_rows` doesn't try to remove anything —
+it marks whatever a *previous* run wrote that the *current* decision no longer confirms as
+superseded (`PTPStatus.SUPERSEDED`, `SoftCommitment.superseded`, `DisputeStatus.SUPERSEDED`) or
+resolved (`ExceptionEntry.resolved`), same deterministic ids, before the normal write below
+runs. This was a deliberate choice over deleting rows: an audit trail (what did the *first*
+analysis say, and when was it superseded) matters more in a collections system than a visually
+clean sheet, and every one of these tabs is exactly the kind of record a human might need to
+explain later. A stale row that's silently indistinguishable from a current one was the actual
+bug — one is now unmistakable from the other.
 """
 
 from __future__ import annotations
@@ -39,6 +46,7 @@ from collections_agent.models.domain import (
 )
 from collections_agent.postcall.transcript import Transcript
 from collections_agent.sheets.client import SheetsBackend
+from collections_agent.sheets.readers import read_disputes, read_exceptions, read_ptps, read_soft_commitments
 from collections_agent.sheets.writers import (
     write_call_log,
     write_disputes,
@@ -50,6 +58,62 @@ from collections_agent.sheets.writers import (
 POSTCALL_AGENT_VERSION = "postcall-pipeline-v1"
 
 
+def _supersede_stale_ptp(backend: SheetsBackend, call_id: str) -> None:
+    stale = [p for p in read_ptps(backend) if p.call_id == call_id and p.status != PTPStatus.SUPERSEDED]
+    if stale:
+        write_ptps(backend, [p.model_copy(update={"status": PTPStatus.SUPERSEDED}) for p in stale])
+
+
+def _supersede_stale_soft_commitment(backend: SheetsBackend, call_id: str) -> None:
+    stale = [s for s in read_soft_commitments(backend) if s.call_id == call_id and not s.superseded]
+    if stale:
+        write_soft_commitments(backend, [s.model_copy(update={"superseded": True}) for s in stale])
+
+
+def _supersede_stale_dispute(backend: SheetsBackend, call_id: str) -> None:
+    all_disputes = read_disputes(backend)
+    stale = [d for d in all_disputes if d.call_id == call_id and d.status != DisputeStatus.SUPERSEDED]
+    if stale:
+        write_disputes(backend, [d.model_copy(update={"status": DisputeStatus.SUPERSEDED}) for d in stale])
+
+
+def _resolve_stale_exception(backend: SheetsBackend, call_id: str) -> None:
+    stale = [e for e in read_exceptions(backend) if e.call_id == call_id and not e.resolved]
+    if not stale:
+        return
+    resolved_note = f"resolved_by_reanalysis ({datetime.now(UTC).isoformat()})"
+    write_exceptions(backend, [e.model_copy(update={"resolved": resolved_note}) for e in stale])
+
+
+def _reconcile_stale_rows(backend: SheetsBackend, analysis: PostCallAnalysis) -> None:
+    """Marks whatever a previous write_back run for this call_id left behind that the current
+    decision no longer confirms — see module docstring. Never touches a row a human already
+    resolved by hand (a non-empty `resolved`/non-OPEN `status` is left exactly as it is).
+    """
+    promise = analysis.promise
+    wants_ptp = (
+        analysis.write_decision == WriteDecision.AUTO_WRITE
+        and promise.has_promise
+        and not promise.downgraded_to_soft_commitment
+    )
+    wants_soft_commitment = (
+        analysis.write_decision == WriteDecision.AUTO_WRITE
+        and promise.has_promise
+        and promise.downgraded_to_soft_commitment
+    )
+    wants_dispute = analysis.write_decision == WriteDecision.AUTO_WRITE and analysis.dispute.has_dispute
+    wants_exception = analysis.write_decision == WriteDecision.EXCEPTION_QUEUE
+
+    if not wants_ptp:
+        _supersede_stale_ptp(backend, analysis.call_id)
+    if not wants_soft_commitment:
+        _supersede_stale_soft_commitment(backend, analysis.call_id)
+    if not wants_dispute:
+        _supersede_stale_dispute(backend, analysis.call_id)
+    if not wants_exception:
+        _resolve_stale_exception(backend, analysis.call_id)
+
+
 def write_back(backend: SheetsBackend, analysis: PostCallAnalysis, transcript: Transcript) -> None:
     if transcript.started_at is None:
         raise ValueError(
@@ -57,6 +121,8 @@ def write_back(backend: SheetsBackend, analysis: PostCallAnalysis, transcript: T
             f"{analysis.call_id}` to backfill it before writing back (see docs/FAILURES.md: "
             "this codebase rejects missing data rather than fabricating a timestamp)."
         )
+
+    _reconcile_stale_rows(backend, analysis)
 
     call_log_entry = CallLogEntry(
         call_id=analysis.call_id,

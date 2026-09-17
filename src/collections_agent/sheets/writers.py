@@ -81,6 +81,7 @@ TAB_SCHEMAS: dict[str, list[str]] = {
         "captured_at",
         "captured_by",
         "call_id",
+        "superseded",
     ],
     "Disputes": [
         "dispute_id",
