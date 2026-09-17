@@ -451,6 +451,67 @@ def write_back_cmd(call_id: str) -> None:
             typer.echo(f"Wrote Disputes row DSP-{call_id}.")
 
 
+@app.command("followthrough")
+def followthrough_cmd(
+    as_of: str | None = typer.Option(
+        None, "--as-of", help="YYYY-MM-DD override for testing (default: today)."
+    ),
+) -> None:
+    """Step 6: check every still-open promise past its grace period against the Payments tab,
+    resolve it to kept/partial/broken, update account reliability, and roll the day up into a
+    Metrics row (see docs/metrics.md for the exact definitions). Costs nothing to re-run — no
+    OpenAI or Vapi calls — and only ever touches promises still `open`, so a same-day re-run
+    is a true no-op.
+    """
+    from datetime import date as date_cls
+
+    from collections_agent.followthrough.job import run_followthrough
+    from collections_agent.followthrough.payments import SheetPaymentsSource
+    from collections_agent.metrics.rollup import compute_metrics
+    from collections_agent.sheets.client import build_sheets_backend
+    from collections_agent.sheets.readers import read_call_log, read_disputes, read_exceptions, read_ptps
+    from collections_agent.sheets.writers import write_metrics
+
+    settings = get_settings()
+    if not settings.google_sheet_id or not settings.google_service_account_json:
+        typer.echo(
+            "Set GOOGLE_SHEET_ID and GOOGLE_SERVICE_ACCOUNT_JSON in .env first "
+            "(share the sheet with the service account's client_email as Editor).",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+    target_date = date_cls.fromisoformat(as_of) if as_of else date_cls.today()
+
+    backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
+    result = run_followthrough(backend, SheetPaymentsSource(backend), as_of=target_date)
+
+    typer.echo(f"Checked promises as of {target_date.isoformat()}.")
+    if result.resolved:
+        by_status: dict[str, int] = {}
+        for ptp in result.resolved:
+            by_status[ptp.status.value] = by_status.get(ptp.status.value, 0) + 1
+        typer.echo(f"Resolved {len(result.resolved)} promise(s): {by_status}")
+        typer.echo(f"Updated reliability_score for account(s): {', '.join(result.accounts_updated)}")
+    else:
+        typer.echo("No promises were due for resolution.")
+
+    metrics_row = compute_metrics(
+        call_log=read_call_log(backend),
+        ptps=read_ptps(backend),
+        disputes=read_disputes(backend),
+        exceptions=read_exceptions(backend),
+        target_date=target_date,
+    )
+    write_metrics(backend, [metrics_row])
+    typer.echo(
+        f"\nMetrics for {target_date.isoformat()}: "
+        f"kept_rate={metrics_row.promise_to_pay_kept_rate:.2f} "
+        f"kept_rate_by_value={metrics_row.promise_to_pay_kept_rate_by_value:.2f} "
+        f"calls_made={metrics_row.calls_made}"
+    )
+
+
 @app.command("test-webhook")
 def test_webhook(
     host: str = "localhost",

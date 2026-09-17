@@ -58,6 +58,18 @@ class GspreadSheetsBackend:
         existing_headers = ws.row_values(1)
         if not existing_headers:
             ws.append_row(headers, value_input_option="RAW")
+            return
+        # Schema evolution: TAB_SCHEMAS can grow a new column for a tab whose header row
+        # already exists in the live sheet. Without this, upsert_rows below reads the sheet's
+        # (stale) header row and silently drops any field not in it — a new column is computed
+        # correctly in code and then discarded forever with no error (see docs/FAILURES.md).
+        missing = [h for h in headers if h not in existing_headers]
+        if missing:
+            start_col = len(existing_headers) + 1
+            end_col = start_col + len(missing) - 1
+            start_a1 = gspread.utils.rowcol_to_a1(1, start_col)
+            end_a1 = gspread.utils.rowcol_to_a1(1, end_col)
+            ws.update(f"{start_a1}:{end_a1}", [missing])
 
     def read_all(self, tab: str) -> list[dict[str, str]]:
         ws = self._spreadsheet.worksheet(tab)

@@ -18,24 +18,33 @@ class InMemorySheetsBackend:
 
     def ensure_worksheet(self, tab: str, headers: list[str]) -> None:
         self.tabs.setdefault(tab, [])
-        self.headers.setdefault(tab, headers)
+        existing = self.headers.setdefault(tab, list(headers))
+        # Mirror GspreadSheetsBackend: backfill columns missing from an already-known header
+        # row, don't just take the first caller's headers as final. A fake that instead kept
+        # whatever fields were in the row dict, regardless of `headers`, masked a real bug here
+        # (see docs/FAILURES.md) — this tab's schema-evolution behavior must match production.
+        existing.extend(h for h in headers if h not in existing)
 
     def read_all(self, tab: str) -> list[dict[str, str]]:
         return list(self.tabs.get(tab, []))
 
     def upsert_rows(self, tab: str, key_fields: list[str], rows: list[dict[str, str]]) -> None:
+        if not rows:
+            return
         existing = self.tabs.setdefault(tab, [])
+        headers = self.headers.get(tab, list(rows[0].keys()))
 
         def key_of(row: dict) -> tuple:
             return tuple(str(row.get(k, "")) for k in key_fields)
 
         index = {key_of(row): i for i, row in enumerate(existing)}
         for row in rows:
-            k = key_of(row)
+            projected = {h: row.get(h, "") for h in headers}
+            k = key_of(projected)
             if k in index:
-                existing[index[k]] = row
+                existing[index[k]] = projected
             else:
-                existing.append(row)
+                existing.append(projected)
                 index[k] = len(existing) - 1
 
 

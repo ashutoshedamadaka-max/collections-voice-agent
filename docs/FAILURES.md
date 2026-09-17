@@ -210,3 +210,122 @@ bugs, and testing only the detection (as the previous fix's re-run did) won't su
 second one — only exercising the full pipeline end-to-end did. Also: a new deterministic check
 needs its own false-positive testing against real, messy data before being trusted enough to
 gate a queue; "it's not an LLM anymore" is not the same claim as "it's correct."
+
+## 2026-09-17 — a Step 1 bug that took until Step 6 to have data to expose it
+
+**Symptom:** None visible — this was caught by re-reading the code while planning Step 6, not
+by any test failing or any call behaving wrong. `priority.py`'s `_ptp_reliability_penalty`
+computed a broken-promise ratio and used it to *lower* an account's priority score:
+```python
+penalty = 1.0 - weights.ptp_reliability_broken_penalty * broken_ratio
+return max(weights.ptp_reliability_min, min(1.0, penalty))
+```
+More broken promises → a smaller multiplier → a lower final score → called *less* urgently.
+
+**Why nobody noticed:** `priority_score()` has taken `ptp_history` as a parameter since Step 1
+and `tests/test_priority.py::test_broken_promises_lower_priority` explicitly asserted this
+exact (backwards) behavior — so it was tested and passing the whole time. But nothing in the
+codebase ever supplied real `ptp_history` until Step 6: `test-call`'s CLI command has always
+passed `ptp_history=[]` with a comment saying real history "doesn't exist yet," and Step 6 is
+the first thing that ever writes a `PTP.status` of `BROKEN` anywhere. A bug in a formula that
+never receives real input is invisible by construction — the moment Step 6 made `BROKEN`
+statuses real, this would have started actively working against the design doc's stated intent
+("broken promises re-queue at an escalated posture") the first time anyone looked at a queue
+ordered by this score.
+
+**Root cause:** the formula and its config fields (`ptp_reliability_penalty`,
+`ptp_reliability_min`) were named and shaped around treating unreliability as a reason to
+*discount* an account, rather than the design doc's actual framing — a broken promise is
+evidence the debt needs *more* attention, not less. The bug wasn't a typo or a sign flip in
+otherwise-correct logic; the whole mental model encoded in the names was inverted.
+
+**Fix:** renamed and re-derived from scratch rather than patched: `_ptp_reliability_penalty` →
+`_ptp_broken_escalation`, `ptp_reliability_penalty`/`ptp_reliability_min` →
+`ptp_broken_escalation_weight`/`ptp_reliability_max`. The multiplier is now `1.0 +
+weight * broken_ratio`, capped at `ptp_reliability_max` (default 2.0) — always >= 1.0, so a
+clean or promise-free history is never discounted, only a real broken-promise track record
+gets boosted. `test_broken_promises_lower_priority` was renamed to
+`test_broken_promises_escalate_priority` and its assertion inverted, plus a new test locking in
+the cap behavior.
+
+**Lesson:** a formula can be fully tested and still be wrong if the tests only exercise it with
+the same never-real input the production code path also always passed it. "This is tested" and
+"this has ever run against real data" are different claims — the second one is what actually
+validates a formula's *direction*, not just its arithmetic. Worth deliberately auditing any
+other function that has taken a "not wired up yet" parameter since early steps, once later
+steps start actually populating it.
+
+## 2026-09-17 — fixtures coupled to generated data went stale silently
+
+**Symptom:** A postcall fixture built earlier in the project (`FIXTURE-future-promise`)
+referenced invoice IDs `KA-3281` and `WI-7558`. When exercising the write-back path against the
+real Sheet again for Step 6 testing, both IDs turned out not to exist in `Invoices` anymore —
+`validate_promise_facts` couldn't match them to any real outstanding balance, and the fixture's
+promise silently downgraded to a soft commitment instead of exercising the path it was built to
+test.
+
+**Root cause:** the fake India dataset (`Invoices`/`Accounts` in the Sheet) was regenerated at
+some point after this fixture was authored, with a fresh set of invoice IDs. The fixture file
+itself has no dependency on the generator and no way to detect that the IDs it hardcodes have
+drifted out from under it — it just quietly stops matching real data and produces a different
+(wrong) code path than intended, with no error anywhere.
+
+**Fix:** built a fixture *variant* referencing current, real invoice IDs (`INV-00026`,
+`INV-00051`) rather than editing the original — consistent with this project's existing
+"fixture variant, not edit to original" convention, so the original stays available as
+historical evidence of what was tested when.
+
+**Lesson:** any fixture that hardcodes IDs from a separately-generated dataset is fragile by
+construction — it is coupled to that dataset's *current* state, not pinned to a snapshot of it,
+so regenerating the data invalidates the fixture with no warning. This will bite again at Step 7
+(and beyond) every time the fake dataset is regenerated; the durable fix would be either pinning
+fixtures to a versioned data snapshot or having fixtures reference accounts/invoices by a stable
+role ("the account with an open PTP") resolved against whatever data is live, rather than by
+literal ID. Not fixed here — flagged so it isn't rediscovered from scratch next time.
+
+## 2026-09-17 — a new Sheet column, computed correctly, silently discarded on write
+
+**Symptom:** `promise_to_pay_kept_rate_by_value` was added to `MetricsRow` and `TAB_SCHEMAS`
+for Step 6. Unit tests passed (200/200 against the in-memory fake backend). Running
+`followthrough` for real against the live Sheet — to demo the exact divergence this metric
+exists for (a kept ₹46,000 promise and a broken ₹462,000 one) — showed the right numbers in the
+CLI's own echo (`kept_rate=0.50 kept_rate_by_value=0.09`), but reading the `Metrics` tab back
+directly showed only 8 columns. The 9th field was gone — not blank, not miscomputed, just
+absent, with no error anywhere in the run.
+
+**Root cause:** `GspreadSheetsBackend.ensure_worksheet` only ever wrote a tab's header row in
+two cases — the worksheet didn't exist yet, or it existed with an empty first row. It never
+handled the third case: a header row that already exists but is missing a column a newer
+`TAB_SCHEMAS` entry added. `upsert_rows` then builds each row strictly from `ws.row_values(1)`
+— the sheet's *actual* header row, not the code's schema — so `str(row.get(h, ""))` iterates
+only over the old 8 headers and the 9th field is dropped before a single API call is made.
+Compounding it: `ensure_worksheet` (and thus this whole path) is only ever invoked from
+`seed-sheet`, a one-time setup command — no write command re-validates a tab's headers, so a
+schema change to an *existing* tab had no path to ever reach a live sheet that predated it.
+
+**Why the test suite didn't catch it:** `InMemorySheetsBackend.upsert_rows` (the fake backend
+`tests/conftest.py` gives every unit test) stored whatever fields were in the row dict handed
+to it — it never projected rows through a stored header list the way the real backend does
+through `ws.row_values(1)`. The fake and the real backend diverged on exactly the behavior that
+broke, so 200 passing tests against the fake proved nothing about this path.
+
+**Fix:**
+1. `ensure_worksheet` now diffs the live header row against the requested headers and appends
+   any missing column names to the end of row 1 (`sheets/client.py`) — real schema evolution,
+   not just first-time creation.
+2. `upsert_models` (`sheets/writers.py`) now calls `backend.ensure_worksheet(tab, headers)`
+   itself before every write, not just once via `seed-sheet` — every write path self-heals its
+   own tab's headers instead of depending on someone remembering to re-run setup after a schema
+   change.
+3. `InMemorySheetsBackend` (`tests/conftest.py`) rewritten to actually mirror this: it now
+   backfills missing headers the same way, and `upsert_rows` projects every row through the
+   tab's stored header list before storing it — so the fake can no longer accept a field the
+   real backend would silently drop. New tests (`tests/test_sheets_writers.py`) simulate a
+   stale pre-existing header row and assert the missing column gets backfilled and populated.
+
+**Lesson:** a fake backend that is *more permissive* than the real one is worse than no fake at
+all for the behavior where they differ — it makes every test pass while proving nothing about
+that behavior. The tell here was the same one from the 2026-09-16 arithmetic bugs: "the tests
+pass" and "this ran correctly against the real system" are different claims, and the second one
+only got checked because this session's plan required actually reading the live Sheet back, not
+just trusting the CLI's own echo of numbers it computed in memory.

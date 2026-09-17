@@ -1,5 +1,5 @@
 # Priority score weights — transparent and tunable, not a black box.
-# priority = balance_weight * bucket_weight * ptp_reliability_penalty * contactability
+# priority = balance_weight * bucket_weight * ptp_broken_escalation * contactability
 # See src/collections_agent/precall/priority.py for how these are applied.
 
 bucket_weight:
@@ -12,8 +12,12 @@ bucket_weight:
 balance_weight_cap: 3.0
 balance_weight_denominator: 10000.0
 
-ptp_reliability_min: 0.5
-ptp_reliability_broken_penalty: 0.5
+# A broken promise escalates priority (multiplier >= 1.0), it doesn't discount it — see
+# docs/FAILURES.md. weight=1.0 means an account with a 100% broken-promise history gets 2x
+# priority; ptp_reliability_max caps the multiplier so one very bad account can't dominate the
+# whole queue.
+ptp_broken_escalation_weight: 1.0
+ptp_reliability_max: 2.0
 
 contactability_wrong_person: 0.7
 contactability_default: 1.0

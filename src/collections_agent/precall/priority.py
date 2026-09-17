@@ -1,6 +1,6 @@
 """Priority scoring — transparent and tunable, not a black box.
 
-priority = balance_weight x bucket_weight x ptp_reliability_penalty x contactability
+priority = balance_weight x bucket_weight x ptp_broken_escalation x contactability
 
 Every factor is a simple, inspectable function of plain data; weights live in
 config/priority_weights.yaml (see rules_config.py) rather than being hard-coded here.
@@ -35,13 +35,18 @@ def _balance_weight(invoices: list[Invoice], weights: PriorityWeights) -> float:
     return min(total_outstanding / weights.balance_weight_denominator, weights.balance_weight_cap)
 
 
-def _ptp_reliability_penalty(ptp_history: list[PTP], weights: PriorityWeights) -> float:
+def _ptp_broken_escalation(ptp_history: list[PTP], weights: PriorityWeights) -> float:
+    """A broken promise is evidence this account's commitments don't convert — that's grounds
+    to call it *sooner*, not skip it. Returns a multiplier >= 1.0, scaling up with the
+    account's broken-promise ratio and capped at `ptp_reliability_max`. Never < 1.0: a clean
+    or promise-free history never gets a discount here, only accounts with a real broken-
+    promise track record get boosted. See docs/FAILURES.md — this used to run backwards."""
     resolved = [p for p in ptp_history if p.status in (PTPStatus.KEPT, PTPStatus.BROKEN, PTPStatus.PARTIAL)]
     if not resolved:
         return 1.0
     broken_ratio = sum(1 for p in resolved if p.status == PTPStatus.BROKEN) / len(resolved)
-    penalty = 1.0 - weights.ptp_reliability_broken_penalty * broken_ratio
-    return max(weights.ptp_reliability_min, min(1.0, penalty))
+    escalation = 1.0 + weights.ptp_broken_escalation_weight * broken_ratio
+    return min(escalation, weights.ptp_reliability_max)
 
 
 def _contactability(account_id: str, call_log: list[CallLogEntry], weights: PriorityWeights) -> float:
@@ -76,7 +81,7 @@ def priority_score(
 
     balance = _balance_weight(account_invoices, weights)
     bucket_w = weights.bucket_weight[bucket]
-    reliability = _ptp_reliability_penalty(account_ptps, weights)
+    escalation = _ptp_broken_escalation(account_ptps, weights)
     contactability = _contactability(account.account_id, call_log, weights)
 
-    return round(balance * bucket_w * reliability * contactability, 4)
+    return round(balance * bucket_w * escalation * contactability, 4)

@@ -14,6 +14,8 @@ from collections_agent.models.domain import (
     Dispute,
     ExceptionEntry,
     Invoice,
+    MetricsRow,
+    Payment,
     SoftCommitment,
 )
 from collections_agent.sheets.client import SheetsBackend
@@ -111,6 +113,7 @@ TAB_SCHEMAS: dict[str, list[str]] = {
         "contact_rate",
         "structured_outcome_rate",
         "promise_to_pay_kept_rate",
+        "promise_to_pay_kept_rate_by_value",
         "disputes_surfaced",
         "human_review_rate",
     ],
@@ -132,6 +135,7 @@ _KEY_FIELDS: dict[str, list[str]] = {
     "Disputes": ["dispute_id"],
     "Exceptions": ["call_id"],
     "Payments": ["invoice_id", "paid_date"],
+    "Metrics": ["date"],
 }
 
 
@@ -153,6 +157,11 @@ def ensure_all_tabs(backend: SheetsBackend) -> None:
 
 def upsert_models(backend: SheetsBackend, tab: str, models: list[BaseModel]) -> None:
     headers = TAB_SCHEMAS[tab]
+    # Self-healing, not just a one-time setup step: a tab created before a schema change won't
+    # have a newly-added column in its live header row, and upsert_rows below writes only the
+    # columns the sheet's header row already has — this keeps every write path safe even if
+    # `seed-sheet` (which also calls this) was never re-run after the schema changed.
+    backend.ensure_worksheet(tab, headers)
     key_fields = _KEY_FIELDS[tab]
     rows = [_row_from_model(m, headers) for m in models]
     backend.upsert_rows(tab, key_fields, rows)
@@ -184,3 +193,11 @@ def write_call_log(backend: SheetsBackend, entries: list[CallLogEntry]) -> None:
 
 def write_exceptions(backend: SheetsBackend, exceptions: list[ExceptionEntry]) -> None:
     upsert_models(backend, "Exceptions", exceptions)
+
+
+def write_payments(backend: SheetsBackend, payments: list[Payment]) -> None:
+    upsert_models(backend, "Payments", payments)
+
+
+def write_metrics(backend: SheetsBackend, rows: list[MetricsRow]) -> None:
+    upsert_models(backend, "Metrics", rows)

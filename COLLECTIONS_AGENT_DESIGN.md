@@ -108,8 +108,10 @@ a good one — it's the relationship-damage the system prevented.
 
 **Priority score** (transparent and tunable, not a black box):
 ```
-priority = balance_weight × bucket_weight × ptp_reliability_penalty × contactability
+priority = balance_weight × bucket_weight × ptp_broken_escalation × contactability
 ```
+(Named `ptp_reliability_penalty` in an earlier draft — a broken promise escalates priority,
+it doesn't discount it; see docs/FAILURES.md for the bug that caught this.)
 
 **Context pack** handed to the voice agent: contact name and role, invoice list with numbers,
 dates and amounts, total outstanding, prior promises and whether they were kept, open disputes,

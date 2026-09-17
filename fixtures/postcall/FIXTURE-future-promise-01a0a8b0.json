@@ -1,0 +1,51 @@
+{
+  "call_id": "FIXTURE-future-promise-01a0a8b0",
+  "account_id": "ACC-0001",
+  "outcome": {
+    "outcome": "promise_to_pay",
+    "reason_code": null,
+    "next_action": "Record the promise to pay details in the system.",
+    "confidence": 0.95
+  },
+  "promise": {
+    "has_promise": true,
+    "is_complete": true,
+    "is_future_dated": true,
+    "amount_within_outstanding": true,
+    "method_valid": true,
+    "downgraded_to_soft_commitment": false,
+    "amount": 365500.0,
+    "promised_date": "2026-10-15",
+    "method": "NEFT",
+    "invoice_ids": [
+      "INV-00026",
+      "INV-00051"
+    ],
+    "confidence": 0.95,
+    "notes": "Extracted promise includes specific amount, date, and payment method. [fixture variant: date/invoice_ids adjusted to not be downgraded]"
+  },
+  "dispute": {
+    "has_dispute": false,
+    "invoice_id": null,
+    "reason_code": null,
+    "detail": "",
+    "evidence_requested": null,
+    "routing_target": null,
+    "confidence": 0.9
+  },
+  "compliance": {
+    "disclosed_automated": true,
+    "verified_authority": true,
+    "stayed_within_permitted_facts": true,
+    "promised_discount_or_waiver": false,
+    "threatened_consequences": false,
+    "misstated_total": false,
+    "qa_score": 1.0,
+    "notes": "The agent properly disclosed that it was an automated call and that the call may be recorded. They verified the authority of the person handling accounts payable before discussing invoice amounts. The agent stayed within the facts provided, did not offer any discounts or waivers, and did not threaten any consequences. Overall, the call was compliant and professional.",
+    "confidence": 1.0
+  },
+  "overall_confidence": 0.95,
+  "write_decision": "auto_write",
+  "supervisor_notes": "",
+  "exception_reason": ""
+}

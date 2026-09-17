@@ -176,6 +176,18 @@ class CallLogEntry(BaseModel):
     qa_score: float | None = None
 
 
+class Payment(BaseModel):
+    """Backs the `Payments` tab — the ledger the Step 6 follow-through job checks PTPs
+    against. There is no real payment-gateway integration; a human enters what actually got
+    paid here. See followthrough/payments.py for why this stays swappable."""
+
+    invoice_id: str
+    amount_paid: float
+    paid_date: date
+    method: PaymentMethod
+    reference: str | None = None
+
+
 class SuppressionResult(BaseModel):
     suppressed: bool
     reasons: list[str] = Field(default_factory=list)
@@ -185,8 +197,13 @@ class PriorityWeights(BaseModel):
     bucket_weight: dict[AgingBucket, float]
     balance_weight_cap: float = 3.0
     balance_weight_denominator: float = 10_000.0
-    ptp_reliability_min: float = 0.5
-    ptp_reliability_broken_penalty: float = 0.5
+    # A broken promise means the account's commitments don't convert and the debt keeps
+    # aging — that's grounds for MORE urgent follow-up, not less. An earlier version of this
+    # multiplier was a *penalty* (broken promises lowered priority); see docs/FAILURES.md for
+    # why that was backwards and caught only once Step 6 gave broken promises a real source of
+    # data to compute from.
+    ptp_broken_escalation_weight: float = 1.0
+    ptp_reliability_max: float = 2.0
     contactability_wrong_person: float = 0.7
     contactability_default: float = 1.0
 
@@ -326,6 +343,25 @@ class ExceptionEntry(BaseModel):
     supervisor_notes: str
     created_at: datetime
     resolved: str = ""
+
+
+class MetricsRow(BaseModel):
+    """Backs the `Metrics` tab — one daily rollup snapshot. `promise_to_pay_kept_rate` is the
+    project's headline number, computed cumulative (not a daily cohort or trailing window —
+    see docs/metrics.md for why) over promises that have actually come due and been checked.
+    `promise_to_pay_kept_rate_by_value` is the same idea weighted by rupees promised rather
+    than promise count, so a small kept promise and a large broken one don't average to a
+    misleadingly healthy 50% (see docs/metrics.md)."""
+
+    date: date
+    calls_made: int
+    calls_suppressed: int
+    contact_rate: float
+    structured_outcome_rate: float
+    promise_to_pay_kept_rate: float
+    promise_to_pay_kept_rate_by_value: float
+    disputes_surfaced: int
+    human_review_rate: float
 
 
 class ContextPack(BaseModel):

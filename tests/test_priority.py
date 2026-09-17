@@ -53,7 +53,10 @@ def test_balance_weight_is_capped(base_account, make_invoice, as_of):
     assert score_huge == score_massive  # both past the cap
 
 
-def test_broken_promises_lower_priority(base_account, make_invoice, as_of, now):
+def test_broken_promises_escalate_priority(base_account, make_invoice, as_of, now):
+    """A broken promise means this account's commitments don't convert and the debt keeps
+    aging — that's grounds for MORE urgent follow-up, not less. This test used to assert the
+    opposite (score_with_broken < score_with_kept) — see docs/FAILURES.md."""
     weights = _weights()
     inv = make_invoice(base_account.account_id, days_overdue=10)
 
@@ -84,10 +87,46 @@ def test_broken_promises_lower_priority(base_account, make_invoice, as_of, now):
         call_id="C2",
     )
 
+    score_clean = priority_score(base_account, [inv], [], [], weights, as_of=as_of)
     score_with_kept = priority_score(base_account, [inv], [kept_ptp], [], weights, as_of=as_of)
     score_with_broken = priority_score(base_account, [inv], [broken_ptp], [], weights, as_of=as_of)
 
-    assert score_with_broken < score_with_kept
+    assert score_with_broken > score_with_kept
+    assert score_with_kept == score_clean  # a fully-kept history never gets a discount
+    assert score_with_broken > score_clean
+
+
+def test_broken_escalation_is_capped(base_account, make_invoice, as_of, now):
+    base_weights = _weights()
+    # A deliberately large weight so a 100% broken-promise history would uncapped-multiply
+    # priority by 5x — big enough to guarantee it exceeds ptp_reliability_max regardless of
+    # the config file's current default, so this test can't accidentally stop exercising the
+    # cap if that default ever changes.
+    weights = base_weights.model_copy(update={"ptp_broken_escalation_weight": 4.0})
+    inv = make_invoice(base_account.account_id, days_overdue=10)
+    all_broken = [
+        PTP(
+            ptp_id=f"PTP-{i}",
+            account_id=base_account.account_id,
+            invoice_ids=[inv.invoice_id],
+            amount_promised=50_000,
+            promised_date=as_of,
+            payment_method=PaymentMethod.NEFT,
+            captured_at=now,
+            captured_by="v1",
+            confidence=0.9,
+            status=PTPStatus.BROKEN,
+            call_id=f"C{i}",
+        )
+        for i in range(5)
+    ]
+
+    score = priority_score(base_account, [inv], all_broken, [], weights, as_of=as_of)
+    clean_score = priority_score(base_account, [inv], [], [], weights, as_of=as_of)
+    uncapped_score = clean_score * (1.0 + weights.ptp_broken_escalation_weight)  # 5x, if uncapped
+
+    assert score < uncapped_score
+    assert score == round(clean_score * weights.ptp_reliability_max, 4)
 
 
 def test_wrong_person_lowers_contactability(base_account, make_invoice, as_of, now):
