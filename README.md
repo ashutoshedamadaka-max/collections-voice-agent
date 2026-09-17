@@ -19,6 +19,22 @@ talking. **Headline metric:** promise-to-pay kept rate.
 
 See `docs/guardrails_and_escalation.md` for the full guardrail policy once written.
 
+## Language support — English validated, Hindi/Hinglish demonstrated but untested
+
+`account.preferred_language` (`en` / `hi` / `hinglish`) drives the voice provider's language,
+the transcriber's language, and a prompt instruction — set once per account before the call
+starts, never asked of the caller mid-call (asking wastes the opening seconds and reads as an
+IVR menu). Hinglish uses English voice/transcriber settings with a prompt instruction to
+code-switch naturally, since no provider used here has a dedicated Hinglish code.
+
+That wiring only covers the call itself. The four post-call specialists, the reason-code
+taxonomy, and the regex-based arithmetic-consistency extraction were all built and tested
+against English transcripts only — a Hindi call produces a Hindi transcript, and that path has
+never been run. **English is the default for evaluation and the demo; Hindi/Hinglish is a
+demonstrated capability on the voice layer, not a validated pipeline end to end.** See
+`docs/FAILURES.md` for the full caveat. Backlog, not built: detecting the customer's actual
+spoken language mid-call and writing it back to the account so the next call opens correctly.
+
 ## Stack
 
 Python 3.11, managed with `uv`. Google Sheets as the CRM (single source of truth, no local
@@ -51,10 +67,13 @@ uv run collections-agent test-call         # Step 2: render + optionally dial a 
 uv run collections-agent pull-transcripts  # Step 3: fetch a call, save raw + fixed parse
 uv run collections-agent run-postcall      # Step 4: 4 specialists + supervisor against a pulled transcript
 uv run collections-agent write-back        # Step 5: write a post-call analysis back to the Sheet
+uv run collections-agent followthrough     # Step 6: resolve due promises against Payments, roll up Metrics
 ```
 
-More commands (`build-queue`, `followthrough`, `eval`, `metrics`) land as later build steps
-are implemented — see the execution plan for the full Step 0–7 sequence.
+More commands (`build-queue`, `eval`) land as later build steps are implemented — see the
+execution plan for the full Step 0–7 sequence. `docs/metrics.md` has the exact definition of
+every Metrics tab column, including why the promise-to-pay kept rate is reported both as a
+count and rupee-weighted.
 
 ## Tests
 

@@ -23,6 +23,7 @@ from datetime import date
 from typing import Any
 
 from collections_agent.models.domain import ContextPack
+from collections_agent.voice.language import provider_language
 from collections_agent.voice.prompt_template import render_system_prompt
 from collections_agent.voice.tool_schemas import ALL_TOOLS
 
@@ -118,10 +119,18 @@ def build_call_overrides(
     server-local default.
     """
     system_prompt = render_system_prompt(context_pack, company_name, current_date)
+    # Language is a pre-call property of the account (context_pack.preferred_language), not
+    # something negotiated during the call — see voice/language.py and docs/FAILURES.md.
+    # `version: "latest"` opts into Vapi Voices' current TTS generation (verified against the
+    # live OpenAPI spec: the `vapi` voice provider's `version` field accepts the literal string
+    # "latest", not just an integer); language drives both the voice and the transcriber.
+    lang = provider_language(context_pack.preferred_language)
     return {
         "model": _build_model_block(
             ALL_TOOLS,
             openai_credential_id,
             system_messages=[{"role": "system", "content": system_prompt}],
         ),
+        "voice": {**VOICE_CONFIG, "version": "latest", "language": lang},
+        "transcriber": {**TRANSCRIBER_CONFIG, "language": lang},
     }

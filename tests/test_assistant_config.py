@@ -71,3 +71,56 @@ def test_call_overrides_embed_the_given_current_date(sample_context_pack):
     overrides = build_call_overrides(sample_context_pack, "Acme Supplies", current_date=date(2026, 9, 16))
     system_message = overrides["model"]["messages"][0]["content"]
     assert "Today's date is 2026-09-16" in system_message
+
+
+def test_call_overrides_default_to_english_voice_and_transcriber(sample_context_pack):
+    """sample_context_pack's account has preferred_language="en"."""
+    overrides = build_call_overrides(sample_context_pack, "Acme Supplies")
+    assert overrides["voice"] == {
+        "provider": "vapi",
+        "voiceId": "Naina",
+        "version": "latest",
+        "language": "en",
+    }
+    assert overrides["transcriber"] == {"provider": "soniox", "model": "stt-rt-v5", "language": "en"}
+
+
+def test_call_overrides_use_hindi_voice_and_transcriber_for_hindi_account(
+    base_account, make_invoice, as_of
+):
+    from collections_agent.precall.context_pack import build_context_pack
+
+    hindi_account = base_account.model_copy(update={"preferred_language": "hi"})
+    pack = build_context_pack(
+        hindi_account, [make_invoice(hindi_account.account_id, days_overdue=10)], [], [], [], as_of=as_of
+    )
+
+    overrides = build_call_overrides(pack, "Acme Supplies")
+
+    assert overrides["voice"]["language"] == "hi"
+    assert overrides["transcriber"]["language"] == "hi"
+
+
+def test_call_overrides_use_english_voice_and_transcriber_for_hinglish_account(
+    base_account, make_invoice, as_of
+):
+    """Hinglish gets English voice/transcriber settings — code-switching is a prompt
+    instruction, not an audio-provider setting (neither provider has a Hinglish code)."""
+    from collections_agent.precall.context_pack import build_context_pack
+
+    hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
+    pack = build_context_pack(
+        hinglish_account,
+        [make_invoice(hinglish_account.account_id, days_overdue=10)],
+        [],
+        [],
+        [],
+        as_of=as_of,
+    )
+
+    overrides = build_call_overrides(pack, "Acme Supplies")
+
+    assert overrides["voice"]["language"] == "en"
+    assert overrides["transcriber"]["language"] == "en"
+    system_message = overrides["model"]["messages"][0]["content"]
+    assert "code-switch" in system_message.lower()

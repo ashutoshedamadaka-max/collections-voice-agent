@@ -15,6 +15,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from collections_agent.models.domain import ContextPack
+from collections_agent.voice.language import prompt_instruction
 
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
 
@@ -70,6 +71,7 @@ def render_system_prompt(
         terms=context_pack.payment_terms,
         ptp_history=_format_ptp_history(context_pack),
         open_disputes=_format_open_disputes(context_pack),
+        language_instruction=prompt_instruction(context_pack.preferred_language),
     )
 
 

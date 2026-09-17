@@ -67,3 +67,40 @@ def test_prompt_instructs_bare_day_resolves_forward_never_past(sample_context_pa
 def test_current_date_defaults_to_today_when_not_given(sample_context_pack):
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     assert f"Today's date is {date.today().isoformat()}" in prompt
+
+
+def test_english_account_gets_english_instruction(sample_context_pack):
+    """sample_context_pack's account has preferred_language="en"."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "Respond in English" in prompt
+
+
+def test_hindi_account_gets_hindi_instruction(base_account, make_invoice, as_of):
+    from collections_agent.precall.context_pack import build_context_pack
+
+    hindi_account = base_account.model_copy(update={"preferred_language": "hi"})
+    pack = build_context_pack(
+        hindi_account, [make_invoice(hindi_account.account_id, days_overdue=10)], [], [], [], as_of=as_of
+    )
+
+    prompt = render_system_prompt(pack, "Acme Supplies")
+
+    assert "Respond in Hindi" in prompt
+
+
+def test_hinglish_account_gets_code_switching_instruction(base_account, make_invoice, as_of):
+    from collections_agent.precall.context_pack import build_context_pack
+
+    hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
+    pack = build_context_pack(
+        hinglish_account,
+        [make_invoice(hinglish_account.account_id, days_overdue=10)],
+        [],
+        [],
+        [],
+        as_of=as_of,
+    )
+
+    prompt = render_system_prompt(pack, "Acme Supplies")
+
+    assert "code-switch" in prompt.lower()

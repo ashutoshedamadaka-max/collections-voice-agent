@@ -329,3 +329,33 @@ that behavior. The tell here was the same one from the 2026-09-16 arithmetic bug
 pass" and "this ran correctly against the real system" are different claims, and the second one
 only got checked because this session's plan required actually reading the live Sheet back, not
 just trusting the CLI's own echo of numbers it computed in memory.
+
+## 2026-09-17 — language support wired in, but only the call itself is validated
+
+**What changed:** `account.preferred_language` (already generated into the fake dataset as
+`en`/`hi`/`hinglish`, but never read anywhere) now flows from the `ContextPack` into the Vapi
+voice config (`version: "latest"` + `language`), the Soniox transcriber's `language`, and a
+`# LANGUAGE` instruction in the system prompt (`voice/language.py`, wired into
+`assistant_config.build_call_overrides` and `prompt_template.render_system_prompt`). Hinglish
+gets English voice/transcriber settings — neither provider has a dedicated Hinglish code — with
+a prompt instruction to code-switch naturally instead. Unset or unrecognized values default to
+English. Deliberately **not** built: an in-call language question. Asking wastes the opening
+seconds and reads as an IVR menu; language is a pre-call property of the account, decided
+before the call starts, not something negotiated during it.
+
+**What this does not validate:** every downstream piece of this pipeline — the four post-call
+specialists (`postcall/specialists/*.py`), the reason-code taxonomy, the arithmetic-consistency
+extraction (`check_arithmetic_consistency`, regex-based over the transcript's own phrasing) —
+was built and tested exclusively against English transcripts. A Hindi call produces a Hindi
+transcript, and nothing in that path has ever been run against one: the dispute/promise/
+compliance prompts, the regex patterns, and the reason-code strings are all English-shaped.
+Wiring the voice/transcriber/prompt language is necessary but not sufficient for a validated
+Hindi pipeline — it is a demonstrated capability on one test call, not a tested pipeline.
+**English stays the default for evaluation and the demo.** Any real Hindi (or Hinglish) call
+should be treated as exploratory until the postcall path is deliberately tested against a real
+Hindi transcript.
+
+**Backlog, deliberately not built:** detecting the customer's actual spoken language mid-call
+and writing it back to `Account.preferred_language` so the next call opens in the right
+language. Nothing here does that; every call still opens in whatever language was set the last
+time a human (or the fake data generator) set it.
