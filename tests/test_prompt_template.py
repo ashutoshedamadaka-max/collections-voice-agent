@@ -123,7 +123,9 @@ def test_hindi_account_gets_hindi_instruction(base_account, make_invoice, as_of)
     assert "Respond in Hindi" in prompt
 
 
-def test_hinglish_account_gets_code_switching_instruction(base_account, make_invoice, as_of):
+def test_hinglish_account_gets_latin_script_instruction(base_account, make_invoice, as_of):
+    """Regression guard for the 2026-09-17 finding: the original instruction didn't specify a
+    script, and the model defaulted to formal Devanagari Hindi instead of Hinglish."""
     from collections_agent.precall.context_pack import build_context_pack
 
     hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
@@ -138,4 +140,14 @@ def test_hinglish_account_gets_code_switching_instruction(base_account, make_inv
 
     prompt = render_system_prompt(pack, "Acme Supplies")
 
-    assert "code-switch" in prompt.lower()
+    assert "Latin" in prompt
+    assert "Devanagari" in prompt
+
+
+def test_never_reask_rule_and_cannot_pay_now_branch_reference_it(sample_context_pack):
+    """Regression guard for the 2026-09-17 finding: the customer volunteered a reason
+    ("payment is under approval") before the agent ever asked for one, and the agent asked
+    for the reason anyway. The branch must not ask again for something already given."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "Never ask again" in prompt
+    assert "If they haven't already told you why" in prompt

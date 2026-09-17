@@ -23,7 +23,7 @@ from datetime import date
 from typing import Any
 
 from collections_agent.models.domain import ContextPack
-from collections_agent.voice.language import provider_language
+from collections_agent.voice.language import transcriber_language, voice_language
 from collections_agent.voice.prompt_template import render_system_prompt
 from collections_agent.voice.tool_schemas import ALL_TOOLS
 
@@ -49,6 +49,28 @@ VOICE_CONFIG = {"provider": "vapi", "voiceId": "Naina"}
 # paying for: nova-2 misheard invoice numbers ("KA-3281" -> "Quinus 3281") and dropped a full
 # customer utterance in testing (see docs/FAILURES.md).
 TRANSCRIBER_CONFIG = {"provider": "soniox", "model": "stt-rt-v5", "language": "en"}
+
+# Fixes a real barge-in stutter loop found on a Hinglish test call (2026-09-17, see
+# docs/FAILURES.md): with numWords at Vapi's default (0), any ~0.2s of detected customer voice
+# activity interrupts the assistant regardless of what was said, and Vapi's built-in
+# acknowledgementPhrases safety net (which stops short backchannel words from interrupting) is
+# English-only — "haan", "theek hai", "mil gaya" aren't in it. The assistant was cut off
+# mid-sentence twice in the same call by exactly this. numWords>0 makes the word-count
+# threshold (and the phrase lists below) actually apply instead of raw voice-activity timing.
+STOP_SPEAKING_PLAN = {
+    "numWords": 3,
+    "voiceSeconds": 0.3,
+    "backoffSeconds": 1,
+    "acknowledgementPhrases": [
+        # Vapi's English defaults — kept so English calls are unaffected.
+        "i understand", "i see", "i got it", "i hear you", "im listening", "im with you",
+        "right", "okay", "ok", "sure", "alright", "got it", "understood", "yeah", "yes",
+        "uh-huh", "mm-hmm", "gotcha", "mhmm", "ah", "yeah okay", "yeah sure",
+        # Hindi/Hinglish backchannels — the observed cause of the stutter loop.
+        "haan", "haan ji", "ji", "ji haan", "haanji", "theek hai", "thik hai", "achha",
+        "acha", "samajh gaya", "samajh gayi", "mil gaya", "mil gayi",
+    ],
+}
 
 
 def opening_disclosure(company_name: str) -> str:
@@ -93,6 +115,7 @@ def build_assistant_payload(
         "model": _build_model_block(ALL_TOOLS, openai_credential_id),
         "voice": VOICE_CONFIG,
         "transcriber": TRANSCRIBER_CONFIG,
+        "stopSpeakingPlan": STOP_SPEAKING_PLAN,
         # `serverUrl` (bare string) doesn't exist on the current Assistant/CreateAssistantDTO
         # schema — verified against Vapi's live OpenAPI spec, not docs prose, since serverUrl
         # was silently accepted-but-inert on an existing assistant (see docs/FAILURES.md).
@@ -123,14 +146,21 @@ def build_call_overrides(
     # something negotiated during the call — see voice/language.py and docs/FAILURES.md.
     # `version: "latest"` opts into Vapi Voices' current TTS generation (verified against the
     # live OpenAPI spec: the `vapi` voice provider's `version` field accepts the literal string
-    # "latest", not just an integer); language drives both the voice and the transcriber.
-    lang = provider_language(context_pack.preferred_language)
+    # "latest", not just an integer). Voice and transcriber language diverge for hinglish — see
+    # voice/language.py's module docstring for why.
     return {
         "model": _build_model_block(
             ALL_TOOLS,
             openai_credential_id,
             system_messages=[{"role": "system", "content": system_prompt}],
         ),
-        "voice": {**VOICE_CONFIG, "version": "latest", "language": lang},
-        "transcriber": {**TRANSCRIBER_CONFIG, "language": lang},
+        "voice": {
+            **VOICE_CONFIG,
+            "version": "latest",
+            "language": voice_language(context_pack.preferred_language),
+        },
+        "transcriber": {
+            **TRANSCRIBER_CONFIG,
+            "language": transcriber_language(context_pack.preferred_language),
+        },
     }

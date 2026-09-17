@@ -496,3 +496,77 @@ would do if honored, not a guarantee that Vapi's backend still honors it — `de
 on the *configuration* path is real signal even when the *output* field it feeds
 (`Analysis.summary`) isn't itself marked deprecated. Checking real payloads (zero cost spent on
 every single call) settled it faster than reasoning from the spec's prose alone would have.
+
+## 2026-09-17 — the first real Hinglish call: five findings, one call
+
+The first live Hinglish test call (`01a0afd5-44e2-7000-859b-01f47f6dc3af`) ran the language
+wiring from the same day for the first time against real audio. `endedReason` was
+`exceeded-max-duration` (186s against a 180s cap) — not a crash — but the transcript surfaced
+five distinct, real problems before that. All five are logged here with evidence from the raw
+payload (`fixtures/raw/01a0afd5-...json`), not just from listening back.
+
+**1. Hinglish was implemented wrong — the bot spoke formal Devanagari Hindi, not Hinglish.**
+`language.py`'s hinglish prompt instruction never specified a script, only "code-switch
+naturally." The model defaulted to full Devanagari, formal register: `"क्या आप बता सकते हैं कि
+भुगतान का तरीका क्या होगा?"` — grammatically correct Hindi, but not what a bilingual Indian
+speaker actually texts or says, and not what "Hinglish" means (Hindi content in Latin/Roman
+script, English loanwords for numbers and business terms, informal register). This also broke
+the number/invoice fix from earlier the same day: the `(say "...")` spoken forms
+(`voice/speakable.py`) are English words, generated on the assumption they'd sit inside a
+Latin-script sentence — embedded in a Devanagari sentence they don't fit grammatically, and the
+model didn't use them at all, saying `"₹2,04,000"` and a fragmented `"S। L/26-27/। 0। 0। 03"`
+instead. **Fix:** rewrote the hinglish instruction to explicitly require Latin script, English
+for all numbers/amounts/invoice IDs/business terms, and an informal register, with a concrete
+example (`voice/language.py`).
+
+**2. Transcriber language was wrong for Hinglish.** Set to `"en"` (matching the voice), it was
+given genuinely code-switched Hindi/English audio and rendered the customer's side of the call
+entirely in **Urdu script** — e.g. `"ہاں، میں دیکھتا ہوں۔ اکاؤنٹس۔"` for what was almost
+certainly spoken Hindi/Hinglish ("haan, main dekhta hoon, accounts"). Hindi and Urdu are the
+same spoken language (Hindustani) with different scripts; a transcriber mismatched on language
+can plausibly guess the wrong one instead of failing loudly. **Fix:** `transcriber_language()`
+now maps hinglish to `"hi"`, diverging from `voice_language()` (still `"en"`) for the first
+time — the two were the same function before this (`provider_language`), which silently assumed
+voice and transcriber should always agree. Not yet re-validated against a real call.
+
+**3. The 180-second cap ran out with two invoices still in play — open, pending a product
+decision, not yet changed.** The call fully resolved invoice 1 (amount, date, method, recorded
+via `record_ptp`) and was mid-negotiation on invoice 2 (had a vague date, no method) when the
+cap hit. Two options on the table: raise `MAX_CALL_DURATION_SECONDS` (e.g. to 240s), or have
+the agent commit to resolving one invoice well and explicitly schedule a callback for the rest
+rather than racing the clock across all of them. See the CLI/chat response for the recommendation
+and reasoning; not implemented until confirmed.
+
+**4. A genuine barge-in stutter loop, confirmed from raw message timing, not guessed.** The bot
+said `"ठीक है, मैं।"` ("Okay, I—"), cut off after 1.14s, then said the *identical* fragment
+again 1.5s later, also cut short (0.66s). Cross-referencing `secondsFromStart`/`duration` on
+every message: the customer's utterance at message 8 (`"ہاں، مل گیا۔"`) started at 53.22s —
+*inside* the bot's message 7 window (52.352s–53.49s). Same pattern for the second cutoff. This
+is real interruption/barge-in, not a text-generation glitch. Checked Vapi's `StopSpeakingPlan`
+schema: at the default `numWords: 0`, ~0.2s of any detected customer voice activity interrupts
+the assistant regardless of what was said, bypassing `acknowledgementPhrases` (the list of
+backchannel words that never interrupt) — and that list is English-only ("okay", "got it",
+"yeah"), so Hindi backchannels ("haan", "theek hai", "mil gaya") had no protection at all.
+**Fix:** `assistant_config.py` now sets a `stopSpeakingPlan` with `numWords: 3` (so the
+threshold and phrase lists actually apply instead of raw voice-activity timing) and an expanded
+`acknowledgementPhrases` list adding Hindi/Hinglish backchannels alongside Vapi's English
+defaults. This is assistant-level, not per-call — takes effect only after `create-assistant` is
+re-run, and hasn't been re-validated against a real call yet.
+
+**5. Redundant reason question.** The customer volunteered `"payment is under approval"`
+(`"پیمنٹ ابھی اپروول میں ہے"`) in response to the initial promise question — already a
+complete answer, matching `awaiting_internal_approval` in the reason-code taxonomy — before the
+agent ever asked why. The agent asked "what's the reason for this delay" anyway. **Fix:** added
+a general CONVERSATION RULE ("if the customer already gave a piece of information... even
+unprompted... never ask again") rather than a narrow fix to just the reason field, since the
+same failure mode (mechanically running a fixed question script instead of tracking what's
+already been said) could recur for amount/date/method too; updated the "Cannot pay now" branch
+to reference it instead of unconditionally asking why.
+
+**Lesson:** four of five findings here were root-caused from data already in the raw payload
+(message-level timestamps, `assistantOverrides`, the OpenAPI spec for the interruption
+settings) rather than from re-listening to the call or guessing at plausible causes — the same
+discipline as the recording-link and call-summary findings earlier the same day. The one
+finding that IS a guess pending validation (fix 2, transcriber language) and the one still
+open by design (fix 3, the call cap) are marked as such rather than presented with the same
+confidence as the other three.

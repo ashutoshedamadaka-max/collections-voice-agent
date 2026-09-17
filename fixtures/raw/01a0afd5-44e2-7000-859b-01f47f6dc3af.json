@@ -1,0 +1,3215 @@
+{
+  "id": "01a0afd5-44e2-7000-859b-01f47f6dc3af",
+  "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+  "type": "webCall",
+  "startedAt": "2026-09-17T14:46:25.169Z",
+  "endedAt": "2026-09-17T14:49:31.219Z",
+  "transcript": "AI: Hello, this is an automated call from Acme Supplies's accounts team, regarding an overdue invoice. This call may be recorded.\nUser: Um, Boli?\nAI: \u0915\u094d\u092f\u093e \u0906\u092a \u0905\u0915\u093e\u0909\u0902\u091f\u094d\u0938 \u092a\u0947\u090f\u092c\u0932 \u0915\u093e \u0915\u093e\u092e \u0938\u0902\u092d\u093e\u0932\u0924\u0947 \u0939\u0948\u0902, \u0938\u0924\u092a\u0941\u0930\u093e \u0932\u0949\u091c\u093f\u0938\u094d\u091f\u093f\u0915\u094d\u0938 \u092a\u094d\u0930\u093e\u0907\u0935\u0947\u091f \u0932\u093f\u092e\u093f\u091f\u0947\u0921 \u092e\u0947\u0902?\nUser: \u06c1\u0627\u06ba\u060c \u0645\u06cc\u06ba \u062f\u06cc\u06a9\u06be\u062a\u0627 \u06c1\u0648\u06ba\u06d4 \u0627\u06a9\u0627\u0624\u0646\u0679\u0633\u06d4\nAI: \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u092f\u0936 \u091c\u0940\u0964 \u0906\u092a\u0915\u0947 \u092a\u093e\u0938 2 \u0913\u0935\u0930\u0921\u094d\u092f\u0942 \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948\u0902\u0964 \u092a\u0939\u0932\u093e \u0939\u0948 SL/26-27/0002, \u091c\u094b 2026-08-26 \u0915\u094b \u0921\u094d\u092f\u0942 \u0925\u093e, \u0914\u0930 \u0907\u0938\u0915\u0940 \u0930\u093e\u0936\u093f \u0939\u0948 \u20b92,04,000\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0928\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?\nUser: \u0627\u06cc\u06a9 \u0645\u0646\u0679\u06d4\nAI: \u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964\nUser: \u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4\nAI: \u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964\nUser: \u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4 \u06a9\u0648\u0646 \u0633\u0627 \u0627\u0646\u0648\u0627\u0626\u0633 \u0628\u0648\u0644\u0627 \u0622\u067e \u0646\u06d2\u061f \u0646\u0645\u0628\u0631 \u0631\u06cc\u067e\u06cc\u0679 \u06a9\u0631\u06cc\u06ba\u06d4\nAI: \u0906\u092a\u0964\nAI: \u092a\u0939\u0932\u093e \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948 SL/26-27/0002\u0964 \u091c\u094b\u0964 \u20b92,04,000 \u0915\u093e \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0924\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?\nUser: \u0627\u0645\u060c \u067e\u06cc\u0645\u0646\u0679 \u0627\u0628\u06be\u06cc \u0627\u067e\u0631\u0648\u0648\u0644 \u0645\u06cc\u06ba \u06c1\u06d2\u06d4\nAI: \u0915\u0943\u092a\u092f\u093e \u092c\u0924\u093e\u090f\u0902, \u0907\u0938 \u0926\u0947\u0930\u0940 \u0915\u093e \u0915\u093e\u0930\u0923 \u0915\u094d\u092f\u093e \u0939\u0948?\nUser: \u0646\u06c1\u06cc\u06ba\u060c \u06a9\u0686\u06be \u062f\u06cc\u0631 \u06c1\u06cc \u06a9\u0627\u06d4 \u06a9\u0627\u0631\u0646 \u06a9\u0686\u06be \u0646\u0626\u06d2 \u06c1\u06cc\u06ba\u060c \u062c\u0644\u062f\u06cc \u06c1\u0648 \u062c\u0627\u0626\u06d2 \u06af\u0627\u06d4 \u067e\u06cc\u0645\u0646\u0679\u06d4\nAI: \u0938\u092e\u091d \u0917\u092f\u093e\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e? \u0915\u0943\u092a\u092f\u093e \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902\u0964\nUser: \u0679\u06be\u06cc\u06a9 \u06c1\u06d2\u06d4 30th \u062a\u06a9. \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4\nAI: \u0906\u092a\u0928\u0947 \u0915\u0939\u093e 30 \u0924\u093e\u0930\u0940\u0916 \u0924\u0915, \u0924\u094b \u0915\u094d\u092f\u093e \u092e\u0924\u0932\u092c \u0939\u0948 2026-09 \u0938\u093f\u0924\u0902\u092c\u0930 30\u0964 \u0915\u0943\u092a\u092f\u093e \u092a\u0941\u0937\u094d\u091f\u093f \u0915\u0930\u0947\u0902\u0964\nUser: \u06c1\u0627\u06ba\u06d4\nAI: \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u0915\u094d\u092f\u093e \u0939\u094b\u0917\u093e? \u090f\u0928\u0908\u090f\u092b\u091f\u0940, \u0906\u0930\u091f\u0940\u091c\u0940\u090f\u0938, \u092f\u0942\u092a\u0940\u0906\u0908, \u091a\u0947\u0915, \u092f\u093e \u092a\u094b\u0930\u094d\u091f\u0932?\nUser: \u06cc\u0648 \u067e\u06cc \u0622\u0626\u06cc \u0633\u06d2 \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4\nAI: One moment. \u0906\u092a\u0928\u0947 \u0915\u0939\u093e \u20b92,04,000, 2026-09-30 \u0924\u0915, \u092f\u0942\u092a\u0940\u0906\u0908 \u0938\u0947 \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964 \u092f\u0939 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0905\u092c S\u0964\nAI: L/26-27/\u0964 0\u0964 0\u0964 03 \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902 \u092c\u093e\u0924 \u0915\u0930\u0947\u0902?\nUser: \u06c1\u0627\u06ba\u060c \u067e\u0631 \u062a\u06be\u0648\u0691\u0627. \u0627\u06cc\u0688\u062c\u0633\u0679\u0645\u0646\u0679 \u06c1\u0648 \u0633\u06a9\u062a\u0627 \u06c1\u06d2 \u06a9\u06cc\u0627\u061f 10% \u06a9\u0645 \u06a9\u0631 \u062f\u0648\u060c \u0622\u062c \u06c1\u06cc \u067e\u06cc\u0645\u0646\u0679 \u06a9\u0631 \u062f\u0648\u06ba \u06af\u0627\u06d4\nAI: \u092f\u0939 \u0938\u0902\u092d\u0935 \u0928\u0939\u0940\u0902 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0938\u0947 \u091f\u0940\u092e \u0915\u094b \u092c\u0924\u093e\u090a\u0901\u0917\u093e\u0964 \u0905\u092c \u092c\u0924\u093e\u090f\u0902, SL/26-27/0003 \u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0915\u0930\u0947\u0902\u0917\u0947?\nUser: \u06a9\u0633 \u062a\u0627\u0631\u06cc\u062e \u062a\u06a9\u061f \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4\nAI: \u0915\u0943\u092a\u092f\u093e \u090f\u0915 \u0928\u093f\u0936\u094d\u091a\u093f\u0924 \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902, \u091c\u092c \u0906\u092a \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964\nUser: 30th\u06d4\n",
+  "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-20cf8a7d-06fb-42e8-96be-ecaca0fc6aef-mono.wav",
+  "summary": "",
+  "createdAt": "2026-09-17T14:46:24.738Z",
+  "updatedAt": "2026-09-17T14:49:35.413Z",
+  "orgId": "0a32cbab-c2aa-494a-b61b-decd4db3ff77",
+  "cost": 0.1979,
+  "webCallUrl": "https://vapi.daily.co/3jiRTctNON3dGNoWmUIv",
+  "status": "ended",
+  "endedReason": "exceeded-max-duration",
+  "messages": [
+    {
+      "role": "system",
+      "time": 1789656384886,
+      "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish. Code-switch naturally between Hindi and English within sentences, the way a bilingual Indian speaker would, rather than committing to only one language. Match however the caller themselves mixes the two.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-17.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\nInvoices: SL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\"); SL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\nTotal outstanding: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method \u2014 captured across separate\n   questions, never asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-17 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Satpura Logistics Pvt Ltd. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask for the amount, the date, and the method as three separate questions \u2014 never\n  combine them. Confirm the full set back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. Then ask why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end.",
+      "secondsFromStart": 0
+    },
+    {
+      "role": "bot",
+      "time": 1789656386281,
+      "source": "",
+      "endTime": 1789656394201,
+      "message": "Hello, this is an automated call from Acme Supplies's accounts team, regarding an overdue invoice. This call may be recorded.",
+      "duration": 7920,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 1.112
+    },
+    {
+      "role": "user",
+      "time": 1789656397409,
+      "endTime": 1789656397649,
+      "message": "Um, Boli?",
+      "duration": 240,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 12.3,
+            "word": "U",
+            "start": 12.24,
+            "language": "en",
+            "confidence": 0.888,
+            "punctuated_word": "U"
+          },
+          {
+            "end": 12.36,
+            "word": "m,",
+            "start": 12.3,
+            "language": "en",
+            "confidence": 0.976,
+            "punctuated_word": "m,"
+          },
+          {
+            "end": 12.48,
+            "word": "B",
+            "start": 12.42,
+            "language": "en",
+            "confidence": 0.223,
+            "punctuated_word": "B"
+          },
+          {
+            "end": 12.48,
+            "word": "oli",
+            "start": 12.48,
+            "language": "en",
+            "confidence": 0.585,
+            "punctuated_word": "oli"
+          },
+          {
+            "end": 12.48,
+            "word": "?",
+            "start": 12.48,
+            "language": "en",
+            "confidence": 0.893,
+            "punctuated_word": "?"
+          }
+        ]
+      },
+      "secondsFromStart": 12.24
+    },
+    {
+      "role": "bot",
+      "time": 1789656399601,
+      "source": "",
+      "endTime": 1789656404221,
+      "message": "\u0915\u094d\u092f\u093e \u0906\u092a \u0905\u0915\u093e\u0909\u0902\u091f\u094d\u0938 \u092a\u0947\u090f\u092c\u0932 \u0915\u093e \u0915\u093e\u092e \u0938\u0902\u092d\u093e\u0932\u0924\u0947 \u0939\u0948\u0902, \u0938\u0924\u092a\u0941\u0930\u093e \u0932\u0949\u091c\u093f\u0938\u094d\u091f\u093f\u0915\u094d\u0938 \u092a\u094d\u0930\u093e\u0907\u0935\u0947\u091f \u0932\u093f\u092e\u093f\u091f\u0947\u0921 \u092e\u0947\u0902?",
+      "duration": 4620,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 14.432
+    },
+    {
+      "role": "user",
+      "time": 1789656407369,
+      "endTime": 1789656408569,
+      "message": "\u06c1\u0627\u06ba\u060c \u0645\u06cc\u06ba \u062f\u06cc\u06a9\u06be\u062a\u0627 \u06c1\u0648\u06ba\u06d4 \u0627\u06a9\u0627\u0624\u0646\u0679\u0633\u06d4",
+      "duration": 1200,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 22.26,
+            "word": "\u06c1",
+            "start": 22.2,
+            "language": "en",
+            "confidence": 0.584,
+            "punctuated_word": "\u06c1"
+          },
+          {
+            "end": 22.26,
+            "word": "\u0627\u06ba",
+            "start": 22.26,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "\u0627\u06ba"
+          },
+          {
+            "end": 22.38,
+            "word": "\u060c",
+            "start": 22.32,
+            "language": "en",
+            "confidence": 0.986,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 22.5,
+            "word": "\u0645\u06cc\u06ba",
+            "start": 22.44,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0645\u06cc\u06ba"
+          },
+          {
+            "end": 22.62,
+            "word": "\u062f\u06cc\u06a9",
+            "start": 22.56,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "\u062f\u06cc\u06a9"
+          },
+          {
+            "end": 22.68,
+            "word": "\u06be",
+            "start": 22.62,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06be"
+          },
+          {
+            "end": 22.74,
+            "word": "\u062a\u0627",
+            "start": 22.68,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u062a\u0627"
+          },
+          {
+            "end": 22.8,
+            "word": "\u06c1",
+            "start": 22.74,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06c1"
+          },
+          {
+            "end": 22.86,
+            "word": "\u0648\u06ba",
+            "start": 22.8,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0648\u06ba"
+          },
+          {
+            "end": 23.04,
+            "word": "\u06d4",
+            "start": 22.98,
+            "language": "en",
+            "confidence": 0.682,
+            "punctuated_word": "\u06d4"
+          },
+          {
+            "end": 23.22,
+            "word": "\u0627\u06a9",
+            "start": 23.16,
+            "language": "en",
+            "confidence": 0.824,
+            "punctuated_word": "\u0627\u06a9"
+          },
+          {
+            "end": 23.34,
+            "word": "\u0627",
+            "start": 23.28,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0627"
+          },
+          {
+            "end": 23.4,
+            "word": "\u0624\u0646",
+            "start": 23.34,
+            "language": "en",
+            "confidence": 0.978,
+            "punctuated_word": "\u0624\u0646"
+          },
+          {
+            "end": 23.4,
+            "word": "\u0679",
+            "start": 23.4,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0679"
+          },
+          {
+            "end": 23.4,
+            "word": "\u0633",
+            "start": 23.4,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u0633"
+          },
+          {
+            "end": 23.4,
+            "word": "\u06d4",
+            "start": 23.4,
+            "language": "en",
+            "confidence": 0.657,
+            "punctuated_word": "\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 22.2
+    },
+    {
+      "role": "bot",
+      "time": 1789656410101,
+      "source": "",
+      "endTime": 1789656430141,
+      "message": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u092f\u0936 \u091c\u0940\u0964 \u0906\u092a\u0915\u0947 \u092a\u093e\u0938 2 \u0913\u0935\u0930\u0921\u094d\u092f\u0942 \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948\u0902\u0964 \u092a\u0939\u0932\u093e \u0939\u0948 SL/26-27/0002, \u091c\u094b 2026-08-26 \u0915\u094b \u0921\u094d\u092f\u0942 \u0925\u093e, \u0914\u0930 \u0907\u0938\u0915\u0940 \u0930\u093e\u0936\u093f \u0939\u0948 \u20b92,04,000\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0928\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?",
+      "duration": 18780,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 24.932
+    },
+    {
+      "role": "user",
+      "time": 1789656435749,
+      "endTime": 1789656435929,
+      "message": "\u0627\u06cc\u06a9 \u0645\u0646\u0679\u06d4",
+      "duration": 180,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 50.64,
+            "word": "\u0627\u06cc\u06a9",
+            "start": 50.58,
+            "language": "en",
+            "confidence": 0.986,
+            "punctuated_word": "\u0627\u06cc\u06a9"
+          },
+          {
+            "end": 50.76,
+            "word": "\u0645\u0646",
+            "start": 50.7,
+            "language": "en",
+            "confidence": 0.98,
+            "punctuated_word": "\u0645\u0646"
+          },
+          {
+            "end": 50.76,
+            "word": "\u0679",
+            "start": 50.76,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0679"
+          },
+          {
+            "end": 50.76,
+            "word": "\u06d4",
+            "start": 50.76,
+            "language": "en",
+            "confidence": 0.778,
+            "punctuated_word": "\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 50.58
+    },
+    {
+      "role": "bot",
+      "time": 1789656437521,
+      "source": "",
+      "endTime": 1789656438661,
+      "message": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964",
+      "duration": 1140,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 52.352
+    },
+    {
+      "role": "user",
+      "time": 1789656438389,
+      "endTime": 1789656438689,
+      "message": "\u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4",
+      "duration": 300,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 53.28,
+            "word": "\u06c1",
+            "start": 53.22,
+            "language": "en",
+            "confidence": 0.993,
+            "punctuated_word": "\u06c1"
+          },
+          {
+            "end": 53.4,
+            "word": "\u0627\u06ba",
+            "start": 53.34,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0627\u06ba"
+          },
+          {
+            "end": 53.46,
+            "word": "\u060c",
+            "start": 53.4,
+            "language": "en",
+            "confidence": 0.975,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 53.52,
+            "word": "\u0645\u0644",
+            "start": 53.46,
+            "language": "en",
+            "confidence": 0.984,
+            "punctuated_word": "\u0645\u0644"
+          },
+          {
+            "end": 53.52,
+            "word": "\u06af\u06cc\u0627\u06d4",
+            "start": 53.52,
+            "language": "en",
+            "confidence": 0.974,
+            "punctuated_word": "\u06af\u06cc\u0627\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 53.22
+    },
+    {
+      "role": "bot",
+      "time": 1789656440161,
+      "source": "",
+      "endTime": 1789656440821,
+      "message": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964",
+      "duration": 660,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 54.992
+    },
+    {
+      "role": "user",
+      "time": 1789656440609,
+      "endTime": 1789656443969,
+      "message": "\u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4 \u06a9\u0648\u0646 \u0633\u0627 \u0627\u0646\u0648\u0627\u0626\u0633 \u0628\u0648\u0644\u0627 \u0622\u067e \u0646\u06d2\u061f \u0646\u0645\u0628\u0631 \u0631\u06cc\u067e\u06cc\u0679 \u06a9\u0631\u06cc\u06ba\u06d4",
+      "duration": 2520,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 55.5,
+            "word": "\u06c1",
+            "start": 55.44,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u06c1"
+          },
+          {
+            "end": 55.56,
+            "word": "\u0627\u06ba",
+            "start": 55.5,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0627\u06ba"
+          },
+          {
+            "end": 55.68,
+            "word": "\u060c",
+            "start": 55.62,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 55.68,
+            "word": "\u0645\u0644",
+            "start": 55.68,
+            "language": "en",
+            "confidence": 0.994,
+            "punctuated_word": "\u0645\u0644"
+          },
+          {
+            "end": 55.68,
+            "word": "\u06af\u06cc\u0627\u06d4",
+            "start": 55.68,
+            "language": "en",
+            "confidence": 0.931,
+            "punctuated_word": "\u06af\u06cc\u0627\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 55.44
+    },
+    {
+      "role": "bot",
+      "time": 1789656442201,
+      "source": "",
+      "endTime": 1789656442261,
+      "message": "\u0906\u092a\u0964",
+      "duration": 60,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 57.032
+    },
+    {
+      "role": "bot",
+      "time": 1789656445321,
+      "source": "",
+      "endTime": 1789656457981,
+      "message": "\u092a\u0939\u0932\u093e \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948 SL/26-27/0002\u0964 \u091c\u094b\u0964 \u20b92,04,000 \u0915\u093e \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0924\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?",
+      "duration": 11700,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 60.152
+    },
+    {
+      "role": "user",
+      "time": 1789656462929,
+      "endTime": 1789656464129,
+      "message": "\u0627\u0645\u060c \u067e\u06cc\u0645\u0646\u0679 \u0627\u0628\u06be\u06cc \u0627\u067e\u0631\u0648\u0648\u0644 \u0645\u06cc\u06ba \u06c1\u06d2\u06d4",
+      "duration": 1200,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 77.82,
+            "word": "\u0627\u0645",
+            "start": 77.76,
+            "language": "en",
+            "confidence": 0.863,
+            "punctuated_word": "\u0627\u0645"
+          },
+          {
+            "end": 78.12,
+            "word": "\u060c",
+            "start": 78.06,
+            "language": "en",
+            "confidence": 0.844,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 78.24,
+            "word": "\u067e",
+            "start": 78.18,
+            "language": "en",
+            "confidence": 0.965,
+            "punctuated_word": "\u067e"
+          },
+          {
+            "end": 78.3,
+            "word": "\u06cc\u0645",
+            "start": 78.24,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "\u06cc\u0645"
+          },
+          {
+            "end": 78.42,
+            "word": "\u0646\u0679",
+            "start": 78.36,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0646\u0679"
+          },
+          {
+            "end": 78.54,
+            "word": "\u0627\u0628",
+            "start": 78.48,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "\u0627\u0628"
+          },
+          {
+            "end": 78.66,
+            "word": "\u06be\u06cc",
+            "start": 78.6,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "\u06be\u06cc"
+          },
+          {
+            "end": 78.78,
+            "word": "\u0627\u067e",
+            "start": 78.72,
+            "language": "en",
+            "confidence": 0.987,
+            "punctuated_word": "\u0627\u067e"
+          },
+          {
+            "end": 78.9,
+            "word": "\u0631\u0648",
+            "start": 78.84,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0631\u0648"
+          },
+          {
+            "end": 78.96,
+            "word": "\u0648\u0644",
+            "start": 78.9,
+            "language": "en",
+            "confidence": 0.98,
+            "punctuated_word": "\u0648\u0644"
+          },
+          {
+            "end": 78.96,
+            "word": "\u0645\u06cc\u06ba",
+            "start": 78.96,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0645\u06cc\u06ba"
+          },
+          {
+            "end": 78.96,
+            "word": "\u06c1\u06d2\u06d4",
+            "start": 78.96,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u06c1\u06d2\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 77.76
+    },
+    {
+      "role": "bot",
+      "time": 1789656466141,
+      "source": "",
+      "endTime": 1789656468421,
+      "message": "\u0915\u0943\u092a\u092f\u093e \u092c\u0924\u093e\u090f\u0902, \u0907\u0938 \u0926\u0947\u0930\u0940 \u0915\u093e \u0915\u093e\u0930\u0923 \u0915\u094d\u092f\u093e \u0939\u0948?",
+      "duration": 2280,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 80.972
+    },
+    {
+      "role": "user",
+      "time": 1789656471569,
+      "endTime": 1789656474689,
+      "message": "\u0646\u06c1\u06cc\u06ba\u060c \u06a9\u0686\u06be \u062f\u06cc\u0631 \u06c1\u06cc \u06a9\u0627\u06d4 \u06a9\u0627\u0631\u0646 \u06a9\u0686\u06be \u0646\u0626\u06d2 \u06c1\u06cc\u06ba\u060c \u062c\u0644\u062f\u06cc \u06c1\u0648 \u062c\u0627\u0626\u06d2 \u06af\u0627\u06d4 \u067e\u06cc\u0645\u0646\u0679\u06d4",
+      "duration": 2340,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 86.46,
+            "word": "\u0646\u06c1\u06cc\u06ba",
+            "start": 86.4,
+            "language": "en",
+            "confidence": 0.991,
+            "punctuated_word": "\u0646\u06c1\u06cc\u06ba"
+          },
+          {
+            "end": 86.58,
+            "word": "\u060c",
+            "start": 86.52,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 86.64,
+            "word": "\u06a9",
+            "start": 86.58,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u06a9"
+          },
+          {
+            "end": 86.7,
+            "word": "\u0686\u06be",
+            "start": 86.64,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0686\u06be"
+          },
+          {
+            "end": 86.82,
+            "word": "\u062f",
+            "start": 86.76,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u062f"
+          },
+          {
+            "end": 86.94,
+            "word": "\u06cc\u0631",
+            "start": 86.88,
+            "language": "en",
+            "confidence": 0.991,
+            "punctuated_word": "\u06cc\u0631"
+          },
+          {
+            "end": 87,
+            "word": "\u06c1\u06cc",
+            "start": 86.94,
+            "language": "en",
+            "confidence": 0.862,
+            "punctuated_word": "\u06c1\u06cc"
+          },
+          {
+            "end": 87.12,
+            "word": "\u06a9\u0627",
+            "start": 87.06,
+            "language": "en",
+            "confidence": 0.964,
+            "punctuated_word": "\u06a9\u0627"
+          },
+          {
+            "end": 87.18,
+            "word": "\u06d4",
+            "start": 87.12,
+            "language": "en",
+            "confidence": 0.776,
+            "punctuated_word": "\u06d4"
+          },
+          {
+            "end": 87.3,
+            "word": "\u06a9\u0627\u0631",
+            "start": 87.24,
+            "language": "en",
+            "confidence": 0.973,
+            "punctuated_word": "\u06a9\u0627\u0631"
+          },
+          {
+            "end": 87.42,
+            "word": "\u0646",
+            "start": 87.36,
+            "language": "en",
+            "confidence": 0.962,
+            "punctuated_word": "\u0646"
+          },
+          {
+            "end": 87.54,
+            "word": "\u06a9",
+            "start": 87.48,
+            "language": "en",
+            "confidence": 0.985,
+            "punctuated_word": "\u06a9"
+          },
+          {
+            "end": 87.66,
+            "word": "\u0686\u06be",
+            "start": 87.6,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0686\u06be"
+          },
+          {
+            "end": 87.78,
+            "word": "\u0646",
+            "start": 87.72,
+            "language": "en",
+            "confidence": 0.924,
+            "punctuated_word": "\u0646"
+          },
+          {
+            "end": 87.9,
+            "word": "\u0626\u06d2",
+            "start": 87.84,
+            "language": "en",
+            "confidence": 0.986,
+            "punctuated_word": "\u0626\u06d2"
+          },
+          {
+            "end": 88.02,
+            "word": "\u06c1\u06cc\u06ba",
+            "start": 87.96,
+            "language": "en",
+            "confidence": 0.53,
+            "punctuated_word": "\u06c1\u06cc\u06ba"
+          },
+          {
+            "end": 88.08,
+            "word": "\u060c",
+            "start": 88.02,
+            "language": "en",
+            "confidence": 0.996,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 88.2,
+            "word": "\u062c",
+            "start": 88.14,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "\u062c"
+          },
+          {
+            "end": 88.26,
+            "word": "\u0644",
+            "start": 88.2,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0644"
+          },
+          {
+            "end": 88.32,
+            "word": "\u062f\u06cc",
+            "start": 88.26,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u062f\u06cc"
+          },
+          {
+            "end": 88.44,
+            "word": "\u06c1\u0648",
+            "start": 88.38,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06c1\u0648"
+          },
+          {
+            "end": 88.56,
+            "word": "\u062c",
+            "start": 88.5,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u062c"
+          },
+          {
+            "end": 88.56,
+            "word": "\u0627\u0626\u06d2",
+            "start": 88.56,
+            "language": "en",
+            "confidence": 0.991,
+            "punctuated_word": "\u0627\u0626\u06d2"
+          },
+          {
+            "end": 88.56,
+            "word": "\u06af",
+            "start": 88.56,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06af"
+          },
+          {
+            "end": 88.56,
+            "word": "\u0627\u06d4",
+            "start": 88.56,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "\u0627\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 86.4
+    },
+    {
+      "role": "bot",
+      "time": 1789656476341,
+      "source": "",
+      "endTime": 1789656481981,
+      "message": "\u0938\u092e\u091d \u0917\u092f\u093e\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e? \u0915\u0943\u092a\u092f\u093e \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902\u0964",
+      "duration": 4920,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 91.172
+    },
+    {
+      "role": "user",
+      "time": 1789656484589,
+      "endTime": 1789656486929,
+      "message": "\u0679\u06be\u06cc\u06a9 \u06c1\u06d2\u06d4 30th \u062a\u06a9. \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+      "duration": 1200,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 99.48,
+            "word": "\u0679",
+            "start": 99.42,
+            "language": "en",
+            "confidence": 0.987,
+            "punctuated_word": "\u0679"
+          },
+          {
+            "end": 99.48,
+            "word": "\u06be",
+            "start": 99.48,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u06be"
+          },
+          {
+            "end": 99.48,
+            "word": "\u06cc\u06a9",
+            "start": 99.48,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06cc\u06a9"
+          },
+          {
+            "end": 99.48,
+            "word": "\u06c1\u06d2\u06d4",
+            "start": 99.48,
+            "language": "en",
+            "confidence": 0.996,
+            "punctuated_word": "\u06c1\u06d2\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 99.42
+    },
+    {
+      "role": "bot",
+      "time": 1789656488581,
+      "source": "",
+      "endTime": 1789656495421,
+      "message": "\u0906\u092a\u0928\u0947 \u0915\u0939\u093e 30 \u0924\u093e\u0930\u0940\u0916 \u0924\u0915, \u0924\u094b \u0915\u094d\u092f\u093e \u092e\u0924\u0932\u092c \u0939\u0948 2026-09 \u0938\u093f\u0924\u0902\u092c\u0930 30\u0964 \u0915\u0943\u092a\u092f\u093e \u092a\u0941\u0937\u094d\u091f\u093f \u0915\u0930\u0947\u0902\u0964",
+      "duration": 6840,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 103.412
+    },
+    {
+      "role": "user",
+      "time": 1789656497909,
+      "endTime": 1789656497969,
+      "message": "\u06c1\u0627\u06ba\u06d4",
+      "duration": 60,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 112.8,
+            "word": "\u06c1",
+            "start": 112.74,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u06c1"
+          },
+          {
+            "end": 112.8,
+            "word": "\u0627\u06ba",
+            "start": 112.8,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0627\u06ba"
+          },
+          {
+            "end": 112.8,
+            "word": "\u06d4",
+            "start": 112.8,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 112.74
+    },
+    {
+      "role": "bot",
+      "time": 1789656499321,
+      "source": "",
+      "endTime": 1789656507301,
+      "message": "\u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u0915\u094d\u092f\u093e \u0939\u094b\u0917\u093e? \u090f\u0928\u0908\u090f\u092b\u091f\u0940, \u0906\u0930\u091f\u0940\u091c\u0940\u090f\u0938, \u092f\u0942\u092a\u0940\u0906\u0908, \u091a\u0947\u0915, \u092f\u093e \u092a\u094b\u0930\u094d\u091f\u0932?",
+      "duration": 6960,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 114.152
+    },
+    {
+      "role": "user",
+      "time": 1789656510209,
+      "endTime": 1789656510809,
+      "message": "\u06cc\u0648 \u067e\u06cc \u0622\u0626\u06cc \u0633\u06d2 \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+      "duration": 600,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 125.1,
+            "word": "\u06cc",
+            "start": 125.04,
+            "language": "en",
+            "confidence": 0.906,
+            "punctuated_word": "\u06cc"
+          },
+          {
+            "end": 125.16,
+            "word": "\u0648",
+            "start": 125.1,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0648"
+          },
+          {
+            "end": 125.28,
+            "word": "\u067e\u06cc",
+            "start": 125.22,
+            "language": "en",
+            "confidence": 0.993,
+            "punctuated_word": "\u067e\u06cc"
+          },
+          {
+            "end": 125.4,
+            "word": "\u0622",
+            "start": 125.34,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "\u0622"
+          },
+          {
+            "end": 125.46,
+            "word": "\u0626\u06cc",
+            "start": 125.4,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0626\u06cc"
+          },
+          {
+            "end": 125.58,
+            "word": "\u0633\u06d2",
+            "start": 125.52,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0633\u06d2"
+          },
+          {
+            "end": 125.64,
+            "word": "\u06a9\u0631",
+            "start": 125.58,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u06a9\u0631"
+          },
+          {
+            "end": 125.64,
+            "word": "\u062f",
+            "start": 125.64,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u062f"
+          },
+          {
+            "end": 125.64,
+            "word": "\u06cc\u06ba",
+            "start": 125.64,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06cc\u06ba"
+          },
+          {
+            "end": 125.64,
+            "word": "\u06af",
+            "start": 125.64,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u06af"
+          },
+          {
+            "end": 125.64,
+            "word": "\u06d2\u06d4",
+            "start": 125.64,
+            "language": "en",
+            "confidence": 0.996,
+            "punctuated_word": "\u06d2\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 125.04
+    },
+    {
+      "role": "bot",
+      "time": 1789656513181,
+      "source": "",
+      "endTime": 1789656525421,
+      "message": "One moment. \u0906\u092a\u0928\u0947 \u0915\u0939\u093e \u20b92,04,000, 2026-09-30 \u0924\u0915, \u092f\u0942\u092a\u0940\u0906\u0908 \u0938\u0947 \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964 \u092f\u0939 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0905\u092c S\u0964",
+      "duration": 10620,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 128.012
+    },
+    {
+      "role": "tool_calls",
+      "time": 1789656517230,
+      "message": "",
+      "toolCalls": [
+        {
+          "id": "call_H453NVKibF1WA7721lYFESpT",
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "arguments": "{\n  \"invoice_ids\": [\"SL/26-27/0002\"],\n  \"amount\": 204000,\n  \"date\": \"2026-09-30\",\n  \"method\": \"UPI\"\n}"
+          }
+        }
+      ],
+      "secondsFromStart": 132.061
+    },
+    {
+      "name": "record_ptp",
+      "role": "tool_call_result",
+      "time": 1789656518823,
+      "result": {
+        "ptp_id": "PTP-192c4576"
+      },
+      "metadata": {},
+      "toolCallId": "call_H453NVKibF1WA7721lYFESpT",
+      "secondsFromStart": 133.653
+    },
+    {
+      "role": "bot",
+      "time": 1789656525721,
+      "source": "",
+      "endTime": 1789656531781,
+      "message": "L/26-27/\u0964 0\u0964 0\u0964 03 \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902 \u092c\u093e\u0924 \u0915\u0930\u0947\u0902?",
+      "duration": 4620,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 140.552
+    },
+    {
+      "role": "user",
+      "time": 1789656535769,
+      "endTime": 1789656542009,
+      "message": "\u06c1\u0627\u06ba\u060c \u067e\u0631 \u062a\u06be\u0648\u0691\u0627. \u0627\u06cc\u0688\u062c\u0633\u0679\u0645\u0646\u0679 \u06c1\u0648 \u0633\u06a9\u062a\u0627 \u06c1\u06d2 \u06a9\u06cc\u0627\u061f 10% \u06a9\u0645 \u06a9\u0631 \u062f\u0648\u060c \u0622\u062c \u06c1\u06cc \u067e\u06cc\u0645\u0646\u0679 \u06a9\u0631 \u062f\u0648\u06ba \u06af\u0627\u06d4",
+      "duration": 4260,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 150.66,
+            "word": "\u06c1",
+            "start": 150.6,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "\u06c1"
+          },
+          {
+            "end": 150.78,
+            "word": "\u0627\u06ba",
+            "start": 150.72,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "\u0627\u06ba"
+          },
+          {
+            "end": 150.96,
+            "word": "\u060c",
+            "start": 150.9,
+            "language": "en",
+            "confidence": 0.914,
+            "punctuated_word": "\u060c"
+          },
+          {
+            "end": 151.2,
+            "word": "\u067e\u0631",
+            "start": 151.14,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u067e\u0631"
+          },
+          {
+            "end": 151.8,
+            "word": "\u062a\u06be",
+            "start": 151.74,
+            "language": "en",
+            "confidence": 0.95,
+            "punctuated_word": "\u062a\u06be"
+          },
+          {
+            "end": 151.8,
+            "word": "\u0648",
+            "start": 151.8,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0648"
+          },
+          {
+            "end": 151.8,
+            "word": "\u0691",
+            "start": 151.8,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "\u0691"
+          },
+          {
+            "end": 151.8,
+            "word": "\u0627",
+            "start": 151.8,
+            "language": "en",
+            "confidence": 0.958,
+            "punctuated_word": "\u0627"
+          },
+          {
+            "end": 151.8,
+            "word": ".",
+            "start": 151.8,
+            "language": "en",
+            "confidence": 0.849,
+            "punctuated_word": "."
+          }
+        ]
+      },
+      "secondsFromStart": 150.6
+    },
+    {
+      "role": "bot",
+      "time": 1789656543721,
+      "source": "",
+      "endTime": 1789656553861,
+      "message": "\u092f\u0939 \u0938\u0902\u092d\u0935 \u0928\u0939\u0940\u0902 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0938\u0947 \u091f\u0940\u092e \u0915\u094b \u092c\u0924\u093e\u090a\u0901\u0917\u093e\u0964 \u0905\u092c \u092c\u0924\u093e\u090f\u0902, SL/26-27/0003 \u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0915\u0930\u0947\u0902\u0917\u0947?",
+      "duration": 9480,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 158.552
+    },
+    {
+      "role": "user",
+      "time": 1789656556649,
+      "endTime": 1789656557729,
+      "message": "\u06a9\u0633 \u062a\u0627\u0631\u06cc\u062e \u062a\u06a9\u061f \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+      "duration": 540,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 171.54,
+            "word": "\u06a9",
+            "start": 171.48,
+            "language": "en",
+            "confidence": 0.575,
+            "punctuated_word": "\u06a9"
+          },
+          {
+            "end": 171.6,
+            "word": "\u0633",
+            "start": 171.54,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "\u0633"
+          },
+          {
+            "end": 171.72,
+            "word": "\u062a\u0627\u0631\u06cc\u062e",
+            "start": 171.66,
+            "language": "en",
+            "confidence": 0.991,
+            "punctuated_word": "\u062a\u0627\u0631\u06cc\u062e"
+          },
+          {
+            "end": 171.96,
+            "word": "\u062a\u06a9",
+            "start": 171.9,
+            "language": "en",
+            "confidence": 0.606,
+            "punctuated_word": "\u062a\u06a9"
+          },
+          {
+            "end": 171.96,
+            "word": "\u061f",
+            "start": 171.96,
+            "language": "en",
+            "confidence": 0.995,
+            "punctuated_word": "\u061f"
+          }
+        ]
+      },
+      "secondsFromStart": 171.48
+    },
+    {
+      "role": "bot",
+      "time": 1789656559201,
+      "source": "",
+      "endTime": 1789656562501,
+      "message": "\u0915\u0943\u092a\u092f\u093e \u090f\u0915 \u0928\u093f\u0936\u094d\u091a\u093f\u0924 \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902, \u091c\u092c \u0906\u092a \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964",
+      "duration": 3300,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 174.032
+    },
+    {
+      "role": "user",
+      "time": 1789656565709,
+      "endTime": 1789656565889,
+      "message": "30th\u06d4",
+      "duration": 180,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 180.6,
+            "word": "3",
+            "start": 180.54,
+            "language": "en",
+            "confidence": 0.991,
+            "punctuated_word": "3"
+          },
+          {
+            "end": 180.72,
+            "word": "0",
+            "start": 180.66,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "0"
+          },
+          {
+            "end": 180.72,
+            "word": "th",
+            "start": 180.72,
+            "language": "en",
+            "confidence": 0.991,
+            "punctuated_word": "th"
+          },
+          {
+            "end": 180.72,
+            "word": "\u06d4",
+            "start": 180.72,
+            "language": "en",
+            "confidence": 0.976,
+            "punctuated_word": "\u06d4"
+          }
+        ]
+      },
+      "secondsFromStart": 180.54
+    }
+  ],
+  "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-f97f34e3-094f-422f-bd88-ae4b9352770c-stereo.wav",
+  "costBreakdown": {
+    "transport": 0.0036,
+    "stt": 0.0126,
+    "llm": 0.0076,
+    "tts": 0.0191,
+    "vapi": 0.155,
+    "chat": 0,
+    "total": 0.1979,
+    "llmPromptTokens": 48705,
+    "llmCompletionTokens": 473,
+    "llmCachedPromptTokens": 26240,
+    "ttsCharacters": 1272,
+    "analysisCostBreakdown": {
+      "summary": 0,
+      "structuredData": 0,
+      "structuredOutput": 0,
+      "successEvaluation": 0,
+      "summaryPromptTokens": 0,
+      "summaryCompletionTokens": 0,
+      "summaryCachedPromptTokens": 0,
+      "structuredDataPromptTokens": 0,
+      "structuredOutputPromptTokens": 0,
+      "successEvaluationPromptTokens": 0,
+      "structuredDataCompletionTokens": 0,
+      "structuredDataCachedPromptTokens": 0,
+      "structuredOutputCompletionTokens": 0,
+      "successEvaluationCompletionTokens": 0,
+      "structuredOutputCachedPromptTokens": 0,
+      "successEvaluationCachedPromptTokens": 0
+    },
+    "knowledgeBaseCost": 0,
+    "voicemailDetectionCost": 0
+  },
+  "assistantOverrides": {
+    "transcriber": {
+      "model": "stt-rt-v5",
+      "language": "en",
+      "provider": "soniox"
+    },
+    "model": {
+      "model": "gpt-4o-mini",
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "lookup_invoices",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "account_id"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Read-only, idempotent. Look up the invoice list for an account."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_ids",
+                "amount",
+                "date",
+                "method"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "ISO 8601 date, e.g. 2026-09-30"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "method": {
+                  "enum": [
+                    "NEFT",
+                    "RTGS",
+                    "UPI",
+                    "cheque",
+                    "portal"
+                  ],
+                  "type": "string"
+                },
+                "invoice_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Call this immediately once the caller has given a specific amount, date, and method, and you have confirmed them back. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_dispute",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reason_code",
+                "detail"
+              ],
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                },
+                "reason_code": {
+                  "enum": [
+                    "invoice_not_received",
+                    "awaiting_internal_approval",
+                    "po_mismatch",
+                    "missing_documentation",
+                    "quality_dispute",
+                    "quantity_dispute",
+                    "pricing_dispute",
+                    "payment_run_timing",
+                    "cash_flow",
+                    "wrong_contact",
+                    "paid_already"
+                  ],
+                  "type": "string"
+                },
+                "evidence_requested": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer disputes any invoice or charge. Never argue the claim \u2014 just capture and route it. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_payment_claim",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reference",
+                "paid_on"
+              ],
+              "properties": {
+                "paid_on": {
+                  "type": "string",
+                  "description": "ISO 8601 date"
+                },
+                "reference": {
+                  "type": "string",
+                  "description": "UTR or cheque number"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer claims an invoice is already paid and has given a reference and date. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "send_document",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "doc_type"
+              ],
+              "properties": {
+                "doc_type": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer asks for a document, once you know which one. Queues it to be drafted \u2014 never sent automatically. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "schedule_callback",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "priority": {
+                  "enum": [
+                    "normal",
+                    "high"
+                  ],
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately to hand off to a human: wrong person, escalation request, or unanswerable question. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "mark_opt_out",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "contact_id",
+                "scope"
+              ],
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "this_contact",
+                    "whole_account"
+                  ],
+                  "type": "string"
+                },
+                "contact_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when asked to stop calling. Acknowledge out loud, call this, then end the call. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish. Code-switch naturally between Hindi and English within sentences, the way a bilingual Indian speaker would, rather than committing to only one language. Match however the caller themselves mixes the two.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-17.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\nInvoices: SL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\"); SL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\nTotal outstanding: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method \u2014 captured across separate\n   questions, never asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-17 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Satpura Logistics Pvt Ltd. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask for the amount, the date, and the method as three separate questions \u2014 never\n  combine them. Confirm the full set back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. Then ask why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end."
+        }
+      ],
+      "provider": "openai"
+    },
+    "voice": {
+      "version": "latest",
+      "voiceId": "Naina",
+      "language": "en",
+      "provider": "vapi"
+    }
+  },
+  "analysis": {},
+  "artifact": {
+    "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-20cf8a7d-06fb-42e8-96be-ecaca0fc6aef-mono.wav",
+    "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-f97f34e3-094f-422f-bd88-ae4b9352770c-stereo.wav",
+    "recording": {
+      "stereoUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-f97f34e3-094f-422f-bd88-ae4b9352770c-stereo.wav",
+      "mono": {
+        "combinedUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-20cf8a7d-06fb-42e8-96be-ecaca0fc6aef-mono.wav",
+        "assistantUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-c9e7ebd8-0ba9-47a0-bb32-31b8bb3ca4e0-mono.wav",
+        "customerUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-be097ef0-dc2e-4084-a643-10160e0b2178-mono.wav"
+      }
+    },
+    "messages": [
+      {
+        "role": "system",
+        "time": 1789656384886,
+        "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish. Code-switch naturally between Hindi and English within sentences, the way a bilingual Indian speaker would, rather than committing to only one language. Match however the caller themselves mixes the two.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-17.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\nInvoices: SL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\"); SL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\nTotal outstanding: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method \u2014 captured across separate\n   questions, never asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-17 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Satpura Logistics Pvt Ltd. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask for the amount, the date, and the method as three separate questions \u2014 never\n  combine them. Confirm the full set back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. Then ask why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end.",
+        "secondsFromStart": 0
+      },
+      {
+        "role": "bot",
+        "time": 1789656386281,
+        "source": "",
+        "endTime": 1789656394201,
+        "message": "Hello, this is an automated call from Acme Supplies's accounts team, regarding an overdue invoice. This call may be recorded.",
+        "duration": 7920,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 1.112
+      },
+      {
+        "role": "user",
+        "time": 1789656397409,
+        "endTime": 1789656397649,
+        "message": "Um, Boli?",
+        "duration": 240,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 12.3,
+              "word": "U",
+              "start": 12.24,
+              "language": "en",
+              "confidence": 0.888,
+              "punctuated_word": "U"
+            },
+            {
+              "end": 12.36,
+              "word": "m,",
+              "start": 12.3,
+              "language": "en",
+              "confidence": 0.976,
+              "punctuated_word": "m,"
+            },
+            {
+              "end": 12.48,
+              "word": "B",
+              "start": 12.42,
+              "language": "en",
+              "confidence": 0.223,
+              "punctuated_word": "B"
+            },
+            {
+              "end": 12.48,
+              "word": "oli",
+              "start": 12.48,
+              "language": "en",
+              "confidence": 0.585,
+              "punctuated_word": "oli"
+            },
+            {
+              "end": 12.48,
+              "word": "?",
+              "start": 12.48,
+              "language": "en",
+              "confidence": 0.893,
+              "punctuated_word": "?"
+            }
+          ]
+        },
+        "secondsFromStart": 12.24
+      },
+      {
+        "role": "bot",
+        "time": 1789656399601,
+        "source": "",
+        "endTime": 1789656404221,
+        "message": "\u0915\u094d\u092f\u093e \u0906\u092a \u0905\u0915\u093e\u0909\u0902\u091f\u094d\u0938 \u092a\u0947\u090f\u092c\u0932 \u0915\u093e \u0915\u093e\u092e \u0938\u0902\u092d\u093e\u0932\u0924\u0947 \u0939\u0948\u0902, \u0938\u0924\u092a\u0941\u0930\u093e \u0932\u0949\u091c\u093f\u0938\u094d\u091f\u093f\u0915\u094d\u0938 \u092a\u094d\u0930\u093e\u0907\u0935\u0947\u091f \u0932\u093f\u092e\u093f\u091f\u0947\u0921 \u092e\u0947\u0902?",
+        "duration": 4620,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 14.432
+      },
+      {
+        "role": "user",
+        "time": 1789656407369,
+        "endTime": 1789656408569,
+        "message": "\u06c1\u0627\u06ba\u060c \u0645\u06cc\u06ba \u062f\u06cc\u06a9\u06be\u062a\u0627 \u06c1\u0648\u06ba\u06d4 \u0627\u06a9\u0627\u0624\u0646\u0679\u0633\u06d4",
+        "duration": 1200,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 22.26,
+              "word": "\u06c1",
+              "start": 22.2,
+              "language": "en",
+              "confidence": 0.584,
+              "punctuated_word": "\u06c1"
+            },
+            {
+              "end": 22.26,
+              "word": "\u0627\u06ba",
+              "start": 22.26,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "\u0627\u06ba"
+            },
+            {
+              "end": 22.38,
+              "word": "\u060c",
+              "start": 22.32,
+              "language": "en",
+              "confidence": 0.986,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 22.5,
+              "word": "\u0645\u06cc\u06ba",
+              "start": 22.44,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0645\u06cc\u06ba"
+            },
+            {
+              "end": 22.62,
+              "word": "\u062f\u06cc\u06a9",
+              "start": 22.56,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "\u062f\u06cc\u06a9"
+            },
+            {
+              "end": 22.68,
+              "word": "\u06be",
+              "start": 22.62,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06be"
+            },
+            {
+              "end": 22.74,
+              "word": "\u062a\u0627",
+              "start": 22.68,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u062a\u0627"
+            },
+            {
+              "end": 22.8,
+              "word": "\u06c1",
+              "start": 22.74,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06c1"
+            },
+            {
+              "end": 22.86,
+              "word": "\u0648\u06ba",
+              "start": 22.8,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0648\u06ba"
+            },
+            {
+              "end": 23.04,
+              "word": "\u06d4",
+              "start": 22.98,
+              "language": "en",
+              "confidence": 0.682,
+              "punctuated_word": "\u06d4"
+            },
+            {
+              "end": 23.22,
+              "word": "\u0627\u06a9",
+              "start": 23.16,
+              "language": "en",
+              "confidence": 0.824,
+              "punctuated_word": "\u0627\u06a9"
+            },
+            {
+              "end": 23.34,
+              "word": "\u0627",
+              "start": 23.28,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0627"
+            },
+            {
+              "end": 23.4,
+              "word": "\u0624\u0646",
+              "start": 23.34,
+              "language": "en",
+              "confidence": 0.978,
+              "punctuated_word": "\u0624\u0646"
+            },
+            {
+              "end": 23.4,
+              "word": "\u0679",
+              "start": 23.4,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0679"
+            },
+            {
+              "end": 23.4,
+              "word": "\u0633",
+              "start": 23.4,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u0633"
+            },
+            {
+              "end": 23.4,
+              "word": "\u06d4",
+              "start": 23.4,
+              "language": "en",
+              "confidence": 0.657,
+              "punctuated_word": "\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 22.2
+      },
+      {
+        "role": "bot",
+        "time": 1789656410101,
+        "source": "",
+        "endTime": 1789656430141,
+        "message": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u092f\u0936 \u091c\u0940\u0964 \u0906\u092a\u0915\u0947 \u092a\u093e\u0938 2 \u0913\u0935\u0930\u0921\u094d\u092f\u0942 \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948\u0902\u0964 \u092a\u0939\u0932\u093e \u0939\u0948 SL/26-27/0002, \u091c\u094b 2026-08-26 \u0915\u094b \u0921\u094d\u092f\u0942 \u0925\u093e, \u0914\u0930 \u0907\u0938\u0915\u0940 \u0930\u093e\u0936\u093f \u0939\u0948 \u20b92,04,000\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0928\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?",
+        "duration": 18780,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 24.932
+      },
+      {
+        "role": "user",
+        "time": 1789656435749,
+        "endTime": 1789656435929,
+        "message": "\u0627\u06cc\u06a9 \u0645\u0646\u0679\u06d4",
+        "duration": 180,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 50.64,
+              "word": "\u0627\u06cc\u06a9",
+              "start": 50.58,
+              "language": "en",
+              "confidence": 0.986,
+              "punctuated_word": "\u0627\u06cc\u06a9"
+            },
+            {
+              "end": 50.76,
+              "word": "\u0645\u0646",
+              "start": 50.7,
+              "language": "en",
+              "confidence": 0.98,
+              "punctuated_word": "\u0645\u0646"
+            },
+            {
+              "end": 50.76,
+              "word": "\u0679",
+              "start": 50.76,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0679"
+            },
+            {
+              "end": 50.76,
+              "word": "\u06d4",
+              "start": 50.76,
+              "language": "en",
+              "confidence": 0.778,
+              "punctuated_word": "\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 50.58
+      },
+      {
+        "role": "bot",
+        "time": 1789656437521,
+        "source": "",
+        "endTime": 1789656438661,
+        "message": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964",
+        "duration": 1140,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 52.352
+      },
+      {
+        "role": "user",
+        "time": 1789656438389,
+        "endTime": 1789656438689,
+        "message": "\u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4",
+        "duration": 300,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 53.28,
+              "word": "\u06c1",
+              "start": 53.22,
+              "language": "en",
+              "confidence": 0.993,
+              "punctuated_word": "\u06c1"
+            },
+            {
+              "end": 53.4,
+              "word": "\u0627\u06ba",
+              "start": 53.34,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0627\u06ba"
+            },
+            {
+              "end": 53.46,
+              "word": "\u060c",
+              "start": 53.4,
+              "language": "en",
+              "confidence": 0.975,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 53.52,
+              "word": "\u0645\u0644",
+              "start": 53.46,
+              "language": "en",
+              "confidence": 0.984,
+              "punctuated_word": "\u0645\u0644"
+            },
+            {
+              "end": 53.52,
+              "word": "\u06af\u06cc\u0627\u06d4",
+              "start": 53.52,
+              "language": "en",
+              "confidence": 0.974,
+              "punctuated_word": "\u06af\u06cc\u0627\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 53.22
+      },
+      {
+        "role": "bot",
+        "time": 1789656440161,
+        "source": "",
+        "endTime": 1789656440821,
+        "message": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964",
+        "duration": 660,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 54.992
+      },
+      {
+        "role": "user",
+        "time": 1789656440609,
+        "endTime": 1789656443969,
+        "message": "\u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4 \u06a9\u0648\u0646 \u0633\u0627 \u0627\u0646\u0648\u0627\u0626\u0633 \u0628\u0648\u0644\u0627 \u0622\u067e \u0646\u06d2\u061f \u0646\u0645\u0628\u0631 \u0631\u06cc\u067e\u06cc\u0679 \u06a9\u0631\u06cc\u06ba\u06d4",
+        "duration": 2520,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 55.5,
+              "word": "\u06c1",
+              "start": 55.44,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u06c1"
+            },
+            {
+              "end": 55.56,
+              "word": "\u0627\u06ba",
+              "start": 55.5,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0627\u06ba"
+            },
+            {
+              "end": 55.68,
+              "word": "\u060c",
+              "start": 55.62,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 55.68,
+              "word": "\u0645\u0644",
+              "start": 55.68,
+              "language": "en",
+              "confidence": 0.994,
+              "punctuated_word": "\u0645\u0644"
+            },
+            {
+              "end": 55.68,
+              "word": "\u06af\u06cc\u0627\u06d4",
+              "start": 55.68,
+              "language": "en",
+              "confidence": 0.931,
+              "punctuated_word": "\u06af\u06cc\u0627\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 55.44
+      },
+      {
+        "role": "bot",
+        "time": 1789656442201,
+        "source": "",
+        "endTime": 1789656442261,
+        "message": "\u0906\u092a\u0964",
+        "duration": 60,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 57.032
+      },
+      {
+        "role": "bot",
+        "time": 1789656445321,
+        "source": "",
+        "endTime": 1789656457981,
+        "message": "\u092a\u0939\u0932\u093e \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948 SL/26-27/0002\u0964 \u091c\u094b\u0964 \u20b92,04,000 \u0915\u093e \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0924\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?",
+        "duration": 11700,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 60.152
+      },
+      {
+        "role": "user",
+        "time": 1789656462929,
+        "endTime": 1789656464129,
+        "message": "\u0627\u0645\u060c \u067e\u06cc\u0645\u0646\u0679 \u0627\u0628\u06be\u06cc \u0627\u067e\u0631\u0648\u0648\u0644 \u0645\u06cc\u06ba \u06c1\u06d2\u06d4",
+        "duration": 1200,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 77.82,
+              "word": "\u0627\u0645",
+              "start": 77.76,
+              "language": "en",
+              "confidence": 0.863,
+              "punctuated_word": "\u0627\u0645"
+            },
+            {
+              "end": 78.12,
+              "word": "\u060c",
+              "start": 78.06,
+              "language": "en",
+              "confidence": 0.844,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 78.24,
+              "word": "\u067e",
+              "start": 78.18,
+              "language": "en",
+              "confidence": 0.965,
+              "punctuated_word": "\u067e"
+            },
+            {
+              "end": 78.3,
+              "word": "\u06cc\u0645",
+              "start": 78.24,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "\u06cc\u0645"
+            },
+            {
+              "end": 78.42,
+              "word": "\u0646\u0679",
+              "start": 78.36,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0646\u0679"
+            },
+            {
+              "end": 78.54,
+              "word": "\u0627\u0628",
+              "start": 78.48,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "\u0627\u0628"
+            },
+            {
+              "end": 78.66,
+              "word": "\u06be\u06cc",
+              "start": 78.6,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "\u06be\u06cc"
+            },
+            {
+              "end": 78.78,
+              "word": "\u0627\u067e",
+              "start": 78.72,
+              "language": "en",
+              "confidence": 0.987,
+              "punctuated_word": "\u0627\u067e"
+            },
+            {
+              "end": 78.9,
+              "word": "\u0631\u0648",
+              "start": 78.84,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0631\u0648"
+            },
+            {
+              "end": 78.96,
+              "word": "\u0648\u0644",
+              "start": 78.9,
+              "language": "en",
+              "confidence": 0.98,
+              "punctuated_word": "\u0648\u0644"
+            },
+            {
+              "end": 78.96,
+              "word": "\u0645\u06cc\u06ba",
+              "start": 78.96,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0645\u06cc\u06ba"
+            },
+            {
+              "end": 78.96,
+              "word": "\u06c1\u06d2\u06d4",
+              "start": 78.96,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u06c1\u06d2\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 77.76
+      },
+      {
+        "role": "bot",
+        "time": 1789656466141,
+        "source": "",
+        "endTime": 1789656468421,
+        "message": "\u0915\u0943\u092a\u092f\u093e \u092c\u0924\u093e\u090f\u0902, \u0907\u0938 \u0926\u0947\u0930\u0940 \u0915\u093e \u0915\u093e\u0930\u0923 \u0915\u094d\u092f\u093e \u0939\u0948?",
+        "duration": 2280,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 80.972
+      },
+      {
+        "role": "user",
+        "time": 1789656471569,
+        "endTime": 1789656474689,
+        "message": "\u0646\u06c1\u06cc\u06ba\u060c \u06a9\u0686\u06be \u062f\u06cc\u0631 \u06c1\u06cc \u06a9\u0627\u06d4 \u06a9\u0627\u0631\u0646 \u06a9\u0686\u06be \u0646\u0626\u06d2 \u06c1\u06cc\u06ba\u060c \u062c\u0644\u062f\u06cc \u06c1\u0648 \u062c\u0627\u0626\u06d2 \u06af\u0627\u06d4 \u067e\u06cc\u0645\u0646\u0679\u06d4",
+        "duration": 2340,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 86.46,
+              "word": "\u0646\u06c1\u06cc\u06ba",
+              "start": 86.4,
+              "language": "en",
+              "confidence": 0.991,
+              "punctuated_word": "\u0646\u06c1\u06cc\u06ba"
+            },
+            {
+              "end": 86.58,
+              "word": "\u060c",
+              "start": 86.52,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 86.64,
+              "word": "\u06a9",
+              "start": 86.58,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u06a9"
+            },
+            {
+              "end": 86.7,
+              "word": "\u0686\u06be",
+              "start": 86.64,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0686\u06be"
+            },
+            {
+              "end": 86.82,
+              "word": "\u062f",
+              "start": 86.76,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u062f"
+            },
+            {
+              "end": 86.94,
+              "word": "\u06cc\u0631",
+              "start": 86.88,
+              "language": "en",
+              "confidence": 0.991,
+              "punctuated_word": "\u06cc\u0631"
+            },
+            {
+              "end": 87,
+              "word": "\u06c1\u06cc",
+              "start": 86.94,
+              "language": "en",
+              "confidence": 0.862,
+              "punctuated_word": "\u06c1\u06cc"
+            },
+            {
+              "end": 87.12,
+              "word": "\u06a9\u0627",
+              "start": 87.06,
+              "language": "en",
+              "confidence": 0.964,
+              "punctuated_word": "\u06a9\u0627"
+            },
+            {
+              "end": 87.18,
+              "word": "\u06d4",
+              "start": 87.12,
+              "language": "en",
+              "confidence": 0.776,
+              "punctuated_word": "\u06d4"
+            },
+            {
+              "end": 87.3,
+              "word": "\u06a9\u0627\u0631",
+              "start": 87.24,
+              "language": "en",
+              "confidence": 0.973,
+              "punctuated_word": "\u06a9\u0627\u0631"
+            },
+            {
+              "end": 87.42,
+              "word": "\u0646",
+              "start": 87.36,
+              "language": "en",
+              "confidence": 0.962,
+              "punctuated_word": "\u0646"
+            },
+            {
+              "end": 87.54,
+              "word": "\u06a9",
+              "start": 87.48,
+              "language": "en",
+              "confidence": 0.985,
+              "punctuated_word": "\u06a9"
+            },
+            {
+              "end": 87.66,
+              "word": "\u0686\u06be",
+              "start": 87.6,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0686\u06be"
+            },
+            {
+              "end": 87.78,
+              "word": "\u0646",
+              "start": 87.72,
+              "language": "en",
+              "confidence": 0.924,
+              "punctuated_word": "\u0646"
+            },
+            {
+              "end": 87.9,
+              "word": "\u0626\u06d2",
+              "start": 87.84,
+              "language": "en",
+              "confidence": 0.986,
+              "punctuated_word": "\u0626\u06d2"
+            },
+            {
+              "end": 88.02,
+              "word": "\u06c1\u06cc\u06ba",
+              "start": 87.96,
+              "language": "en",
+              "confidence": 0.53,
+              "punctuated_word": "\u06c1\u06cc\u06ba"
+            },
+            {
+              "end": 88.08,
+              "word": "\u060c",
+              "start": 88.02,
+              "language": "en",
+              "confidence": 0.996,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 88.2,
+              "word": "\u062c",
+              "start": 88.14,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "\u062c"
+            },
+            {
+              "end": 88.26,
+              "word": "\u0644",
+              "start": 88.2,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0644"
+            },
+            {
+              "end": 88.32,
+              "word": "\u062f\u06cc",
+              "start": 88.26,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u062f\u06cc"
+            },
+            {
+              "end": 88.44,
+              "word": "\u06c1\u0648",
+              "start": 88.38,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06c1\u0648"
+            },
+            {
+              "end": 88.56,
+              "word": "\u062c",
+              "start": 88.5,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u062c"
+            },
+            {
+              "end": 88.56,
+              "word": "\u0627\u0626\u06d2",
+              "start": 88.56,
+              "language": "en",
+              "confidence": 0.991,
+              "punctuated_word": "\u0627\u0626\u06d2"
+            },
+            {
+              "end": 88.56,
+              "word": "\u06af",
+              "start": 88.56,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06af"
+            },
+            {
+              "end": 88.56,
+              "word": "\u0627\u06d4",
+              "start": 88.56,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "\u0627\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 86.4
+      },
+      {
+        "role": "bot",
+        "time": 1789656476341,
+        "source": "",
+        "endTime": 1789656481981,
+        "message": "\u0938\u092e\u091d \u0917\u092f\u093e\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e? \u0915\u0943\u092a\u092f\u093e \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902\u0964",
+        "duration": 4920,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 91.172
+      },
+      {
+        "role": "user",
+        "time": 1789656484589,
+        "endTime": 1789656486929,
+        "message": "\u0679\u06be\u06cc\u06a9 \u06c1\u06d2\u06d4 30th \u062a\u06a9. \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+        "duration": 1200,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 99.48,
+              "word": "\u0679",
+              "start": 99.42,
+              "language": "en",
+              "confidence": 0.987,
+              "punctuated_word": "\u0679"
+            },
+            {
+              "end": 99.48,
+              "word": "\u06be",
+              "start": 99.48,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u06be"
+            },
+            {
+              "end": 99.48,
+              "word": "\u06cc\u06a9",
+              "start": 99.48,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06cc\u06a9"
+            },
+            {
+              "end": 99.48,
+              "word": "\u06c1\u06d2\u06d4",
+              "start": 99.48,
+              "language": "en",
+              "confidence": 0.996,
+              "punctuated_word": "\u06c1\u06d2\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 99.42
+      },
+      {
+        "role": "bot",
+        "time": 1789656488581,
+        "source": "",
+        "endTime": 1789656495421,
+        "message": "\u0906\u092a\u0928\u0947 \u0915\u0939\u093e 30 \u0924\u093e\u0930\u0940\u0916 \u0924\u0915, \u0924\u094b \u0915\u094d\u092f\u093e \u092e\u0924\u0932\u092c \u0939\u0948 2026-09 \u0938\u093f\u0924\u0902\u092c\u0930 30\u0964 \u0915\u0943\u092a\u092f\u093e \u092a\u0941\u0937\u094d\u091f\u093f \u0915\u0930\u0947\u0902\u0964",
+        "duration": 6840,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 103.412
+      },
+      {
+        "role": "user",
+        "time": 1789656497909,
+        "endTime": 1789656497969,
+        "message": "\u06c1\u0627\u06ba\u06d4",
+        "duration": 60,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 112.8,
+              "word": "\u06c1",
+              "start": 112.74,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u06c1"
+            },
+            {
+              "end": 112.8,
+              "word": "\u0627\u06ba",
+              "start": 112.8,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0627\u06ba"
+            },
+            {
+              "end": 112.8,
+              "word": "\u06d4",
+              "start": 112.8,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 112.74
+      },
+      {
+        "role": "bot",
+        "time": 1789656499321,
+        "source": "",
+        "endTime": 1789656507301,
+        "message": "\u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u0915\u094d\u092f\u093e \u0939\u094b\u0917\u093e? \u090f\u0928\u0908\u090f\u092b\u091f\u0940, \u0906\u0930\u091f\u0940\u091c\u0940\u090f\u0938, \u092f\u0942\u092a\u0940\u0906\u0908, \u091a\u0947\u0915, \u092f\u093e \u092a\u094b\u0930\u094d\u091f\u0932?",
+        "duration": 6960,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 114.152
+      },
+      {
+        "role": "user",
+        "time": 1789656510209,
+        "endTime": 1789656510809,
+        "message": "\u06cc\u0648 \u067e\u06cc \u0622\u0626\u06cc \u0633\u06d2 \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+        "duration": 600,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 125.1,
+              "word": "\u06cc",
+              "start": 125.04,
+              "language": "en",
+              "confidence": 0.906,
+              "punctuated_word": "\u06cc"
+            },
+            {
+              "end": 125.16,
+              "word": "\u0648",
+              "start": 125.1,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0648"
+            },
+            {
+              "end": 125.28,
+              "word": "\u067e\u06cc",
+              "start": 125.22,
+              "language": "en",
+              "confidence": 0.993,
+              "punctuated_word": "\u067e\u06cc"
+            },
+            {
+              "end": 125.4,
+              "word": "\u0622",
+              "start": 125.34,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "\u0622"
+            },
+            {
+              "end": 125.46,
+              "word": "\u0626\u06cc",
+              "start": 125.4,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0626\u06cc"
+            },
+            {
+              "end": 125.58,
+              "word": "\u0633\u06d2",
+              "start": 125.52,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0633\u06d2"
+            },
+            {
+              "end": 125.64,
+              "word": "\u06a9\u0631",
+              "start": 125.58,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u06a9\u0631"
+            },
+            {
+              "end": 125.64,
+              "word": "\u062f",
+              "start": 125.64,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u062f"
+            },
+            {
+              "end": 125.64,
+              "word": "\u06cc\u06ba",
+              "start": 125.64,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06cc\u06ba"
+            },
+            {
+              "end": 125.64,
+              "word": "\u06af",
+              "start": 125.64,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u06af"
+            },
+            {
+              "end": 125.64,
+              "word": "\u06d2\u06d4",
+              "start": 125.64,
+              "language": "en",
+              "confidence": 0.996,
+              "punctuated_word": "\u06d2\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 125.04
+      },
+      {
+        "role": "bot",
+        "time": 1789656513181,
+        "source": "",
+        "endTime": 1789656525421,
+        "message": "One moment. \u0906\u092a\u0928\u0947 \u0915\u0939\u093e \u20b92,04,000, 2026-09-30 \u0924\u0915, \u092f\u0942\u092a\u0940\u0906\u0908 \u0938\u0947 \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964 \u092f\u0939 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0905\u092c S\u0964",
+        "duration": 10620,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 128.012
+      },
+      {
+        "role": "tool_calls",
+        "time": 1789656517230,
+        "message": "",
+        "toolCalls": [
+          {
+            "id": "call_H453NVKibF1WA7721lYFESpT",
+            "type": "function",
+            "function": {
+              "name": "record_ptp",
+              "arguments": "{\n  \"invoice_ids\": [\"SL/26-27/0002\"],\n  \"amount\": 204000,\n  \"date\": \"2026-09-30\",\n  \"method\": \"UPI\"\n}"
+            }
+          }
+        ],
+        "secondsFromStart": 132.061
+      },
+      {
+        "name": "record_ptp",
+        "role": "tool_call_result",
+        "time": 1789656518823,
+        "result": {
+          "ptp_id": "PTP-192c4576"
+        },
+        "metadata": {},
+        "toolCallId": "call_H453NVKibF1WA7721lYFESpT",
+        "secondsFromStart": 133.653
+      },
+      {
+        "role": "bot",
+        "time": 1789656525721,
+        "source": "",
+        "endTime": 1789656531781,
+        "message": "L/26-27/\u0964 0\u0964 0\u0964 03 \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902 \u092c\u093e\u0924 \u0915\u0930\u0947\u0902?",
+        "duration": 4620,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 140.552
+      },
+      {
+        "role": "user",
+        "time": 1789656535769,
+        "endTime": 1789656542009,
+        "message": "\u06c1\u0627\u06ba\u060c \u067e\u0631 \u062a\u06be\u0648\u0691\u0627. \u0627\u06cc\u0688\u062c\u0633\u0679\u0645\u0646\u0679 \u06c1\u0648 \u0633\u06a9\u062a\u0627 \u06c1\u06d2 \u06a9\u06cc\u0627\u061f 10% \u06a9\u0645 \u06a9\u0631 \u062f\u0648\u060c \u0622\u062c \u06c1\u06cc \u067e\u06cc\u0645\u0646\u0679 \u06a9\u0631 \u062f\u0648\u06ba \u06af\u0627\u06d4",
+        "duration": 4260,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 150.66,
+              "word": "\u06c1",
+              "start": 150.6,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "\u06c1"
+            },
+            {
+              "end": 150.78,
+              "word": "\u0627\u06ba",
+              "start": 150.72,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "\u0627\u06ba"
+            },
+            {
+              "end": 150.96,
+              "word": "\u060c",
+              "start": 150.9,
+              "language": "en",
+              "confidence": 0.914,
+              "punctuated_word": "\u060c"
+            },
+            {
+              "end": 151.2,
+              "word": "\u067e\u0631",
+              "start": 151.14,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u067e\u0631"
+            },
+            {
+              "end": 151.8,
+              "word": "\u062a\u06be",
+              "start": 151.74,
+              "language": "en",
+              "confidence": 0.95,
+              "punctuated_word": "\u062a\u06be"
+            },
+            {
+              "end": 151.8,
+              "word": "\u0648",
+              "start": 151.8,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0648"
+            },
+            {
+              "end": 151.8,
+              "word": "\u0691",
+              "start": 151.8,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "\u0691"
+            },
+            {
+              "end": 151.8,
+              "word": "\u0627",
+              "start": 151.8,
+              "language": "en",
+              "confidence": 0.958,
+              "punctuated_word": "\u0627"
+            },
+            {
+              "end": 151.8,
+              "word": ".",
+              "start": 151.8,
+              "language": "en",
+              "confidence": 0.849,
+              "punctuated_word": "."
+            }
+          ]
+        },
+        "secondsFromStart": 150.6
+      },
+      {
+        "role": "bot",
+        "time": 1789656543721,
+        "source": "",
+        "endTime": 1789656553861,
+        "message": "\u092f\u0939 \u0938\u0902\u092d\u0935 \u0928\u0939\u0940\u0902 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0938\u0947 \u091f\u0940\u092e \u0915\u094b \u092c\u0924\u093e\u090a\u0901\u0917\u093e\u0964 \u0905\u092c \u092c\u0924\u093e\u090f\u0902, SL/26-27/0003 \u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0915\u0930\u0947\u0902\u0917\u0947?",
+        "duration": 9480,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 158.552
+      },
+      {
+        "role": "user",
+        "time": 1789656556649,
+        "endTime": 1789656557729,
+        "message": "\u06a9\u0633 \u062a\u0627\u0631\u06cc\u062e \u062a\u06a9\u061f \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+        "duration": 540,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 171.54,
+              "word": "\u06a9",
+              "start": 171.48,
+              "language": "en",
+              "confidence": 0.575,
+              "punctuated_word": "\u06a9"
+            },
+            {
+              "end": 171.6,
+              "word": "\u0633",
+              "start": 171.54,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "\u0633"
+            },
+            {
+              "end": 171.72,
+              "word": "\u062a\u0627\u0631\u06cc\u062e",
+              "start": 171.66,
+              "language": "en",
+              "confidence": 0.991,
+              "punctuated_word": "\u062a\u0627\u0631\u06cc\u062e"
+            },
+            {
+              "end": 171.96,
+              "word": "\u062a\u06a9",
+              "start": 171.9,
+              "language": "en",
+              "confidence": 0.606,
+              "punctuated_word": "\u062a\u06a9"
+            },
+            {
+              "end": 171.96,
+              "word": "\u061f",
+              "start": 171.96,
+              "language": "en",
+              "confidence": 0.995,
+              "punctuated_word": "\u061f"
+            }
+          ]
+        },
+        "secondsFromStart": 171.48
+      },
+      {
+        "role": "bot",
+        "time": 1789656559201,
+        "source": "",
+        "endTime": 1789656562501,
+        "message": "\u0915\u0943\u092a\u092f\u093e \u090f\u0915 \u0928\u093f\u0936\u094d\u091a\u093f\u0924 \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902, \u091c\u092c \u0906\u092a \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964",
+        "duration": 3300,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 174.032
+      },
+      {
+        "role": "user",
+        "time": 1789656565709,
+        "endTime": 1789656565889,
+        "message": "30th\u06d4",
+        "duration": 180,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 180.6,
+              "word": "3",
+              "start": 180.54,
+              "language": "en",
+              "confidence": 0.991,
+              "punctuated_word": "3"
+            },
+            {
+              "end": 180.72,
+              "word": "0",
+              "start": 180.66,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "0"
+            },
+            {
+              "end": 180.72,
+              "word": "th",
+              "start": 180.72,
+              "language": "en",
+              "confidence": 0.991,
+              "punctuated_word": "th"
+            },
+            {
+              "end": 180.72,
+              "word": "\u06d4",
+              "start": 180.72,
+              "language": "en",
+              "confidence": 0.976,
+              "punctuated_word": "\u06d4"
+            }
+          ]
+        },
+        "secondsFromStart": 180.54
+      }
+    ],
+    "messagesOpenAIFormatted": [
+      {
+        "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message has already introduced you as an automated call from\nAcme Supplies's accounts team and disclosed recording.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish. Code-switch naturally between Hindi and English within sentences, the way a bilingual Indian speaker would, rather than committing to only one language. Match however the caller themselves mixes the two.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-17.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\nInvoices: SL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\"); SL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\nTotal outstanding: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE\n1. A specific promise to pay: an amount, a date, and a method \u2014 captured across separate\n   questions, never asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-17 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE\nBefore stating any invoice amount, confirm you are speaking to someone who\nhandles accounts payable for Satpura Logistics Pvt Ltd. If not, ask for the right\nperson's name and number, call schedule_callback, and end politely.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask for the amount, the date, and the method as three separate questions \u2014 never\n  combine them. Confirm the full set back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. Then ask why, once. Record the reason code.\nWrong person \u2192 authority gate, call schedule_callback.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nRestate the outcome in one sentence, confirm it, thank them, end.",
+        "role": "system"
+      },
+      {
+        "content": "Hello, this is an automated call from Acme Supplies's accounts team, regarding an overdue invoice. This call may be recorded.",
+        "role": "assistant"
+      },
+      {
+        "content": "Um, Boli?",
+        "role": "user"
+      },
+      {
+        "content": "\u0915\u094d\u092f\u093e \u0906\u092a \u0905\u0915\u093e\u0909\u0902\u091f\u094d\u0938 \u092a\u0947\u090f\u092c\u0932 \u0915\u093e \u0915\u093e\u092e \u0938\u0902\u092d\u093e\u0932\u0924\u0947 \u0939\u0948\u0902, \u0938\u0924\u092a\u0941\u0930\u093e \u0932\u0949\u091c\u093f\u0938\u094d\u091f\u093f\u0915\u094d\u0938 \u092a\u094d\u0930\u093e\u0907\u0935\u0947\u091f \u0932\u093f\u092e\u093f\u091f\u0947\u0921 \u092e\u0947\u0902?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06c1\u0627\u06ba\u060c \u0645\u06cc\u06ba \u062f\u06cc\u06a9\u06be\u062a\u0627 \u06c1\u0648\u06ba\u06d4 \u0627\u06a9\u0627\u0624\u0646\u0679\u0633\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u092f\u0936 \u091c\u0940\u0964 \u0906\u092a\u0915\u0947 \u092a\u093e\u0938 2 \u0913\u0935\u0930\u0921\u094d\u092f\u0942 \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948\u0902\u0964 \u092a\u0939\u0932\u093e \u0939\u0948 SL/26-27/0002, \u091c\u094b 2026-08-26 \u0915\u094b \u0921\u094d\u092f\u0942 \u0925\u093e, \u0914\u0930 \u0907\u0938\u0915\u0940 \u0930\u093e\u0936\u093f \u0939\u0948 \u20b92,04,000\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0928\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0627\u06cc\u06a9 \u0645\u0646\u0679\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4 \u06a9\u0648\u0646 \u0633\u0627 \u0627\u0646\u0648\u0627\u0626\u0633 \u0628\u0648\u0644\u0627 \u0622\u067e \u0646\u06d2\u061f \u0646\u0645\u0628\u0631 \u0631\u06cc\u067e\u06cc\u0679 \u06a9\u0631\u06cc\u06ba\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0906\u092a\u0964 \u092a\u0939\u0932\u093e \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948 SL/26-27/0002\u0964 \u091c\u094b\u0964 \u20b92,04,000 \u0915\u093e \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0924\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0627\u0645\u060c \u067e\u06cc\u0645\u0646\u0679 \u0627\u0628\u06be\u06cc \u0627\u067e\u0631\u0648\u0648\u0644 \u0645\u06cc\u06ba \u06c1\u06d2\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0915\u0943\u092a\u092f\u093e \u092c\u0924\u093e\u090f\u0902, \u0907\u0938 \u0926\u0947\u0930\u0940 \u0915\u093e \u0915\u093e\u0930\u0923 \u0915\u094d\u092f\u093e \u0939\u0948?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0646\u06c1\u06cc\u06ba\u060c \u06a9\u0686\u06be \u062f\u06cc\u0631 \u06c1\u06cc \u06a9\u0627\u06d4 \u06a9\u0627\u0631\u0646 \u06a9\u0686\u06be \u0646\u0626\u06d2 \u06c1\u06cc\u06ba\u060c \u062c\u0644\u062f\u06cc \u06c1\u0648 \u062c\u0627\u0626\u06d2 \u06af\u0627\u06d4 \u067e\u06cc\u0645\u0646\u0679\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0938\u092e\u091d \u0917\u092f\u093e\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e? \u0915\u0943\u092a\u092f\u093e \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902\u0964",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0679\u06be\u06cc\u06a9 \u06c1\u06d2\u06d4 30th \u062a\u06a9. \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0906\u092a\u0928\u0947 \u0915\u0939\u093e 30 \u0924\u093e\u0930\u0940\u0916 \u0924\u0915, \u0924\u094b \u0915\u094d\u092f\u093e \u092e\u0924\u0932\u092c \u0939\u0948 2026-09 \u0938\u093f\u0924\u0902\u092c\u0930 30\u0964 \u0915\u0943\u092a\u092f\u093e \u092a\u0941\u0937\u094d\u091f\u093f \u0915\u0930\u0947\u0902\u0964",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06c1\u0627\u06ba\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u0915\u094d\u092f\u093e \u0939\u094b\u0917\u093e? \u090f\u0928\u0908\u090f\u092b\u091f\u0940, \u0906\u0930\u091f\u0940\u091c\u0940\u090f\u0938, \u092f\u0942\u092a\u0940\u0906\u0908, \u091a\u0947\u0915, \u092f\u093e \u092a\u094b\u0930\u094d\u091f\u0932?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06cc\u0648 \u067e\u06cc \u0622\u0626\u06cc \u0633\u06d2 \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "One moment. \u0906\u092a\u0928\u0947 \u0915\u0939\u093e \u20b92,04,000, 2026-09-30 \u0924\u0915, \u092f\u0942\u092a\u0940\u0906\u0908 \u0938\u0947 \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964 \u092f\u0939 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0905\u092c S\u0964",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_H453NVKibF1WA7721lYFESpT",
+            "type": "function",
+            "function": {
+              "name": "record_ptp",
+              "arguments": "{\n  \"invoice_ids\": [\"SL/26-27/0002\"],\n  \"amount\": 204000,\n  \"date\": \"2026-09-30\",\n  \"method\": \"UPI\"\n}"
+            }
+          }
+        ]
+      },
+      {
+        "content": "{\"ptp_id\":\"PTP-192c4576\"}",
+        "role": "tool",
+        "tool_call_id": "call_H453NVKibF1WA7721lYFESpT"
+      },
+      {
+        "content": "L/26-27/\u0964 0\u0964 0\u0964 03 \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902 \u092c\u093e\u0924 \u0915\u0930\u0947\u0902?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06c1\u0627\u06ba\u060c \u067e\u0631 \u062a\u06be\u0648\u0691\u0627. \u0627\u06cc\u0688\u062c\u0633\u0679\u0645\u0646\u0679 \u06c1\u0648 \u0633\u06a9\u062a\u0627 \u06c1\u06d2 \u06a9\u06cc\u0627\u061f 10% \u06a9\u0645 \u06a9\u0631 \u062f\u0648\u060c \u0622\u062c \u06c1\u06cc \u067e\u06cc\u0645\u0646\u0679 \u06a9\u0631 \u062f\u0648\u06ba \u06af\u0627\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u092f\u0939 \u0938\u0902\u092d\u0935 \u0928\u0939\u0940\u0902 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0938\u0947 \u091f\u0940\u092e \u0915\u094b \u092c\u0924\u093e\u090a\u0901\u0917\u093e\u0964 \u0905\u092c \u092c\u0924\u093e\u090f\u0902, SL/26-27/0003 \u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0915\u0930\u0947\u0902\u0917\u0947?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u06a9\u0633 \u062a\u0627\u0631\u06cc\u062e \u062a\u06a9\u061f \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4",
+        "role": "user"
+      },
+      {
+        "content": "\u0915\u0943\u092a\u092f\u093e \u090f\u0915 \u0928\u093f\u0936\u094d\u091a\u093f\u0924 \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902, \u091c\u092c \u0906\u092a \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964",
+        "role": "assistant"
+      },
+      {
+        "content": "30th\u06d4",
+        "role": "user"
+      }
+    ],
+    "transcript": "AI: Hello, this is an automated call from Acme Supplies's accounts team, regarding an overdue invoice. This call may be recorded.\nUser: Um, Boli?\nAI: \u0915\u094d\u092f\u093e \u0906\u092a \u0905\u0915\u093e\u0909\u0902\u091f\u094d\u0938 \u092a\u0947\u090f\u092c\u0932 \u0915\u093e \u0915\u093e\u092e \u0938\u0902\u092d\u093e\u0932\u0924\u0947 \u0939\u0948\u0902, \u0938\u0924\u092a\u0941\u0930\u093e \u0932\u0949\u091c\u093f\u0938\u094d\u091f\u093f\u0915\u094d\u0938 \u092a\u094d\u0930\u093e\u0907\u0935\u0947\u091f \u0932\u093f\u092e\u093f\u091f\u0947\u0921 \u092e\u0947\u0902?\nUser: \u06c1\u0627\u06ba\u060c \u0645\u06cc\u06ba \u062f\u06cc\u06a9\u06be\u062a\u0627 \u06c1\u0648\u06ba\u06d4 \u0627\u06a9\u0627\u0624\u0646\u0679\u0633\u06d4\nAI: \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u092f\u0936 \u091c\u0940\u0964 \u0906\u092a\u0915\u0947 \u092a\u093e\u0938 2 \u0913\u0935\u0930\u0921\u094d\u092f\u0942 \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948\u0902\u0964 \u092a\u0939\u0932\u093e \u0939\u0948 SL/26-27/0002, \u091c\u094b 2026-08-26 \u0915\u094b \u0921\u094d\u092f\u0942 \u0925\u093e, \u0914\u0930 \u0907\u0938\u0915\u0940 \u0930\u093e\u0936\u093f \u0939\u0948 \u20b92,04,000\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0928\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?\nUser: \u0627\u06cc\u06a9 \u0645\u0646\u0679\u06d4\nAI: \u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964\nUser: \u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4\nAI: \u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902\u0964\nUser: \u06c1\u0627\u06ba\u060c \u0645\u0644 \u06af\u06cc\u0627\u06d4 \u06a9\u0648\u0646 \u0633\u0627 \u0627\u0646\u0648\u0627\u0626\u0633 \u0628\u0648\u0644\u0627 \u0622\u067e \u0646\u06d2\u061f \u0646\u0645\u0628\u0631 \u0631\u06cc\u067e\u06cc\u0679 \u06a9\u0631\u06cc\u06ba\u06d4\nAI: \u0906\u092a\u0964\nAI: \u092a\u0939\u0932\u093e \u0907\u0928\u0935\u0949\u0907\u0938 \u0939\u0948 SL/26-27/0002\u0964 \u091c\u094b\u0964 \u20b92,04,000 \u0915\u093e \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938\u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0924\u0947 \u0915\u093e \u0915\u094b\u0908 \u0935\u093e\u0926\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?\nUser: \u0627\u0645\u060c \u067e\u06cc\u0645\u0646\u0679 \u0627\u0628\u06be\u06cc \u0627\u067e\u0631\u0648\u0648\u0644 \u0645\u06cc\u06ba \u06c1\u06d2\u06d4\nAI: \u0915\u0943\u092a\u092f\u093e \u092c\u0924\u093e\u090f\u0902, \u0907\u0938 \u0926\u0947\u0930\u0940 \u0915\u093e \u0915\u093e\u0930\u0923 \u0915\u094d\u092f\u093e \u0939\u0948?\nUser: \u0646\u06c1\u06cc\u06ba\u060c \u06a9\u0686\u06be \u062f\u06cc\u0631 \u06c1\u06cc \u06a9\u0627\u06d4 \u06a9\u0627\u0631\u0646 \u06a9\u0686\u06be \u0646\u0626\u06d2 \u06c1\u06cc\u06ba\u060c \u062c\u0644\u062f\u06cc \u06c1\u0648 \u062c\u0627\u0626\u06d2 \u06af\u0627\u06d4 \u067e\u06cc\u0645\u0646\u0679\u06d4\nAI: \u0938\u092e\u091d \u0917\u092f\u093e\u0964 \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e? \u0915\u0943\u092a\u092f\u093e \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902\u0964\nUser: \u0679\u06be\u06cc\u06a9 \u06c1\u06d2\u06d4 30th \u062a\u06a9. \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4\nAI: \u0906\u092a\u0928\u0947 \u0915\u0939\u093e 30 \u0924\u093e\u0930\u0940\u0916 \u0924\u0915, \u0924\u094b \u0915\u094d\u092f\u093e \u092e\u0924\u0932\u092c \u0939\u0948 2026-09 \u0938\u093f\u0924\u0902\u092c\u0930 30\u0964 \u0915\u0943\u092a\u092f\u093e \u092a\u0941\u0937\u094d\u091f\u093f \u0915\u0930\u0947\u0902\u0964\nUser: \u06c1\u0627\u06ba\u06d4\nAI: \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u0915\u094d\u092f\u093e \u0939\u094b\u0917\u093e? \u090f\u0928\u0908\u090f\u092b\u091f\u0940, \u0906\u0930\u091f\u0940\u091c\u0940\u090f\u0938, \u092f\u0942\u092a\u0940\u0906\u0908, \u091a\u0947\u0915, \u092f\u093e \u092a\u094b\u0930\u094d\u091f\u0932?\nUser: \u06cc\u0648 \u067e\u06cc \u0622\u0626\u06cc \u0633\u06d2 \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4\nAI: One moment. \u0906\u092a\u0928\u0947 \u0915\u0939\u093e \u20b92,04,000, 2026-09-30 \u0924\u0915, \u092f\u0942\u092a\u0940\u0906\u0908 \u0938\u0947 \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964 \u092f\u0939 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0905\u092c S\u0964\nAI: L/26-27/\u0964 0\u0964 0\u0964 03 \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902 \u092c\u093e\u0924 \u0915\u0930\u0947\u0902?\nUser: \u06c1\u0627\u06ba\u060c \u067e\u0631 \u062a\u06be\u0648\u0691\u0627. \u0627\u06cc\u0688\u062c\u0633\u0679\u0645\u0646\u0679 \u06c1\u0648 \u0633\u06a9\u062a\u0627 \u06c1\u06d2 \u06a9\u06cc\u0627\u061f 10% \u06a9\u0645 \u06a9\u0631 \u062f\u0648\u060c \u0622\u062c \u06c1\u06cc \u067e\u06cc\u0645\u0646\u0679 \u06a9\u0631 \u062f\u0648\u06ba \u06af\u0627\u06d4\nAI: \u092f\u0939 \u0938\u0902\u092d\u0935 \u0928\u0939\u0940\u0902 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0938\u0947 \u091f\u0940\u092e \u0915\u094b \u092c\u0924\u093e\u090a\u0901\u0917\u093e\u0964 \u0905\u092c \u092c\u0924\u093e\u090f\u0902, SL/26-27/0003 \u0915\u0947 \u0932\u093f\u090f \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0915\u0930\u0947\u0902\u0917\u0947?\nUser: \u06a9\u0633 \u062a\u0627\u0631\u06cc\u062e \u062a\u06a9\u061f \u06a9\u0631 \u062f\u06cc\u06ba \u06af\u06d2\u06d4\nAI: \u0915\u0943\u092a\u092f\u093e \u090f\u0915 \u0928\u093f\u0936\u094d\u091a\u093f\u0924 \u0924\u093e\u0930\u0940\u0916 \u092c\u0924\u093e\u090f\u0902, \u091c\u092c \u0906\u092a \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902\u0917\u0947\u0964\nUser: 30th\u06d4\n",
+    "logUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-calllogs/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0afd5-44e2-7000-859b-01f47f6dc3af-d3e70a66-98ca-4d44-8f1c-02e74949aa44-1789656574587.jsonl.gz",
+    "nodes": [],
+    "assistantActivations": [
+      {
+        "assistantName": "collections-agent-v1",
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantVersion": "v10"
+      }
+    ],
+    "variableValues": {
+      "day": "17",
+      "now": "Sep 17, 2026, 2:46 PM UTC",
+      "call": {
+        "id": "01a0afd5-44e2-7000-859b-01f47f6dc3af",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-17T14:46:24.738Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/3jiRTctNON3dGNoWmUIv",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 17, 2026 UTC",
+      "time": "2:46 PM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/3jiRTctNON3dGNoWmUIv",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Thursday, September 17, 2026 at 2:46 PM UTC"
+    },
+    "variables": {
+      "day": "17",
+      "now": "Sep 17, 2026, 2:46 PM UTC",
+      "call": {
+        "id": "01a0afd5-44e2-7000-859b-01f47f6dc3af",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-17T14:46:24.738Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/3jiRTctNON3dGNoWmUIv",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 17, 2026 UTC",
+      "time": "2:46 PM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/3jiRTctNON3dGNoWmUIv",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Thursday, September 17, 2026 at 2:46 PM UTC"
+    },
+    "performanceMetrics": {
+      "turnLatencies": [
+        {
+          "modelLatency": 709,
+          "voiceLatency": 353,
+          "transcriberLatency": 820,
+          "endpointingLatency": 2,
+          "turnLatency": 1885
+        },
+        {
+          "modelLatency": 544,
+          "voiceLatency": 322,
+          "transcriberLatency": 1437,
+          "endpointingLatency": 1,
+          "turnLatency": 2312
+        },
+        {
+          "modelLatency": 539,
+          "voiceLatency": 359,
+          "transcriberLatency": 477,
+          "endpointingLatency": 2,
+          "turnLatency": 1397
+        },
+        {
+          "modelLatency": 428,
+          "voiceLatency": 511,
+          "transcriberLatency": 391,
+          "endpointingLatency": 2,
+          "turnLatency": 1333
+        },
+        {
+          "modelLatency": 370,
+          "voiceLatency": 418,
+          "transcriberLatency": 193,
+          "endpointingLatency": 2,
+          "turnLatency": 985
+        },
+        {
+          "modelLatency": 361,
+          "voiceLatency": 293,
+          "transcriberLatency": 1807,
+          "endpointingLatency": 1,
+          "turnLatency": 2478
+        },
+        {
+          "modelLatency": 850,
+          "voiceLatency": 339,
+          "transcriberLatency": 556,
+          "endpointingLatency": 1,
+          "turnLatency": 1748
+        },
+        {
+          "modelLatency": 412,
+          "voiceLatency": 369,
+          "transcriberLatency": 114,
+          "endpointingLatency": 2,
+          "turnLatency": 899
+        },
+        {
+          "modelLatency": 369,
+          "voiceLatency": 371,
+          "transcriberLatency": 1196,
+          "endpointingLatency": 2,
+          "turnLatency": 2004
+        },
+        {
+          "modelLatency": 460,
+          "voiceLatency": 620,
+          "transcriberLatency": 114,
+          "endpointingLatency": 2,
+          "turnLatency": 1235
+        },
+        {
+          "modelLatency": 489,
+          "voiceLatency": 400,
+          "transcriberLatency": 0,
+          "endpointingLatency": 2,
+          "turnLatency": 906
+        },
+        {
+          "modelLatency": 0,
+          "voiceLatency": 0,
+          "transcriberLatency": 161,
+          "endpointingLatency": 3,
+          "turnLatency": 1629
+        },
+        {
+          "modelLatency": 636,
+          "voiceLatency": 344,
+          "transcriberLatency": 38,
+          "endpointingLatency": 3,
+          "turnLatency": 1041
+        },
+        {
+          "modelLatency": 397,
+          "voiceLatency": 363,
+          "transcriberLatency": 77,
+          "endpointingLatency": 3,
+          "turnLatency": 856
+        },
+        {
+          "modelLatency": 412,
+          "voiceLatency": 459,
+          "transcriberLatency": 388,
+          "endpointingLatency": 2,
+          "turnLatency": 1289
+        }
+      ],
+      "modelLatencyAverage": 465.07,
+      "voiceLatencyAverage": 368.07,
+      "transcriberLatencyAverage": 517.93,
+      "endpointingLatencyAverage": 2,
+      "turnLatencyAverage": 1466.47,
+      "fromTransportLatencyAverage": 20,
+      "toTransportLatencyAverage": 49,
+      "numAssistantInterrupted": 4
+    },
+    "scorecards": {},
+    "transfers": [],
+    "presignedMonoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-20cf8a7d-06fb-42e8-96be-ecaca0fc6aef-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260917%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260917T145408Z&X-Amz-Expires=1800&X-Amz-Signature=daa7ca5ee81f975f8c75c504fc97218284580dca37cca7b4c38a23d5fa305d61&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedStereoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-f97f34e3-094f-422f-bd88-ae4b9352770c-stereo.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260917%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260917T145408Z&X-Amz-Expires=1800&X-Amz-Signature=2d36130c5d889e07d0a67d4078286722271676725be2f15f99a439f5f595db76&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedAssistantUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-c9e7ebd8-0ba9-47a0-bb32-31b8bb3ca4e0-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260917%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260917T145408Z&X-Amz-Expires=1800&X-Amz-Signature=417c4f55b85f08cb8da9cde81293ea12210c5c25ee5fb4b53b45ec076e4bb883&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedCustomerUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0afd5-44e2-7000-859b-01f47f6dc3af-1789656573907-be097ef0-dc2e-4084-a643-10160e0b2178-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260917%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260917T145408Z&X-Amz-Expires=1800&X-Amz-Signature=4368f213ff074c37e905cb7e062898daef71ce0cd5bdac1d0bbf5248037e550d&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedLogUrl": "https://hipaa-calllogs.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0afd5-44e2-7000-859b-01f47f6dc3af-d3e70a66-98ca-4d44-8f1c-02e74949aa44-1789656574587.jsonl.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260917%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260917T145408Z&X-Amz-Expires=1800&X-Amz-Signature=052b97c2a6537c154a5732ca6c948d9c54b2325297758b5c05a75ed350e09f64&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedUrlsExpiresAt": "2026-09-17T15:24:08.232Z"
+  },
+  "costs": [
+    {
+      "cost": 0.012573666666666667,
+      "type": "transcriber",
+      "minutes": 3.0435000000000003,
+      "transcriber": {
+        "model": "stt-rt-v5",
+        "provider": "soniox"
+      }
+    },
+    {
+      "cost": 0.00758955,
+      "type": "model",
+      "model": {
+        "model": "gpt-4o-mini",
+        "provider": "openai"
+      },
+      "promptTokens": 48705,
+      "reasoningTokens": 0,
+      "completionTokens": 473,
+      "cachedPromptTokens": 26240
+    },
+    {
+      "cost": 0.01908,
+      "type": "voice",
+      "voice": {
+        "model": "vapi-v2",
+        "voiceId": "Naina",
+        "provider": "vapi"
+      },
+      "characters": 1272
+    },
+    {
+      "cost": 0.15504,
+      "type": "vapi",
+      "minutes": 3.1008,
+      "subType": "normal"
+    },
+    {
+      "cost": 0,
+      "type": "knowledge-base",
+      "model": {
+        "model": "gemini-2.5-flash",
+        "provider": "google"
+      },
+      "promptTokens": 0,
+      "completionTokens": 0
+    },
+    {
+      "cost": 0.0036000599999999995,
+      "type": "transport",
+      "minutes": 186050,
+      "provider": "daily"
+    }
+  ],
+  "monitor": {
+    "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production1.vapi.ai/01a0afd5-44e2-7000-859b-01f47f6dc3af/listen",
+    "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production1.vapi.ai/01a0afd5-44e2-7000-859b-01f47f6dc3af/control"
+  },
+  "transport": {
+    "callUrl": "https://vapi.daily.co/3jiRTctNON3dGNoWmUIv",
+    "provider": "daily",
+    "conversationType": "voice",
+    "assistantVideoEnabled": false,
+    "videoRecordingEnabled": false,
+    "roomDeleteOnUserLeaveEnabled": true
+  },
+  "assistantVersion": "v10"
+}

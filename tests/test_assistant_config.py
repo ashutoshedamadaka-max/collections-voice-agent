@@ -54,6 +54,26 @@ def test_assistant_payload_uses_vapi_voice_and_soniox_transcriber():
     assert payload["transcriber"]["provider"] == "soniox"
 
 
+def test_assistant_payload_sets_stop_speaking_plan_with_word_count_threshold():
+    """Regression guard for the 2026-09-17 barge-in stutter loop (docs/FAILURES.md): at Vapi's
+    default numWords=0, ~0.2s of any customer voice activity interrupts the assistant — this
+    must be a positive threshold so acknowledgementPhrases actually gets a chance to apply."""
+    payload = build_assistant_payload("Acme Supplies", "https://example.com")
+    plan = payload["stopSpeakingPlan"]
+    assert plan["numWords"] > 0
+
+
+def test_assistant_payload_stop_speaking_plan_recognizes_hindi_backchannels():
+    """Vapi's default acknowledgementPhrases list is English-only ("okay", "got it", ...) — a
+    real Hinglish call was interrupted mid-sentence by "haan" and "theek hai", neither of which
+    is in that list."""
+    payload = build_assistant_payload("Acme Supplies", "https://example.com")
+    phrases = payload["stopSpeakingPlan"]["acknowledgementPhrases"]
+    assert "haan" in phrases
+    assert "theek hai" in phrases
+    assert "okay" in phrases  # English defaults preserved for English calls
+
+
 def test_call_overrides_embeds_rendered_prompt(sample_context_pack):
     overrides = build_call_overrides(sample_context_pack, "Acme Supplies")
     system_message = overrides["model"]["messages"][0]["content"]
@@ -101,11 +121,12 @@ def test_call_overrides_use_hindi_voice_and_transcriber_for_hindi_account(
     assert overrides["transcriber"]["language"] == "hi"
 
 
-def test_call_overrides_use_english_voice_and_transcriber_for_hinglish_account(
+def test_call_overrides_use_english_voice_but_hindi_transcriber_for_hinglish_account(
     base_account, make_invoice, as_of
 ):
-    """Hinglish gets English voice/transcriber settings — code-switching is a prompt
-    instruction, not an audio-provider setting (neither provider has a Hinglish code)."""
+    """Hinglish gets an English voice (the model writes Hinglish in Latin script with English
+    numbers/terms, which an English voice can speak) but a Hindi transcriber — "en" mis-
+    rendered genuinely code-switched audio as Urdu script on a real call (docs/FAILURES.md)."""
     from collections_agent.precall.context_pack import build_context_pack
 
     hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
@@ -121,6 +142,6 @@ def test_call_overrides_use_english_voice_and_transcriber_for_hinglish_account(
     overrides = build_call_overrides(pack, "Acme Supplies")
 
     assert overrides["voice"]["language"] == "en"
-    assert overrides["transcriber"]["language"] == "en"
+    assert overrides["transcriber"]["language"] == "hi"
     system_message = overrides["model"]["messages"][0]["content"]
-    assert "code-switch" in system_message.lower()
+    assert "Latin" in system_message
