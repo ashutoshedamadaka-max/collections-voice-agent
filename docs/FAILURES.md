@@ -98,7 +98,7 @@ the same failure as it silently doing nothing — it sounds like progress to the
 whoever is listening to the call, which makes it a more dangerous class of bug than a webhook
 timeout, not a less dangerous one.
 
-## 2026-09-16 — numbers are the agent's weakest speech moment (open, not yet fixed)
+## 2026-09-16 — numbers are the agent's weakest speech moment (fixed 2026-09-17)
 
 **Symptom:** Across multiple test calls, amounts and invoice numbers consistently come out
 mumbled or hard to follow — e.g. "8 5 0 0. 0 0 0 0 0" for an amount, "Camminis 3000 hundred
@@ -107,21 +107,43 @@ the same calls (regular sentences) has been clear. This is bad for a collections
 specifically, since amounts and invoice numbers are the entire point of the call — a caller
 who can't parse what they owe or which invoice is in dispute can't act on the call at all.
 
-**Not yet diagnosed:** whether this is TTS mishandling raw numerals, a connection artifact
-during testing, or something else. Logged now so it's not lost; fixing it is a separate pass.
+**Diagnosis:** never root-caused at the audio level (no way to distinguish TTS mishandling raw
+numerals from a testing-connection artifact from the outside) — instead fixed at the only layer
+actually controllable: what text reaches the voice provider in the first place. Checked Vapi's
+current OpenAPI spec directly: neither SSML (`enableSsml`/`enableSsmlParsing`) nor a
+pronunciation dictionary (`VapiVoice.pronunciationDictionary`) is available for the voice
+configured here (`provider: "vapi"`, `voiceId: "Naina"`) — both exist only for
+ElevenLabs/Cartesia/WellSaid voices, which this project doesn't use. So candidate fix 2 (below,
+as originally logged) is a dead end without switching voice providers; candidate fix 1 is the
+only one actually available.
 
-**Candidate fixes, for that pass:**
+**Fix:** `voice/speakable.py` (new) converts every amount to Indian-numbering words
+(`amount_to_words`, e.g. `204000.0 -> "two lakh four thousand rupees"`) and every invoice
+number to character-by-character spoken form (`invoice_number_to_words`, generalizing the
+letter-by-letter convention below to the real generator's `"KFC/26-27/0026"` shape, not just
+toy IDs like "KA-3281"). `prompt_template.py` renders both the raw value and a `(say "...")`
+spoken form for every invoice, `total_outstanding`, and prior-promise amount; the model is told
+to use the spoken form verbatim rather than transform digits itself. The raw form is kept
+alongside it deliberately — `postcall/specialists/promise.py::_matches_invoice` and
+`record_ptp`'s tool arguments need the literal invoice number/amount, and reconstructing a
+number from its word form is exactly the kind of LLM arithmetic this project has already
+decided not to trust (see the 2026-09-16 arithmetic-delegation entry above).
+
+**Original candidate fixes, for reference:**
 1. Pre-format numbers into words in the context pack, before they ever reach the prompt, so
    the voice layer never sees raw numerals — e.g. "four lakh fifty thousand rupees" instead of
    "450000", and "K-A three two eight one" instead of "KA-3281". Prompt-level instructions
    (letter-by-letter reading, added earlier today) only constrain how the *model* phrases
-   things; they don't control how the *voice provider* renders whatever text it's given.
+   things; they don't control how the *voice provider* renders whatever text it's given. **→
+   this is the fix that shipped.**
 2. Check whether Vapi's voice config exposes SSML or a pronunciation dictionary for the
    current voice/provider (Naina, `vapi` provider) — if so, that may be a more direct fix than
-   reformatting text.
+   reformatting text. **→ checked; not available for this voice provider.**
 3. Check whether reading two invoices back-to-back produces one long unbroken run of figures
    (per the transcript above, all figures for both invoices land in a single sentence) —
    splitting that into one sentence per invoice may help independently of numeral formatting.
+   **→ not investigated this pass; Vapi's `ChunkPlan.punctuationBoundaries` (found while
+   checking SSML support) is a possible lever if this resurfaces.**
 
 ## 2026-09-16 — two specialist bugs, one root cause: arithmetic delegated to a language model
 
@@ -359,3 +381,57 @@ Hindi transcript.
 and writing it back to `Account.preferred_language` so the next call opens in the right
 language. Nothing here does that; every call still opens in whatever language was set the last
 time a human (or the fake data generator) set it.
+
+## 2026-09-17 — two prompt defects discussed after a call, never written down
+
+Both of the following were noticed on real test-call transcripts and talked through at the
+time, but neither was logged — they only resurfaced from memory when auditing this file before
+a prompt-fix pass, and had to be re-confirmed against transcript evidence after the fact.
+**Lesson, ahead of the two bugs themselves:** an observation about a call that isn't written
+into this file doesn't survive past the conversation it was made in — the audit step that
+almost missed these two is now the reason to write incidents down the same day, not "once
+there's time."
+
+**1. Bundled questions despite an explicit one-question-per-turn rule.** On the first
+promise-to-pay call, the agent asked "what amount, when, and how" as a single turn instead of
+three; the caller's answer came back incomplete twice as a result. `system_prompt.j2` already
+has "One question per turn. Then stop." (CONVERSATION RULES) — so this is the model ignoring an
+existing rule, not a missing one. Root cause traced to two other places in the same prompt that
+contradict it with more specific, more proximate phrasing:
+- GOAL section: *"Ask once for the specific date and amount."* — literally instructs asking for
+  two facts in one question.
+- BRANCHES section: *"Will pay → pin down amount + date + method, confirm back, call
+  record_ptp."* — a compact three-item conjunction with no turn-by-turn structure, sitting in
+  the table the model consults at the exact moment it decides how to respond.
+
+Both read as an immediate to-do list for one turn, and both are more specific and closer to the
+point of decision than the generic rule stated once, several sections earlier. The same
+compact-conjunction pattern also appeared in three other BRANCHES lines ("ask for the reference
+number and date," "ask what specifically and what they need from us," "ask when they expect to,
+and why, once") — same latent bug, not yet independently observed on a call for those branches.
+
+**Fix (2026-09-17):** rewrote every BRANCHES line using this pattern into explicit sequential
+asks (e.g. "Will pay → Ask for the amount, the date, and the method as three separate
+questions — never combine them.") and reworded the GOAL section's "Ask once for the specific
+date and amount" into per-piece retry language that cross-references the existing
+one-question-per-turn rule instead of restating it. No new rule was added.
+
+**2. Correct policy, robotic delivery on a discount refusal.** Verbatim from a dispute call,
+after the caller asked for a discount:
+> "I cannot negotiate discounts or waivers. Will you pay the full outstanding amount on any
+> invoice? If yes, please specify amount, date, and method."
+
+The refusal itself was correct — no discount was offered or hinted at. Two things are wrong
+with how it was said: it echoes the internal rule's own wording back to the caller ("negotiate
+discounts or waivers" closely paraphrases HARD PROHIBITIONS' "Never offer, hint at, or
+negotiate a discount, waiver, or settlement") instead of speaking like a person, and the
+follow-up sentence is bug #1 again ("specify amount, date, and method" bundled into one ask). A
+real collector declines and redirects in one natural sentence — something like "that's not
+something I can adjust — the dispute goes to the team and they'll come back to you" — without
+naming the policy.
+
+**Fix (2026-09-17):** added one BRANCHES entry ("Asked for a discount or waiver → Decline in
+one natural sentence without naming the policy or using words like 'negotiate' or 'policy' —
+e.g. \"That's not something I can adjust — I'll flag it to the team and they'll get back to
+you.\"") to `system_prompt.j2`. HARD PROHIBITIONS' wording is unchanged — the prohibition stays
+absolute; this only gives the model a natural line to say instead of reciting the rule.

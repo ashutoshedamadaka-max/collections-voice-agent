@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date
 
 from collections_agent.voice.prompt_template import allowed_facts, render_system_prompt
+from collections_agent.voice.speakable import amount_to_words, invoice_number_to_words
 
 
 def test_renders_company_and_contact_names(sample_context_pack):
@@ -17,6 +18,40 @@ def test_renders_invoice_facts(sample_context_pack):
     inv = sample_context_pack.invoices[0]
     assert inv.invoice_number in prompt
     assert inv.due_date.isoformat() in prompt
+
+
+def test_invoice_facts_include_spoken_form_alongside_the_raw_value(sample_context_pack):
+    """The model must keep the raw invoice number/amount (for tool-call arguments) but speak
+    the pre-computed word form instead of transforming digits itself — see docs/FAILURES.md."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    inv = sample_context_pack.invoices[0]
+    assert invoice_number_to_words(inv.invoice_number) in prompt
+    assert amount_to_words(inv.outstanding()) in prompt
+
+
+def test_total_outstanding_includes_spoken_form(sample_context_pack):
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert amount_to_words(sample_context_pack.total_outstanding) in prompt
+
+
+def test_bundled_question_phrasing_is_gone(sample_context_pack):
+    """Regression guard for the 2026-09-17 bundled-questions bug: these two phrases bundled
+    multiple facts into one implied question and contradicted the one-question-per-turn rule."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "pin down amount + date + method" not in prompt
+    assert "Ask once for the specific date and amount" not in prompt
+
+
+def test_will_pay_branch_asks_sequentially(sample_context_pack):
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "three separate questions" in prompt
+    assert "combine them" in prompt
+
+
+def test_discount_refusal_branch_gives_a_natural_example(sample_context_pack):
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "Asked for a discount or waiver" in prompt
+    assert "not something I can adjust" in prompt
 
 
 def test_does_not_leak_foreign_account_facts(base_account, make_invoice, as_of):

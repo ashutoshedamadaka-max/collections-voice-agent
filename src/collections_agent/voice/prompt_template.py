@@ -16,6 +16,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from collections_agent.models.domain import ContextPack
 from collections_agent.voice.language import prompt_instruction
+from collections_agent.voice.speakable import amount_to_words, invoice_number_to_words
 
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
 
@@ -29,7 +30,9 @@ _env = Environment(
 
 def _format_invoice_table(context_pack: ContextPack) -> str:
     rows = [
-        f"{inv.invoice_number} (due {inv.due_date.isoformat()}, outstanding {inv.outstanding():,.2f})"
+        f'{inv.invoice_number} (say "{invoice_number_to_words(inv.invoice_number)}"), due '
+        f'{inv.due_date.isoformat()}, outstanding {inv.outstanding():,.2f} '
+        f'(say "{amount_to_words(inv.outstanding())}")'
         for inv in context_pack.invoices
     ]
     return "; ".join(rows) if rows else "none"
@@ -39,8 +42,8 @@ def _format_ptp_history(context_pack: ContextPack) -> str:
     if not context_pack.prior_promises:
         return "none"
     parts = [
-        f"{p.promised_date.isoformat()} for {p.amount_promised:,.2f} "
-        f"via {p.payment_method.value} ({p.status.value})"
+        f'{p.promised_date.isoformat()} for {p.amount_promised:,.2f} '
+        f'(say "{amount_to_words(p.amount_promised)}") via {p.payment_method.value} ({p.status.value})'
         for p in context_pack.prior_promises
     ]
     return "; ".join(parts)
@@ -67,7 +70,10 @@ def render_system_prompt(
         contact_role=context_pack.contact_role,
         customer_name=context_pack.customer_name,
         invoice_table=_format_invoice_table(context_pack),
-        total_outstanding=f"{context_pack.total_outstanding:,.2f}",
+        total_outstanding=(
+            f'{context_pack.total_outstanding:,.2f} '
+            f'(say "{amount_to_words(context_pack.total_outstanding)}")'
+        ),
         terms=context_pack.payment_terms,
         ptp_history=_format_ptp_history(context_pack),
         open_disputes=_format_open_disputes(context_pack),
@@ -84,10 +90,14 @@ def allowed_facts(context_pack: ContextPack) -> set[str]:
     facts: set[str] = set()
     for inv in context_pack.invoices:
         facts.add(inv.invoice_number)
+        facts.add(invoice_number_to_words(inv.invoice_number))
         facts.add(inv.due_date.isoformat())
         facts.add(f"{inv.outstanding():,.2f}")
+        facts.add(amount_to_words(inv.outstanding()))
     facts.add(f"{context_pack.total_outstanding:,.2f}")
+    facts.add(amount_to_words(context_pack.total_outstanding))
     for p in context_pack.prior_promises:
         facts.add(p.promised_date.isoformat())
         facts.add(f"{p.amount_promised:,.2f}")
+        facts.add(amount_to_words(p.amount_promised))
     return facts
