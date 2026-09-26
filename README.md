@@ -11,8 +11,15 @@ talking. **Headline metric:** promise-to-pay kept rate.
 
 - **90+ days overdue is never automated.** Those calls carry legal/relationship risk; they're
   routed to a human. This is a product decision, not a technical limitation.
-- **Disclosure:** the agent states it's automated in its opening line. Costs a little rapport,
-  buys legitimacy under most emerging AI-disclosure norms.
+- **Disclosure and authority, merged into one fixed opening line.** The agent states it's
+  automated and asks whether it's speaking with the right person in a single deterministic
+  `firstMessage`, spoken by Vapi before the model runs at all — not two separate turns with the
+  model generating its own authority question later. These are the two things in this whole
+  design that must never vary: never reworded, never skipped, and (for authority) never asked
+  twice. Putting both in the fixed opening makes that structurally guaranteed instead of
+  dependent on the model remembering to say them — a small architectural improvement, not just
+  a pacing fix. Costs a little rapport for the disclosure; buys legitimacy under most emerging
+  AI-disclosure norms.
 - **Confidence-gated write-back:** low-confidence or disagreeing post-call analysis goes to a
   human exception queue instead of auto-writing to the CRM.
 - **Follow-up emails are drafted, never sent automatically.**
@@ -22,10 +29,12 @@ See `docs/guardrails_and_escalation.md` for the full guardrail policy once writt
 ## Language support — English validated, Hindi/Hinglish demonstrated but untested
 
 `account.preferred_language` (`en` / `hi` / `hinglish`) drives the voice provider's language,
-the transcriber's language, and a prompt instruction — set once per account before the call
-starts, never asked of the caller mid-call (asking wastes the opening seconds and reads as an
-IVR menu). Hinglish uses English voice/transcriber settings with a prompt instruction to
-code-switch naturally, since no provider used here has a dedicated Hinglish code.
+the transcriber's language, the fixed opening line, and the rest of the system prompt — set
+once per account before the call starts, never asked of the caller mid-call (asking wastes the
+opening seconds and reads as an IVR menu). Hinglish means Hindi conversation in Latin script
+with English numbers, invoice IDs, and business terms — not Devanagari Hindi — and uses an
+English voice with a Hindi transcriber (code-switched audio rendered better in Hindi mode than
+English on a real test call; see `docs/FAILURES.md`).
 
 That wiring only covers the call itself. The four post-call specialists, the reason-code
 taxonomy, and the regex-based arithmetic-consistency extraction were all built and tested

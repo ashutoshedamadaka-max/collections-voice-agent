@@ -1,11 +1,14 @@
 """Builds the Vapi assistant payload and per-call overrides.
 
-The assistant itself is configured once (model, voice, tools, server URL, hard duration cap,
-fixed opening disclosure). The per-call system prompt — built from that call's ContextPack —
-is passed as an assistantOverrides system-message override when the call starts
-(vapi_client.start_call), not baked into the assistant. Verify exact field names
-(assistantOverrides shape in particular) against the Vapi dashboard/docs at build time —
-Vapi's API has moved fields around across versions.
+The assistant itself is configured once (model, voice, tools, server URL, hard duration cap, a
+generic fallback opening). The per-call system prompt and firstMessage — both built from that
+call's ContextPack — are passed as assistantOverrides when the call starts
+(vapi_client.start_call), not baked into the assistant. firstMessage carries the disclosure and
+the authority question merged into one deterministic line (2026-09-17, see docs/FAILURES.md):
+both are spoken verbatim by Vapi before the model runs, so the model can't reword, skip, or
+re-ask either — the two things in this whole design that most need to never vary. Verify exact
+field names (assistantOverrides shape in particular) against the Vapi dashboard/docs at build
+time — Vapi's API has moved fields around across versions.
 
 Budget note: there is no Anthropic credit for this project, only ~$8 OpenAI and ~$7 Vapi.
 The in-call backend model is therefore OpenAI (gpt-4o-mini, cheap and fast enough for
@@ -23,7 +26,7 @@ from datetime import date
 from typing import Any
 
 from collections_agent.models.domain import ContextPack
-from collections_agent.voice.language import transcriber_language, voice_language
+from collections_agent.voice.language import opening_message, transcriber_language, voice_language
 from collections_agent.voice.prompt_template import render_system_prompt
 from collections_agent.voice.tool_schemas import ALL_TOOLS
 
@@ -73,13 +76,6 @@ STOP_SPEAKING_PLAN = {
 }
 
 
-def opening_disclosure(company_name: str) -> str:
-    return (
-        f"Hello, this is an automated call from {company_name}'s accounts team "
-        "regarding an overdue invoice. This call may be recorded."
-    )
-
-
 def _build_model_block(
     tools: list[dict[str, Any]],
     openai_credential_id: str | None = None,
@@ -109,7 +105,12 @@ def build_assistant_payload(
     """Payload for `POST /assistant` — the assistant's fixed, call-independent config."""
     return {
         "name": "collections-agent-v1",
-        "firstMessage": opening_disclosure(company_name),
+        # Generic fallback only (no contact name — this config has no ContextPack). Real calls
+        # override this in build_call_overrides with the personalized version. Disclosure and
+        # the authority question are merged into one deterministic firstMessage (2026-09-17,
+        # see docs/FAILURES.md) — both are spoken verbatim by Vapi before the model runs at
+        # all, so neither can be reworded, skipped, or asked twice.
+        "firstMessage": opening_message(None, company_name),
         "firstMessageMode": "assistant-speaks-first",
         "maxDurationSeconds": MAX_CALL_DURATION_SECONDS,
         "model": _build_model_block(ALL_TOOLS, openai_credential_id),
@@ -149,6 +150,9 @@ def build_call_overrides(
     # "latest", not just an integer). Voice and transcriber language diverge for hinglish — see
     # voice/language.py's module docstring for why.
     return {
+        "firstMessage": opening_message(
+            context_pack.preferred_language, company_name, context_pack.contact_name
+        ),
         "model": _build_model_block(
             ALL_TOOLS,
             openai_credential_id,

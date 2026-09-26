@@ -3,7 +3,13 @@ account.preferred_language means for the voice provider, the transcriber, and th
 
 from __future__ import annotations
 
-from collections_agent.voice.language import prompt_instruction, resolve, transcriber_language, voice_language
+from collections_agent.voice.language import (
+    opening_message,
+    prompt_instruction,
+    resolve,
+    transcriber_language,
+    voice_language,
+)
 
 
 def test_resolve_defaults_unset_to_english():
@@ -69,3 +75,42 @@ def test_hinglish_instruction_specifies_latin_script_and_english_numbers():
     assert "Latin" in instruction or "Roman" in instruction
     assert "Devanagari" in instruction  # explicitly named as what NOT to do
     assert "conversational" in instruction.lower() or "informal" in instruction.lower()
+
+
+class TestOpeningMessage:
+    """2026-09-17: the disclosure and the authority question merged into one deterministic
+    firstMessage — hand-written per language, not model-generated, since Vapi speaks this
+    verbatim before the model ever runs."""
+
+    def test_generic_english_has_no_name_and_asks_a_generic_authority_question(self):
+        message = opening_message(None, "Acme Supplies")
+        assert "Acme Supplies" in message
+        assert "recorded" in message.lower()
+        assert "accounts payable" in message.lower()
+
+    def test_personalized_english_includes_the_contact_name(self):
+        message = opening_message("en", "Acme Supplies", "Priya Sharma")
+        assert "Priya Sharma" in message
+        assert "Acme Supplies" in message
+        assert "recorded" in message.lower()
+
+    def test_hindi_opening_uses_devanagari(self):
+        message = opening_message("hi", "Acme Supplies", "Priya Sharma")
+        assert "Priya Sharma" in message
+        assert any(0x900 <= ord(ch) <= 0x97F for ch in message)  # Devanagari block
+
+    def test_hinglish_opening_uses_latin_script_only(self):
+        message = opening_message("hinglish", "Acme Supplies", "Priya Sharma")
+        assert "Priya Sharma" in message
+        assert all(ord(ch) < 0x900 for ch in message)  # no Devanagari codepoints
+
+    def test_unset_language_defaults_to_english(self):
+        assert opening_message(None, "Acme Supplies", "Priya Sharma") == opening_message(
+            "en", "Acme Supplies", "Priya Sharma"
+        )
+
+    def test_no_contact_name_uses_generic_phrasing_in_every_language(self):
+        for lang in ("en", "hi", "hinglish"):
+            message = opening_message(lang, "Acme Supplies")
+            assert "Acme Supplies" in message
+            assert message == opening_message(lang, "Acme Supplies", None)

@@ -715,3 +715,61 @@ re-analysis that triggers it — this one had been sitting there since Step 5, w
 hypothetical, and surfaced the first time a genuine specialist mistake was actually fixed and
 re-run. Documenting a limitation is not the same as it being acceptable to leave open once
 there's a concrete instance of it in front of you.
+
+## 2026-09-17 — merged the opening; found a second prompt regression nothing tested for
+
+Two findings from the next validation call, before the actual four-fix validation call could
+even happen.
+
+**1. The disclosure and authority question were two separate turns, with a dead pause between
+them.** `firstMessage` spoke only the disclosure; the model then generated its own authority
+question as its first real turn, after waiting for whatever filler the caller said in the gap
+("Um, Boli?" on the earlier Hinglish call, itself burned turns on before anything substantive
+happened). Merged both into one deterministic `firstMessage` — `voice/language.py`'s
+`opening_message()`, hand-written per language like `_PROMPT_INSTRUCTION`, not model-generated,
+since Vapi speaks `firstMessage` before the model runs at all. `assistant_config.py`'s
+`build_assistant_payload` gets a generic (no contact name) fallback; `build_call_overrides` now
+also overrides `firstMessage` per call with the personalized version — confirmed via the
+OpenAPI spec that `AssistantOverrides.firstMessage` exists, so this didn't require inventing
+anything. The prompt's `# AUTHORITY GATE` section changed from "ask this before stating an
+amount" to "this was already asked in the opening, do not ask again — read their answer."
+
+This is a small architectural improvement, not just a pacing fix: disclosure and authority are
+the two things in this whole design that must never vary — never reworded, never skipped,
+never (for authority) asked twice. Putting both in a fixed `firstMessage` makes both
+structurally guaranteed rather than dependent on the model remembering to say them, the same
+way moving arithmetic out of the model (2026-09-16 entries) made *that* guaranteed instead of
+hoped-for.
+
+**2. The agent never asked how much the caller would pay** — it stated the invoice's own
+outstanding total as a fact, then asked only for a date and a method, and recorded the full
+total as the promised amount without the caller ever confirming it. In B2B collections a
+partial payment is completely normal; "I'll pay by the 30th" is genuinely ambiguous between
+paying everything and paying part, and the agent silently resolved that ambiguity in the
+direction that makes the recorded promise look better than what was actually agreed.
+
+**Diagnosis, honestly qualified:** checked whether the one-invoice-per-call redesign or the
+bundled-questions fix had literally dropped "amount" from the required-fields text — neither
+had; both still listed "an amount, a date, and a method" verbatim. What most likely changed is
+emphasis, not text: the primary-invoice redesign put the invoice's own outstanding total
+front and center as *the* fact for "the one thing to resolve this call," which plausibly gave
+the model an available number to silently adopt as the payment amount instead of treating it as
+context to ask against. This can't be confirmed without another live call — no test caught the
+original bug either, for the same underlying reason described below.
+
+**Fix:** rewrote the "Will pay" branch to ask date, then an explicit full-or-partial amount
+question (with a follow-up only if partial), then method — never inferring the amount from the
+invoice's own stated total. Also added a line to GOAL making the same point explicitly: "an
+amount (full or partial — ask explicitly, never assume the full outstanding balance)."
+
+**The real gap: no test checked prompt *content* for what the agent is actually instructed to
+ask.** 249 (then 254) passing tests didn't catch either this or the bundled-questions bug
+earlier the same day, because every prompt test up to that point checked *facts* (does the
+right invoice number appear) or isolated *phrases* (does "one question per turn" appear
+somewhere), never "does the Will-pay branch actually instruct asking for amount, date, *and*
+method, each as its own explicit ask." A prompt is code that produces behavior exactly like any
+other code path, and a refactor can silently delete a requirement from a paragraph of English
+as easily as from a line of Python — with no import error, no type error, nothing but a live
+call to catch it. Added `test_will_pay_branch_asks_each_required_promise_field_explicitly`
+(`tests/test_prompt_template.py`) asserting all three fields are explicitly asked for, so a
+future refactor that drops one fails a test instead of waiting for another live call.

@@ -7,8 +7,8 @@ from collections_agent.voice.assistant_config import (
     TOOL_CALL_TIMEOUT_SECONDS,
     build_assistant_payload,
     build_call_overrides,
-    opening_disclosure,
 )
+from collections_agent.voice.language import opening_message
 from collections_agent.voice.tool_schemas import TOOL_NAMES
 
 
@@ -17,11 +17,14 @@ def test_assistant_payload_has_hard_duration_cap():
     assert payload["maxDurationSeconds"] == 180 == MAX_CALL_DURATION_SECONDS
 
 
-def test_assistant_payload_first_message_is_disclosure():
+def test_assistant_payload_first_message_is_generic_disclosure_plus_authority_question():
+    """No ContextPack at this level, so no contact name — build_call_overrides supplies the
+    personalized version for real calls (see the TestMergedOpening tests below)."""
     payload = build_assistant_payload("Acme Supplies", "https://example.com")
-    assert payload["firstMessage"] == opening_disclosure("Acme Supplies")
+    assert payload["firstMessage"] == opening_message(None, "Acme Supplies")
     assert "automated" in payload["firstMessage"].lower()
     assert "recorded" in payload["firstMessage"].lower()
+    assert "accounts payable" in payload["firstMessage"].lower()
 
 
 def test_assistant_payload_server_url_points_at_tool_calls_endpoint():
@@ -145,3 +148,47 @@ def test_call_overrides_use_english_voice_but_hindi_transcriber_for_hinglish_acc
     assert overrides["transcriber"]["language"] == "hi"
     system_message = overrides["model"]["messages"][0]["content"]
     assert "Latin" in system_message
+
+
+class TestMergedOpening:
+    """2026-09-17: the disclosure and the authority question used to be two separate turns —
+    a fixed firstMessage, then the model asking the authority question itself after a pause.
+    Merging them into one deterministic firstMessage means neither can be reworded, skipped,
+    or (for the authority question) asked a second time. See docs/FAILURES.md."""
+
+    def test_call_overrides_set_a_personalized_first_message(self, sample_context_pack):
+        overrides = build_call_overrides(sample_context_pack, "Acme Supplies")
+        assert overrides["firstMessage"] == (
+            "Hello, this is an automated call from Acme Supplies's accounts team about an "
+            "overdue invoice. This call may be recorded. Am I speaking with "
+            f"{sample_context_pack.contact_name}?"
+        )
+
+    def test_first_message_contains_disclosure_and_authority_question_in_one_line(
+        self, sample_context_pack
+    ):
+        overrides = build_call_overrides(sample_context_pack, "Acme Supplies")
+        first_message = overrides["firstMessage"]
+        assert "recorded" in first_message.lower()
+        assert sample_context_pack.contact_name in first_message
+        assert first_message.count("?") == 1  # exactly one question, not two separate turns
+
+    def test_hinglish_first_message_uses_latin_script(self, base_account, make_invoice, as_of):
+        from collections_agent.precall.context_pack import build_context_pack
+
+        hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
+        pack = build_context_pack(
+            hinglish_account,
+            [make_invoice(hinglish_account.account_id, days_overdue=10)],
+            [],
+            [],
+            [],
+            as_of=as_of,
+        )
+
+        overrides = build_call_overrides(pack, "Acme Supplies")
+
+        first_message = overrides["firstMessage"]
+        assert pack.contact_name in first_message
+        assert "record" in first_message.lower()
+        assert all(ord(ch) < 0x900 for ch in first_message)  # no Devanagari codepoints

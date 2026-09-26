@@ -44,8 +44,21 @@ def test_bundled_question_phrasing_is_gone(sample_context_pack):
 
 def test_will_pay_branch_asks_sequentially(sample_context_pack):
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
-    assert "three separate questions" in prompt
-    assert "combine them" in prompt
+    assert "One question at a time, never" in prompt
+    assert "combined" in prompt
+
+
+def test_will_pay_branch_asks_each_required_promise_field_explicitly(sample_context_pack):
+    """Regression guard for the 2026-09-17 finding: the amount ask was silently missing from
+    the Will-pay branch and it took a live call to notice, because nothing tested prompt
+    content for "does it actually ask for X." One assertion per required field, so a future
+    refactor can't drop one without a test failing."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "Ask when they'll pay (a date)" in prompt  # date
+    assert "whether they'll pay the full outstanding" in prompt  # amount
+    assert "follow-up for the specific amount" in prompt  # partial amount
+    assert "Then ask the method." in prompt  # method
+    assert "never assume the full amount without asking" in prompt
 
 
 def test_discount_refusal_branch_gives_a_natural_example(sample_context_pack):
