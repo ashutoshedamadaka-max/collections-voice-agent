@@ -773,3 +773,63 @@ as easily as from a line of Python — with no import error, no type error, noth
 call to catch it. Added `test_will_pay_branch_asks_each_required_promise_field_explicitly`
 (`tests/test_prompt_template.py`) asserting all three fields are explicitly asked for, so a
 future refactor that drops one fails a test instead of waiting for another live call.
+
+## 2026-09-26 — four instructions, present and correct, ignored in the same call
+
+The first fully-completed Hinglish call (`01a0dd55-f249-7224-aa92-2361d35affb7`, 136s,
+`customer-ended-call`) exercised every fix from the previous entries at once. Four separate,
+already-fixed instructions failed in this one call. Each is individually plausible as its own
+bug; together, in one call, they're a pattern worth naming before diagnosing any of them
+individually — logged here as observed, before any fix, per the decision to run an English
+control call first (see next entry) to find out which of these are language-linked.
+
+**1. Nothing was actually recorded.** The closing turn states, in Hindi: *"मैंने इस payment
+promise को रिकॉर्ड कर दिया है"* ("I have recorded this payment promise") and promises a
+separate follow-up for the second invoice — but the raw call payload has zero `tool_calls`/
+`tool_call_result` messages (16 messages total, all system/bot/user), and `tool_calls.jsonl`
+has no entries in this call's window. Neither `record_ptp` nor `schedule_callback` was ever
+invoked. `DO_NOT_NARRATE` (`tool_schemas.py`) is confirmed unchanged and intact — this isn't a
+deleted instruction, the model simply didn't follow it. This is the same failure class as
+2026-09-16's "model narrated the tool call instead of invoking it," recurring after it was
+believed fixed.
+
+**2. Hinglish reverted to Devanagari, for the second time.** The bot's turns are predominantly
+Devanagari (*"के बारे में। यह कॉल रिकॉर्ड हो सकती है"*, *"ठीक है, मैं इंतज़ार करता हूँ"*,
+closing entirely in Devanagari: *"धन्यवाद, आपका दिन शुभ हो"*), with English words dropped into
+Hindi sentences rather than the reverse. This is the second, differently-worded rewrite of the
+same instruction (2026-09-17's "specify Latin script explicitly") to fail the same way. Not
+being rewritten a third time without new information — see the next entry.
+
+**3. Invoice numbers and dates read as raw values with "dash," not the spoken forms.** The
+transcript shows `"SL/26। 27/09/। 3"` for the invoice number and `"date। 2। 026-09-30"` for the
+date — fragmented raw text, not `invoice_number_to_words`'s letter-by-letter spelling. Same
+underlying pattern as finding 2: an instruction to use a specific pre-computed form, not
+followed. Separately, and independent of whether the instruction gets followed: **dates were
+never given a spoken form at all** — `voice/speakable.py` only has `amount_to_words` and
+`invoice_number_to_words`; `_format_ptp_history`/the FACTS section still render dates as plain
+ISO strings (`2026-09-30`) with no `(say "...")` form, unlike amounts and invoice numbers. That
+gap needs closing regardless of what the control call shows about the other three findings.
+
+**4. The restored amount ask failed on the same call it was added for.** The bot asked *when*
+(date), then went straight to confirming the date and asking for *method* — never asking
+whether the customer would pay in full or only part, the exact question the 2026-09-17 fix
+added. It then stated `"amount ₹3,87,500"` in the closing summary as an agreed fact; the
+customer never confirmed any amount at all. The fix shipped, was rendered correctly into this
+exact call's prompt (verified against the actual `assistantOverrides` sent), and the model
+still skipped the step.
+
+## 2026-09-26 — running the English control call before diagnosing further
+
+Per the decision above: before rewriting any instruction again, isolate whether findings 1, 3,
+and 4 are language-linked (Hindi/Hinglish generation degrading instruction-following) or a
+general model-capability limit (gpt-4o-mini failing regardless of language) by running the
+identical scenario — a promise negotiation with a reason detour, a full/partial amount
+ambiguity, an invoice number and date read aloud, a second invoice to defer — on an English
+account. If tools fire and the amount/spoken-form instructions are followed in English, the
+link to Hinglish generation is established and the fix path is different (e.g., structural
+changes so instruction-following doesn't compete with register, not a third rewrite of the
+same paragraph). If they fail in English too, this is a gpt-4o-mini capability limit
+independent of language, and the fix is a different backend model. Finding 2 (Hinglish register
+itself) can't be tested this way — English-only or Hindi-only calls don't exercise
+code-switching at all — so it stays a decision to make once findings 1/3/4 are settled, not
+before. Result recorded once the control call happens.
