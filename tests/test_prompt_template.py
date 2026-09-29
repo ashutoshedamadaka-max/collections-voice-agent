@@ -219,3 +219,12 @@ class TestPrimaryInvoiceOnly:
         prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
         assert "FOR THE PRIMARY INVOICE ONLY" in prompt
         assert "This call is about the primary invoice only" in prompt
+
+
+def test_state_invoice_number_once_then_say_this_invoice(sample_context_pack):
+    """2026-09-26 control-call finding: the agent repeated the full invoice number every turn
+    (with inconsistent fragmentation each time) instead of saying "this invoice" after the
+    first mention, which no real collector does."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert 'say "this invoice"' in prompt
+    assert "never repeat the full number again" in prompt

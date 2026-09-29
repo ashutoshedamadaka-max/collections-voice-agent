@@ -1,0 +1,552 @@
+{
+  "id": "01a0dd4f-821d-7000-8821-dbbcf2435e91",
+  "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+  "type": "webCall",
+  "startedAt": "2026-09-26T10:43:05.745Z",
+  "endedAt": "2026-09-26T10:43:05.745Z",
+  "transcript": "",
+  "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-d9825f9d-fde3-470d-a562-5f717a5975e2-mono.wav",
+  "summary": "",
+  "createdAt": "2026-09-26T10:42:50.525Z",
+  "updatedAt": "2026-09-26T10:43:09.650Z",
+  "orgId": "0a32cbab-c2aa-494a-b61b-decd4db3ff77",
+  "cost": 0.0011,
+  "webCallUrl": "https://vapi.daily.co/IqtNyo1TsaWljOywAWzK",
+  "status": "ended",
+  "endedReason": "call.in-progress.error-assistant-did-not-receive-customer-audio",
+  "messages": [
+    {
+      "role": "system",
+      "time": 1790419370738,
+      "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+      "secondsFromStart": 0
+    }
+  ],
+  "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-ed67980e-5a47-4b3a-8fc6-f266858ae9cc-stereo.wav",
+  "costBreakdown": {
+    "transport": 0,
+    "stt": 0.0011,
+    "llm": 0,
+    "tts": 0,
+    "vapi": 0,
+    "chat": 0,
+    "total": 0.0011,
+    "llmPromptTokens": 0,
+    "llmCompletionTokens": 0,
+    "llmCachedPromptTokens": 0,
+    "ttsCharacters": 0,
+    "analysisCostBreakdown": {
+      "summary": 0,
+      "structuredData": 0,
+      "structuredOutput": 0,
+      "successEvaluation": 0,
+      "summaryPromptTokens": 0,
+      "summaryCompletionTokens": 0,
+      "summaryCachedPromptTokens": 0,
+      "structuredDataPromptTokens": 0,
+      "structuredOutputPromptTokens": 0,
+      "successEvaluationPromptTokens": 0,
+      "structuredDataCompletionTokens": 0,
+      "structuredDataCachedPromptTokens": 0,
+      "structuredOutputCompletionTokens": 0,
+      "successEvaluationCompletionTokens": 0,
+      "structuredOutputCachedPromptTokens": 0,
+      "successEvaluationCachedPromptTokens": 0
+    },
+    "knowledgeBaseCost": 0,
+    "voicemailDetectionCost": 0
+  },
+  "assistantOverrides": {
+    "transcriber": {
+      "model": "stt-rt-v5",
+      "language": "hi",
+      "provider": "soniox"
+    },
+    "model": {
+      "model": "gpt-4o-mini",
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "lookup_invoices",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "account_id"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Read-only, idempotent. Look up the invoice list for an account."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_ids",
+                "amount",
+                "date",
+                "method"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "ISO 8601 date, e.g. 2026-09-30"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "method": {
+                  "enum": [
+                    "NEFT",
+                    "RTGS",
+                    "UPI",
+                    "cheque",
+                    "portal"
+                  ],
+                  "type": "string"
+                },
+                "invoice_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Call this immediately once the caller has given a specific amount, date, and method, and you have confirmed them back. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_dispute",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reason_code",
+                "detail"
+              ],
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                },
+                "reason_code": {
+                  "enum": [
+                    "invoice_not_received",
+                    "awaiting_internal_approval",
+                    "po_mismatch",
+                    "missing_documentation",
+                    "quality_dispute",
+                    "quantity_dispute",
+                    "pricing_dispute",
+                    "payment_run_timing",
+                    "cash_flow",
+                    "wrong_contact",
+                    "paid_already"
+                  ],
+                  "type": "string"
+                },
+                "evidence_requested": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer disputes any invoice or charge. Never argue the claim \u2014 just capture and route it. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_payment_claim",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reference",
+                "paid_on"
+              ],
+              "properties": {
+                "paid_on": {
+                  "type": "string",
+                  "description": "ISO 8601 date"
+                },
+                "reference": {
+                  "type": "string",
+                  "description": "UTR or cheque number"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer claims an invoice is already paid and has given a reference and date. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "send_document",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "doc_type"
+              ],
+              "properties": {
+                "doc_type": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer asks for a document, once you know which one. Queues it to be drafted \u2014 never sent automatically. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "schedule_callback",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "priority": {
+                  "enum": [
+                    "normal",
+                    "high"
+                  ],
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately to hand off to a human: wrong person, escalation request, or unanswerable question. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "mark_opt_out",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "contact_id",
+                "scope"
+              ],
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "this_contact",
+                    "whole_account"
+                  ],
+                  "type": "string"
+                },
+                "contact_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when asked to stop calling. Acknowledge out loud, call this, then end the call. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end."
+        }
+      ],
+      "provider": "openai"
+    },
+    "voice": {
+      "version": "latest",
+      "voiceId": "Naina",
+      "language": "en",
+      "provider": "vapi"
+    },
+    "firstMessage": "Hello, this is an automated call from Acme Supplies's accounts team, ek overdue invoice ke baare mein. Yeh call record ho sakti hai. Kya main Yash Kapoor se baat kar raha hoon?"
+  },
+  "analysis": {},
+  "artifact": {
+    "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-d9825f9d-fde3-470d-a562-5f717a5975e2-mono.wav",
+    "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-ed67980e-5a47-4b3a-8fc6-f266858ae9cc-stereo.wav",
+    "recording": {
+      "stereoUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-ed67980e-5a47-4b3a-8fc6-f266858ae9cc-stereo.wav",
+      "mono": {
+        "combinedUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-d9825f9d-fde3-470d-a562-5f717a5975e2-mono.wav",
+        "assistantUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-ff3debdd-892a-46e5-8739-1aef419df395-mono.wav",
+        "customerUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-b4919a17-a8d2-4a35-abbc-8fc8a76a6ebe-mono.wav"
+      }
+    },
+    "messages": [
+      {
+        "role": "system",
+        "time": 1790419370738,
+        "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+        "secondsFromStart": 0
+      }
+    ],
+    "messagesOpenAIFormatted": [
+      {
+        "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+        "role": "system"
+      }
+    ],
+    "transcript": "",
+    "logUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-calllogs/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0dd4f-821d-7000-8821-dbbcf2435e91-0526a2d9-0cbb-49a4-8667-fbf146f59911-1790419389207.jsonl.gz",
+    "nodes": [],
+    "assistantActivations": [],
+    "variableValues": {
+      "day": "26",
+      "now": "Sep 26, 2026, 10:42 AM UTC",
+      "call": {
+        "id": "01a0dd4f-821d-7000-8821-dbbcf2435e91",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-26T10:42:50.525Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/IqtNyo1TsaWljOywAWzK",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 26, 2026 UTC",
+      "time": "10:42 AM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/IqtNyo1TsaWljOywAWzK",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Saturday, September 26, 2026 at 10:42 AM UTC"
+    },
+    "variables": {
+      "day": "26",
+      "now": "Sep 26, 2026, 10:42 AM UTC",
+      "call": {
+        "id": "01a0dd4f-821d-7000-8821-dbbcf2435e91",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-26T10:42:50.525Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/IqtNyo1TsaWljOywAWzK",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 26, 2026 UTC",
+      "time": "10:42 AM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/IqtNyo1TsaWljOywAWzK",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Saturday, September 26, 2026 at 10:42 AM UTC"
+    },
+    "performanceMetrics": {
+      "turnLatencies": [],
+      "modelLatencyAverage": 0,
+      "voiceLatencyAverage": 0,
+      "transcriberLatencyAverage": 0,
+      "endpointingLatencyAverage": 0,
+      "turnLatencyAverage": 0,
+      "fromTransportLatencyAverage": 0,
+      "toTransportLatencyAverage": 0,
+      "numUserInterrupted": 0,
+      "numAssistantInterrupted": 0
+    },
+    "scorecards": {},
+    "transfers": [],
+    "presignedMonoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-d9825f9d-fde3-470d-a562-5f717a5975e2-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T104424Z&X-Amz-Expires=1800&X-Amz-Signature=327c3243abad877e361b9170819287e802ef7dea3d32c6a723653391814f32a1&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedStereoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-ed67980e-5a47-4b3a-8fc6-f266858ae9cc-stereo.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T104424Z&X-Amz-Expires=1800&X-Amz-Signature=2da72781f6bd60bc158b24ef2d4079be9c5460df78e732a366d1b1dbd17a4260&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedAssistantUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-ff3debdd-892a-46e5-8739-1aef419df395-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T104424Z&X-Amz-Expires=1800&X-Amz-Signature=5e6d9b08dad5f6f34138780261df6b29d5bc37bca07059376b86ae560caef533&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedCustomerUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd4f-821d-7000-8821-dbbcf2435e91-1790419388410-b4919a17-a8d2-4a35-abbc-8fc8a76a6ebe-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T104424Z&X-Amz-Expires=1800&X-Amz-Signature=33b184438fc834d29e3e77f3f299234f4182343f352d46e1660f8598e92d51f9&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedLogUrl": "https://hipaa-calllogs.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0dd4f-821d-7000-8821-dbbcf2435e91-0526a2d9-0cbb-49a4-8667-fbf146f59911-1790419389207.jsonl.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T104424Z&X-Amz-Expires=1800&X-Amz-Signature=30d3eb77d9596100a28c48244dbda5aab3904ab406c9ae4f47f3ef88eee9a126&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedUrlsExpiresAt": "2026-09-26T11:14:24.026Z"
+  },
+  "costs": [
+    {
+      "cost": 0.0011499666666666668,
+      "type": "transcriber",
+      "minutes": 0.01,
+      "transcriber": {
+        "model": "stt-rt-v5",
+        "provider": "soniox"
+      }
+    },
+    {
+      "cost": 0,
+      "type": "model",
+      "model": {
+        "model": "gpt-4o-mini",
+        "provider": "openai"
+      },
+      "promptTokens": 0,
+      "reasoningTokens": 0,
+      "completionTokens": 0,
+      "cachedPromptTokens": 0
+    },
+    {
+      "cost": 0,
+      "type": "voice",
+      "voice": {
+        "model": "vapi-v2",
+        "voiceId": "Naina",
+        "provider": "vapi"
+      },
+      "characters": 0
+    },
+    {
+      "cost": 0,
+      "type": "vapi",
+      "minutes": 0,
+      "subType": "normal"
+    },
+    {
+      "cost": 0,
+      "type": "knowledge-base",
+      "model": {
+        "model": "gemini-2.5-flash",
+        "provider": "google"
+      },
+      "promptTokens": 0,
+      "completionTokens": 0
+    }
+  ],
+  "monitor": {
+    "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production3.vapi.ai/01a0dd4f-821d-7000-8821-dbbcf2435e91/listen",
+    "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production3.vapi.ai/01a0dd4f-821d-7000-8821-dbbcf2435e91/control"
+  },
+  "transport": {
+    "callUrl": "https://vapi.daily.co/IqtNyo1TsaWljOywAWzK",
+    "provider": "daily",
+    "conversationType": "voice",
+    "assistantVideoEnabled": false,
+    "videoRecordingEnabled": false,
+    "roomDeleteOnUserLeaveEnabled": true
+  },
+  "assistantVersion": "v12"
+}

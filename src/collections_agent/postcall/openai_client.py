@@ -15,7 +15,8 @@ from pydantic import BaseModel
 
 ModelT = TypeVar("ModelT", bound=BaseModel)
 
-SPECIALIST_MODEL = "gpt-4o-mini"  # matches the in-call backend model; cheap, ~$1 budget for Step 4
+SPECIALIST_MODEL = "gpt-4o-mini"  # cheap, ~$1 budget for Step 4 — independent of the in-call
+# backend model (voice/assistant_config.py's BACKEND_MODEL), which is a separate experiment
 
 
 def _make_strict(schema: dict[str, Any]) -> None:

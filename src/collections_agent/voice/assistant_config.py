@@ -11,8 +11,9 @@ field names (assistantOverrides shape in particular) against the Vapi dashboard/
 time — Vapi's API has moved fields around across versions.
 
 Budget note: there is no Anthropic credit for this project, only ~$8 OpenAI and ~$7 Vapi.
-The in-call backend model is therefore OpenAI (gpt-4o-mini, cheap and fast enough for
-real-time branching), and it must be wired to bill YOUR OpenAI balance rather than
+The in-call backend model is therefore OpenAI — gpt-4o-mini originally for cost, currently
+gpt-4o as a live experiment (see BACKEND_MODEL below) — and it must be wired to bill YOUR
+OpenAI balance rather than
 Vapi-hosted credits — pass `openai_credential_id` (from Vapi Dashboard -> Provider Keys,
 after adding your own OpenAI key there) into both builders below. Voice and transcriber are
 also picked for cost: Vapi's own built-in voice (no extra provider key/cost beyond Vapi
@@ -39,7 +40,15 @@ MAX_CALL_DURATION_SECONDS = 180  # hard stop (3 minutes), per the design doc's g
 TOOL_CALL_TIMEOUT_SECONDS = 10
 
 BACKEND_MODEL_PROVIDER = "openai"
-BACKEND_MODEL = "gpt-4o-mini"  # cheap, fast enough for real-time branching; billed via OpenAI
+# gpt-4o-mini ignored four separate, correct, already-fixed instructions in one call
+# (2026-09-26, see docs/FAILURES.md) — narrating record_ptp/schedule_callback instead of
+# calling them, reading invoice numbers/amounts as raw text instead of the (say "...") forms,
+# skipping the full-or-partial amount question. An English-language control call reproduced
+# most of these too (not language-linked), so this is a live experiment: gpt-4o, temporarily,
+# to find out whether a more capable model actually follows the same prompt before any more
+# prompt rewrites. Cost difference is trivial at this call volume. Revert to gpt-4o-mini if
+# this doesn't hold up, or keep gpt-4o if it does — not yet decided either way.
+BACKEND_MODEL = "gpt-4o"
 
 # Vapi's own built-in TTS voice — no separate ElevenLabs/PlayHT account or key needed, and
 # billed through the Vapi credits already budgeted. "Naina" (Indian American accent) fits the

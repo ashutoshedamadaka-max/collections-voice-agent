@@ -42,7 +42,7 @@ def test_assistant_payload_includes_all_tools():
 def test_assistant_payload_uses_openai_not_anthropic():
     payload = build_assistant_payload("Acme Supplies", "https://example.com")
     assert payload["model"]["provider"] == "openai"
-    assert payload["model"]["model"] == "gpt-4o-mini"
+    assert payload["model"]["model"] == "gpt-4o"
     assert "credentialId" not in payload["model"]
 
 

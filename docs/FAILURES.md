@@ -833,3 +833,39 @@ independent of language, and the fix is a different backend model. Finding 2 (Hi
 itself) can't be tested this way — English-only or Hindi-only calls don't exercise
 code-switching at all — so it stays a decision to make once findings 1/3/4 are settled, not
 before. Result recorded once the control call happens.
+
+## 2026-09-26 — English control call result: mostly not language-linked
+
+Ran the identical scenario on ACC-0019 (English, two invoices) — same reason-detour, vague-then-
+specific date, method question shape. Result, checked against both the parsed transcript and
+`tool_calls.jsonl` directly, not assumed from the transcript text alone:
+
+- **`record_ptp` fired correctly** (`{'invoice_ids': ['USCS/26-27/0002'], 'amount': 204500,
+  'date': '2026-09-30', 'method': 'UPI'}`) — this recovered in English. The Hindi call fired
+  *no* tool at all.
+- **`schedule_callback` still did not fire**, even in English — the closing turn said "someone
+  will follow up separately regarding your other overdue invoice" and no such call exists in
+  `tool_calls.jsonl` for this call's window. Narration-instead-of-invocation is only *partly*
+  language-linked: one tool recovered, the other didn't.
+- **The invoice number was still read as raw fragmented text**, not the spoken form — "US-CS/.
+  26. 27/0002", "US-CS. 26/27/0002", "US-CS/26/27/.0002" — a different, inconsistent mangling
+  each time it was said, all in English. Reproduces without any Hindi/Hinglish involved.
+- **The amount was still stated as raw digits** ("2,04,500 rupees") instead of the `(say
+  "...")` word form. Same failure as the invoice number, same conclusion.
+- **The full-or-partial amount question was still skipped** — the bot stated "the outstanding
+  amount of 2,04,500 rupees" as the payment amount without ever asking, identical to the Hindi
+  call.
+- **The bot repeated the full invoice number every single turn**, fragmented differently each
+  time, instead of saying "this invoice" after the first mention — not something either
+  previous call's fix list had named yet; added as a new CONVERSATION RULE.
+
+**Reading:** four of five checkable findings reproduce in English exactly as they did in Hindi
+— not language-linked. Only the complete tool-calling failure (finding 1, both tools silent)
+was Hindi-specific; in English one of the two tools recovered. The weight of evidence points at
+gpt-4o-mini's instruction-following in general, not at Hinglish generation specifically pulling
+focus away from instructions. Decision: run the same ACC-0019 scenario again with the backend
+model switched to `gpt-4o` (`voice/assistant_config.py`'s `BACKEND_MODEL`, temporarily) before
+rewriting any prompt instruction a third time. Cost difference is trivial at this call volume.
+Also added the "this invoice" rule to `CONVERSATION RULES` regardless of the model question —
+it's a real, independently-worth-fixing finding either way. Result of the gpt-4o comparison
+recorded once that call happens.

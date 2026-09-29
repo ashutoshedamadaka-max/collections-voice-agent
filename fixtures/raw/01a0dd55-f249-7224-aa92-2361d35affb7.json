@@ -1,0 +1,2024 @@
+{
+  "id": "01a0dd55-f249-7224-aa92-2361d35affb7",
+  "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+  "type": "webCall",
+  "startedAt": "2026-09-26T10:49:52.942Z",
+  "endedAt": "2026-09-26T10:52:08.794Z",
+  "transcript": "AI: Hello, this is an automated call from Acme Supply. Accounts team; EK overdue invoice \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902\u0964 \u092f\u0939 \u0915\u0949\u0932 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u092e\u0948\u0902 \u092f\u0936 \u0915\u092a\u0942\u0930 \u0938\u0947 \u092c\u093e\u0924 \u0915\u0930 \u0930\u0939\u093e \u0939\u0942\u0901?\nUser: \u092f\u0938\u0964\nAI: \u0907\u0928\u0935\u0949\u0907\u0938 SL/26\u0964 27/09/\u0964 3, due 2026-07-18, outstanding \u20b93,87,500, pending \u0939\u0948; payment \u0915\u092c \u0924\u0915 \u0939\u094b \u092a\u093e\u090f\u0917\u093e?\nUser: \u090f\u0915 \u092e\u093f\u0928\u091f, \u092e\u0941\u091d\u0947 \u0907\u0928\u0935\u0949\u0907\u0938 \u0926\u0947\u0916\u0928\u0947 \u0926\u0940\u091c\u093f\u090f\u0964\nAI: \u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0902\u0924\u091c\u093c\u093e\u0930 \u0915\u0930\u0924\u093e \u0939\u0942\u0901\u0964\nUser: \u0939\u093e\u0901\u0964 \u092e\u093f\u0932 \u0917\u092f\u093e\u0964 \u0905\u092d\u0940 \u0905\u092a\u094d\u0930\u0942\u0935\u0932 \u092e\u0948\u0902\u0964 \u0905\u091f\u0915\u093e \u0939\u0941\u0906 \u0939\u0948\u0964\nAI: \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f approval \u0915\u092c \u0924\u0915 \u092e\u093f\u0932 \u091c\u093e\u090f\u0917\u093e?\nUser: \u0939\u094b \u091c\u093e\u090f\u0917\u093e, \u091c\u0932\u094d\u0926\u0940\u0964 \u092e\u0924\u0932\u092c, \u0907\u0924\u0928\u093e \u091f\u093e\u0907\u092e \u0928\u0939\u0940\u0902 \u0932\u0917\u0947\u0917\u093e\u0964\nAI: \u0906\u092a specific date \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u092c \u0924\u0915 payment \u0939\u094b \u091c\u093e\u090f\u0917\u093e?\nUser: \u0920\u0940\u0915 \u0939\u0948\u0964 30th \u0924\u0915 \u0915\u0930 \u0926\u0947\u0902\u0917\u0947\u0964\nAI: \u092e\u0924\u0932\u092c 30 September 2026, \u0938\u0939\u0940?\nUser: \u0939\u093e\u0901\u0964\nAI: Payment date 30 September 2026 confirm \u0939\u0941\u0906\u0964 \u0915\u094d\u092f\u093e \u0906\u092a payment \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902? NEFT, RTGS, UPI, cheque, \u092f\u093e portal?\nUser: UPI \u0938\u0947\u0964\nAI: Payment promise: invoice SL/26\u0964 27/0003, amount \u20b93,87,500, date\u0964 2\u0964 026-09-30, method UPI\u0964 \u092e\u0948\u0902\u0928\u0947 \u0907\u0938 payment promise \u0915\u094b \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0939\u0948\u0964 \u092c\u093e\u0915\u0940 overdue invoice SL/26-27/0002 \u0915\u0947 \u0932\u093f\u090f \u0915\u094b\u0908 \u0905\u0932\u0917 follow-up \u0939\u094b\u0917\u093e\u0964 \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u0906\u092a\u0915\u093e \u0926\u093f\u0928 \u0936\u0941\u092d \u0939\u094b\u0964\n",
+  "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-7a3b8830-bb01-45c3-9973-aaa029e6ab91-mono.wav",
+  "summary": "",
+  "createdAt": "2026-09-26T10:49:52.457Z",
+  "updatedAt": "2026-09-26T10:52:14.595Z",
+  "orgId": "0a32cbab-c2aa-494a-b61b-decd4db3ff77",
+  "cost": 0.1424,
+  "webCallUrl": "https://vapi.daily.co/Yjb7yDkzpWGPbQwvEPyf",
+  "status": "ended",
+  "endedReason": "customer-ended-call",
+  "messages": [
+    {
+      "role": "system",
+      "time": 1790419792616,
+      "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+      "secondsFromStart": 0
+    },
+    {
+      "role": "bot",
+      "time": 1790419794142,
+      "source": "",
+      "endTime": 1790419805302,
+      "message": "Hello, this is an automated call from Acme Supply. Accounts team; EK overdue invoice \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902\u0964 \u092f\u0939 \u0915\u0949\u0932 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u092e\u0948\u0902 \u092f\u0936 \u0915\u092a\u0942\u0930 \u0938\u0947 \u092c\u093e\u0924 \u0915\u0930 \u0930\u0939\u093e \u0939\u0942\u0901?",
+      "duration": 8340,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 1.2
+    },
+    {
+      "role": "user",
+      "time": 1790419808545,
+      "endTime": 1790419808605,
+      "message": "\u092f\u0938\u0964",
+      "duration": 60,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 15.6,
+            "word": "\u092f",
+            "start": 15.54,
+            "language": "hi",
+            "confidence": 0.51,
+            "punctuated_word": "\u092f"
+          },
+          {
+            "end": 15.6,
+            "word": "\u0938",
+            "start": 15.6,
+            "language": "hi",
+            "confidence": 0.985,
+            "punctuated_word": "\u0938"
+          },
+          {
+            "end": 15.6,
+            "word": "\u0964",
+            "start": 15.6,
+            "language": "hi",
+            "confidence": 0.988,
+            "punctuated_word": "\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 15.603
+    },
+    {
+      "role": "bot",
+      "time": 1790419810402,
+      "source": "",
+      "endTime": 1790419827142,
+      "message": "\u0907\u0928\u0935\u0949\u0907\u0938 SL/26\u0964 27/09/\u0964 3, due 2026-07-18, outstanding \u20b93,87,500, pending \u0939\u0948; payment \u0915\u092c \u0924\u0915 \u0939\u094b \u092a\u093e\u090f\u0917\u093e?",
+      "duration": 14220,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 17.46
+    },
+    {
+      "role": "user",
+      "time": 1790419831105,
+      "endTime": 1790419832725,
+      "message": "\u090f\u0915 \u092e\u093f\u0928\u091f, \u092e\u0941\u091d\u0947 \u0907\u0928\u0935\u0949\u0907\u0938 \u0926\u0947\u0916\u0928\u0947 \u0926\u0940\u091c\u093f\u090f\u0964",
+      "duration": 1620,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 38.16,
+            "word": "\u090f\u0915",
+            "start": 38.1,
+            "language": "hi",
+            "confidence": 0.766,
+            "punctuated_word": "\u090f\u0915"
+          },
+          {
+            "end": 38.28,
+            "word": "\u092e",
+            "start": 38.22,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "\u092e"
+          },
+          {
+            "end": 38.34,
+            "word": "\u093f\u0928",
+            "start": 38.28,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u093f\u0928"
+          },
+          {
+            "end": 38.46,
+            "word": "\u091f",
+            "start": 38.4,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "\u091f"
+          },
+          {
+            "end": 38.52,
+            "word": ",",
+            "start": 38.46,
+            "language": "hi",
+            "confidence": 0.982,
+            "punctuated_word": ","
+          },
+          {
+            "end": 38.58,
+            "word": "\u092e\u0941",
+            "start": 38.52,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u092e\u0941"
+          },
+          {
+            "end": 38.64,
+            "word": "\u091d",
+            "start": 38.58,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u091d"
+          },
+          {
+            "end": 38.7,
+            "word": "\u0947",
+            "start": 38.64,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0947"
+          },
+          {
+            "end": 39.06,
+            "word": "\u0907\u0928",
+            "start": 39,
+            "language": "hi",
+            "confidence": 0.963,
+            "punctuated_word": "\u0907\u0928"
+          },
+          {
+            "end": 39.18,
+            "word": "\u0935",
+            "start": 39.12,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "\u0935"
+          },
+          {
+            "end": 39.24,
+            "word": "\u0949",
+            "start": 39.18,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0949"
+          },
+          {
+            "end": 39.3,
+            "word": "\u0907",
+            "start": 39.24,
+            "language": "hi",
+            "confidence": 0.997,
+            "punctuated_word": "\u0907"
+          },
+          {
+            "end": 39.36,
+            "word": "\u0938",
+            "start": 39.3,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0938"
+          },
+          {
+            "end": 39.48,
+            "word": "\u0926\u0947\u0916",
+            "start": 39.42,
+            "language": "hi",
+            "confidence": 0.997,
+            "punctuated_word": "\u0926\u0947\u0916"
+          },
+          {
+            "end": 39.6,
+            "word": "\u0928\u0947",
+            "start": 39.54,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0928\u0947"
+          },
+          {
+            "end": 39.72,
+            "word": "\u0926\u0940",
+            "start": 39.66,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0926\u0940"
+          },
+          {
+            "end": 39.72,
+            "word": "\u091c",
+            "start": 39.72,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u091c"
+          },
+          {
+            "end": 39.72,
+            "word": "\u093f",
+            "start": 39.72,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u093f"
+          },
+          {
+            "end": 39.72,
+            "word": "\u090f",
+            "start": 39.72,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u090f"
+          },
+          {
+            "end": 39.72,
+            "word": "\u0964",
+            "start": 39.72,
+            "language": "hi",
+            "confidence": 0.972,
+            "punctuated_word": "\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 38.163
+    },
+    {
+      "role": "bot",
+      "time": 1790419834042,
+      "source": "",
+      "endTime": 1790419835542,
+      "message": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0902\u0924\u091c\u093c\u093e\u0930 \u0915\u0930\u0924\u093e \u0939\u0942\u0901\u0964",
+      "duration": 1500,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 41.1
+    },
+    {
+      "role": "user",
+      "time": 1790419834105,
+      "endTime": 1790419841485,
+      "message": "\u0939\u093e\u0901\u0964 \u092e\u093f\u0932 \u0917\u092f\u093e\u0964 \u0905\u092d\u0940 \u0905\u092a\u094d\u0930\u0942\u0935\u0932 \u092e\u0948\u0902\u0964 \u0905\u091f\u0915\u093e \u0939\u0941\u0906 \u0939\u0948\u0964",
+      "duration": 2100,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 41.16,
+            "word": "\u0939\u093e",
+            "start": 41.1,
+            "language": "hi",
+            "confidence": 0.979,
+            "punctuated_word": "\u0939\u093e"
+          },
+          {
+            "end": 41.16,
+            "word": "\u0901",
+            "start": 41.16,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "\u0901"
+          },
+          {
+            "end": 41.16,
+            "word": "\u0964",
+            "start": 41.16,
+            "language": "hi",
+            "confidence": 0.996,
+            "punctuated_word": "\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 41.163
+    },
+    {
+      "role": "bot",
+      "time": 1790419844122,
+      "source": "",
+      "endTime": 1790419847062,
+      "message": "\u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f approval \u0915\u092c \u0924\u0915 \u092e\u093f\u0932 \u091c\u093e\u090f\u0917\u093e?",
+      "duration": 2940,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 51.18
+    },
+    {
+      "role": "user",
+      "time": 1790419849825,
+      "endTime": 1790419851805,
+      "message": "\u0939\u094b \u091c\u093e\u090f\u0917\u093e, \u091c\u0932\u094d\u0926\u0940\u0964 \u092e\u0924\u0932\u092c, \u0907\u0924\u0928\u093e \u091f\u093e\u0907\u092e \u0928\u0939\u0940\u0902 \u0932\u0917\u0947\u0917\u093e\u0964",
+      "duration": 1980,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 56.88,
+            "word": "\u0939\u094b",
+            "start": 56.82,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0939\u094b"
+          },
+          {
+            "end": 57,
+            "word": "\u091c\u093e",
+            "start": 56.94,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u091c\u093e"
+          },
+          {
+            "end": 57.12,
+            "word": "\u090f",
+            "start": 57.06,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u090f"
+          },
+          {
+            "end": 57.24,
+            "word": "\u0917\u093e",
+            "start": 57.18,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0917\u093e"
+          },
+          {
+            "end": 57.36,
+            "word": ",",
+            "start": 57.3,
+            "language": "hi",
+            "confidence": 0.953,
+            "punctuated_word": ","
+          },
+          {
+            "end": 57.42,
+            "word": "\u091c",
+            "start": 57.36,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u091c"
+          },
+          {
+            "end": 57.48,
+            "word": "\u0932\u094d",
+            "start": 57.42,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0932\u094d"
+          },
+          {
+            "end": 57.6,
+            "word": "\u0926\u0940",
+            "start": 57.54,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0926\u0940"
+          },
+          {
+            "end": 57.66,
+            "word": "\u0964",
+            "start": 57.6,
+            "language": "hi",
+            "confidence": 0.523,
+            "punctuated_word": "\u0964"
+          },
+          {
+            "end": 57.72,
+            "word": "\u092e",
+            "start": 57.66,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u092e"
+          },
+          {
+            "end": 57.78,
+            "word": "\u0924",
+            "start": 57.72,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0924"
+          },
+          {
+            "end": 57.84,
+            "word": "\u0932",
+            "start": 57.78,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0932"
+          },
+          {
+            "end": 57.96,
+            "word": "\u092c",
+            "start": 57.9,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u092c"
+          },
+          {
+            "end": 58.02,
+            "word": ",",
+            "start": 57.96,
+            "language": "hi",
+            "confidence": 0.675,
+            "punctuated_word": ","
+          },
+          {
+            "end": 58.08,
+            "word": "\u0907",
+            "start": 58.02,
+            "language": "hi",
+            "confidence": 0.984,
+            "punctuated_word": "\u0907"
+          },
+          {
+            "end": 58.14,
+            "word": "\u0924",
+            "start": 58.08,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0924"
+          },
+          {
+            "end": 58.26,
+            "word": "\u0928\u093e",
+            "start": 58.2,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0928\u093e"
+          },
+          {
+            "end": 58.32,
+            "word": "\u091f",
+            "start": 58.26,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u091f"
+          },
+          {
+            "end": 58.38,
+            "word": "\u093e",
+            "start": 58.32,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u093e"
+          },
+          {
+            "end": 58.44,
+            "word": "\u0907",
+            "start": 58.38,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0907"
+          },
+          {
+            "end": 58.5,
+            "word": "\u092e",
+            "start": 58.44,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u092e"
+          },
+          {
+            "end": 58.62,
+            "word": "\u0928\u0939\u0940\u0902",
+            "start": 58.56,
+            "language": "hi",
+            "confidence": 0.959,
+            "punctuated_word": "\u0928\u0939\u0940\u0902"
+          },
+          {
+            "end": 58.8,
+            "word": "\u0932\u0917",
+            "start": 58.74,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0932\u0917"
+          },
+          {
+            "end": 58.8,
+            "word": "\u0947",
+            "start": 58.8,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0947"
+          },
+          {
+            "end": 58.8,
+            "word": "\u0917\u093e",
+            "start": 58.8,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0917\u093e"
+          },
+          {
+            "end": 58.8,
+            "word": "\u0964",
+            "start": 58.8,
+            "language": "hi",
+            "confidence": 0.996,
+            "punctuated_word": "\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 56.883
+    },
+    {
+      "role": "bot",
+      "time": 1790419853302,
+      "source": "",
+      "endTime": 1790419856662,
+      "message": "\u0906\u092a specific date \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u092c \u0924\u0915 payment \u0939\u094b \u091c\u093e\u090f\u0917\u093e?",
+      "duration": 3360,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 60.36
+    },
+    {
+      "role": "user",
+      "time": 1790419859785,
+      "endTime": 1790419862005,
+      "message": "\u0920\u0940\u0915 \u0939\u0948\u0964 30th \u0924\u0915 \u0915\u0930 \u0926\u0947\u0902\u0917\u0947\u0964",
+      "duration": 1140,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 66.84,
+            "word": "\u0920\u0940",
+            "start": 66.84,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0920\u0940"
+          },
+          {
+            "end": 66.84,
+            "word": "\u0915",
+            "start": 66.84,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0915"
+          },
+          {
+            "end": 66.84,
+            "word": "\u0939\u0948\u0964",
+            "start": 66.84,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "\u0939\u0948\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 66.843
+    },
+    {
+      "role": "bot",
+      "time": 1790419863382,
+      "source": "",
+      "endTime": 1790419866142,
+      "message": "\u092e\u0924\u0932\u092c 30 September 2026, \u0938\u0939\u0940?",
+      "duration": 2760,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 70.44
+    },
+    {
+      "role": "user",
+      "time": 1790419868305,
+      "endTime": 1790419868365,
+      "message": "\u0939\u093e\u0901\u0964",
+      "duration": 60,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 75.36,
+            "word": "\u0939\u093e",
+            "start": 75.3,
+            "language": "hi",
+            "confidence": 0.995,
+            "punctuated_word": "\u0939\u093e"
+          },
+          {
+            "end": 75.36,
+            "word": "\u0901",
+            "start": 75.36,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "\u0901"
+          },
+          {
+            "end": 75.36,
+            "word": "\u0964",
+            "start": 75.36,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 75.363
+    },
+    {
+      "role": "bot",
+      "time": 1790419870042,
+      "source": "",
+      "endTime": 1790419880542,
+      "message": "Payment date 30 September 2026 confirm \u0939\u0941\u0906\u0964 \u0915\u094d\u092f\u093e \u0906\u092a payment \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902? NEFT, RTGS, UPI, cheque, \u092f\u093e portal?",
+      "duration": 9660,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 77.1
+    },
+    {
+      "role": "user",
+      "time": 1790419883485,
+      "endTime": 1790419883965,
+      "message": "UPI \u0938\u0947\u0964",
+      "duration": 480,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 90.54,
+            "word": "U",
+            "start": 90.48,
+            "language": "hi",
+            "confidence": 0.583,
+            "punctuated_word": "U"
+          },
+          {
+            "end": 90.78,
+            "word": "P",
+            "start": 90.72,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "P"
+          },
+          {
+            "end": 90.9,
+            "word": "I",
+            "start": 90.84,
+            "language": "hi",
+            "confidence": 1,
+            "punctuated_word": "I"
+          },
+          {
+            "end": 90.96,
+            "word": "\u0938\u0947",
+            "start": 90.9,
+            "language": "hi",
+            "confidence": 0.999,
+            "punctuated_word": "\u0938\u0947"
+          },
+          {
+            "end": 90.96,
+            "word": "\u0964",
+            "start": 90.96,
+            "language": "hi",
+            "confidence": 0.998,
+            "punctuated_word": "\u0964"
+          }
+        ]
+      },
+      "secondsFromStart": 90.543
+    },
+    {
+      "role": "bot",
+      "time": 1790419885282,
+      "source": "",
+      "endTime": 1790419916062,
+      "message": "Payment promise: invoice SL/26\u0964 27/0003, amount \u20b93,87,500, date\u0964 2\u0964 026-09-30, method UPI\u0964 \u092e\u0948\u0902\u0928\u0947 \u0907\u0938 payment promise \u0915\u094b \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0939\u0948\u0964 \u092c\u093e\u0915\u0940 overdue invoice SL/26-27/0002 \u0915\u0947 \u0932\u093f\u090f \u0915\u094b\u0908 \u0905\u0932\u0917 follow-up \u0939\u094b\u0917\u093e\u0964 \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u0906\u092a\u0915\u093e \u0926\u093f\u0928 \u0936\u0941\u092d \u0939\u094b\u0964",
+      "duration": 27900,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 92.34
+    }
+  ],
+  "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-4f1be55a-ddf5-479f-a2fb-0ab9bcb1049d-stereo.wav",
+  "costBreakdown": {
+    "transport": 0.0026,
+    "stt": 0.0092,
+    "llm": 0.0038,
+    "tts": 0.0137,
+    "vapi": 0.1132,
+    "chat": 0,
+    "total": 0.1424,
+    "llmPromptTokens": 23992,
+    "llmCompletionTokens": 276,
+    "llmCachedPromptTokens": 7296,
+    "ttsCharacters": 911,
+    "analysisCostBreakdown": {
+      "summary": 0,
+      "structuredData": 0,
+      "structuredOutput": 0,
+      "successEvaluation": 0,
+      "summaryPromptTokens": 0,
+      "summaryCompletionTokens": 0,
+      "summaryCachedPromptTokens": 0,
+      "structuredDataPromptTokens": 0,
+      "structuredOutputPromptTokens": 0,
+      "successEvaluationPromptTokens": 0,
+      "structuredDataCompletionTokens": 0,
+      "structuredDataCachedPromptTokens": 0,
+      "structuredOutputCompletionTokens": 0,
+      "successEvaluationCompletionTokens": 0,
+      "structuredOutputCachedPromptTokens": 0,
+      "successEvaluationCachedPromptTokens": 0
+    },
+    "knowledgeBaseCost": 0,
+    "voicemailDetectionCost": 0
+  },
+  "assistantOverrides": {
+    "transcriber": {
+      "model": "stt-rt-v5",
+      "language": "hi",
+      "provider": "soniox"
+    },
+    "model": {
+      "model": "gpt-4o-mini",
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "lookup_invoices",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "account_id"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Read-only, idempotent. Look up the invoice list for an account."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_ids",
+                "amount",
+                "date",
+                "method"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "ISO 8601 date, e.g. 2026-09-30"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "method": {
+                  "enum": [
+                    "NEFT",
+                    "RTGS",
+                    "UPI",
+                    "cheque",
+                    "portal"
+                  ],
+                  "type": "string"
+                },
+                "invoice_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Call this immediately once the caller has given a specific amount, date, and method, and you have confirmed them back. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_dispute",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reason_code",
+                "detail"
+              ],
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                },
+                "reason_code": {
+                  "enum": [
+                    "invoice_not_received",
+                    "awaiting_internal_approval",
+                    "po_mismatch",
+                    "missing_documentation",
+                    "quality_dispute",
+                    "quantity_dispute",
+                    "pricing_dispute",
+                    "payment_run_timing",
+                    "cash_flow",
+                    "wrong_contact",
+                    "paid_already"
+                  ],
+                  "type": "string"
+                },
+                "evidence_requested": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer disputes any invoice or charge. Never argue the claim \u2014 just capture and route it. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_payment_claim",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reference",
+                "paid_on"
+              ],
+              "properties": {
+                "paid_on": {
+                  "type": "string",
+                  "description": "ISO 8601 date"
+                },
+                "reference": {
+                  "type": "string",
+                  "description": "UTR or cheque number"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer claims an invoice is already paid and has given a reference and date. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "send_document",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "doc_type"
+              ],
+              "properties": {
+                "doc_type": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer asks for a document, once you know which one. Queues it to be drafted \u2014 never sent automatically. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "schedule_callback",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "priority": {
+                  "enum": [
+                    "normal",
+                    "high"
+                  ],
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately to hand off to a human: wrong person, escalation request, or unanswerable question. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "mark_opt_out",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "contact_id",
+                "scope"
+              ],
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "this_contact",
+                    "whole_account"
+                  ],
+                  "type": "string"
+                },
+                "contact_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when asked to stop calling. Acknowledge out loud, call this, then end the call. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end."
+        }
+      ],
+      "provider": "openai"
+    },
+    "voice": {
+      "version": "latest",
+      "voiceId": "Naina",
+      "language": "en",
+      "provider": "vapi"
+    },
+    "firstMessage": "Hello, this is an automated call from Acme Supplies's accounts team, ek overdue invoice ke baare mein. Yeh call record ho sakti hai. Kya main Yash Kapoor se baat kar raha hoon?"
+  },
+  "analysis": {},
+  "artifact": {
+    "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-7a3b8830-bb01-45c3-9973-aaa029e6ab91-mono.wav",
+    "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-4f1be55a-ddf5-479f-a2fb-0ab9bcb1049d-stereo.wav",
+    "recording": {
+      "stereoUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-4f1be55a-ddf5-479f-a2fb-0ab9bcb1049d-stereo.wav",
+      "mono": {
+        "combinedUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-7a3b8830-bb01-45c3-9973-aaa029e6ab91-mono.wav",
+        "assistantUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-e81ad30b-d273-4ae0-8d2d-df8d80d57752-mono.wav",
+        "customerUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-7f9eb64e-63c6-4630-9e08-2d8656128ff4-mono.wav"
+      }
+    },
+    "messages": [
+      {
+        "role": "system",
+        "time": 1790419792616,
+        "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+        "secondsFromStart": 0
+      },
+      {
+        "role": "bot",
+        "time": 1790419794142,
+        "source": "",
+        "endTime": 1790419805302,
+        "message": "Hello, this is an automated call from Acme Supply. Accounts team; EK overdue invoice \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902\u0964 \u092f\u0939 \u0915\u0949\u0932 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u092e\u0948\u0902 \u092f\u0936 \u0915\u092a\u0942\u0930 \u0938\u0947 \u092c\u093e\u0924 \u0915\u0930 \u0930\u0939\u093e \u0939\u0942\u0901?",
+        "duration": 8340,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 1.2
+      },
+      {
+        "role": "user",
+        "time": 1790419808545,
+        "endTime": 1790419808605,
+        "message": "\u092f\u0938\u0964",
+        "duration": 60,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 15.6,
+              "word": "\u092f",
+              "start": 15.54,
+              "language": "hi",
+              "confidence": 0.51,
+              "punctuated_word": "\u092f"
+            },
+            {
+              "end": 15.6,
+              "word": "\u0938",
+              "start": 15.6,
+              "language": "hi",
+              "confidence": 0.985,
+              "punctuated_word": "\u0938"
+            },
+            {
+              "end": 15.6,
+              "word": "\u0964",
+              "start": 15.6,
+              "language": "hi",
+              "confidence": 0.988,
+              "punctuated_word": "\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 15.603
+      },
+      {
+        "role": "bot",
+        "time": 1790419810402,
+        "source": "",
+        "endTime": 1790419827142,
+        "message": "\u0907\u0928\u0935\u0949\u0907\u0938 SL/26\u0964 27/09/\u0964 3, due 2026-07-18, outstanding \u20b93,87,500, pending \u0939\u0948; payment \u0915\u092c \u0924\u0915 \u0939\u094b \u092a\u093e\u090f\u0917\u093e?",
+        "duration": 14220,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 17.46
+      },
+      {
+        "role": "user",
+        "time": 1790419831105,
+        "endTime": 1790419832725,
+        "message": "\u090f\u0915 \u092e\u093f\u0928\u091f, \u092e\u0941\u091d\u0947 \u0907\u0928\u0935\u0949\u0907\u0938 \u0926\u0947\u0916\u0928\u0947 \u0926\u0940\u091c\u093f\u090f\u0964",
+        "duration": 1620,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 38.16,
+              "word": "\u090f\u0915",
+              "start": 38.1,
+              "language": "hi",
+              "confidence": 0.766,
+              "punctuated_word": "\u090f\u0915"
+            },
+            {
+              "end": 38.28,
+              "word": "\u092e",
+              "start": 38.22,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "\u092e"
+            },
+            {
+              "end": 38.34,
+              "word": "\u093f\u0928",
+              "start": 38.28,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u093f\u0928"
+            },
+            {
+              "end": 38.46,
+              "word": "\u091f",
+              "start": 38.4,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "\u091f"
+            },
+            {
+              "end": 38.52,
+              "word": ",",
+              "start": 38.46,
+              "language": "hi",
+              "confidence": 0.982,
+              "punctuated_word": ","
+            },
+            {
+              "end": 38.58,
+              "word": "\u092e\u0941",
+              "start": 38.52,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u092e\u0941"
+            },
+            {
+              "end": 38.64,
+              "word": "\u091d",
+              "start": 38.58,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u091d"
+            },
+            {
+              "end": 38.7,
+              "word": "\u0947",
+              "start": 38.64,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0947"
+            },
+            {
+              "end": 39.06,
+              "word": "\u0907\u0928",
+              "start": 39,
+              "language": "hi",
+              "confidence": 0.963,
+              "punctuated_word": "\u0907\u0928"
+            },
+            {
+              "end": 39.18,
+              "word": "\u0935",
+              "start": 39.12,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "\u0935"
+            },
+            {
+              "end": 39.24,
+              "word": "\u0949",
+              "start": 39.18,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0949"
+            },
+            {
+              "end": 39.3,
+              "word": "\u0907",
+              "start": 39.24,
+              "language": "hi",
+              "confidence": 0.997,
+              "punctuated_word": "\u0907"
+            },
+            {
+              "end": 39.36,
+              "word": "\u0938",
+              "start": 39.3,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0938"
+            },
+            {
+              "end": 39.48,
+              "word": "\u0926\u0947\u0916",
+              "start": 39.42,
+              "language": "hi",
+              "confidence": 0.997,
+              "punctuated_word": "\u0926\u0947\u0916"
+            },
+            {
+              "end": 39.6,
+              "word": "\u0928\u0947",
+              "start": 39.54,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0928\u0947"
+            },
+            {
+              "end": 39.72,
+              "word": "\u0926\u0940",
+              "start": 39.66,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0926\u0940"
+            },
+            {
+              "end": 39.72,
+              "word": "\u091c",
+              "start": 39.72,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u091c"
+            },
+            {
+              "end": 39.72,
+              "word": "\u093f",
+              "start": 39.72,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u093f"
+            },
+            {
+              "end": 39.72,
+              "word": "\u090f",
+              "start": 39.72,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u090f"
+            },
+            {
+              "end": 39.72,
+              "word": "\u0964",
+              "start": 39.72,
+              "language": "hi",
+              "confidence": 0.972,
+              "punctuated_word": "\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 38.163
+      },
+      {
+        "role": "bot",
+        "time": 1790419834042,
+        "source": "",
+        "endTime": 1790419835542,
+        "message": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0902\u0924\u091c\u093c\u093e\u0930 \u0915\u0930\u0924\u093e \u0939\u0942\u0901\u0964",
+        "duration": 1500,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 41.1
+      },
+      {
+        "role": "user",
+        "time": 1790419834105,
+        "endTime": 1790419841485,
+        "message": "\u0939\u093e\u0901\u0964 \u092e\u093f\u0932 \u0917\u092f\u093e\u0964 \u0905\u092d\u0940 \u0905\u092a\u094d\u0930\u0942\u0935\u0932 \u092e\u0948\u0902\u0964 \u0905\u091f\u0915\u093e \u0939\u0941\u0906 \u0939\u0948\u0964",
+        "duration": 2100,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 41.16,
+              "word": "\u0939\u093e",
+              "start": 41.1,
+              "language": "hi",
+              "confidence": 0.979,
+              "punctuated_word": "\u0939\u093e"
+            },
+            {
+              "end": 41.16,
+              "word": "\u0901",
+              "start": 41.16,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "\u0901"
+            },
+            {
+              "end": 41.16,
+              "word": "\u0964",
+              "start": 41.16,
+              "language": "hi",
+              "confidence": 0.996,
+              "punctuated_word": "\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 41.163
+      },
+      {
+        "role": "bot",
+        "time": 1790419844122,
+        "source": "",
+        "endTime": 1790419847062,
+        "message": "\u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f approval \u0915\u092c \u0924\u0915 \u092e\u093f\u0932 \u091c\u093e\u090f\u0917\u093e?",
+        "duration": 2940,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 51.18
+      },
+      {
+        "role": "user",
+        "time": 1790419849825,
+        "endTime": 1790419851805,
+        "message": "\u0939\u094b \u091c\u093e\u090f\u0917\u093e, \u091c\u0932\u094d\u0926\u0940\u0964 \u092e\u0924\u0932\u092c, \u0907\u0924\u0928\u093e \u091f\u093e\u0907\u092e \u0928\u0939\u0940\u0902 \u0932\u0917\u0947\u0917\u093e\u0964",
+        "duration": 1980,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 56.88,
+              "word": "\u0939\u094b",
+              "start": 56.82,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0939\u094b"
+            },
+            {
+              "end": 57,
+              "word": "\u091c\u093e",
+              "start": 56.94,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u091c\u093e"
+            },
+            {
+              "end": 57.12,
+              "word": "\u090f",
+              "start": 57.06,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u090f"
+            },
+            {
+              "end": 57.24,
+              "word": "\u0917\u093e",
+              "start": 57.18,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0917\u093e"
+            },
+            {
+              "end": 57.36,
+              "word": ",",
+              "start": 57.3,
+              "language": "hi",
+              "confidence": 0.953,
+              "punctuated_word": ","
+            },
+            {
+              "end": 57.42,
+              "word": "\u091c",
+              "start": 57.36,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u091c"
+            },
+            {
+              "end": 57.48,
+              "word": "\u0932\u094d",
+              "start": 57.42,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0932\u094d"
+            },
+            {
+              "end": 57.6,
+              "word": "\u0926\u0940",
+              "start": 57.54,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0926\u0940"
+            },
+            {
+              "end": 57.66,
+              "word": "\u0964",
+              "start": 57.6,
+              "language": "hi",
+              "confidence": 0.523,
+              "punctuated_word": "\u0964"
+            },
+            {
+              "end": 57.72,
+              "word": "\u092e",
+              "start": 57.66,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u092e"
+            },
+            {
+              "end": 57.78,
+              "word": "\u0924",
+              "start": 57.72,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0924"
+            },
+            {
+              "end": 57.84,
+              "word": "\u0932",
+              "start": 57.78,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0932"
+            },
+            {
+              "end": 57.96,
+              "word": "\u092c",
+              "start": 57.9,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u092c"
+            },
+            {
+              "end": 58.02,
+              "word": ",",
+              "start": 57.96,
+              "language": "hi",
+              "confidence": 0.675,
+              "punctuated_word": ","
+            },
+            {
+              "end": 58.08,
+              "word": "\u0907",
+              "start": 58.02,
+              "language": "hi",
+              "confidence": 0.984,
+              "punctuated_word": "\u0907"
+            },
+            {
+              "end": 58.14,
+              "word": "\u0924",
+              "start": 58.08,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0924"
+            },
+            {
+              "end": 58.26,
+              "word": "\u0928\u093e",
+              "start": 58.2,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0928\u093e"
+            },
+            {
+              "end": 58.32,
+              "word": "\u091f",
+              "start": 58.26,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u091f"
+            },
+            {
+              "end": 58.38,
+              "word": "\u093e",
+              "start": 58.32,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u093e"
+            },
+            {
+              "end": 58.44,
+              "word": "\u0907",
+              "start": 58.38,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0907"
+            },
+            {
+              "end": 58.5,
+              "word": "\u092e",
+              "start": 58.44,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u092e"
+            },
+            {
+              "end": 58.62,
+              "word": "\u0928\u0939\u0940\u0902",
+              "start": 58.56,
+              "language": "hi",
+              "confidence": 0.959,
+              "punctuated_word": "\u0928\u0939\u0940\u0902"
+            },
+            {
+              "end": 58.8,
+              "word": "\u0932\u0917",
+              "start": 58.74,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0932\u0917"
+            },
+            {
+              "end": 58.8,
+              "word": "\u0947",
+              "start": 58.8,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0947"
+            },
+            {
+              "end": 58.8,
+              "word": "\u0917\u093e",
+              "start": 58.8,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0917\u093e"
+            },
+            {
+              "end": 58.8,
+              "word": "\u0964",
+              "start": 58.8,
+              "language": "hi",
+              "confidence": 0.996,
+              "punctuated_word": "\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 56.883
+      },
+      {
+        "role": "bot",
+        "time": 1790419853302,
+        "source": "",
+        "endTime": 1790419856662,
+        "message": "\u0906\u092a specific date \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u092c \u0924\u0915 payment \u0939\u094b \u091c\u093e\u090f\u0917\u093e?",
+        "duration": 3360,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 60.36
+      },
+      {
+        "role": "user",
+        "time": 1790419859785,
+        "endTime": 1790419862005,
+        "message": "\u0920\u0940\u0915 \u0939\u0948\u0964 30th \u0924\u0915 \u0915\u0930 \u0926\u0947\u0902\u0917\u0947\u0964",
+        "duration": 1140,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 66.84,
+              "word": "\u0920\u0940",
+              "start": 66.84,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0920\u0940"
+            },
+            {
+              "end": 66.84,
+              "word": "\u0915",
+              "start": 66.84,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0915"
+            },
+            {
+              "end": 66.84,
+              "word": "\u0939\u0948\u0964",
+              "start": 66.84,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "\u0939\u0948\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 66.843
+      },
+      {
+        "role": "bot",
+        "time": 1790419863382,
+        "source": "",
+        "endTime": 1790419866142,
+        "message": "\u092e\u0924\u0932\u092c 30 September 2026, \u0938\u0939\u0940?",
+        "duration": 2760,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 70.44
+      },
+      {
+        "role": "user",
+        "time": 1790419868305,
+        "endTime": 1790419868365,
+        "message": "\u0939\u093e\u0901\u0964",
+        "duration": 60,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 75.36,
+              "word": "\u0939\u093e",
+              "start": 75.3,
+              "language": "hi",
+              "confidence": 0.995,
+              "punctuated_word": "\u0939\u093e"
+            },
+            {
+              "end": 75.36,
+              "word": "\u0901",
+              "start": 75.36,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "\u0901"
+            },
+            {
+              "end": 75.36,
+              "word": "\u0964",
+              "start": 75.36,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 75.363
+      },
+      {
+        "role": "bot",
+        "time": 1790419870042,
+        "source": "",
+        "endTime": 1790419880542,
+        "message": "Payment date 30 September 2026 confirm \u0939\u0941\u0906\u0964 \u0915\u094d\u092f\u093e \u0906\u092a payment \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902? NEFT, RTGS, UPI, cheque, \u092f\u093e portal?",
+        "duration": 9660,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 77.1
+      },
+      {
+        "role": "user",
+        "time": 1790419883485,
+        "endTime": 1790419883965,
+        "message": "UPI \u0938\u0947\u0964",
+        "duration": 480,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 90.54,
+              "word": "U",
+              "start": 90.48,
+              "language": "hi",
+              "confidence": 0.583,
+              "punctuated_word": "U"
+            },
+            {
+              "end": 90.78,
+              "word": "P",
+              "start": 90.72,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "P"
+            },
+            {
+              "end": 90.9,
+              "word": "I",
+              "start": 90.84,
+              "language": "hi",
+              "confidence": 1,
+              "punctuated_word": "I"
+            },
+            {
+              "end": 90.96,
+              "word": "\u0938\u0947",
+              "start": 90.9,
+              "language": "hi",
+              "confidence": 0.999,
+              "punctuated_word": "\u0938\u0947"
+            },
+            {
+              "end": 90.96,
+              "word": "\u0964",
+              "start": 90.96,
+              "language": "hi",
+              "confidence": 0.998,
+              "punctuated_word": "\u0964"
+            }
+          ]
+        },
+        "secondsFromStart": 90.543
+      },
+      {
+        "role": "bot",
+        "time": 1790419885282,
+        "source": "",
+        "endTime": 1790419916062,
+        "message": "Payment promise: invoice SL/26\u0964 27/0003, amount \u20b93,87,500, date\u0964 2\u0964 026-09-30, method UPI\u0964 \u092e\u0948\u0902\u0928\u0947 \u0907\u0938 payment promise \u0915\u094b \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0939\u0948\u0964 \u092c\u093e\u0915\u0940 overdue invoice SL/26-27/0002 \u0915\u0947 \u0932\u093f\u090f \u0915\u094b\u0908 \u0905\u0932\u0917 follow-up \u0939\u094b\u0917\u093e\u0964 \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u0906\u092a\u0915\u093e \u0926\u093f\u0928 \u0936\u0941\u092d \u0939\u094b\u0964",
+        "duration": 27900,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 92.34
+      }
+    ],
+    "messagesOpenAIFormatted": [
+      {
+        "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nYash Kapoor at Satpura Logistics Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nYash Kapoor. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nThe customer's preferred language is Hinglish: Hindi conversation written in Latin (Roman) script, not Devanagari \u2014 for example 'Payment kab tak ho jayega?', never '\u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u092c \u0924\u0915 \u0939\u094b \u091c\u093e\u090f\u0917\u093e?'. Keep all numbers, amounts, invoice IDs, dates, and business or technical terms in English (payment, invoice, approval, NEFT, RTGS, UPI, date) \u2014 translating these into Hindi words is wrong, and the spoken forms you were given for amounts and invoice numbers are English words that only read naturally inside a Latin-script sentence. Use a conversational, informal register, the way people actually speak and text Hinglish \u2014 not formal textbook Hindi. Example: 'Invoice SL/26-27/0002 pending hai, two lakh four thousand. Payment kab tak ho jayega?'\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-26.\nYou are speaking with Yash Kapoor (AP Manager) at Satpura Logistics Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nSL/26-27/0003 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, three\"), due 2026-07-18, outstanding 387,500.00 (say \"three lakh eighty seven thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nSL/26-27/0002 (say \"S, L, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-08-26, outstanding 204,000.00 (say \"two lakh four thousand rupees\")\nTotal outstanding across all invoices: 591,500.00 (say \"five lakh ninety one thousand five hundred rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-26 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Yash Kapoor. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+        "role": "system"
+      },
+      {
+        "content": "Hello, this is an automated call from Acme Supply. Accounts team; EK overdue invoice \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902\u0964 \u092f\u0939 \u0915\u0949\u0932 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u092e\u0948\u0902 \u092f\u0936 \u0915\u092a\u0942\u0930 \u0938\u0947 \u092c\u093e\u0924 \u0915\u0930 \u0930\u0939\u093e \u0939\u0942\u0901?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u092f\u0938\u0964",
+        "role": "user"
+      },
+      {
+        "content": "\u0907\u0928\u0935\u0949\u0907\u0938 SL/26\u0964 27/09/\u0964 3, due 2026-07-18, outstanding \u20b93,87,500, pending \u0939\u0948; payment \u0915\u092c \u0924\u0915 \u0939\u094b \u092a\u093e\u090f\u0917\u093e?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u090f\u0915 \u092e\u093f\u0928\u091f, \u092e\u0941\u091d\u0947 \u0907\u0928\u0935\u0949\u0907\u0938 \u0926\u0947\u0916\u0928\u0947 \u0926\u0940\u091c\u093f\u090f\u0964",
+        "role": "user"
+      },
+      {
+        "content": "\u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0902\u0924\u091c\u093c\u093e\u0930 \u0915\u0930\u0924\u093e \u0939\u0942\u0901\u0964",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0939\u093e\u0901\u0964 \u092e\u093f\u0932 \u0917\u092f\u093e\u0964 \u0905\u092d\u0940 \u0905\u092a\u094d\u0930\u0942\u0935\u0932 \u092e\u0948\u0902\u0964 \u0905\u091f\u0915\u093e \u0939\u0941\u0906 \u0939\u0948\u0964",
+        "role": "user"
+      },
+      {
+        "content": "\u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f approval \u0915\u092c \u0924\u0915 \u092e\u093f\u0932 \u091c\u093e\u090f\u0917\u093e?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0939\u094b \u091c\u093e\u090f\u0917\u093e, \u091c\u0932\u094d\u0926\u0940\u0964 \u092e\u0924\u0932\u092c, \u0907\u0924\u0928\u093e \u091f\u093e\u0907\u092e \u0928\u0939\u0940\u0902 \u0932\u0917\u0947\u0917\u093e\u0964",
+        "role": "user"
+      },
+      {
+        "content": "\u0906\u092a specific date \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u092c \u0924\u0915 payment \u0939\u094b \u091c\u093e\u090f\u0917\u093e?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0920\u0940\u0915 \u0939\u0948\u0964 30th \u0924\u0915 \u0915\u0930 \u0926\u0947\u0902\u0917\u0947\u0964",
+        "role": "user"
+      },
+      {
+        "content": "\u092e\u0924\u0932\u092c 30 September 2026, \u0938\u0939\u0940?",
+        "role": "assistant"
+      },
+      {
+        "content": "\u0939\u093e\u0901\u0964",
+        "role": "user"
+      },
+      {
+        "content": "Payment date 30 September 2026 confirm \u0939\u0941\u0906\u0964 \u0915\u094d\u092f\u093e \u0906\u092a payment \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902? NEFT, RTGS, UPI, cheque, \u092f\u093e portal?",
+        "role": "assistant"
+      },
+      {
+        "content": "UPI \u0938\u0947\u0964",
+        "role": "user"
+      },
+      {
+        "content": "Payment promise: invoice SL/26\u0964 27/0003, amount \u20b93,87,500, date\u0964 2\u0964 026-09-30, method UPI\u0964 \u092e\u0948\u0902\u0928\u0947 \u0907\u0938 payment promise \u0915\u094b \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0939\u0948\u0964 \u092c\u093e\u0915\u0940 overdue invoice SL/26-27/0002 \u0915\u0947 \u0932\u093f\u090f \u0915\u094b\u0908 \u0905\u0932\u0917 follow-up \u0939\u094b\u0917\u093e\u0964 \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u0906\u092a\u0915\u093e \u0926\u093f\u0928 \u0936\u0941\u092d \u0939\u094b\u0964",
+        "role": "assistant"
+      }
+    ],
+    "transcript": "AI: Hello, this is an automated call from Acme Supply. Accounts team; EK overdue invoice \u0915\u0947 \u092c\u093e\u0930\u0947 \u092e\u0947\u0902\u0964 \u092f\u0939 \u0915\u0949\u0932 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948\u0964 \u0915\u094d\u092f\u093e \u092e\u0948\u0902 \u092f\u0936 \u0915\u092a\u0942\u0930 \u0938\u0947 \u092c\u093e\u0924 \u0915\u0930 \u0930\u0939\u093e \u0939\u0942\u0901?\nUser: \u092f\u0938\u0964\nAI: \u0907\u0928\u0935\u0949\u0907\u0938 SL/26\u0964 27/09/\u0964 3, due 2026-07-18, outstanding \u20b93,87,500, pending \u0939\u0948; payment \u0915\u092c \u0924\u0915 \u0939\u094b \u092a\u093e\u090f\u0917\u093e?\nUser: \u090f\u0915 \u092e\u093f\u0928\u091f, \u092e\u0941\u091d\u0947 \u0907\u0928\u0935\u0949\u0907\u0938 \u0926\u0947\u0916\u0928\u0947 \u0926\u0940\u091c\u093f\u090f\u0964\nAI: \u0920\u0940\u0915 \u0939\u0948, \u092e\u0948\u0902 \u0907\u0902\u0924\u091c\u093c\u093e\u0930 \u0915\u0930\u0924\u093e \u0939\u0942\u0901\u0964\nUser: \u0939\u093e\u0901\u0964 \u092e\u093f\u0932 \u0917\u092f\u093e\u0964 \u0905\u092d\u0940 \u0905\u092a\u094d\u0930\u0942\u0935\u0932 \u092e\u0948\u0902\u0964 \u0905\u091f\u0915\u093e \u0939\u0941\u0906 \u0939\u0948\u0964\nAI: \u0915\u094d\u092f\u093e \u0906\u092a \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u093f approval \u0915\u092c \u0924\u0915 \u092e\u093f\u0932 \u091c\u093e\u090f\u0917\u093e?\nUser: \u0939\u094b \u091c\u093e\u090f\u0917\u093e, \u091c\u0932\u094d\u0926\u0940\u0964 \u092e\u0924\u0932\u092c, \u0907\u0924\u0928\u093e \u091f\u093e\u0907\u092e \u0928\u0939\u0940\u0902 \u0932\u0917\u0947\u0917\u093e\u0964\nAI: \u0906\u092a specific date \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902 \u0915\u092c \u0924\u0915 payment \u0939\u094b \u091c\u093e\u090f\u0917\u093e?\nUser: \u0920\u0940\u0915 \u0939\u0948\u0964 30th \u0924\u0915 \u0915\u0930 \u0926\u0947\u0902\u0917\u0947\u0964\nAI: \u092e\u0924\u0932\u092c 30 September 2026, \u0938\u0939\u0940?\nUser: \u0939\u093e\u0901\u0964\nAI: Payment date 30 September 2026 confirm \u0939\u0941\u0906\u0964 \u0915\u094d\u092f\u093e \u0906\u092a payment \u0915\u093e \u0924\u0930\u0940\u0915\u093e \u092c\u0924\u093e \u0938\u0915\u0924\u0947 \u0939\u0948\u0902? NEFT, RTGS, UPI, cheque, \u092f\u093e portal?\nUser: UPI \u0938\u0947\u0964\nAI: Payment promise: invoice SL/26\u0964 27/0003, amount \u20b93,87,500, date\u0964 2\u0964 026-09-30, method UPI\u0964 \u092e\u0948\u0902\u0928\u0947 \u0907\u0938 payment promise \u0915\u094b \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0930 \u0926\u093f\u092f\u093e \u0939\u0948\u0964 \u092c\u093e\u0915\u0940 overdue invoice SL/26-27/0002 \u0915\u0947 \u0932\u093f\u090f \u0915\u094b\u0908 \u0905\u0932\u0917 follow-up \u0939\u094b\u0917\u093e\u0964 \u0927\u0928\u094d\u092f\u0935\u093e\u0926, \u0906\u092a\u0915\u093e \u0926\u093f\u0928 \u0936\u0941\u092d \u0939\u094b\u0964\n",
+    "logUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-calllogs/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0dd55-f249-7224-aa92-2361d35affb7-c27181b4-53c8-4c28-9b3a-404fce7b38d2-1790419934116.jsonl.gz",
+    "nodes": [],
+    "assistantActivations": [
+      {
+        "assistantName": "collections-agent-v1",
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantVersion": "v12"
+      }
+    ],
+    "variableValues": {
+      "day": "26",
+      "now": "Sep 26, 2026, 10:49 AM UTC",
+      "call": {
+        "id": "01a0dd55-f249-7224-aa92-2361d35affb7",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-26T10:49:52.457Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/Yjb7yDkzpWGPbQwvEPyf",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 26, 2026 UTC",
+      "time": "10:49 AM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/Yjb7yDkzpWGPbQwvEPyf",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Saturday, September 26, 2026 at 10:49 AM UTC"
+    },
+    "variables": {
+      "day": "26",
+      "now": "Sep 26, 2026, 10:49 AM UTC",
+      "call": {
+        "id": "01a0dd55-f249-7224-aa92-2361d35affb7",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-26T10:49:52.457Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/Yjb7yDkzpWGPbQwvEPyf",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 26, 2026 UTC",
+      "time": "10:49 AM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/Yjb7yDkzpWGPbQwvEPyf",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Saturday, September 26, 2026 at 10:49 AM UTC"
+    },
+    "performanceMetrics": {
+      "turnLatencies": [
+        {
+          "modelLatency": 817,
+          "voiceLatency": 333,
+          "transcriberLatency": 770,
+          "endpointingLatency": 2,
+          "turnLatency": 1944
+        },
+        {
+          "modelLatency": 431,
+          "voiceLatency": 375,
+          "transcriberLatency": 299,
+          "endpointingLatency": 2,
+          "turnLatency": 1116
+        },
+        {
+          "modelLatency": 1107,
+          "voiceLatency": 320,
+          "transcriberLatency": 365,
+          "endpointingLatency": 2,
+          "turnLatency": 1816
+        },
+        {
+          "modelLatency": 733,
+          "voiceLatency": 342,
+          "transcriberLatency": 169,
+          "endpointingLatency": 2,
+          "turnLatency": 1275
+        },
+        {
+          "modelLatency": 430,
+          "voiceLatency": 313,
+          "transcriberLatency": 1286,
+          "endpointingLatency": 2,
+          "turnLatency": 2077
+        },
+        {
+          "modelLatency": 680,
+          "voiceLatency": 326,
+          "transcriberLatency": 441,
+          "endpointingLatency": 2,
+          "turnLatency": 1461
+        },
+        {
+          "modelLatency": 444,
+          "voiceLatency": 318,
+          "transcriberLatency": 331,
+          "endpointingLatency": 2,
+          "turnLatency": 1096
+        }
+      ],
+      "modelLatencyAverage": 663.14,
+      "voiceLatencyAverage": 332.43,
+      "transcriberLatencyAverage": 523,
+      "endpointingLatencyAverage": 2,
+      "turnLatencyAverage": 1540.71,
+      "fromTransportLatencyAverage": 20,
+      "toTransportLatencyAverage": 49
+    },
+    "scorecards": {},
+    "transfers": [],
+    "presignedMonoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-7a3b8830-bb01-45c3-9973-aaa029e6ab91-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T105503Z&X-Amz-Expires=1800&X-Amz-Signature=3312c7945daad92c63157e4a155d2a16635ce201ef0a369326fb4aafb3b0d795&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedStereoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-4f1be55a-ddf5-479f-a2fb-0ab9bcb1049d-stereo.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T105503Z&X-Amz-Expires=1800&X-Amz-Signature=038f446dac78576a8f42365daac4527602a1a751e52d3a168b1ec331b4787885&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedAssistantUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-e81ad30b-d273-4ae0-8d2d-df8d80d57752-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T105503Z&X-Amz-Expires=1800&X-Amz-Signature=c1d6c5e31c2fa78a857e795c4bf5102220115bd5a284832e4c1e4a095b46b326&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedCustomerUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0dd55-f249-7224-aa92-2361d35affb7-1790419931467-7f9eb64e-63c6-4630-9e08-2d8656128ff4-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T105503Z&X-Amz-Expires=1800&X-Amz-Signature=3fc8416157c7293697815bc3f8faa2358cf0b834ba0bf46c49dee76b05a81d07&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedLogUrl": "https://hipaa-calllogs.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0dd55-f249-7224-aa92-2361d35affb7-c27181b4-53c8-4c28-9b3a-404fce7b38d2-1790419934116.jsonl.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260926%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260926T105503Z&X-Amz-Expires=1800&X-Amz-Signature=d9591fdc3210db98f83e9a5e8d636316073522d6fb7b60d6bc3d1173645d9f5e&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedUrlsExpiresAt": "2026-09-26T11:25:03.681Z"
+  },
+  "costs": [
+    {
+      "cost": 0.0092271,
+      "type": "transcriber",
+      "minutes": 2.1889666666666665,
+      "transcriber": {
+        "model": "stt-rt-v5",
+        "provider": "soniox"
+      }
+    },
+    {
+      "cost": 0.0037644,
+      "type": "model",
+      "model": {
+        "model": "gpt-4o-mini",
+        "provider": "openai"
+      },
+      "promptTokens": 23992,
+      "reasoningTokens": 0,
+      "completionTokens": 276,
+      "cachedPromptTokens": 7296
+    },
+    {
+      "cost": 0.013665,
+      "type": "voice",
+      "voice": {
+        "model": "vapi-v2",
+        "voiceId": "Naina",
+        "provider": "vapi"
+      },
+      "characters": 911
+    },
+    {
+      "cost": 0.11321,
+      "type": "vapi",
+      "minutes": 2.2642,
+      "subType": "normal"
+    },
+    {
+      "cost": 0,
+      "type": "knowledge-base",
+      "model": {
+        "model": "gemini-2.5-flash",
+        "provider": "google"
+      },
+      "promptTokens": 0,
+      "completionTokens": 0
+    },
+    {
+      "cost": 0.0025748000000000004,
+      "type": "transport",
+      "minutes": 135852,
+      "provider": "daily"
+    }
+  ],
+  "monitor": {
+    "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production3.vapi.ai/01a0dd55-f249-7224-aa92-2361d35affb7/listen",
+    "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production3.vapi.ai/01a0dd55-f249-7224-aa92-2361d35affb7/control"
+  },
+  "transport": {
+    "callUrl": "https://vapi.daily.co/Yjb7yDkzpWGPbQwvEPyf",
+    "provider": "daily",
+    "conversationType": "voice",
+    "assistantVideoEnabled": false,
+    "videoRecordingEnabled": false,
+    "roomDeleteOnUserLeaveEnabled": true
+  },
+  "assistantVersion": "v12"
+}
