@@ -869,3 +869,112 @@ rewriting any prompt instruction a third time. Cost difference is trivial at thi
 Also added the "this invoice" rule to `CONVERSATION RULES` regardless of the model question —
 it's a real, independently-worth-fixing finding either way. Result of the gpt-4o comparison
 recorded once that call happens.
+
+## 2026-09-29 — gpt-4o comparison result: prompt problem, not model problem
+
+Ran the identical ACC-0019 scenario again with the backend model switched to `gpt-4o`. Pulled
+the transcript and checked `tool_calls.jsonl` directly, the same way as every other call in
+this series — not inferred from the transcript text alone.
+
+**What improved:** both `record_ptp` and `schedule_callback` fired, with correct arguments —
+full recovery from gpt-4o-mini's mixed result (one tool silent in English, both silent in
+Hindi). The full-or-partial amount question was asked explicitly for the first time across all
+three calls. The (that day, brand new, untested) "this invoice" rule was followed immediately.
+
+**What did not improve at all:** invoice numbers and amounts were still read as raw
+digits/fragmented text, not the `(say "...")` spoken forms — the exact same failure as both
+gpt-4o-mini calls. gpt-4o also introduced a new variant of the date problem: it correctly
+resolved and recorded `2026-09-30` in the `record_ptp` call, but spoke the confirmation as
+"2026 September... 13" — the written value was right, the spoken rendering of it wasn't.
+
+Latency and cost, both calls same account/scenario: gpt-4o-mini averaged 1.86s response latency
+(187.5s total, hit the 180s cap) and cost $0.1954; gpt-4o averaged 2.16s (+16%) and cost $0.2538
+(+30%), ending naturally at 150.2s.
+
+**Reading:** a materially more capable model fixed exactly the failures that were about
+*holding multiple instructions in mind across a call* (tool-calling discipline, asking a
+question it might otherwise skip) — and left completely unchanged the failures that were about
+*a specific instruction being available to ignore* (read this exact text instead of the raw
+value next to it). If gpt-4o-mini's weakness were the whole story, a stronger model should have
+picked up the spoken-form instruction too. It didn't. That is the signature of a prompt design
+problem, not a model capacity problem: an instruction the model can route around by reading the
+raw value sitting right next to it needs to stop offering that raw value as an option, not a
+better model to resist the temptation. Decision: keep `gpt-4o` (cost increase is trivial at
+this volume, and it did buy two real fixes) but fix the spoken-form failures structurally
+rather than by wording the instruction a third time — see the next entry.
+
+## 2026-09-29 — spoken forms, fixed structurally instead of reworded a third time
+
+Every previous attempt at "read this form, not the raw one" put both forms in the prompt side
+by side and asked the model to choose correctly. It never worked — not with clearer wording
+(2026-09-17), not with a stronger model (above). The raw value being *present at all* was the
+bug: given a choice, both models default to the version that looks like normal text.
+
+**Fix:** `# YOUR ONLY FACTS` now contains *only* spoken forms — no raw digits, no raw invoice
+IDs, nothing to fall back to reading. The handful of raw values a tool call genuinely needs
+(an invoice's identifier for `record_ptp`/`log_dispute`; its outstanding amount, for when the
+caller agrees to pay in full) moved to a new, explicitly labeled `# REFERENCE VALUES — NEVER
+SPEAK THESE` section. No tool call ever takes an invoice's *due date* as an argument, so it has
+no raw form left anywhere in the prompt at all — only the spoken one now exists.
+
+**Dates, covered for the first time** (`voice/speakable.py`'s new `date_to_words`, e.g.
+`date(2026, 9, 30) -> "thirtieth of September, twenty twenty six"`) — the gap that produced
+gpt-4o's "2026 September 13." Treated as higher severity than the invoice-number/amount
+failures, per the reasoning that mattered here: a wrong amount or garbled invoice number is
+obviously wrong to a human reviewing the call; a *wrong date spoken aloud and confirmed by the
+customer* creates a real dispute about what was actually agreed — a data-integrity problem, not
+a cosmetic one. One real limit worth stating plainly: the date the caller actually promises
+isn't known until they say it, so there's no way to pre-compute *that* date's spoken form the
+way an invoice's due date or a prior promise's date can be (both are known in advance from
+Sheet data). The fix for the dynamic case is structural where it can be — the due date's spoken
+form sits in the same prompt as a live, correctly-formatted example — backed by one
+CONVERSATION RULE pointing at that example ("speak it back using the same pattern... ordinal
+day, then month name, then year in words"). This is the one place in this fix that is still an
+instruction rather than a structural guarantee, because the value it governs doesn't exist
+until the call happens.
+
+## 2026-09-29 — Hinglish dropped: a scope decision, not an unfixed bug
+
+Hinglish support (`en`/`hi`/`hinglish` in `Account.preferred_language`) is removed. Two
+separately-worded rewrites of its prompt instruction (2026-09-17: "code-switch naturally";
+2026-09-26: explicit Latin-script + register instructions with a worked example) both failed
+identically — the model settled into formal Devanagari regardless, on both gpt-4o-mini and
+gpt-4o. Three reasons this is a scope decision, not a bug waiting for a third rewrite:
+
+1. **It failed the same way twice**, on two different models, after two genuinely different
+   instruction designs. That is not "the wording wasn't right yet" — the design decided against
+   in the entry above (an instruction sitting next to an easier-to-follow default) applies here
+   too: the model had a fluent, well-formed Devanagari option available and kept taking it.
+2. **Validating a fix costs real Vapi credits this project doesn't have to spare**, and every
+   attempt so far has cost a live call to disprove.
+3. **It was the least-tested path through this entire pipeline.** The four post-call
+   specialists, the reason-code taxonomy, and the arithmetic extraction were only ever built
+   and tested against English transcripts — a Hinglish call's transcript is a fourth largely
+   untested surface on top of the register problem itself.
+
+English and Hindi only, going forward. `voice/language.py::resolve()` treats "hinglish" as an
+unrecognized value (same bucket as an unset or garbled one) and falls back to English —
+existing Sheet rows still marked "hinglish" are not migrated, and will now get the English path
+automatically the next time they're called. `data/fake_data_gen.py` no longer generates new
+"hinglish" accounts.
+
+## 2026-09-29 — mid-call language switching: documented as a deliberate limit, not an oversight
+
+Observed on a real call: the caller spoke Hindi on an English-configured account, and the agent
+stayed in English rather than adapting. This is correct behavior, not a bug — worth writing
+down explicitly rather than leaving it to look like an accidental gap next to the Hinglish
+removal above.
+
+Language is a pre-call property of the account (`Account.preferred_language`, resolved before
+the call starts), never negotiated during the call — a design decision from the very first
+language-support entry (2026-09-17), reaffirmed here. Mid-call detection-and-switching is not
+built, and stays that way for now: it would double the conversation paths this prompt has to
+handle correctly, and it would hand the four post-call specialists a mixed-language transcript
+— precisely the untested territory Hinglish was just dropped to avoid taking on. Building
+adaptive mid-call switching now would reintroduce the same risk from a different direction.
+
+The backlog item already on record (detect the customer's actual spoken language mid-call and
+write it back to the account so the *next* call opens correctly) is the intended eventual
+solution to this exact scenario. It remains backlog: designed, not built, and — to be explicit
+about it — **unvalidated**. Nothing in this codebase currently detects or writes back a
+customer's actual spoken language.

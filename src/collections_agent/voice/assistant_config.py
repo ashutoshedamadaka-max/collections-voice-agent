@@ -156,8 +156,7 @@ def build_call_overrides(
     # something negotiated during the call — see voice/language.py and docs/FAILURES.md.
     # `version: "latest"` opts into Vapi Voices' current TTS generation (verified against the
     # live OpenAPI spec: the `vapi` voice provider's `version` field accepts the literal string
-    # "latest", not just an integer). Voice and transcriber language diverge for hinglish — see
-    # voice/language.py's module docstring for why.
+    # "latest", not just an integer).
     return {
         "firstMessage": opening_message(
             context_pack.preferred_language, company_name, context_pack.contact_name

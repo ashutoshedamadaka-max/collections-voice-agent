@@ -21,31 +21,24 @@ def test_resolve_defaults_unrecognized_value_to_english():
     assert resolve("klingon") == "en"
 
 
+def test_resolve_defaults_hinglish_to_english():
+    """Hinglish was dropped 2026-09-29 (see docs/FAILURES.md) — accounts in the Sheet still
+    marked "hinglish" from before that change must fall back to English, not crash or silently
+    keep getting Hinglish-shaped output from code that no longer exists."""
+    assert resolve("hinglish") == "en"
+
+
 def test_resolve_passes_through_known_values():
     assert resolve("en") == "en"
     assert resolve("hi") == "hi"
-    assert resolve("hinglish") == "hinglish"
 
 
 def test_voice_language_hindi_maps_to_hindi():
     assert voice_language("hi") == "hi"
 
 
-def test_voice_language_hinglish_maps_to_english():
-    """No voice provider used here has a dedicated Hinglish code — the model writes Hinglish
-    in Latin script with English numbers/terms (see prompt_instruction), which an English
-    voice can speak correctly."""
-    assert voice_language("hinglish") == "en"
-
-
 def test_voice_language_unset_defaults_to_english():
     assert voice_language(None) == "en"
-
-
-def test_transcriber_language_hinglish_maps_to_hindi_not_english():
-    """Unlike voice, the transcriber gets Hindi for hinglish — a real call showed "en" mis-
-    rendering genuinely code-switched Hindi/English audio as Urdu script (docs/FAILURES.md)."""
-    assert transcriber_language("hinglish") == "hi"
 
 
 def test_transcriber_language_hindi_maps_to_hindi():
@@ -57,24 +50,10 @@ def test_transcriber_language_english_maps_to_english():
 
 
 def test_prompt_instruction_differs_per_language():
-    en, hi, hinglish = (
-        prompt_instruction("en"),
-        prompt_instruction("hi"),
-        prompt_instruction("hinglish"),
-    )
+    en, hi = prompt_instruction("en"), prompt_instruction("hi")
     assert "English" in en
     assert "Hindi" in hi
-    assert "Latin" in hinglish
-    assert len({en, hi, hinglish}) == 3
-
-
-def test_hinglish_instruction_specifies_latin_script_and_english_numbers():
-    """Regression guard for the 2026-09-17 finding: the original instruction never said which
-    script to use, and the model defaulted to formal Devanagari Hindi instead of Hinglish."""
-    instruction = prompt_instruction("hinglish")
-    assert "Latin" in instruction or "Roman" in instruction
-    assert "Devanagari" in instruction  # explicitly named as what NOT to do
-    assert "conversational" in instruction.lower() or "informal" in instruction.lower()
+    assert en != hi
 
 
 class TestOpeningMessage:
@@ -99,18 +78,13 @@ class TestOpeningMessage:
         assert "Priya Sharma" in message
         assert any(0x900 <= ord(ch) <= 0x97F for ch in message)  # Devanagari block
 
-    def test_hinglish_opening_uses_latin_script_only(self):
-        message = opening_message("hinglish", "Acme Supplies", "Priya Sharma")
-        assert "Priya Sharma" in message
-        assert all(ord(ch) < 0x900 for ch in message)  # no Devanagari codepoints
-
     def test_unset_language_defaults_to_english(self):
         assert opening_message(None, "Acme Supplies", "Priya Sharma") == opening_message(
             "en", "Acme Supplies", "Priya Sharma"
         )
 
     def test_no_contact_name_uses_generic_phrasing_in_every_language(self):
-        for lang in ("en", "hi", "hinglish"):
+        for lang in ("en", "hi"):
             message = opening_message(lang, "Acme Supplies")
             assert "Acme Supplies" in message
             assert message == opening_message(lang, "Acme Supplies", None)

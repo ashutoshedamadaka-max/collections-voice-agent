@@ -26,31 +26,44 @@ talking. **Headline metric:** promise-to-pay kept rate.
 
 See `docs/guardrails_and_escalation.md` for the full guardrail policy once written.
 
-## Language support — English validated, Hindi/Hinglish demonstrated but untested
+## Language support — English and Hindi only; a pre-call, not mid-call, property
 
-`account.preferred_language` (`en` / `hi` / `hinglish`) drives the voice provider's language,
-the transcriber's language, the fixed opening line, and the rest of the system prompt — set
-once per account before the call starts, never asked of the caller mid-call (asking wastes the
-opening seconds and reads as an IVR menu). Hinglish means Hindi conversation in Latin script
-with English numbers, invoice IDs, and business terms — not Devanagari Hindi — and uses an
-English voice with a Hindi transcriber (code-switched audio rendered better in Hindi mode than
-English on a real test call; see `docs/FAILURES.md`).
+`account.preferred_language` (`en` / `hi`) drives the voice provider's language, the
+transcriber's language, the fixed opening line, and the rest of the system prompt — set once
+per account **before** the call starts. Two deliberate scope limits, both decisions rather than
+oversights:
+
+- **Hinglish was tried and dropped.** Two separately-worded prompt rewrites both failed the
+  same way — the model settled into formal Devanagari regardless of the instruction — on both
+  gpt-4o-mini and gpt-4o. It was also the least-tested path through this pipeline, and
+  validating a third rewrite would cost real Vapi credits with no evidence it would fare any
+  better. English and Hindi only. See `docs/FAILURES.md`, 2026-09-29.
+- **The agent does not adapt to the language the customer actually speaks, mid-call.** Language
+  is decided once, per account, before the call starts — never negotiated during it (asking
+  wastes the opening seconds and reads as an IVR menu). If a customer on an English-configured
+  account speaks Hindi, the agent stays in English; it does not detect and switch. This is
+  designed, not an oversight: mid-call switching would double the conversation paths to design
+  and test, and would hand the post-call specialists a mixed-language transcript — exactly the
+  untested territory Hinglish was just dropped to avoid. The backlog item below is the intended
+  eventual fix, and it is designed but **unvalidated** — nothing currently detects or writes
+  back a customer's actual spoken language.
 
 That wiring only covers the call itself. The four post-call specialists, the reason-code
 taxonomy, and the regex-based arithmetic-consistency extraction were all built and tested
 against English transcripts only — a Hindi call produces a Hindi transcript, and that path has
-never been run. **English is the default for evaluation and the demo; Hindi/Hinglish is a
-demonstrated capability on the voice layer, not a validated pipeline end to end.** See
-`docs/FAILURES.md` for the full caveat. Backlog, not built: detecting the customer's actual
-spoken language mid-call and writing it back to the account so the next call opens correctly.
+never been run. **English is the default for evaluation and the demo; Hindi is a demonstrated
+capability on the voice layer, not a validated pipeline end to end.** See `docs/FAILURES.md`
+for the full caveat. Backlog, not built: detecting the customer's actual spoken language
+mid-call and writing it back to the account so the *next* call opens in the right language.
 
 ## Stack
 
 Python 3.11, managed with `uv`. Google Sheets as the CRM (single source of truth, no local
-DB). Vapi for the voice layer. OpenAI (gpt-4o-mini) for the voice agent's backend model and
-the post-call specialist pipeline — chosen over Anthropic purely on available credit
-(no Anthropic credit; ~$8 OpenAI, ~$7 Vapi). The in-call model is wired as bring-your-own-key
-so it bills your OpenAI balance, not Vapi-hosted credits — see `.env.example`.
+DB). Vapi for the voice layer. OpenAI for the voice agent's backend model (`gpt-4o`, currently
+— see `docs/FAILURES.md` for why this moved off `gpt-4o-mini`) and the post-call specialist
+pipeline (`gpt-4o-mini`, unaffected by that change) — chosen over Anthropic purely on available
+credit (no Anthropic credit; ~$8 OpenAI, ~$7 Vapi). The in-call model is wired as
+bring-your-own-key so it bills your OpenAI balance, not Vapi-hosted credits — see `.env.example`.
 
 ## Setup
 

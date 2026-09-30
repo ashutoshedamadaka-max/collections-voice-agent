@@ -154,7 +154,9 @@ def generate_fake_ar_data(
                 payment_terms=fake.random_element(TERMS),
                 credit_limit=float(fake.random_int(min=50_000, max=2_000_000, step=10_000)),
                 reliability_score=round(fake.random.uniform(0.4, 1.0), 2),
-                preferred_language=fake.random_element(["en", "hi", "hinglish"]),
+                # English and Hindi only — Hinglish was dropped after failing twice on real
+                # calls (see docs/FAILURES.md, 2026-09-29).
+                preferred_language=fake.random_element(["en", "hi"]),
                 opted_out=opted_out,
                 wrong_party=wrong_party,
                 in_active_payment_plan=in_plan,

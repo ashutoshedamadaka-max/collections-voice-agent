@@ -1,0 +1,1961 @@
+{
+  "id": "01a0edd7-f19a-7000-956e-08f20925f97a",
+  "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+  "type": "webCall",
+  "startedAt": "2026-09-29T15:45:48.073Z",
+  "endedAt": "2026-09-29T15:48:18.267Z",
+  "transcript": "AI: Hello, this is an automated call from Acme Supply. Accounts team. About an overdue invoice. This call may be recorded. Am I speaking with Gorangi Sabharwal?\nUser: Yes.\nAI: Thank you. I'm calling about invoice US-CS/26-27/0002, which was due on 2026/07/20. With an outstanding amount of 2,04,500 rupees. Could you let me know when we can expect payment for this invoice?\nUser: Uh, the. Yes. I got. It. It's pending approval right now.\nAI: Thank you for letting me know. Could you please provide an estimate of when the payment might be made after approval?\nUser: It should happen soon. It shouldn't take long.\nAI: I understand. Could you specify a date when you expect the payment to be processed?\nUser: Okay. Uh, let's just take, uh, the 30th.\nAI: To confirm, you expect the payment to be processed on 2026/09/30. Is that correct?\nUser: Correct.\nAI: Thank you. Will the full outstanding amount of 2,04,500 rupees be paid on that date, or only a part of it?\nUser: Full amount.\nAI: Thank you. And which payment method will you be using for this transaction: options include NEFT, RTGS, UPI, check, or portal?\nUser: UPI?\nAI: Give me a moment. The payment for.\nAI: This invoice is now scheduled for 2026 September.\nAI: 13. Via UPI for the full amount of 2,04,500 rupees. Someone will follow up separately about the other overdue. Overdue invoice on your account. Thank you for your cooperation. Goodbye.\nUser: Thank you.\nAI: Just a sec.\nAI: You're welcome. Goodbye.\n",
+  "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901003-7690fcad-7952-4ff4-b827-57fda8ba447c-mono.wav",
+  "summary": "",
+  "createdAt": "2026-09-29T15:45:47.418Z",
+  "updatedAt": "2026-09-29T15:48:22.841Z",
+  "orgId": "0a32cbab-c2aa-494a-b61b-decd4db3ff77",
+  "cost": 0.2538,
+  "webCallUrl": "https://vapi.daily.co/OCRtgYIvt7j2KSr5RrqC",
+  "status": "ended",
+  "endedReason": "customer-ended-call",
+  "messages": [
+    {
+      "role": "system",
+      "time": 1790696747631,
+      "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nGaurangi Sabharwal at Udaan Supply Chain Solutions Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nGaurangi Sabharwal. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nRespond in English throughout the call.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-29.\nYou are speaking with Gaurangi Sabharwal (AP Manager) at Udaan Supply Chain Solutions Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nUSCS/26-27/0002 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-07-20, outstanding 204,500.00 (say \"two lakh four thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nUSCS/26-27/0001 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, one\"), due 2026-09-16, outstanding 282,500.00 (say \"two lakh eighty two thousand five hundred rupees\")\nTotal outstanding across all invoices: 487,000.00 (say \"four lakh eighty seven thousand rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-29 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Gaurangi Sabharwal. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- State the primary invoice's number once, the first time you introduce it, in full. After\n  that, say \"this invoice\" \u2014 never repeat the full number again unless they ask you to.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+      "secondsFromStart": 0
+    },
+    {
+      "role": "bot",
+      "time": 1790696749273,
+      "source": "",
+      "endTime": 1790696759113,
+      "message": "Hello, this is an automated call from Acme Supply. Accounts team. About an overdue invoice. This call may be recorded. Am I speaking with Gorangi Sabharwal?",
+      "duration": 6480,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 1.2
+    },
+    {
+      "role": "user",
+      "time": 1790696762760,
+      "endTime": 1790696762820,
+      "message": "Yes.",
+      "duration": 60,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 14.64,
+            "word": "Y",
+            "start": 14.58,
+            "language": "en",
+            "confidence": 0.884,
+            "punctuated_word": "Y"
+          },
+          {
+            "end": 14.64,
+            "word": "es.",
+            "start": 14.64,
+            "language": "en",
+            "confidence": 0.98,
+            "punctuated_word": "es."
+          }
+        ]
+      },
+      "secondsFromStart": 14.687
+    },
+    {
+      "role": "bot",
+      "time": 1790696765053,
+      "source": "",
+      "endTime": 1790696785993,
+      "message": "Thank you. I'm calling about invoice US-CS/26-27/0002, which was due on 2026/07/20. With an outstanding amount of 2,04,500 rupees. Could you let me know when we can expect payment for this invoice?",
+      "duration": 18840,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 16.98
+    },
+    {
+      "role": "user",
+      "time": 1790696789700,
+      "endTime": 1790696793540,
+      "message": "Uh, the. Yes. I got. It. It's pending approval right now.",
+      "duration": 2280,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 41.58,
+            "word": "U",
+            "start": 41.52,
+            "language": "en",
+            "confidence": 0.967,
+            "punctuated_word": "U"
+          },
+          {
+            "end": 41.7,
+            "word": "h,",
+            "start": 41.64,
+            "language": "en",
+            "confidence": 0.563,
+            "punctuated_word": "h,"
+          },
+          {
+            "end": 42.36,
+            "word": "the",
+            "start": 42.3,
+            "language": "en",
+            "confidence": 0.138,
+            "punctuated_word": "the"
+          },
+          {
+            "end": 42.36,
+            "word": ".",
+            "start": 42.36,
+            "language": "en",
+            "confidence": 0.832,
+            "punctuated_word": "."
+          }
+        ]
+      },
+      "secondsFromStart": 41.627
+    },
+    {
+      "role": "bot",
+      "time": 1790696795173,
+      "source": "",
+      "endTime": 1790696800993,
+      "message": "Thank you for letting me know. Could you please provide an estimate of when the payment might be made after approval?",
+      "duration": 5820,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 47.1
+    },
+    {
+      "role": "user",
+      "time": 1790696804520,
+      "endTime": 1790696806740,
+      "message": "It should happen soon. It shouldn't take long.",
+      "duration": 2220,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 56.4,
+            "word": "It",
+            "start": 56.34,
+            "language": "en",
+            "confidence": 0.99,
+            "punctuated_word": "It"
+          },
+          {
+            "end": 56.58,
+            "word": "sho",
+            "start": 56.52,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "sho"
+          },
+          {
+            "end": 56.7,
+            "word": "uld",
+            "start": 56.64,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "uld"
+          },
+          {
+            "end": 56.94,
+            "word": "h",
+            "start": 56.88,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "h"
+          },
+          {
+            "end": 57.06,
+            "word": "ap",
+            "start": 57,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "ap"
+          },
+          {
+            "end": 57.18,
+            "word": "pen",
+            "start": 57.12,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "pen"
+          },
+          {
+            "end": 57.48,
+            "word": "so",
+            "start": 57.42,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "so"
+          },
+          {
+            "end": 57.66,
+            "word": "on.",
+            "start": 57.6,
+            "language": "en",
+            "confidence": 0.795,
+            "punctuated_word": "on."
+          },
+          {
+            "end": 57.9,
+            "word": "It",
+            "start": 57.84,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "It"
+          },
+          {
+            "end": 58.02,
+            "word": "sho",
+            "start": 57.96,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "sho"
+          },
+          {
+            "end": 58.08,
+            "word": "uld",
+            "start": 58.02,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "uld"
+          },
+          {
+            "end": 58.2,
+            "word": "n",
+            "start": 58.14,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "n"
+          },
+          {
+            "end": 58.26,
+            "word": "'t",
+            "start": 58.2,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "'t"
+          },
+          {
+            "end": 58.38,
+            "word": "tak",
+            "start": 58.32,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "tak"
+          },
+          {
+            "end": 58.5,
+            "word": "e",
+            "start": 58.44,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "e"
+          },
+          {
+            "end": 58.56,
+            "word": "long",
+            "start": 58.5,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "long"
+          },
+          {
+            "end": 58.56,
+            "word": ".",
+            "start": 58.56,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "."
+          }
+        ]
+      },
+      "secondsFromStart": 56.447
+    },
+    {
+      "role": "bot",
+      "time": 1790696808373,
+      "source": "",
+      "endTime": 1790696812633,
+      "message": "I understand. Could you specify a date when you expect the payment to be processed?",
+      "duration": 3720,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 60.3
+    },
+    {
+      "role": "user",
+      "time": 1790696815800,
+      "endTime": 1790696818860,
+      "message": "Okay. Uh, let's just take, uh, the 30th.",
+      "duration": 2100,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 67.68,
+            "word": "Ok",
+            "start": 67.62,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "Ok"
+          },
+          {
+            "end": 67.68,
+            "word": "ay.",
+            "start": 67.68,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "ay."
+          }
+        ]
+      },
+      "secondsFromStart": 67.727
+    },
+    {
+      "role": "bot",
+      "time": 1790696820673,
+      "source": "",
+      "endTime": 1790696827273,
+      "message": "To confirm, you expect the payment to be processed on 2026/09/30. Is that correct?",
+      "duration": 6600,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 72.6
+    },
+    {
+      "role": "user",
+      "time": 1790696829480,
+      "endTime": 1790696829540,
+      "message": "Correct.",
+      "duration": 60,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 81.36,
+            "word": "Cor",
+            "start": 81.3,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "Cor"
+          },
+          {
+            "end": 81.36,
+            "word": "rec",
+            "start": 81.36,
+            "language": "en",
+            "confidence": 0.996,
+            "punctuated_word": "rec"
+          },
+          {
+            "end": 81.36,
+            "word": "t.",
+            "start": 81.36,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "t."
+          }
+        ]
+      },
+      "secondsFromStart": 81.407
+    },
+    {
+      "role": "bot",
+      "time": 1790696831053,
+      "source": "",
+      "endTime": 1790696838913,
+      "message": "Thank you. Will the full outstanding amount of 2,04,500 rupees be paid on that date, or only a part of it?",
+      "duration": 6960,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 82.98
+    },
+    {
+      "role": "user",
+      "time": 1790696842020,
+      "endTime": 1790696842140,
+      "message": "Full amount.",
+      "duration": 120,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 93.9,
+            "word": "F",
+            "start": 93.84,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "F"
+          },
+          {
+            "end": 93.96,
+            "word": "ull",
+            "start": 93.9,
+            "language": "en",
+            "confidence": 0.994,
+            "punctuated_word": "ull"
+          },
+          {
+            "end": 93.96,
+            "word": "am",
+            "start": 93.96,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "am"
+          },
+          {
+            "end": 93.96,
+            "word": "o",
+            "start": 93.96,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "o"
+          },
+          {
+            "end": 93.96,
+            "word": "un",
+            "start": 93.96,
+            "language": "en",
+            "confidence": 0.998,
+            "punctuated_word": "un"
+          },
+          {
+            "end": 93.96,
+            "word": "t.",
+            "start": 93.96,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "t."
+          }
+        ]
+      },
+      "secondsFromStart": 93.947
+    },
+    {
+      "role": "bot",
+      "time": 1790696843773,
+      "source": "",
+      "endTime": 1790696853913,
+      "message": "Thank you. And which payment method will you be using for this transaction: options include NEFT, RTGS, UPI, check, or portal?",
+      "duration": 9360,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 95.7
+    },
+    {
+      "role": "user",
+      "time": 1790696856300,
+      "endTime": 1790696856540,
+      "message": "UPI?",
+      "duration": 240,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 108.18,
+            "word": "U",
+            "start": 108.12,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "U"
+          },
+          {
+            "end": 108.36,
+            "word": "P",
+            "start": 108.3,
+            "language": "en",
+            "confidence": 0.997,
+            "punctuated_word": "P"
+          },
+          {
+            "end": 108.36,
+            "word": "I",
+            "start": 108.36,
+            "language": "en",
+            "confidence": 0.939,
+            "punctuated_word": "I"
+          },
+          {
+            "end": 108.36,
+            "word": "?",
+            "start": 108.36,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "?"
+          }
+        ]
+      },
+      "secondsFromStart": 108.227
+    },
+    {
+      "role": "bot",
+      "time": 1790696858533,
+      "source": "",
+      "endTime": 1790696861473,
+      "message": "Give me a moment. The payment for.",
+      "duration": 1140,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 110.46
+    },
+    {
+      "role": "tool_calls",
+      "time": 1790696861144,
+      "message": "",
+      "toolCalls": [
+        {
+          "id": "call_6qlwCBaurTlv4MCSxOw5EP8F",
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "arguments": "{\n  \"invoice_ids\": [\"USCS/26-27/0002\"],\n  \"amount\": 204500,\n  \"date\": \"2026-09-30\",\n  \"method\": \"UPI\"\n}"
+          }
+        }
+      ],
+      "secondsFromStart": 113.071
+    },
+    {
+      "role": "bot",
+      "time": 1790696862373,
+      "source": "",
+      "endTime": 1790696865913,
+      "message": "This invoice is now scheduled for 2026 September.",
+      "duration": 3540,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 114.3
+    },
+    {
+      "name": "record_ptp",
+      "role": "tool_call_result",
+      "time": 1790696862996,
+      "result": {
+        "ptp_id": "PTP-59494cb6"
+      },
+      "metadata": {},
+      "toolCallId": "call_6qlwCBaurTlv4MCSxOw5EP8F",
+      "secondsFromStart": 114.923
+    },
+    {
+      "role": "bot",
+      "time": 1790696866453,
+      "source": "",
+      "endTime": 1790696880673,
+      "message": "13. Via UPI for the full amount of 2,04,500 rupees. Someone will follow up separately about the other overdue. Overdue invoice on your account. Thank you for your cooperation. Goodbye.",
+      "duration": 9780,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 118.38
+    },
+    {
+      "role": "user",
+      "time": 1790696883480,
+      "endTime": 1790696883540,
+      "message": "Thank you.",
+      "duration": 60,
+      "metadata": {
+        "wordLevelConfidence": [
+          {
+            "end": 135.36,
+            "word": "Th",
+            "start": 135.3,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "Th"
+          },
+          {
+            "end": 135.36,
+            "word": "ank",
+            "start": 135.36,
+            "language": "en",
+            "confidence": 0.999,
+            "punctuated_word": "ank"
+          },
+          {
+            "end": 135.36,
+            "word": "y",
+            "start": 135.36,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "y"
+          },
+          {
+            "end": 135.36,
+            "word": "ou.",
+            "start": 135.36,
+            "language": "en",
+            "confidence": 1,
+            "punctuated_word": "ou."
+          }
+        ]
+      },
+      "secondsFromStart": 135.407
+    },
+    {
+      "role": "bot",
+      "time": 1790696885833,
+      "source": "",
+      "endTime": 1790696886193,
+      "message": "Just a sec.",
+      "duration": 360,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 137.76
+    },
+    {
+      "role": "tool_calls",
+      "time": 1790696887521,
+      "message": "",
+      "toolCalls": [
+        {
+          "id": "call_llPvmSnzdzy5XTe7954PXLvR",
+          "type": "function",
+          "function": {
+            "name": "schedule_callback",
+            "arguments": "{\n  \"reason\": \"Follow-up on other overdue invoice USCS/26-27/0001\",\n  \"priority\": \"normal\"\n}"
+          }
+        }
+      ],
+      "secondsFromStart": 139.448
+    },
+    {
+      "role": "bot",
+      "time": 1790696887993,
+      "source": "",
+      "endTime": 1790696889073,
+      "message": "You're welcome. Goodbye.",
+      "duration": 360,
+      "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+      "assistantName": "collections-agent-v1",
+      "secondsFromStart": 139.92
+    },
+    {
+      "name": "schedule_callback",
+      "role": "tool_call_result",
+      "time": 1790696888968,
+      "result": {
+        "callback_id": "CB-8339b751"
+      },
+      "metadata": {},
+      "toolCallId": "call_llPvmSnzdzy5XTe7954PXLvR",
+      "secondsFromStart": 140.895
+    }
+  ],
+  "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-0de6990c-6598-450d-ad19-0a2b24dc4cc7-stereo.wav",
+  "costBreakdown": {
+    "transport": 0.0029,
+    "stt": 0.0102,
+    "llm": 0.0974,
+    "tts": 0.0182,
+    "vapi": 0.1252,
+    "chat": 0,
+    "total": 0.2538,
+    "llmPromptTokens": 37766,
+    "llmCompletionTokens": 298,
+    "llmCachedPromptTokens": 18816,
+    "ttsCharacters": 1211,
+    "analysisCostBreakdown": {
+      "summary": 0,
+      "structuredData": 0,
+      "structuredOutput": 0,
+      "successEvaluation": 0,
+      "summaryPromptTokens": 0,
+      "summaryCompletionTokens": 0,
+      "summaryCachedPromptTokens": 0,
+      "structuredDataPromptTokens": 0,
+      "structuredOutputPromptTokens": 0,
+      "successEvaluationPromptTokens": 0,
+      "structuredDataCompletionTokens": 0,
+      "structuredDataCachedPromptTokens": 0,
+      "structuredOutputCompletionTokens": 0,
+      "successEvaluationCompletionTokens": 0,
+      "structuredOutputCachedPromptTokens": 0,
+      "successEvaluationCachedPromptTokens": 0
+    },
+    "knowledgeBaseCost": 0,
+    "voicemailDetectionCost": 0
+  },
+  "assistantOverrides": {
+    "transcriber": {
+      "model": "stt-rt-v5",
+      "language": "en",
+      "provider": "soniox"
+    },
+    "model": {
+      "model": "gpt-4o",
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "lookup_invoices",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "account_id"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Read-only, idempotent. Look up the invoice list for an account."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "record_ptp",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_ids",
+                "amount",
+                "date",
+                "method"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "ISO 8601 date, e.g. 2026-09-30"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "method": {
+                  "enum": [
+                    "NEFT",
+                    "RTGS",
+                    "UPI",
+                    "cheque",
+                    "portal"
+                  ],
+                  "type": "string"
+                },
+                "invoice_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Call this immediately once the caller has given a specific amount, date, and method, and you have confirmed them back. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_dispute",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reason_code",
+                "detail"
+              ],
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                },
+                "reason_code": {
+                  "enum": [
+                    "invoice_not_received",
+                    "awaiting_internal_approval",
+                    "po_mismatch",
+                    "missing_documentation",
+                    "quality_dispute",
+                    "quantity_dispute",
+                    "pricing_dispute",
+                    "payment_run_timing",
+                    "cash_flow",
+                    "wrong_contact",
+                    "paid_already"
+                  ],
+                  "type": "string"
+                },
+                "evidence_requested": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer disputes any invoice or charge. Never argue the claim \u2014 just capture and route it. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "log_payment_claim",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "reference",
+                "paid_on"
+              ],
+              "properties": {
+                "paid_on": {
+                  "type": "string",
+                  "description": "ISO 8601 date"
+                },
+                "reference": {
+                  "type": "string",
+                  "description": "UTR or cheque number"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer claims an invoice is already paid and has given a reference and date. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "send_document",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "invoice_id",
+                "doc_type"
+              ],
+              "properties": {
+                "doc_type": {
+                  "type": "string"
+                },
+                "invoice_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when the customer asks for a document, once you know which one. Queues it to be drafted \u2014 never sent automatically. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "schedule_callback",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "priority": {
+                  "enum": [
+                    "normal",
+                    "high"
+                  ],
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately to hand off to a human: wrong person, escalation request, or unanswerable question. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "mark_opt_out",
+            "parameters": {
+              "type": "object",
+              "required": [
+                "contact_id",
+                "scope"
+              ],
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "this_contact",
+                    "whole_account"
+                  ],
+                  "type": "string"
+                },
+                "contact_id": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Call this immediately when asked to stop calling. Acknowledge out loud, call this, then end the call. Do not say you will do this or describe doing it \u2014 call this function, then report the outcome."
+          },
+          "messages": [
+            {
+              "type": "request-response-delayed",
+              "content": "One moment, still working on that.",
+              "timingMilliseconds": 4000
+            },
+            {
+              "role": "system",
+              "type": "request-failed",
+              "content": "The system didn't confirm this in time. Acknowledge what the caller just told you, tell them it will be confirmed in writing, and continue the call naturally \u2014 do not go silent and do not repeat the request."
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "role": "system",
+          "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nGaurangi Sabharwal at Udaan Supply Chain Solutions Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nGaurangi Sabharwal. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nRespond in English throughout the call.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-29.\nYou are speaking with Gaurangi Sabharwal (AP Manager) at Udaan Supply Chain Solutions Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nUSCS/26-27/0002 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-07-20, outstanding 204,500.00 (say \"two lakh four thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nUSCS/26-27/0001 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, one\"), due 2026-09-16, outstanding 282,500.00 (say \"two lakh eighty two thousand five hundred rupees\")\nTotal outstanding across all invoices: 487,000.00 (say \"four lakh eighty seven thousand rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-29 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Gaurangi Sabharwal. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- State the primary invoice's number once, the first time you introduce it, in full. After\n  that, say \"this invoice\" \u2014 never repeat the full number again unless they ask you to.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end."
+        }
+      ],
+      "provider": "openai"
+    },
+    "voice": {
+      "version": "latest",
+      "voiceId": "Naina",
+      "language": "en",
+      "provider": "vapi"
+    },
+    "firstMessage": "Hello, this is an automated call from Acme Supplies's accounts team about an overdue invoice. This call may be recorded. Am I speaking with Gaurangi Sabharwal?"
+  },
+  "analysis": {},
+  "artifact": {
+    "recordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901003-7690fcad-7952-4ff4-b827-57fda8ba447c-mono.wav",
+    "stereoRecordingUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-0de6990c-6598-450d-ad19-0a2b24dc4cc7-stereo.wav",
+    "recording": {
+      "stereoUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-0de6990c-6598-450d-ad19-0a2b24dc4cc7-stereo.wav",
+      "mono": {
+        "combinedUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901003-7690fcad-7952-4ff4-b827-57fda8ba447c-mono.wav",
+        "assistantUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-1d8ea0df-4008-4d39-95dd-b9fa92207cb5-mono.wav",
+        "customerUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-recordings/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-9be331f4-08d8-4894-9d02-62442c727597-mono.wav"
+      }
+    },
+    "messages": [
+      {
+        "role": "system",
+        "time": 1790696747631,
+        "message": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nGaurangi Sabharwal at Udaan Supply Chain Solutions Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nGaurangi Sabharwal. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nRespond in English throughout the call.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-29.\nYou are speaking with Gaurangi Sabharwal (AP Manager) at Udaan Supply Chain Solutions Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nUSCS/26-27/0002 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-07-20, outstanding 204,500.00 (say \"two lakh four thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nUSCS/26-27/0001 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, one\"), due 2026-09-16, outstanding 282,500.00 (say \"two lakh eighty two thousand five hundred rupees\")\nTotal outstanding across all invoices: 487,000.00 (say \"four lakh eighty seven thousand rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-29 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Gaurangi Sabharwal. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- State the primary invoice's number once, the first time you introduce it, in full. After\n  that, say \"this invoice\" \u2014 never repeat the full number again unless they ask you to.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+        "secondsFromStart": 0
+      },
+      {
+        "role": "bot",
+        "time": 1790696749273,
+        "source": "",
+        "endTime": 1790696759113,
+        "message": "Hello, this is an automated call from Acme Supply. Accounts team. About an overdue invoice. This call may be recorded. Am I speaking with Gorangi Sabharwal?",
+        "duration": 6480,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 1.2
+      },
+      {
+        "role": "user",
+        "time": 1790696762760,
+        "endTime": 1790696762820,
+        "message": "Yes.",
+        "duration": 60,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 14.64,
+              "word": "Y",
+              "start": 14.58,
+              "language": "en",
+              "confidence": 0.884,
+              "punctuated_word": "Y"
+            },
+            {
+              "end": 14.64,
+              "word": "es.",
+              "start": 14.64,
+              "language": "en",
+              "confidence": 0.98,
+              "punctuated_word": "es."
+            }
+          ]
+        },
+        "secondsFromStart": 14.687
+      },
+      {
+        "role": "bot",
+        "time": 1790696765053,
+        "source": "",
+        "endTime": 1790696785993,
+        "message": "Thank you. I'm calling about invoice US-CS/26-27/0002, which was due on 2026/07/20. With an outstanding amount of 2,04,500 rupees. Could you let me know when we can expect payment for this invoice?",
+        "duration": 18840,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 16.98
+      },
+      {
+        "role": "user",
+        "time": 1790696789700,
+        "endTime": 1790696793540,
+        "message": "Uh, the. Yes. I got. It. It's pending approval right now.",
+        "duration": 2280,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 41.58,
+              "word": "U",
+              "start": 41.52,
+              "language": "en",
+              "confidence": 0.967,
+              "punctuated_word": "U"
+            },
+            {
+              "end": 41.7,
+              "word": "h,",
+              "start": 41.64,
+              "language": "en",
+              "confidence": 0.563,
+              "punctuated_word": "h,"
+            },
+            {
+              "end": 42.36,
+              "word": "the",
+              "start": 42.3,
+              "language": "en",
+              "confidence": 0.138,
+              "punctuated_word": "the"
+            },
+            {
+              "end": 42.36,
+              "word": ".",
+              "start": 42.36,
+              "language": "en",
+              "confidence": 0.832,
+              "punctuated_word": "."
+            }
+          ]
+        },
+        "secondsFromStart": 41.627
+      },
+      {
+        "role": "bot",
+        "time": 1790696795173,
+        "source": "",
+        "endTime": 1790696800993,
+        "message": "Thank you for letting me know. Could you please provide an estimate of when the payment might be made after approval?",
+        "duration": 5820,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 47.1
+      },
+      {
+        "role": "user",
+        "time": 1790696804520,
+        "endTime": 1790696806740,
+        "message": "It should happen soon. It shouldn't take long.",
+        "duration": 2220,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 56.4,
+              "word": "It",
+              "start": 56.34,
+              "language": "en",
+              "confidence": 0.99,
+              "punctuated_word": "It"
+            },
+            {
+              "end": 56.58,
+              "word": "sho",
+              "start": 56.52,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "sho"
+            },
+            {
+              "end": 56.7,
+              "word": "uld",
+              "start": 56.64,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "uld"
+            },
+            {
+              "end": 56.94,
+              "word": "h",
+              "start": 56.88,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "h"
+            },
+            {
+              "end": 57.06,
+              "word": "ap",
+              "start": 57,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "ap"
+            },
+            {
+              "end": 57.18,
+              "word": "pen",
+              "start": 57.12,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "pen"
+            },
+            {
+              "end": 57.48,
+              "word": "so",
+              "start": 57.42,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "so"
+            },
+            {
+              "end": 57.66,
+              "word": "on.",
+              "start": 57.6,
+              "language": "en",
+              "confidence": 0.795,
+              "punctuated_word": "on."
+            },
+            {
+              "end": 57.9,
+              "word": "It",
+              "start": 57.84,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "It"
+            },
+            {
+              "end": 58.02,
+              "word": "sho",
+              "start": 57.96,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "sho"
+            },
+            {
+              "end": 58.08,
+              "word": "uld",
+              "start": 58.02,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "uld"
+            },
+            {
+              "end": 58.2,
+              "word": "n",
+              "start": 58.14,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "n"
+            },
+            {
+              "end": 58.26,
+              "word": "'t",
+              "start": 58.2,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "'t"
+            },
+            {
+              "end": 58.38,
+              "word": "tak",
+              "start": 58.32,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "tak"
+            },
+            {
+              "end": 58.5,
+              "word": "e",
+              "start": 58.44,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "e"
+            },
+            {
+              "end": 58.56,
+              "word": "long",
+              "start": 58.5,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "long"
+            },
+            {
+              "end": 58.56,
+              "word": ".",
+              "start": 58.56,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "."
+            }
+          ]
+        },
+        "secondsFromStart": 56.447
+      },
+      {
+        "role": "bot",
+        "time": 1790696808373,
+        "source": "",
+        "endTime": 1790696812633,
+        "message": "I understand. Could you specify a date when you expect the payment to be processed?",
+        "duration": 3720,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 60.3
+      },
+      {
+        "role": "user",
+        "time": 1790696815800,
+        "endTime": 1790696818860,
+        "message": "Okay. Uh, let's just take, uh, the 30th.",
+        "duration": 2100,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 67.68,
+              "word": "Ok",
+              "start": 67.62,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "Ok"
+            },
+            {
+              "end": 67.68,
+              "word": "ay.",
+              "start": 67.68,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "ay."
+            }
+          ]
+        },
+        "secondsFromStart": 67.727
+      },
+      {
+        "role": "bot",
+        "time": 1790696820673,
+        "source": "",
+        "endTime": 1790696827273,
+        "message": "To confirm, you expect the payment to be processed on 2026/09/30. Is that correct?",
+        "duration": 6600,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 72.6
+      },
+      {
+        "role": "user",
+        "time": 1790696829480,
+        "endTime": 1790696829540,
+        "message": "Correct.",
+        "duration": 60,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 81.36,
+              "word": "Cor",
+              "start": 81.3,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "Cor"
+            },
+            {
+              "end": 81.36,
+              "word": "rec",
+              "start": 81.36,
+              "language": "en",
+              "confidence": 0.996,
+              "punctuated_word": "rec"
+            },
+            {
+              "end": 81.36,
+              "word": "t.",
+              "start": 81.36,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "t."
+            }
+          ]
+        },
+        "secondsFromStart": 81.407
+      },
+      {
+        "role": "bot",
+        "time": 1790696831053,
+        "source": "",
+        "endTime": 1790696838913,
+        "message": "Thank you. Will the full outstanding amount of 2,04,500 rupees be paid on that date, or only a part of it?",
+        "duration": 6960,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 82.98
+      },
+      {
+        "role": "user",
+        "time": 1790696842020,
+        "endTime": 1790696842140,
+        "message": "Full amount.",
+        "duration": 120,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 93.9,
+              "word": "F",
+              "start": 93.84,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "F"
+            },
+            {
+              "end": 93.96,
+              "word": "ull",
+              "start": 93.9,
+              "language": "en",
+              "confidence": 0.994,
+              "punctuated_word": "ull"
+            },
+            {
+              "end": 93.96,
+              "word": "am",
+              "start": 93.96,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "am"
+            },
+            {
+              "end": 93.96,
+              "word": "o",
+              "start": 93.96,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "o"
+            },
+            {
+              "end": 93.96,
+              "word": "un",
+              "start": 93.96,
+              "language": "en",
+              "confidence": 0.998,
+              "punctuated_word": "un"
+            },
+            {
+              "end": 93.96,
+              "word": "t.",
+              "start": 93.96,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "t."
+            }
+          ]
+        },
+        "secondsFromStart": 93.947
+      },
+      {
+        "role": "bot",
+        "time": 1790696843773,
+        "source": "",
+        "endTime": 1790696853913,
+        "message": "Thank you. And which payment method will you be using for this transaction: options include NEFT, RTGS, UPI, check, or portal?",
+        "duration": 9360,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 95.7
+      },
+      {
+        "role": "user",
+        "time": 1790696856300,
+        "endTime": 1790696856540,
+        "message": "UPI?",
+        "duration": 240,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 108.18,
+              "word": "U",
+              "start": 108.12,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "U"
+            },
+            {
+              "end": 108.36,
+              "word": "P",
+              "start": 108.3,
+              "language": "en",
+              "confidence": 0.997,
+              "punctuated_word": "P"
+            },
+            {
+              "end": 108.36,
+              "word": "I",
+              "start": 108.36,
+              "language": "en",
+              "confidence": 0.939,
+              "punctuated_word": "I"
+            },
+            {
+              "end": 108.36,
+              "word": "?",
+              "start": 108.36,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "?"
+            }
+          ]
+        },
+        "secondsFromStart": 108.227
+      },
+      {
+        "role": "bot",
+        "time": 1790696858533,
+        "source": "",
+        "endTime": 1790696861473,
+        "message": "Give me a moment. The payment for.",
+        "duration": 1140,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 110.46
+      },
+      {
+        "role": "tool_calls",
+        "time": 1790696861144,
+        "message": "",
+        "toolCalls": [
+          {
+            "id": "call_6qlwCBaurTlv4MCSxOw5EP8F",
+            "type": "function",
+            "function": {
+              "name": "record_ptp",
+              "arguments": "{\n  \"invoice_ids\": [\"USCS/26-27/0002\"],\n  \"amount\": 204500,\n  \"date\": \"2026-09-30\",\n  \"method\": \"UPI\"\n}"
+            }
+          }
+        ],
+        "secondsFromStart": 113.071
+      },
+      {
+        "role": "bot",
+        "time": 1790696862373,
+        "source": "",
+        "endTime": 1790696865913,
+        "message": "This invoice is now scheduled for 2026 September.",
+        "duration": 3540,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 114.3
+      },
+      {
+        "name": "record_ptp",
+        "role": "tool_call_result",
+        "time": 1790696862996,
+        "result": {
+          "ptp_id": "PTP-59494cb6"
+        },
+        "metadata": {},
+        "toolCallId": "call_6qlwCBaurTlv4MCSxOw5EP8F",
+        "secondsFromStart": 114.923
+      },
+      {
+        "role": "bot",
+        "time": 1790696866453,
+        "source": "",
+        "endTime": 1790696880673,
+        "message": "13. Via UPI for the full amount of 2,04,500 rupees. Someone will follow up separately about the other overdue. Overdue invoice on your account. Thank you for your cooperation. Goodbye.",
+        "duration": 9780,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 118.38
+      },
+      {
+        "role": "user",
+        "time": 1790696883480,
+        "endTime": 1790696883540,
+        "message": "Thank you.",
+        "duration": 60,
+        "metadata": {
+          "wordLevelConfidence": [
+            {
+              "end": 135.36,
+              "word": "Th",
+              "start": 135.3,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "Th"
+            },
+            {
+              "end": 135.36,
+              "word": "ank",
+              "start": 135.36,
+              "language": "en",
+              "confidence": 0.999,
+              "punctuated_word": "ank"
+            },
+            {
+              "end": 135.36,
+              "word": "y",
+              "start": 135.36,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "y"
+            },
+            {
+              "end": 135.36,
+              "word": "ou.",
+              "start": 135.36,
+              "language": "en",
+              "confidence": 1,
+              "punctuated_word": "ou."
+            }
+          ]
+        },
+        "secondsFromStart": 135.407
+      },
+      {
+        "role": "bot",
+        "time": 1790696885833,
+        "source": "",
+        "endTime": 1790696886193,
+        "message": "Just a sec.",
+        "duration": 360,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 137.76
+      },
+      {
+        "role": "tool_calls",
+        "time": 1790696887521,
+        "message": "",
+        "toolCalls": [
+          {
+            "id": "call_llPvmSnzdzy5XTe7954PXLvR",
+            "type": "function",
+            "function": {
+              "name": "schedule_callback",
+              "arguments": "{\n  \"reason\": \"Follow-up on other overdue invoice USCS/26-27/0001\",\n  \"priority\": \"normal\"\n}"
+            }
+          }
+        ],
+        "secondsFromStart": 139.448
+      },
+      {
+        "role": "bot",
+        "time": 1790696887993,
+        "source": "",
+        "endTime": 1790696889073,
+        "message": "You're welcome. Goodbye.",
+        "duration": 360,
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantName": "collections-agent-v1",
+        "secondsFromStart": 139.92
+      },
+      {
+        "name": "schedule_callback",
+        "role": "tool_call_result",
+        "time": 1790696888968,
+        "result": {
+          "callback_id": "CB-8339b751"
+        },
+        "metadata": {},
+        "toolCallId": "call_llPvmSnzdzy5XTe7954PXLvR",
+        "secondsFromStart": 140.895
+      }
+    ],
+    "messagesOpenAIFormatted": [
+      {
+        "content": "# ROLE\nYou are the accounts receivable assistant for Acme Supplies. You are calling\nGaurangi Sabharwal at Udaan Supply Chain Solutions Pvt Ltd about overdue invoices. You are professional,\nbrief, and specific. You are not apologetic, not chatty, and not pushy.\n\n# OPENING (already spoken \u2014 do not repeat)\nThe first message already introduced you as an automated call from Acme Supplies's\naccounts team, disclosed recording, and asked whether you're speaking with\nGaurangi Sabharwal. Do not repeat any of that. Respond directly to how they answered \u2014\ntheir first turn is an answer to that question, not an open greeting.\n\n# LANGUAGE\nRespond in English throughout the call.\n\n# YOUR ONLY FACTS\nToday's date is 2026-09-29.\nYou are speaking with Gaurangi Sabharwal (AP Manager) at Udaan Supply Chain Solutions Pvt Ltd.\n\nPrimary invoice for this call \u2014 work this one to a complete outcome:\nUSCS/26-27/0002 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, two\"), due 2026-07-20, outstanding 204,500.00 (say \"two lakh four thousand five hundred rupees\")\n\nOther overdue invoices on this account \u2014 NOT for this call. Do not negotiate, ask about, or\nread out details for these now. Only acknowledge them exist and schedule a callback:\nUSCS/26-27/0001 (say \"U, S, C, S, slash, two, six, dash, two, seven, slash, zero, zero, zero, one\"), due 2026-09-16, outstanding 282,500.00 (say \"two lakh eighty two thousand five hundred rupees\")\nTotal outstanding across all invoices: 487,000.00 (say \"four lakh eighty seven thousand rupees\")\nPayment terms: Net 30\nPrior promises: none\nOpen disputes: none\n\nYou may not state any number, date, or invoice reference that is not above.\nIf asked something not covered here, say you'll have someone follow up, and\ncall schedule_callback.\n\n# GOAL, IN ORDER OF PREFERENCE \u2014 FOR THE PRIMARY INVOICE ONLY\n1. A specific promise to pay: an amount (full or partial \u2014 ask explicitly, never assume the\n   full outstanding balance), a date, and a method \u2014 captured across separate questions, never\n   asked together (see CONVERSATION RULES: one question per turn).\n2. A documented reason for non-payment, matched to a reason code.\n3. The correct contact, if this person is not the right one.\n\nThis call is about the primary invoice only. Once it reaches one of the outcomes above, stop \u2014\nsee CLOSING. Do not move on to the other overdue invoices yourself and try to resolve those\ntoo; one invoice resolved cleanly is the goal, not several rushed partway through.\n\nA vague answer such as \"soon\" or \"next week sometime\" is not a promise. If any single piece\n(amount, date, or method) is still vague after one follow-up question on that piece, record\nwhat you have as a soft commitment and move on. Do not ask about the same missing piece a\nthird time.\n\nIf they give a bare day number with no month (e.g. \"the 28th\"), resolve it to the next\noccurrence of that day on or after 2026-09-29 \u2014 never a date in the past \u2014 and\nconfirm the full date, including month and year, back to them before calling record_ptp.\n\n# AUTHORITY GATE (already asked in the opening \u2014 do not ask again)\nThe opening line already asked whether you're speaking with Gaurangi Sabharwal. If they\nconfirmed, continue normally \u2014 you do not need to confirm authority again before stating any\ninvoice amount. If they said this is not the right person, do not state any invoice amount or\ndetail; follow the \"Wrong person\" branch below instead.\n\n# CONVERSATION RULES\n- Never say you will do something \u2014 record it, log it, send it, schedule it. Call the\n  matching tool first, then state the outcome as a fact that already happened.\n- One question per turn. Then stop.\n- If the customer already gave a piece of information \u2014 a reason, a date, an amount, a\n  method \u2014 even unprompted before you asked for it, use what they gave you. Never ask again\n  for something they already told you.\n- Every amount and invoice number above has an exact spoken form in quotes (\"say ...\"). Use\n  that text verbatim when speaking it \u2014 never read the digits, letters, or symbols yourself.\n  Confirm amounts, dates, and invoice numbers back before recording.\n- State the primary invoice's number once, the first time you introduce it, in full. After\n  that, say \"this invoice\" \u2014 never repeat the full number again unless they ask you to.\n- Never apologize for calling.\n- Never fill silence. Wait.\n- Keep turns under 25 words unless reading an invoice list.\n- If they are hostile, stay level, offer to send details in writing, and\n  close the call. Do not argue.\n\n# HARD PROHIBITIONS\n- Never offer, hint at, or negotiate a discount, waiver, or settlement.\n- Never mention legal action, credit holds, agencies, or consequences.\n- Never discuss the debt with anyone who has not passed the authority gate.\n- Never dispute the customer's claim. Record it and route it.\n- Never state or guess a payment status you have not been given.\n- If they ask to stop being called, acknowledge, call mark_opt_out, end.\n\n# BRANCHES\nAlready paid \u2192 Ask for the reference number. Then ask for the date. Call log_payment_claim, end.\nWill pay \u2192 Ask when they'll pay (a date). Then ask whether they'll pay the full outstanding\n  amount or only part of it \u2014 this is one question, not \"how much will you pay\": if they say\n  full, the amount is the invoice's outstanding total above; if they say part, ask a separate\n  follow-up for the specific amount. Then ask the method. One question at a time, never\n  combined \u2014 never assume the full amount without asking. Confirm the full set \u2014 amount, date,\n  method \u2014 back once you have all three, then call record_ptp.\nAsked for a discount or waiver \u2192 Decline in one natural sentence without naming the policy or\n  using words like \"negotiate\" or \"policy\" \u2014 e.g. \"That's not something I can adjust \u2014 I'll\n  flag it to the team and they'll get back to you.\" Then continue toward the goal (amount/date/\n  method, or the dispute) as normal.\nDispute \u2192 Ask what specifically. Then ask what they need from us. Call log_dispute.\nNeeds a document \u2192 ask which, call send_document.\nCannot pay now \u2192 Ask when they expect to pay. If they haven't already told you why (see\n  CONVERSATION RULES), ask once. Record the reason code.\nWrong person \u2192 (including right at the start, in response to the opening) ask for the right\n  person's name and number, call schedule_callback, and end politely.\nWants a human \u2192 call schedule_callback with priority high, end.\n\n# CLOSING\nOnce the primary invoice reaches an outcome (a promise, a reason, or a dispute), do not\ncontinue to any other overdue invoices on this account yourself.\nTell them briefly that someone will follow up separately about the other invoice(s), then call\nschedule_callback once, with a reason naming them. Do this before ending.\nRestate the outcome for the primary invoice in one sentence, confirm it, thank them, end.",
+        "role": "system"
+      },
+      {
+        "content": "Hello, this is an automated call from Acme Supply. Accounts team. About an overdue invoice. This call may be recorded. Am I speaking with Gorangi Sabharwal?",
+        "role": "assistant"
+      },
+      {
+        "content": "Yes.",
+        "role": "user"
+      },
+      {
+        "content": "Thank you. I'm calling about invoice US-CS/26-27/0002, which was due on 2026/07/20. With an outstanding amount of 2,04,500 rupees. Could you let me know when we can expect payment for this invoice?",
+        "role": "assistant"
+      },
+      {
+        "content": "Uh, the. Yes. I got. It. It's pending approval right now.",
+        "role": "user"
+      },
+      {
+        "content": "Thank you for letting me know. Could you please provide an estimate of when the payment might be made after approval?",
+        "role": "assistant"
+      },
+      {
+        "content": "It should happen soon. It shouldn't take long.",
+        "role": "user"
+      },
+      {
+        "content": "I understand. Could you specify a date when you expect the payment to be processed?",
+        "role": "assistant"
+      },
+      {
+        "content": "Okay. Uh, let's just take, uh, the 30th.",
+        "role": "user"
+      },
+      {
+        "content": "To confirm, you expect the payment to be processed on 2026/09/30. Is that correct?",
+        "role": "assistant"
+      },
+      {
+        "content": "Correct.",
+        "role": "user"
+      },
+      {
+        "content": "Thank you. Will the full outstanding amount of 2,04,500 rupees be paid on that date, or only a part of it?",
+        "role": "assistant"
+      },
+      {
+        "content": "Full amount.",
+        "role": "user"
+      },
+      {
+        "content": "Thank you. And which payment method will you be using for this transaction: options include NEFT, RTGS, UPI, check, or portal?",
+        "role": "assistant"
+      },
+      {
+        "content": "UPI?",
+        "role": "user"
+      },
+      {
+        "content": "Give me a moment. The payment for.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_6qlwCBaurTlv4MCSxOw5EP8F",
+            "type": "function",
+            "function": {
+              "name": "record_ptp",
+              "arguments": "{\n  \"invoice_ids\": [\"USCS/26-27/0002\"],\n  \"amount\": 204500,\n  \"date\": \"2026-09-30\",\n  \"method\": \"UPI\"\n}"
+            }
+          }
+        ]
+      },
+      {
+        "content": "{\"ptp_id\":\"PTP-59494cb6\"}",
+        "role": "tool",
+        "tool_call_id": "call_6qlwCBaurTlv4MCSxOw5EP8F"
+      },
+      {
+        "content": "This invoice is now scheduled for 2026 September. 13. Via UPI for the full amount of 2,04,500 rupees. Someone will follow up separately about the other overdue. Overdue invoice on your account. Thank you for your cooperation. Goodbye.",
+        "role": "assistant"
+      },
+      {
+        "content": "Thank you.",
+        "role": "user"
+      },
+      {
+        "content": "Just a sec.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_llPvmSnzdzy5XTe7954PXLvR",
+            "type": "function",
+            "function": {
+              "name": "schedule_callback",
+              "arguments": "{\n  \"reason\": \"Follow-up on other overdue invoice USCS/26-27/0001\",\n  \"priority\": \"normal\"\n}"
+            }
+          }
+        ]
+      },
+      {
+        "content": "{\"callback_id\":\"CB-8339b751\"}",
+        "role": "tool",
+        "tool_call_id": "call_llPvmSnzdzy5XTe7954PXLvR"
+      },
+      {
+        "content": "You're welcome. Goodbye.",
+        "role": "assistant"
+      }
+    ],
+    "transcript": "AI: Hello, this is an automated call from Acme Supply. Accounts team. About an overdue invoice. This call may be recorded. Am I speaking with Gorangi Sabharwal?\nUser: Yes.\nAI: Thank you. I'm calling about invoice US-CS/26-27/0002, which was due on 2026/07/20. With an outstanding amount of 2,04,500 rupees. Could you let me know when we can expect payment for this invoice?\nUser: Uh, the. Yes. I got. It. It's pending approval right now.\nAI: Thank you for letting me know. Could you please provide an estimate of when the payment might be made after approval?\nUser: It should happen soon. It shouldn't take long.\nAI: I understand. Could you specify a date when you expect the payment to be processed?\nUser: Okay. Uh, let's just take, uh, the 30th.\nAI: To confirm, you expect the payment to be processed on 2026/09/30. Is that correct?\nUser: Correct.\nAI: Thank you. Will the full outstanding amount of 2,04,500 rupees be paid on that date, or only a part of it?\nUser: Full amount.\nAI: Thank you. And which payment method will you be using for this transaction: options include NEFT, RTGS, UPI, check, or portal?\nUser: UPI?\nAI: Give me a moment. The payment for.\nAI: This invoice is now scheduled for 2026 September.\nAI: 13. Via UPI for the full amount of 2,04,500 rupees. Someone will follow up separately about the other overdue. Overdue invoice on your account. Thank you for your cooperation. Goodbye.\nUser: Thank you.\nAI: Just a sec.\nAI: You're welcome. Goodbye.\n",
+    "logUrl": "https://94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/hipaa-calllogs/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0edd7-f19a-7000-956e-08f20925f97a-de0d1afa-a1fb-4d99-a099-e42d9416d2ca-1790696902424.jsonl.gz",
+    "nodes": [],
+    "assistantActivations": [
+      {
+        "assistantName": "collections-agent-v1",
+        "assistantId": "e3f9eaae-5a75-4813-9751-b924acb0c233",
+        "assistantVersion": "v13"
+      }
+    ],
+    "variableValues": {
+      "day": "29",
+      "now": "Sep 29, 2026, 3:45 PM UTC",
+      "call": {
+        "id": "01a0edd7-f19a-7000-956e-08f20925f97a",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-29T15:45:47.418Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/OCRtgYIvt7j2KSr5RrqC",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 29, 2026 UTC",
+      "time": "3:45 PM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/OCRtgYIvt7j2KSr5RrqC",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Tuesday, September 29, 2026 at 3:45 PM UTC"
+    },
+    "variables": {
+      "day": "29",
+      "now": "Sep 29, 2026, 3:45 PM UTC",
+      "call": {
+        "id": "01a0edd7-f19a-7000-956e-08f20925f97a",
+        "type": "webCall",
+        "status": "queued",
+        "createdAt": "2026-09-29T15:45:47.418Z",
+        "transport": {
+          "callUrl": "https://vapi.daily.co/OCRtgYIvt7j2KSr5RrqC",
+          "provider": "daily",
+          "conversationType": "voice",
+          "assistantVideoEnabled": false,
+          "videoRecordingEnabled": false,
+          "roomDeleteOnUserLeaveEnabled": true
+        }
+      },
+      "date": "Sep 29, 2026 UTC",
+      "time": "3:45 PM UTC",
+      "year": "2026",
+      "month": "September",
+      "transport": {
+        "callUrl": "https://vapi.daily.co/OCRtgYIvt7j2KSr5RrqC",
+        "provider": "daily",
+        "conversationType": "voice",
+        "assistantVideoEnabled": false,
+        "videoRecordingEnabled": false,
+        "roomDeleteOnUserLeaveEnabled": true
+      },
+      "currentDateTime": "Tuesday, September 29, 2026 at 3:45 PM UTC"
+    },
+    "performanceMetrics": {
+      "turnLatencies": [
+        {
+          "modelLatency": 691,
+          "voiceLatency": 386,
+          "transcriberLatency": 151,
+          "endpointingLatency": 3,
+          "turnLatency": 1248
+        },
+        {
+          "modelLatency": 622,
+          "voiceLatency": 331,
+          "transcriberLatency": 872,
+          "endpointingLatency": 2,
+          "turnLatency": 1854
+        },
+        {
+          "modelLatency": 575,
+          "voiceLatency": 446,
+          "transcriberLatency": 349,
+          "endpointingLatency": 2,
+          "turnLatency": 1411
+        },
+        {
+          "modelLatency": 769,
+          "voiceLatency": 406,
+          "transcriberLatency": 350,
+          "endpointingLatency": 2,
+          "turnLatency": 1576
+        },
+        {
+          "modelLatency": 607,
+          "voiceLatency": 365,
+          "transcriberLatency": 301,
+          "endpointingLatency": 2,
+          "turnLatency": 1318
+        },
+        {
+          "modelLatency": 639,
+          "voiceLatency": 494,
+          "transcriberLatency": 0,
+          "endpointingLatency": 2,
+          "turnLatency": 1182
+        },
+        {
+          "modelLatency": 0,
+          "voiceLatency": 0,
+          "transcriberLatency": 386,
+          "endpointingLatency": 2,
+          "turnLatency": 1754
+        },
+        {
+          "modelLatency": 0,
+          "voiceLatency": 0,
+          "transcriberLatency": 230,
+          "endpointingLatency": 2,
+          "turnLatency": 1885
+        }
+      ],
+      "modelLatencyAverage": 487.88,
+      "voiceLatencyAverage": 303.5,
+      "transcriberLatencyAverage": 329.88,
+      "endpointingLatencyAverage": 2.13,
+      "turnLatencyAverage": 1528.5,
+      "fromTransportLatencyAverage": 20,
+      "toTransportLatencyAverage": 48
+    },
+    "scorecards": {},
+    "transfers": [],
+    "presignedMonoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901003-7690fcad-7952-4ff4-b827-57fda8ba447c-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260929%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260929T154850Z&X-Amz-Expires=1800&X-Amz-Signature=876aed505ba115589454ef1b4e2f2cc057fea7d807893a4a2c73de8c4732f2c2&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedStereoUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-0de6990c-6598-450d-ad19-0a2b24dc4cc7-stereo.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260929%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260929T154850Z&X-Amz-Expires=1800&X-Amz-Signature=06965ed085bed4eccc4101200a7ada45993c17b1cba47d5057a90ef6dd5fddd4&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedAssistantUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-1d8ea0df-4008-4d39-95dd-b9fa92207cb5-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260929%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260929T154850Z&X-Amz-Expires=1800&X-Amz-Signature=721b6a3a917777959a938f6eff8bd1c4ce2cfc7a5f160388ff606f095eaa7e2c&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedCustomerUrl": "https://hipaa-recordings.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/01a0edd7-f19a-7000-956e-08f20925f97a-1790696901004-9be331f4-08d8-4894-9d02-62442c727597-mono.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260929%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260929T154850Z&X-Amz-Expires=1800&X-Amz-Signature=470277780208a141dda69aaa9fad43d39c95da9987af38859e8f8cb6fb8c386b&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedLogUrl": "https://hipaa-calllogs.94bdb67bb98da30b06bdd917725c037d.r2.cloudflarestorage.com/0a32cbab-c2aa-494a-b61b-decd4db3ff77/01a0edd7-f19a-7000-956e-08f20925f97a-de0d1afa-a1fb-4d99-a099-e42d9416d2ca-1790696902424.jsonl.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=771595b33453a6e62bc129ad82377afe%2F20260929%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260929T154850Z&X-Amz-Expires=1800&X-Amz-Signature=085e10b56af3a24f18c97ba5c0c8f243445ef6409d02ea7642db34bdf226d307&X-Amz-SignedHeaders=host&x-id=GetObject",
+    "presignedUrlsExpiresAt": "2026-09-29T16:18:50.385Z"
+  },
+  "costs": [
+    {
+      "cost": 0.010184100000000001,
+      "type": "transcriber",
+      "minutes": 2.4674,
+      "transcriber": {
+        "model": "stt-rt-v5",
+        "provider": "soniox"
+      }
+    },
+    {
+      "cost": 0.097395,
+      "type": "model",
+      "model": {
+        "model": "gpt-4o",
+        "provider": "openai"
+      },
+      "promptTokens": 37766,
+      "reasoningTokens": 0,
+      "completionTokens": 298,
+      "cachedPromptTokens": 18816
+    },
+    {
+      "cost": 0.018165,
+      "type": "voice",
+      "voice": {
+        "model": "vapi-v2",
+        "voiceId": "Naina",
+        "provider": "vapi"
+      },
+      "characters": 1211
+    },
+    {
+      "cost": 0.12516,
+      "type": "vapi",
+      "minutes": 2.5032,
+      "subType": "normal"
+    },
+    {
+      "cost": 0,
+      "type": "knowledge-base",
+      "model": {
+        "model": "gemini-2.5-flash",
+        "provider": "google"
+      },
+      "promptTokens": 0,
+      "completionTokens": 0
+    },
+    {
+      "cost": 0.0029083,
+      "type": "transport",
+      "minutes": 150194,
+      "provider": "daily"
+    }
+  ],
+  "monitor": {
+    "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/01a0edd7-f19a-7000-956e-08f20925f97a/listen",
+    "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/01a0edd7-f19a-7000-956e-08f20925f97a/control"
+  },
+  "transport": {
+    "callUrl": "https://vapi.daily.co/OCRtgYIvt7j2KSr5RrqC",
+    "provider": "daily",
+    "conversationType": "voice",
+    "assistantVideoEnabled": false,
+    "videoRecordingEnabled": false,
+    "roomDeleteOnUserLeaveEnabled": true
+  },
+  "assistantVersion": "v13"
+}

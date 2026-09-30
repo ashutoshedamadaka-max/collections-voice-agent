@@ -124,12 +124,12 @@ def test_call_overrides_use_hindi_voice_and_transcriber_for_hindi_account(
     assert overrides["transcriber"]["language"] == "hi"
 
 
-def test_call_overrides_use_english_voice_but_hindi_transcriber_for_hinglish_account(
+def test_call_overrides_fall_back_to_english_for_a_hinglish_labeled_account(
     base_account, make_invoice, as_of
 ):
-    """Hinglish gets an English voice (the model writes Hinglish in Latin script with English
-    numbers/terms, which an English voice can speak) but a Hindi transcriber — "en" mis-
-    rendered genuinely code-switched audio as Urdu script on a real call (docs/FAILURES.md)."""
+    """Hinglish was dropped 2026-09-29 (docs/FAILURES.md) — an account still marked "hinglish"
+    in the Sheet from before that change must get plain English voice/transcriber, not a
+    Hinglish-shaped path that no longer exists in the code."""
     from collections_agent.precall.context_pack import build_context_pack
 
     hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
@@ -145,9 +145,9 @@ def test_call_overrides_use_english_voice_but_hindi_transcriber_for_hinglish_acc
     overrides = build_call_overrides(pack, "Acme Supplies")
 
     assert overrides["voice"]["language"] == "en"
-    assert overrides["transcriber"]["language"] == "hi"
+    assert overrides["transcriber"]["language"] == "en"
     system_message = overrides["model"]["messages"][0]["content"]
-    assert "Latin" in system_message
+    assert "Respond in English" in system_message
 
 
 class TestMergedOpening:
@@ -173,7 +173,9 @@ class TestMergedOpening:
         assert sample_context_pack.contact_name in first_message
         assert first_message.count("?") == 1  # exactly one question, not two separate turns
 
-    def test_hinglish_first_message_uses_latin_script(self, base_account, make_invoice, as_of):
+    def test_hinglish_labeled_account_gets_the_english_opening(self, base_account, make_invoice, as_of):
+        """Hinglish was dropped 2026-09-29 — a Sheet row still marked "hinglish" gets the
+        English opening, not a Hinglish-shaped one that no longer exists."""
         from collections_agent.precall.context_pack import build_context_pack
 
         hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
@@ -191,4 +193,4 @@ class TestMergedOpening:
         first_message = overrides["firstMessage"]
         assert pack.contact_name in first_message
         assert "record" in first_message.lower()
-        assert all(ord(ch) < 0x900 for ch in first_message)  # no Devanagari codepoints
+        assert all(ord(ch) < 0x900 for ch in first_message)  # plain English, no Devanagari

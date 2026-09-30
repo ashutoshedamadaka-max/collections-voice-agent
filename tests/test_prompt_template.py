@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date
 
 from collections_agent.voice.prompt_template import allowed_facts, render_system_prompt
-from collections_agent.voice.speakable import amount_to_words, invoice_number_to_words
+from collections_agent.voice.speakable import amount_to_words, date_to_words, invoice_number_to_words
 
 
 def test_renders_company_and_contact_names(sample_context_pack):
@@ -17,21 +17,56 @@ def test_renders_invoice_facts(sample_context_pack):
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     inv = sample_context_pack.invoices[0]
     assert inv.invoice_number in prompt
-    assert inv.due_date.isoformat() in prompt
+    assert date_to_words(inv.due_date) in prompt
 
 
-def test_invoice_facts_include_spoken_form_alongside_the_raw_value(sample_context_pack):
-    """The model must keep the raw invoice number/amount (for tool-call arguments) but speak
-    the pre-computed word form instead of transforming digits itself — see docs/FAILURES.md."""
-    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
-    inv = sample_context_pack.invoices[0]
-    assert invoice_number_to_words(inv.invoice_number) in prompt
-    assert amount_to_words(inv.outstanding()) in prompt
+class TestStructuralSpokenFormFix:
+    """2026-09-29: giving the model both a raw form and a `(say "...")` spoken form side by
+    side let it default back to reading the raw one — confirmed on real calls in both Hindi
+    and English, on both gpt-4o-mini and gpt-4o. Structural fix: YOUR ONLY FACTS contains only
+    spoken forms; the handful of raw values a tool call actually needs live in a separately
+    labeled REFERENCE VALUES section. See docs/FAILURES.md."""
+
+    def test_facts_section_has_no_raw_due_date_anywhere(self, sample_context_pack):
+        """No tool call ever takes an invoice's due date as an argument, so it has no raw form
+        left in the prompt at all — only the spoken one."""
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        inv = sample_context_pack.invoices[0]
+        assert inv.due_date.isoformat() not in prompt
+
+    def test_spoken_forms_appear_before_the_reference_marker(self, sample_context_pack):
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        inv = sample_context_pack.invoices[0]
+        facts_section, _, reference_section = prompt.partition("# REFERENCE VALUES")
+        assert reference_section  # the marker exists and split the prompt
+        assert invoice_number_to_words(inv.invoice_number) in facts_section
+        assert amount_to_words(inv.outstanding()) in facts_section
+
+    def test_raw_invoice_number_and_amount_appear_only_in_reference_section(self, sample_context_pack):
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        inv = sample_context_pack.invoices[0]
+        facts_section, _, reference_section = prompt.partition("# REFERENCE VALUES")
+        assert inv.invoice_number not in facts_section
+        assert inv.invoice_number in reference_section
+        assert f"{inv.outstanding():,.2f}" not in facts_section
+        assert f"{inv.outstanding():,.2f}" in reference_section
+
+    def test_reference_section_says_never_speak(self, sample_context_pack):
+        prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+        assert "NEVER SPEAK THESE" in prompt
 
 
 def test_total_outstanding_includes_spoken_form(sample_context_pack):
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     assert amount_to_words(sample_context_pack.total_outstanding) in prompt
+
+
+def test_date_speaking_rule_gives_the_pattern_to_replicate(sample_context_pack):
+    """Regression guard for the exact 2026-09-26/29 finding: gpt-4o said "2026 September 13"
+    for 2026-09-30 because nothing told it how to speak a date it resolves itself mid-call
+    (the promised date isn't known in advance, so it can't get a pre-computed spoken form)."""
+    prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
+    assert "ordinal day, then month name, then" in prompt
 
 
 def test_bundled_question_phrasing_is_gone(sample_context_pack):
@@ -136,9 +171,10 @@ def test_hindi_account_gets_hindi_instruction(base_account, make_invoice, as_of)
     assert "Respond in Hindi" in prompt
 
 
-def test_hinglish_account_gets_latin_script_instruction(base_account, make_invoice, as_of):
-    """Regression guard for the 2026-09-17 finding: the original instruction didn't specify a
-    script, and the model defaulted to formal Devanagari Hindi instead of Hinglish."""
+def test_hinglish_labeled_account_falls_back_to_english_instruction(base_account, make_invoice, as_of):
+    """Hinglish was dropped 2026-09-29 (docs/FAILURES.md) — a Sheet row still marked "hinglish"
+    from before that change gets the English instruction, not a Hinglish-shaped one that no
+    longer exists in the code."""
     from collections_agent.precall.context_pack import build_context_pack
 
     hinglish_account = base_account.model_copy(update={"preferred_language": "hinglish"})
@@ -153,8 +189,7 @@ def test_hinglish_account_gets_latin_script_instruction(base_account, make_invoi
 
     prompt = render_system_prompt(pack, "Acme Supplies")
 
-    assert "Latin" in prompt
-    assert "Devanagari" in prompt
+    assert "Respond in English" in prompt
 
 
 def test_never_reask_rule_and_cannot_pay_now_branch_reference_it(sample_context_pack):
