@@ -20,7 +20,13 @@ SYSTEM_PROMPT = (
 )
 
 
-def classify_dispute(transcript: Transcript, api_key: str) -> DisputeClassification:
+def classify_dispute(
+    transcript: Transcript, api_key: str, usage_sink: list | None = None
+) -> DisputeClassification:
     return extract_structured(
-        SYSTEM_PROMPT, format_transcript_for_llm(transcript), DisputeClassification, api_key
+        SYSTEM_PROMPT,
+        format_transcript_for_llm(transcript),
+        DisputeClassification,
+        api_key,
+        usage_sink=usage_sink,
     )

@@ -164,6 +164,25 @@ class TestValidatePromiseFacts:
 
         assert result.amount_within_outstanding is True
 
+    def test_matches_invoice_despite_punctuation_mismatch(self, make_invoice, as_of):
+        """A real replayed call had the model read the invoice number back with an extra
+        hyphen ("US-CS/26-27/0002" vs. the Sheet's "USCS/26-27/0002") — punctuation shouldn't
+        be able to fail a match the digits and letters otherwise confirm."""
+        inv = make_invoice("ACC-1", amount=100_000, days_overdue=10)
+        respoken = inv.invoice_number.replace("-", " - ")  # same identity, different punctuation
+        extraction = PromiseExtraction(
+            has_promise=True,
+            amount=100_000,
+            promised_date=date(2026, 12, 1),
+            method="NEFT",
+            invoice_ids=[respoken],
+            confidence=0.9,
+        )
+
+        result = promise.validate_promise_facts(extraction, [inv], as_of)
+
+        assert result.amount_within_outstanding is True
+
 
 def test_classify_dispute_returns_specialist_result(capture_call):
     expected = DisputeClassification(has_dispute=False, confidence=0.9)

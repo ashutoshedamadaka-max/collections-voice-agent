@@ -978,3 +978,42 @@ write it back to the account so the *next* call opens correctly) is the intended
 solution to this exact scenario. It remains backlog: designed, not built, and — to be explicit
 about it — **unvalidated**. Nothing in this codebase currently detects or writes back a
 customer's actual spoken language.
+
+## 2026-09-30 — replay mode surfaced a real invoice-ID match failure hardcoded fixtures never could
+
+Building the demo console's replay mode (`docs/DEMO_UI_SPEC.md`) meant pushing a real saved call
+through the real pipeline instead of hand-written example data, for the first time since Step 4
+shipped. The first real call tried this way landed in `exception_queue` for what looked like a
+genuine problem: `promise.downgraded_to_soft_commitment=true`, `amount_within_outstanding=false`
+— even though the caller had given a complete, correctly-recorded, in-full promise.
+
+Cause: the agent sometimes reads an invoice number back with an inserted hyphen. The real
+transcript for call `01a0edd7` has the agent saying "invoice US-CS/26-27/0002" aloud, but the
+Sheet's own `invoice_number` for that same invoice is `USCS/26-27/0002` — no hyphen.
+`promise.py::_matches_invoice` compared these with exact string equality, so
+`validate_promise_facts` could never find the invoice, `amount_within_outstanding` defaulted to
+`false`, and a complete, timely, in-full promise was silently downgraded to a soft commitment and
+queued for a human. A hardcoded demo fixture, written to already match, could never have exposed
+this — only real data, pushed through the real matching code, did.
+
+**Fix:** `_normalize_invoice_ref` (`promise.py`) strips every non-alphanumeric character and
+uppercases both sides before comparing. Punctuation an invoice number picks up in transit — a
+hyphen, a space, a slash rendered differently — no longer breaks a match the digits and letters
+otherwise confirm. Covered by `test_matches_invoice_despite_punctuation_mismatch`.
+
+## 2026-09-30 — the same saved call disagreed with itself between runs
+
+While chasing the bug above, the same transcript was run through the pipeline twice with no code
+change in between and got two different answers: `auto_write` once, `exception_queue` once.
+`extract_structured` (`postcall/openai_client.py`) never set `temperature`, so every specialist
+call used OpenAI's own default (1.0) — enough sampling variance that the promise extractor's
+invoice-ID transcription (see above) came out differently shaped from one run to the next on
+identical input, which was enough to flip the final write decision.
+
+This matters beyond the demo: a system whose write-back decision can flip between two identical
+runs isn't reproducible, and a supervisor gate that depends on that decision shouldn't be able to
+disagree with itself. **Fix:** `temperature=0` on every specialist call
+(`openai_client.py::extract_structured`). Not a guarantee of bit-for-bit determinism — OpenAI's
+own documentation is explicit that greedy sampling doesn't promise that — but it collapsed the
+variance enough that the same transcript now produces the same decision on repeated runs, where
+before the fix it did not.

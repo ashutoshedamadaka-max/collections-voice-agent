@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Outbound reminder call — live console</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; font-family: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif; background: #F5F4F0; -webkit-font-smoothing: antialiased; }
+a { color: #2E5E4E; } a:hover { color: #1F4235; }
+button { font-family: inherit; }
+</style>
+</helmet>
+
+<div style="width: 1440px; height: 1120px; box-sizing: border-box; background: #F5F4F0; color: #1A1A16; display: flex; flex-direction: column">
+
+  <!-- top bar -->
+  <div style="height: 60px; flex-shrink: 0; box-sizing: border-box; background: #FFFFFF; border-bottom: 1px solid #E4E2DB; padding: 0 28px; display: flex; align-items: center; gap: 18px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="width: 30px; height: 30px; border-radius: 9px; background: {{accent}}; display: flex; align-items: center; justify-content: center; color: #FFFFFF">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M5 10v4"/><path d="M9 6v12"/><path d="M13 9v6"/><path d="M17 4v16"/><path d="M21 10v4"/></svg>
+      </div>
+      <span style="font-size: 17px; font-weight: 700; letter-spacing: -0.2px">northside</span>
+    </div>
+    <div style="width: 1px; height: 22px; background: #E4E2DB"></div>
+    <span style="font-size: 14px; color: #57564E">Outbound reminders</span>
+    <div style="flex-grow: 1"></div>
+    <span style="font-size: 13px; color: #6E6C63">Synthetic data · demo session</span>
+    <span style="font-size: 12px; font-weight: 600; color: #57564E; background: #EFEDE6; border-radius: 7px; padding: 5px 10px">Cascade runtime</span>
+    <div style="width: 30px; height: 30px; border-radius: 50%; background: #E7E9F2; color: #3A4A66; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center">MJ</div>
+  </div>
+
+  <!-- page header -->
+  <div style="flex-shrink: 0; box-sizing: border-box; padding: 26px 40px 18px; display: flex; align-items: flex-end; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 5px">
+      <h1 style="margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; font-weight: 400; line-height: 1.08; letter-spacing: -0.4px">Reminders that reschedule, not just remind.</h1>
+      <div style="font-size: 14px; color: #57564E">Northside Family Clinic · Priya Raghavan · appointment APT-2026-4417</div>
+    </div>
+    <div style="flex-grow: 1"></div>
+    <div style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #E4E2DB; border-radius: 999px; padding: 8px 15px">
+      <span style="width: 8px; height: 8px; border-radius: 50%; background: #0CA30C"></span>
+      <span style="font-size: 13px; font-weight: 600">Live call</span>
+    </div>
+  </div>
+
+  <!-- three columns -->
+  <div style="flex-grow: 1; min-height: 0; box-sizing: border-box; padding: 0 40px; display: flex; gap: 20px">
+
+    <!-- LEFT: what the agent captured -->
+    <div style="width: 400px; flex-shrink: 0; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E2DB; border-radius: 14px; display: flex; flex-direction: column; overflow: hidden">
+      <div style="box-sizing: border-box; padding: 15px 18px; border-bottom: 1px solid #EDEBE4; display: flex; align-items: center; gap: 9px">
+        <span style="color: {{accent}}; display: flex">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18.2 15l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7z"/></svg>
+        </span>
+        <span style="font-size: 15px; font-weight: 600">What the agent captured</span>
+        <div style="flex-grow: 1"></div>
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.7px; color: #6E6C63">LIVE</span>
+      </div>
+
+      <div style="flex-grow: 1; min-height: 0; box-sizing: border-box; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+
+        <div style="display: flex; flex-direction: column; gap: 7px">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.9px; color: #6E6C63">ORIGINAL APPOINTMENT</span>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="font-size: 15px; font-weight: 600">APT-2026-4417</span>
+            <span style="font-size: 11.5px; font-weight: 600; color: #57564E; background: #EFEDE6; border-radius: 6px; padding: 4px 8px">T-48h reminder</span>
+          </div>
+          <div style="font-size: 27px; font-weight: 600; letter-spacing: -0.5px; line-height: 1.15">Thu 02 Oct · 11:30 AM</div>
+          <div style="font-size: 13px; color: #57564E">Annual physical · Dr. Rao · 30 min</div>
+        </div>
+
+        <div style="box-sizing: border-box; background: #EEF5F1; border: 1px solid #CBE0D5; border-radius: 11px; padding: 13px 14px; display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 7px; color: #1F5140">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.3 12.4l2.6 2.6 4.8-5.4"/></svg>
+            <span style="font-size: 13px; font-weight: 600">Rescheduled on the call</span>
+          </div>
+          <div style="font-size: 20px; font-weight: 600; color: #1F5140; letter-spacing: -0.3px">Fri 03 Oct · 9:15 AM</div>
+          <div style="font-size: 12.5px; color: #2F6551">Slot SL-9142 held · same provider</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #EDEBE4">
+            <span style="font-size: 13px; color: #57564E">Identity</span>
+            <span style="font-size: 13px; font-weight: 600">Confirmed · name + DOB</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #EDEBE4">
+            <span style="font-size: 13px; color: #57564E">Reason</span>
+            <span style="font-size: 13px; font-weight: 600">Schedule conflict</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #EDEBE4">
+            <span style="font-size: 13px; color: #57564E">Confirmation</span>
+            <span style="font-size: 13px; font-weight: 600">SMS + email queued</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0">
+            <span style="font-size: 13px; color: #57564E">Call outcome</span>
+            <span style="font-size: 13px; font-weight: 600">rescheduled</span>
+          </div>
+        </div>
+
+        <div style="box-sizing: border-box; background: #FBF3E6; border: 1px solid #EEDCBC; border-radius: 11px; padding: 13px 14px; display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 7px; color: #7A4E12">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.4v5.2"/><path d="M12 16.3v.2"/></svg>
+            <span style="font-size: 13px; font-weight: 600">Answered from the knowledge base</span>
+          </div>
+          <div style="font-size: 12.5px; line-height: 1.5; color: #7A4E12; text-wrap: pretty">Asked whether to fast before the blood test. Answered from <strong style="font-weight: 600">prep-blood-test</strong> at 0.71 similarity. No clinical advice given.</div>
+        </div>
+
+        <div style="flex-grow: 1"></div>
+
+        <div style="display: flex; align-items: center; gap: 7px; color: #6E6C63">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M10.2 13.4a4.2 4.2 0 006.2.5l2.1-2.1a4.2 4.2 0 00-5.9-5.9l-1.2 1.2"/><path d="M13.8 10.6a4.2 4.2 0 00-6.2-.5l-2.1 2.1a4.2 4.2 0 005.9 5.9l1.2-1.2"/></svg>
+          <span style="font-size: 12px">Every field traced to a turn in this call</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIDDLE: the agent -->
+    <div style="width: 440px; flex-shrink: 0; box-sizing: border-box; background: #0B0B12; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center">
+      <div style="width: 100%; display: flex; align-items: center; justify-content: space-between">
+        <div style="display: flex; align-items: center; gap: 7px; color: #9A9DB0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.2l7 2.9v4.8c0 4.1-2.8 7.4-7 8.9-4.2-1.5-7-4.8-7-8.9V6.1z"/></svg>
+          <span style="font-size: 12.5px">Recorded · synthetic patient</span>
+        </div>
+        <span style="font-size: 12.5px; font-weight: 600; color: #C9CBD8; background: rgba(255,255,255,0.09); border-radius: 999px; padding: 5px 12px; font-variant-numeric: tabular-nums">02:14</span>
+      </div>
+
+      <div style="flex-grow: 1"></div>
+
+      <div style="width: 264px; height: 264px; border-radius: 50%; background: conic-gradient(from 205deg, #18306B 0deg, #38BDF8 95deg, #5EEAD4 155deg, #818CF8 265deg, #18306B 360deg); box-shadow: 0 0 55px rgba(56,189,248,0.30), 0 0 130px rgba(129,140,248,0.20); display: flex; align-items: center; justify-content: center">
+        <div style="width: 253px; height: 253px; border-radius: 50%; background: #0B0B12; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px">
+          <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; color: #FFFFFF; letter-spacing: -0.3px">I'm listening.</span>
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 1.7px; color: #9A9DB0">CLINIC VOICE AGENT</span>
+        </div>
+      </div>
+
+      <div style="height: 30px; display: flex; align-items: center; gap: 4px; margin-top: 26px">
+        <div style="width: 3px; height: 8px; border-radius: 2px; background: #6E8BE8"></div>
+        <div style="width: 3px; height: 16px; border-radius: 2px; background: #7FA4EE"></div>
+        <div style="width: 3px; height: 26px; border-radius: 2px; background: #9DBDF5"></div>
+        <div style="width: 3px; height: 13px; border-radius: 2px; background: #7FA4EE"></div>
+        <div style="width: 3px; height: 22px; border-radius: 2px; background: #9DBDF5"></div>
+        <div style="width: 3px; height: 30px; border-radius: 2px; background: #B7D3F6"></div>
+        <div style="width: 3px; height: 18px; border-radius: 2px; background: #9DBDF5"></div>
+        <div style="width: 3px; height: 27px; border-radius: 2px; background: #B7D3F6"></div>
+        <div style="width: 3px; height: 11px; border-radius: 2px; background: #7FA4EE"></div>
+        <div style="width: 3px; height: 20px; border-radius: 2px; background: #9DBDF5"></div>
+        <div style="width: 3px; height: 14px; border-radius: 2px; background: #7FA4EE"></div>
+        <div style="width: 3px; height: 8px; border-radius: 2px; background: #6E8BE8"></div>
+      </div>
+
+      <div style="font-size: 13px; color: #9A9DB0; margin-top: 12px">Agent is speaking</div>
+
+      <div style="box-sizing: border-box; width: 100%; padding: 0 14px; margin-top: 12px; text-align: center; font-size: 19px; line-height: 1.45; color: #E8E9F0; text-wrap: pretty">&ldquo;That's done — Friday the third, nine fifteen in the morning, with Doctor Rao.&rdquo;</div>
+
+      <div style="flex-grow: 1"></div>
+
+      <div style="display: flex; align-items: center; gap: 18px; margin-top: 18px">
+        <button type="button" aria-label="Mute microphone" style="width: 52px; height: 52px; border-radius: 50%; border: none; background: rgba(255,255,255,0.10); color: #E8E9F0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
+        </button>
+        <button type="button" aria-label="End call" style="width: 62px; height: 62px; border-radius: 50%; border: none; background: #E05A55; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 13.5c4.5-4.7 11.7-4.7 16.2 0a1.3 1.3 0 01-.1 1.9l-1.9 1.6a1.3 1.3 0 01-1.7-.1l-1.3-1.3a1 1 0 00-.6-.3 11.6 11.6 0 00-5 0 1 1 0 00-.6.3l-1.3 1.3a1.3 1.3 0 01-1.7.1L4 15.4a1.3 1.3 0 01-.1-1.9z"/></svg>
+        </button>
+        <button type="button" aria-label="Mute agent audio" style="width: 52px; height: 52px; border-radius: 50%; border: none; background: rgba(255,255,255,0.10); color: #E8E9F0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.2 5L6.6 9H3.2v6h3.4l4.6 4z"/><path d="M15.4 9.6a3.6 3.6 0 010 4.8"/><path d="M18.2 7.2a7.4 7.4 0 010 9.6"/></svg>
+        </button>
+      </div>
+
+      <div style="font-size: 12px; color: #74778A; margin-top: 14px">Microphone on · Agent audio on</div>
+    </div>
+
+    <!-- RIGHT: transcript -->
+    <div style="flex-grow: 1; min-width: 0; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E2DB; border-radius: 14px; display: flex; flex-direction: column; overflow: hidden">
+      <div style="box-sizing: border-box; padding: 15px 18px; border-bottom: 1px solid #EDEBE4; display: flex; align-items: center; gap: 9px">
+        <span style="color: #57564E; display: flex">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 12.6a5.6 5.6 0 01-5.6 5.6H9l-4.4 3.1v-8.7A5.6 5.6 0 0110.2 7h4.2a5.6 5.6 0 015.6 5.6z"/></svg>
+        </span>
+        <span style="font-size: 15px; font-weight: 600">Conversation</span>
+        <div style="flex-grow: 1"></div>
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.7px; color: #6E6C63">ENGLISH</span>
+      </div>
+
+      <div style="flex-grow: 1; min-height: 0; box-sizing: border-box; padding: 14px 18px; display: flex; flex-direction: column; gap: 11px; overflow: hidden">
+
+        <div style="text-align: center; font-size: 12px; color: #6E6C63">Today · 9:02 AM</div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 21px; height: 21px; border-radius: 50%; background: #E7EEEB; color: {{accent}}; display: flex; align-items: center; justify-content: center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z"/></svg>
+            </div>
+            <span style="font-size: 13px; font-weight: 600">Agent</span>
+            <div style="flex-grow: 1"></div>
+            <span style="font-size: 12px; color: #6E6C63">9:02</span>
+          </div>
+          <div style="box-sizing: border-box; background: #F7F6F2; border-radius: 12px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5; text-wrap: pretty">Hi, this is the automated assistant from Northside Family Clinic. Am I speaking with Priya?</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 21px; height: 21px; border-radius: 50%; background: #E7E9F2; color: #3A4A66; font-size: 9.5px; font-weight: 600; display: flex; align-items: center; justify-content: center">PR</div>
+            <span style="font-size: 13px; font-weight: 600">Priya</span>
+            <div style="flex-grow: 1"></div>
+            <span style="font-size: 12px; color: #6E6C63">9:02</span>
+          </div>
+          <div style="box-sizing: border-box; background: #EFF1F8; border-radius: 12px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5">Yes, speaking.</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 7px; color: {{accent}}; padding-left: 2px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.3 12.4l2.6 2.6 4.8-5.4"/></svg>
+          <span style="font-size: 12px; font-weight: 600">Identity confirmed — disclosure unlocked</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 21px; height: 21px; border-radius: 50%; background: #E7EEEB; color: {{accent}}; display: flex; align-items: center; justify-content: center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z"/></svg>
+            </div>
+            <span style="font-size: 13px; font-weight: 600">Agent</span>
+            <div style="flex-grow: 1"></div>
+            <span style="font-size: 12px; color: #6E6C63">9:02</span>
+          </div>
+          <div style="box-sizing: border-box; background: #F7F6F2; border-radius: 12px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5; text-wrap: pretty">I'm calling about your appointment on Thursday the second at eleven thirty with Doctor Rao. Are you still able to make it?</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 21px; height: 21px; border-radius: 50%; background: #E7E9F2; color: #3A4A66; font-size: 9.5px; font-weight: 600; display: flex; align-items: center; justify-content: center">PR</div>
+            <span style="font-size: 13px; font-weight: 600">Priya</span>
+            <div style="flex-grow: 1"></div>
+            <span style="font-size: 12px; color: #6E6C63">9:03</span>
+          </div>
+          <div style="box-sizing: border-box; background: #EFF1F8; border-radius: 12px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5; text-wrap: pretty">No, something's come up at work. Could I <mark style="background: #DDE3F5; color: inherit; border-radius: 4px; padding: 1px 3px">move it to Friday</mark> instead?</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 7px; color: #7A4E12; padding-left: 2px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h10"/><path d="M11 8.6l3.4 3.4-3.4 3.4"/><path d="M18.5 5.5v13"/></svg>
+          <span style="font-size: 12px; font-weight: 600">Decline captured — rebooking path opened</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 21px; height: 21px; border-radius: 50%; background: #E7EEEB; color: {{accent}}; display: flex; align-items: center; justify-content: center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z"/></svg>
+            </div>
+            <span style="font-size: 13px; font-weight: 600">Agent</span>
+            <div style="flex-grow: 1"></div>
+            <span style="font-size: 12px; color: #6E6C63">9:03</span>
+          </div>
+          <div style="box-sizing: border-box; background: #F7F6F2; border-radius: 12px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5; text-wrap: pretty">Of course. I have Friday the third at nine fifteen in the morning, same provider. Shall I move you to that?</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 21px; height: 21px; border-radius: 50%; background: #E7E9F2; color: #3A4A66; font-size: 9.5px; font-weight: 600; display: flex; align-items: center; justify-content: center">PR</div>
+            <span style="font-size: 13px; font-weight: 600">Priya</span>
+            <div style="flex-grow: 1"></div>
+            <span style="font-size: 12px; color: #6E6C63">9:04</span>
+          </div>
+          <div style="box-sizing: border-box; background: #EFF1F8; border-radius: 12px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5">Yes, that works.</div>
+        </div>
+      </div>
+
+      <div style="box-sizing: border-box; padding: 12px 18px; border-top: 1px solid #EDEBE4; display: flex; align-items: center; gap: 8px">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #0CA30C"></span>
+        <span style="font-size: 12px; color: #57564E">Live transcript · saved as she speaks</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- telemetry rail -->
+  <div style="flex-shrink: 0; box-sizing: border-box; padding: 18px 40px 0">
+    <div style="box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E2DB; border-radius: 14px; padding: 18px 22px; display: flex; align-items: stretch; gap: 22px">
+
+      <!-- latency -->
+      <div style="width: 620px; flex-shrink: 0; display: flex; flex-direction: column; gap: 9px">
+        <div style="display: flex; align-items: baseline; gap: 10px">
+          <span style="font-size: 13px; font-weight: 600">Time to first audio</span>
+          <span style="font-size: 12px; color: #6E6C63">last turn</span>
+          <div style="flex-grow: 1"></div>
+          <span style="font-size: 18px; font-weight: 600; letter-spacing: -0.3px; font-variant-numeric: tabular-nums">{{total}}</span>
+          <span style="font-size: 12px; color: #6E6C63; font-variant-numeric: tabular-nums">{{p95}}</span>
+        </div>
+
+        <div style="position: relative; height: 15px; border-radius: 8px; background: #F0EEE8; overflow: hidden">
+          <div style="position: absolute; inset: 0; display: flex; gap: 2px">
+            <sc-for list="{{segments}}" as="seg" hint-placeholder-count="4">
+              <div style="{{seg.barStyle}}"></div>
+            </sc-for>
+          </div>
+          <div style="position: absolute; left: 80%; top: 0; bottom: 0; width: 0; border-left: 2px dashed #85837A"></div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+          <sc-for list="{{segments}}" as="seg" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 6px">
+              <span style="{{seg.dotStyle}}"></span>
+              <span style="font-size: 12px; color: #57564E">{{seg.name}}</span>
+              <span style="font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">{{seg.ms}}</span>
+            </div>
+          </sc-for>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <span style="width: 11px; height: 0; border-top: 2px dashed #85837A; display: inline-block"></span>
+            <span style="font-size: 12px; color: #6E6C63">800 ms voice budget</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 1px; background: #EDEBE4; flex-shrink: 0"></div>
+
+      <!-- tokens -->
+      <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+        <span style="font-size: 12px; color: #6E6C63">Tokens this turn</span>
+        <span style="font-size: 25px; font-weight: 600; letter-spacing: -0.5px; line-height: 1.2">{{tokens}}</span>
+        <span style="font-size: 12.5px; color: #57564E">{{tokenSplit}}</span>
+        <span style="font-size: 12px; color: #6E6C63; text-wrap: pretty">{{tokenNote}}</span>
+      </div>
+
+      <div style="width: 1px; background: #EDEBE4; flex-shrink: 0"></div>
+
+      <!-- cost -->
+      <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+        <span style="font-size: 12px; color: #6E6C63">Cost this call</span>
+        <span style="font-size: 25px; font-weight: 600; letter-spacing: -0.5px; line-height: 1.2">{{cost}}</span>
+        <span style="font-size: 12.5px; color: #57564E">{{costNote}}</span>
+        <span style="font-size: 12px; color: #6E6C63">STT + model + TTS</span>
+      </div>
+
+      <div style="width: 1px; background: #EDEBE4; flex-shrink: 0"></div>
+
+      <!-- projection + runtime switch -->
+      <div style="width: 210px; flex-shrink: 0; display: flex; flex-direction: column; gap: 3px">
+        <div style="display: flex; align-items: center; gap: 6px">
+          <span style="font-size: 12px; color: #6E6C63">At 1,000 calls / month</span>
+        </div>
+        <span style="font-size: 25px; font-weight: 600; letter-spacing: -0.5px; line-height: 1.2">{{monthly}}</span>
+        <span style="font-size: 12px; color: #6E6C63; text-wrap: pretty">{{monthlyNote}}</span>
+        <div style="display: flex; gap: 6px; margin-top: 7px">
+          <button type="button" onClick="{{pickCascade}}" style="{{cascadeBtnStyle}}">Cascade</button>
+          <button type="button" onClick="{{pickS2s}}" style="{{s2sBtnStyle}}">Speech-to-speech</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="flex-shrink: 0; box-sizing: border-box; padding: 13px 40px 16px; display: flex; align-items: center">
+    <span style="font-size: 12px; color: #6E6C63">Extracted fields are AI-captured — staff review before the record is written</span>
+    <div style="flex-grow: 1"></div>
+    <span style="font-size: 12px; color: #6E6C63">Call #OB-4417 · illustrative data</span>
+  </div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2E5E4E","options":["#2E5E4E","#1F4E79","#6B3A62","#8A4B1E"]},"runtime":{"editor":"enum","default":"cascade","options":["cascade","s2s"],"section":"Telemetry"},"$preview":{"width":1440,"height":1120}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#2E5E4E';
+    const runtime = (this.state && this.state.runtime) ? this.state.runtime : (this.props.runtime ?? 'cascade');
+
+    const DATA = {
+      cascade: {
+        segments: [
+          { name: 'Speech to text', ms: '140 ms', width: '14%', color: '#2a78d6' },
+          { name: 'Retrieval', ms: '80 ms', width: '8%', color: '#eb6834' },
+          { name: 'Model', ms: '300 ms', width: '30%', color: '#1baf7a' },
+          { name: 'Text to speech', ms: '160 ms', width: '16%', color: '#eda100' }
+        ],
+        total: '680 ms',
+        p95: 'p95 940 ms',
+        tokens: '1,106',
+        tokenSplit: '892 in · 214 out',
+        tokenNote: '3,412 cached — 79% of the prompt',
+        cost: '₹6.40',
+        costNote: 'call length 3 min 12 s',
+        monthly: '₹6,400',
+        monthlyNote: 'vs ₹11,200 on speech-to-speech'
+      },
+      s2s: {
+        segments: [
+          { name: 'Speech to speech, single hop', ms: '410 ms', width: '41%', color: '#2a78d6' }
+        ],
+        total: '410 ms',
+        p95: 'p95 610 ms',
+        tokens: '2,140',
+        tokenSplit: '1,690 in · 450 out',
+        tokenNote: 'audio tokens — no prompt cache',
+        cost: '₹11.20',
+        costNote: 'call length 3 min 12 s',
+        monthly: '₹11,200',
+        monthlyNote: 'vs ₹6,400 on the cascade'
+      }
+    };
+
+    const r = DATA[runtime] || DATA.cascade;
+
+    const segments = r.segments.map((s) => ({
+      name: s.name,
+      ms: s.ms,
+      barStyle: 'width: ' + s.width + '; background: ' + s.color + '; height: 100%;',
+      dotStyle: 'width: 9px; height: 9px; border-radius: 3px; display: inline-block; background: ' + s.color + ';'
+    }));
+
+    const btn = (on) => 'font-size: 11.5px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer; border: 1px solid ' +
+      (on ? accent : '#DCD9D1') + '; background: ' + (on ? accent : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#57564E') + ';';
+
+    return {
+      accent: accent,
+      segments: segments,
+      total: r.total,
+      p95: r.p95,
+      tokens: r.tokens,
+      tokenSplit: r.tokenSplit,
+      tokenNote: r.tokenNote,
+      cost: r.cost,
+      costNote: r.costNote,
+      monthly: r.monthly,
+      monthlyNote: r.monthlyNote,
+      cascadeBtnStyle: btn(runtime === 'cascade'),
+      s2sBtnStyle: btn(runtime === 's2s'),
+      pickCascade: () => this.setState({ runtime: 'cascade' }),
+      pickS2s: () => this.setState({ runtime: 's2s' })
+    };
+  }
+}
+</script>
+</body>
+</html>

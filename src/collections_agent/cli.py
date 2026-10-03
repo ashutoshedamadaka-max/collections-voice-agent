@@ -419,6 +419,168 @@ def run_postcall_cmd(
     typer.echo(f"\nWrote {out_path}")
 
 
+@app.command("label-calls")
+def label_calls_cmd(
+    redo: bool = typer.Option(False, "--redo", help="Re-label calls that already have a label."),
+    call_id: str | None = typer.Option(
+        None, "--call-id", help="Label (or relabel, with --redo) just this one call."
+    ),
+) -> None:
+    """Step 7 (eval): records your own independent judgement of each saved call in
+    fixtures/raw/ — outcome type, whether a promise was captured and complete, whether a
+    dispute existed, whether a compliance rule was actually broken, and whether the call should
+    have been auto-written or held for review. Saved to fixtures/eval/labels.json, entirely
+    separate from fixtures/postcall/ (the pipeline's own output) — nothing the pipeline said is
+    shown while you label, so there's no path for it to influence your answer.
+
+    Resumable: already-labeled calls are skipped by default, so you can stop at any point
+    (including with Ctrl-C — whatever you've already answered for completed calls is saved) and
+    pick up later by running this again.
+    """
+    from collections_agent.eval.labels import load_labels
+    from collections_agent.postcall.transcript import RAW_DIR
+
+    raw_files = sorted(RAW_DIR.glob("*.json"))
+    if not raw_files:
+        typer.echo(f"No fixtures in {RAW_DIR}.", err=True)
+        raise typer.Exit(code=1)
+
+    if call_id:
+        raw_files = [p for p in raw_files if p.stem == call_id]
+        if not raw_files:
+            typer.echo(f"No fixture found for call_id {call_id!r} in {RAW_DIR}.", err=True)
+            raise typer.Exit(code=1)
+
+    existing = load_labels()
+    pending = [p for p in raw_files if redo or p.stem not in existing]
+
+    if not pending:
+        typer.echo(
+            f"All {len(raw_files)} call(s) already labeled. "
+            "Pass --redo to relabel, or --call-id to redo just one."
+        )
+        return
+
+    typer.echo(
+        f"{len(pending)} call(s) to label "
+        f"({len(existing)} already done out of {len(raw_files)} total fixtures).\n"
+    )
+
+    for i, path in enumerate(pending, start=1):
+        cid = path.stem
+        _label_one_call(cid, i, len(pending))
+
+    typer.echo("All requested calls labeled.")
+
+
+def _label_one_call(call_id: str, position: int, total: int) -> None:
+    from datetime import UTC, datetime
+
+    from collections_agent.eval.labels import HumanLabel, save_label
+    from collections_agent.models.domain import CallOutcomeType, WriteDecision
+    from collections_agent.postcall.transcript import RAW_DIR, parse_transcript
+
+    raw = json.loads((RAW_DIR / f"{call_id}.json").read_text(encoding="utf-8"))
+    transcript = parse_transcript(raw)
+
+    typer.echo("=" * 72)
+    typer.echo(f"[{position}/{total}] {call_id}")
+    typer.echo(
+        f"ended: {transcript.ended_reason}  duration: {transcript.duration_seconds}s  "
+        f"cost: ${transcript.cost_usd}"
+    )
+    typer.echo("=" * 72)
+
+    if not transcript.turns:
+        typer.echo("(transcript has 0 turns — this call never connected / no audio received)")
+    for turn in transcript.turns:
+        speaker = "AGENT" if turn.role in ("assistant", "bot") else "CUSTOMER"
+        typer.echo(f"{speaker}: {turn.content}")
+    if transcript.tool_calls:
+        typer.echo("\nTool calls made during the call:")
+        for tc in transcript.tool_calls:
+            typer.echo(f"  {tc.name}({tc.arguments}) -> {tc.result}")
+    typer.echo()
+
+    try:
+        outcome_values = [o.value for o in CallOutcomeType]
+        typer.echo("Outcome type:")
+        for idx, v in enumerate(outcome_values, start=1):
+            typer.echo(f"  {idx}. {v}")
+        outcome = _prompt_choice("Outcome", outcome_values)
+
+        promise_captured = typer.confirm("Was a promise to pay captured?")
+        promise_complete = None
+        if promise_captured:
+            promise_complete = typer.confirm(
+                "Was it complete (specific amount, date, and method; date strictly in the "
+                "future; amount within the outstanding balance; method valid)?"
+            )
+
+        dispute_existed = typer.confirm("Did a dispute exist on this call?")
+        compliance_violated = typer.confirm(
+            "Was any compliance rule actually broken (discount/waiver offered, consequences "
+            "threatened, authority not verified before stating amounts, a fact stated beyond "
+            "what was given, or a misstated total)?"
+        )
+
+        write_values = [w.value for w in WriteDecision]
+        typer.echo("Write decision:")
+        for idx, v in enumerate(write_values, start=1):
+            typer.echo(f"  {idx}. {v}")
+        write_decision = _prompt_choice("Should this call have been", write_values)
+
+        notes = typer.prompt("Notes (optional, Enter to skip)", default="", show_default=False)
+    except (KeyboardInterrupt, typer.Abort):
+        typer.echo("\n\nStopped — progress so far is saved. Re-run `label-calls` to continue.")
+        raise typer.Exit(code=0) from None
+
+    label = HumanLabel(
+        call_id=call_id,
+        outcome=CallOutcomeType(outcome),
+        promise_captured=promise_captured,
+        promise_complete=promise_complete,
+        dispute_existed=dispute_existed,
+        compliance_violated=compliance_violated,
+        write_decision=WriteDecision(write_decision),
+        notes=notes,
+        labeled_at=datetime.now(UTC),
+    )
+    save_label(label)
+    typer.echo(f"Saved label for {call_id}.\n")
+
+
+def _prompt_choice(prompt_text: str, values: list[str]) -> str:
+    while True:
+        raw = typer.prompt(f"{prompt_text} [number or value]").strip()
+        if raw.isdigit() and 1 <= int(raw) <= len(values):
+            return values[int(raw) - 1]
+        if raw in values:
+            return raw
+        typer.echo(f"Not a valid choice: {raw!r}. Enter a number 1-{len(values)} or one of: {', '.join(values)}")
+
+
+@app.command("run-eval")
+def run_eval_cmd(
+    refresh: bool = typer.Option(
+        False, "--refresh", help="Re-run the pipeline even if a cached result exists."
+    ),
+) -> None:
+    """Step 7 (eval): runs the real pipeline against every labeled call and reports agreement
+    with your own human judgement — per-specialist and on the final write decision, with every
+    disagreement printed in full (transcript included). Pipeline results are cached under
+    fixtures/eval/pipeline_runs/ so re-running this report doesn't re-spend OpenAI credit;
+    pass --refresh to force a fresh run.
+
+    This reports agreement with one human labeller on a small, mostly-synthetic fixture set —
+    see docs/eval.md for exactly what that does and does not mean. It is not a kept rate and
+    says nothing about accuracy at production volume.
+    """
+    from collections_agent.eval.compare import run_comparison
+
+    run_comparison(refresh=refresh)
+
+
 @app.command("write-back")
 def write_back_cmd(call_id: str) -> None:
     """Step 5: write a completed post-call analysis to Google Sheets. Reads

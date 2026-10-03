@@ -52,14 +52,20 @@ def extract_structured(
     schema: type[ModelT],
     api_key: str,
     model: str = SPECIALIST_MODEL,
+    usage_sink: list[Any] | None = None,
 ) -> ModelT:
     """Calls OpenAI with `schema`'s JSON schema as a structured-output constraint and parses
     the response into an instance of `schema`. Raises whatever the SDK raises on failure —
     callers decide how to handle a specialist that couldn't run (see pipeline.py).
+
+    `usage_sink`, when given, gets the response's `usage` object appended — the demo replay
+    endpoint uses this to report a real per-call pipeline cost instead of an estimate. Optional
+    and unused by every existing caller, so this changes nothing for them.
     """
     client = OpenAI(api_key=api_key)
     response = client.chat.completions.create(
         model=model,
+        temperature=0,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_content},
@@ -73,5 +79,7 @@ def extract_structured(
             },
         },
     )
+    if usage_sink is not None and response.usage is not None:
+        usage_sink.append(response.usage)
     content = response.choices[0].message.content
     return schema.model_validate_json(content)

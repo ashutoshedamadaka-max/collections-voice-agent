@@ -11,6 +11,7 @@ kind of error — only re-doing the arithmetic in code does.
 
 from __future__ import annotations
 
+import re
 from datetime import date
 
 from collections_agent.models.domain import Invoice, PromiseExtraction, PromiseValidation
@@ -31,14 +32,34 @@ SYSTEM_PROMPT = (
 )
 
 
-def extract_promise(transcript: Transcript, api_key: str) -> PromiseExtraction:
+def extract_promise(
+    transcript: Transcript, api_key: str, usage_sink: list | None = None
+) -> PromiseExtraction:
     return extract_structured(
-        SYSTEM_PROMPT, format_transcript_for_llm(transcript), PromiseExtraction, api_key
+        SYSTEM_PROMPT,
+        format_transcript_for_llm(transcript),
+        PromiseExtraction,
+        api_key,
+        usage_sink=usage_sink,
     )
 
 
+def _normalize_invoice_ref(value: str) -> str:
+    """Strips separators and case before comparing — a real replayed call surfaced the model
+    reading "USCS/26-27/0002" back as "US-CS/26-27/0002" (an inserted hyphen, presumably read
+    for clarity), which failed an exact-string match against the Sheet's own formatting and
+    silently downgraded an otherwise-complete promise to a soft commitment. The digits and
+    letters are what identify an invoice; punctuation is a rendering detail, not part of the
+    identity, so it shouldn't be able to break the match."""
+    return re.sub(r"[^A-Za-z0-9]", "", value).upper()
+
+
 def _matches_invoice(invoice: Invoice, invoice_ids: list[str]) -> bool:
-    return invoice.invoice_id in invoice_ids or invoice.invoice_number in invoice_ids
+    normalized_targets = {_normalize_invoice_ref(v) for v in invoice_ids}
+    return (
+        _normalize_invoice_ref(invoice.invoice_id) in normalized_targets
+        or _normalize_invoice_ref(invoice.invoice_number) in normalized_targets
+    )
 
 
 def validate_promise_facts(
@@ -83,7 +104,11 @@ def validate_promise_facts(
 
 
 def validate_promise(
-    transcript: Transcript, invoices: list[Invoice], as_of: date, api_key: str
+    transcript: Transcript,
+    invoices: list[Invoice],
+    as_of: date,
+    api_key: str,
+    usage_sink: list | None = None,
 ) -> PromiseValidation:
-    extraction = extract_promise(transcript, api_key)
+    extraction = extract_promise(transcript, api_key, usage_sink=usage_sink)
     return validate_promise_facts(extraction, invoices, as_of)

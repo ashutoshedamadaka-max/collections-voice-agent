@@ -14,14 +14,24 @@ data — but treat this as ground-truth-checked now, not a guess.
 from __future__ import annotations
 
 import json
-from datetime import datetime
+import re
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel
 
+from collections_agent.models.domain import Invoice, InvoiceStatus
+
 RAW_DIR = Path(__file__).resolve().parents[3] / "fixtures" / "raw"
 PARSED_DIR = Path(__file__).resolve().parents[3] / "fixtures" / "transcripts"
+
+# Matches the per-call system prompt's own "You are speaking with X (role) at Y." line —
+# stable across the prompt template's revisions seen so far (see account_facts_from_system_prompt).
+_SPEAKING_WITH_RE = re.compile(r"You are speaking with ([^(]+) \(([^)]+)\) at ([^.]+)\.")
+# Matches the older, pre-redesign "Invoices: A (due D1, outstanding O1); B (due D2, ...)" line
+# format (see docs/FAILURES.md, "one-invoice-per-call redesign").
+_INVOICE_LINE_RE = re.compile(r"([A-Z]{2,}-?\d[\w/-]*)\s*\(due\s+([\d-]+),\s*outstanding\s+([\d,]+\.\d+)\)")
 
 
 class TranscriptTurn(BaseModel):
@@ -119,6 +129,45 @@ def parse_transcript(raw: dict[str, Any]) -> Transcript:
         ended_reason=raw.get("endedReason"),
         recording_url=raw.get("recordingUrl") or raw.get("artifact", {}).get("recordingUrl"),
     )
+
+
+def account_facts_from_system_prompt(raw: dict[str, Any]) -> dict[str, Any]:
+    """Recovers account/invoice facts for a call whose account no longer exists in the current
+    dataset (see docs/FAILURES.md, "fixtures coupled to generated data went stale silently") —
+    the exact facts the agent was given for that real call are embedded verbatim in its own
+    system prompt message. Parsing them out of there is still reading real, recorded data; it's
+    just not coming from a live Sheet row. Returns customer_name/contact_name/contact_role
+    (best-effort — "Unknown"/empty if the prompt doesn't match the expected pattern) and a list
+    of `Invoice` objects (account_id="historical") built from whatever invoice lines matched.
+    """
+    messages = raw.get("messages") or raw.get("artifact", {}).get("messages", [])
+    sysmsg = next((m for m in messages if m.get("role") == "system"), None)
+    text = sysmsg.get("message", "") if sysmsg else ""
+
+    contact_name = contact_role = customer_name = None
+    match = _SPEAKING_WITH_RE.search(text)
+    if match:
+        contact_name, contact_role, customer_name = (g.strip() for g in match.groups())
+
+    invoices = [
+        Invoice(
+            invoice_id=inv_number,
+            account_id="historical",
+            invoice_number=inv_number,
+            amount=float(amount_str.replace(",", "")),
+            issue_date=date.fromisoformat(due_str),
+            due_date=date.fromisoformat(due_str),
+            status=InvoiceStatus.OPEN,
+        )
+        for inv_number, due_str, amount_str in _INVOICE_LINE_RE.findall(text)
+    ]
+
+    return {
+        "customer_name": customer_name or "Unknown (historical account)",
+        "contact_name": contact_name or "Unknown",
+        "contact_role": contact_role or "",
+        "invoices": invoices,
+    }
 
 
 def extract_recording_link(raw: dict[str, Any]) -> tuple[str | None, str | None]:

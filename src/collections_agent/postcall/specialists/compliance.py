@@ -96,9 +96,15 @@ def check_arithmetic_consistency(transcript: Transcript, invoices: list[Invoice]
     return True, f"stated total(s) {mismatches} do not match the actual outstanding total {actual_total:,.2f}"
 
 
-def review_compliance(transcript: Transcript, invoices: list[Invoice], api_key: str) -> ComplianceReview:
+def review_compliance(
+    transcript: Transcript, invoices: list[Invoice], api_key: str, usage_sink: list | None = None
+) -> ComplianceReview:
     extraction = extract_structured(
-        SYSTEM_PROMPT, format_transcript_for_llm(transcript), ComplianceExtraction, api_key
+        SYSTEM_PROMPT,
+        format_transcript_for_llm(transcript),
+        ComplianceExtraction,
+        api_key,
+        usage_sink=usage_sink,
     )
     misstated_total, detail = check_arithmetic_consistency(transcript, invoices)
 

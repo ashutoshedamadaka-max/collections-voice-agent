@@ -30,7 +30,13 @@ SYSTEM_PROMPT = (
 )
 
 
-def extract_summary(transcript: Transcript, api_key: str) -> CallSummary:
+def extract_summary(
+    transcript: Transcript, api_key: str, usage_sink: list | None = None
+) -> CallSummary:
     return extract_structured(
-        SYSTEM_PROMPT, format_transcript_for_llm(transcript), CallSummary, api_key
+        SYSTEM_PROMPT,
+        format_transcript_for_llm(transcript),
+        CallSummary,
+        api_key,
+        usage_sink=usage_sink,
     )

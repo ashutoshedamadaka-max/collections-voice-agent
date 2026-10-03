@@ -90,12 +90,14 @@ uv run collections-agent pull-transcripts  # Step 3: fetch a call, save raw + fi
 uv run collections-agent run-postcall      # Step 4: 4 specialists + supervisor against a pulled transcript
 uv run collections-agent write-back        # Step 5: write a post-call analysis back to the Sheet
 uv run collections-agent followthrough     # Step 6: resolve due promises against Payments, roll up Metrics
+uv run collections-agent label-calls       # Step 7: record your own judgement of a saved call (resumable)
+uv run collections-agent run-eval          # Step 7: compare the real pipeline against your labels
 ```
 
-More commands (`build-queue`, `eval`) land as later build steps are implemented — see the
-execution plan for the full Step 0–7 sequence. `docs/metrics.md` has the exact definition of
-every Metrics tab column, including why the promise-to-pay kept rate is reported both as a
-count and rupee-weighted.
+More commands (`build-queue`) land as later build steps are implemented — see the execution
+plan for the full Step 0–7 sequence. `docs/metrics.md` has the exact definition of every
+Metrics tab column, including why the promise-to-pay kept rate is reported both as a count and
+rupee-weighted. `docs/eval.md` covers the specialist-accuracy eval — see "Eval" below.
 
 ## Tests
 
@@ -106,8 +108,34 @@ uv run pytest
 Everything except the one-off live Sheets/Vapi/OpenAI calls runs offline, with no
 credentials required — see each module's tests for the pure-function/fake-backend pattern.
 
+## Eval
+
+**n = 9.** The only specialist-accuracy eval in this repo compares the real pipeline's output
+against one person's judgement on the nine saved calls in `fixtures/raw/` — most of them
+synthetic test calls, not real customer calls. It reports agreement with a human labeller on
+nine calls and nothing else: not a kept rate, not an accuracy estimate, not anything that
+should be read as implying production volume or real-world performance. See `docs/eval.md` for
+exactly what it measures, how account context is resolved for the four calls whose accounts no
+longer exist in the current dataset, and the full methodology.
+
+```powershell
+uv run collections-agent label-calls   # one call at a time, resumable, saved to fixtures/eval/labels.json
+uv run collections-agent run-eval      # runs the real pipeline, reports agreement, prints every disagreement in full
+```
+
+`fixtures/eval/labels.json` (your labels) is committed — it's hard-won human judgement, not
+something to regenerate. `fixtures/eval/pipeline_runs/` (the pipeline's cached output per call)
+is not — it's regenerable any time with `run-eval --refresh` and costs real OpenAI credit to
+produce, same budget note as `run-postcall`.
+
 ## Fixture discipline
 
 After Step 3 (pulling recorded Vapi transcripts into `fixtures/`), all further iteration
 replays those fixtures. Vapi retains call recordings for only 14 days — pull transcripts
 promptly after recording test calls.
+
+This is also why the demo console's replay mode (`docs/DEMO_UI_SPEC.md`) pushes a saved fixture
+through the *real* pipeline instead of hand-written example data: it's what caught the
+invoice-ID hyphen bug (`docs/FAILURES.md`, 2026-09-30). A hardcoded fixture, written to already
+match, could never have exposed a real string-matching failure — only real data forced through
+real code did.

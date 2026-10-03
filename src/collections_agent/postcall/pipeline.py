@@ -22,8 +22,10 @@ misstate money or violate a rule the way the four gating specialists' findings w
 
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
+from typing import Any
 
 from collections_agent.models.domain import (
     CallOutcomeType,
@@ -109,19 +111,34 @@ def run_postcall(
     as_of: date,
     api_key: str,
     confidence_threshold: float,
+    on_specialist_done: Callable[[str, Any], None] | None = None,
+    usage_sink: list[Any] | None = None,
 ) -> PostCallAnalysis:
+    """`on_specialist_done` and `usage_sink` are optional hooks for the demo replay endpoint —
+    it needs to show each specialist resolving in real completion order (not submission order)
+    and report a real pipeline cost from actual token usage, without duplicating this function's
+    merge logic. Neither hook changes behavior for the CLI, which doesn't pass them."""
     with ThreadPoolExecutor(max_workers=5) as pool:
-        outcome_future = pool.submit(extract_outcome, transcript, api_key)
-        promise_future = pool.submit(validate_promise, transcript, invoices, as_of, api_key)
-        dispute_future = pool.submit(classify_dispute, transcript, api_key)
-        compliance_future = pool.submit(review_compliance, transcript, invoices, api_key)
-        summary_future = pool.submit(extract_summary, transcript, api_key)
+        futures = {
+            pool.submit(extract_outcome, transcript, api_key, usage_sink): "outcome",
+            pool.submit(validate_promise, transcript, invoices, as_of, api_key, usage_sink): "promise",
+            pool.submit(classify_dispute, transcript, api_key, usage_sink): "dispute",
+            pool.submit(review_compliance, transcript, invoices, api_key, usage_sink): "compliance",
+            pool.submit(extract_summary, transcript, api_key, usage_sink): "summary",
+        }
+        results: dict[str, Any] = {}
+        for future in as_completed(futures):
+            name = futures[future]
+            result = future.result()
+            results[name] = result
+            if on_specialist_done:
+                on_specialist_done(name, result)
 
-        outcome = outcome_future.result()
-        promise = promise_future.result()
-        dispute = dispute_future.result()
-        compliance = compliance_future.result()
-        summary = summary_future.result()
+        outcome = results["outcome"]
+        promise = results["promise"]
+        dispute = results["dispute"]
+        compliance = results["compliance"]
+        summary = results["summary"]
 
     overall_confidence = min(_material_confidences(outcome, promise, dispute, compliance))
     disagreements = _disagreements(outcome, promise, dispute)

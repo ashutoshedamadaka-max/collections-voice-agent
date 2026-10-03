@@ -28,4 +28,10 @@ fixtures/test_call.html
 fixtures/tool_calls.jsonl
 fixtures/webhook_requests.jsonl
 
+# Eval pipeline-run cache (fixtures/eval/pipeline_runs/) — regenerable any time via
+# `run-eval --refresh`, pure API output with no human effort invested, unlike
+# fixtures/eval/labels.json (the human labels themselves), which IS committed.
+fixtures/eval/pipeline_runs/*.json
+!fixtures/eval/pipeline_runs/.gitkeep
+
 .pytest_cache/

@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collections voice agent — live demo console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #F7F6F2;
+    --surface: #FFFFFF;
+    --border: #E4E2DB;
+    --border-soft: #EDEBE4;
+    --ink: #1A1A16;
+    --text: #57564E;
+    --muted: #6E6C63;
+    --green: #2E5E4E;
+    --green-dark: #1F4235;
+    --green-soft: #EEF5F1;
+    --green-border: #CBE0D5;
+    --green-ink: #1F5140;
+    --slate: #3A4A66;
+    --slate-soft: #EFF1F8;
+    --slate-light: #7FA4EE;
+    --slate-light-2: #9DBDF5;
+    --amber: #7A4E12;
+    --amber-soft: #FBF3E6;
+    --amber-border: #EEDCBC;
+    --neutral-edge: #C9C6BA;
+    --neutral-soft: #EEEDE6;
+    --neutral-text: #6E6C63;
+    --panel-dark: #0B0B12;
+    --panel-dark-muted: #9A9DB0;
+    --panel-dark-text: #E8E9F0;
+    --danger: #B5453F;
+    --font-ui: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1800px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  a { color: var(--green); }
+  a:hover { color: var(--green-dark); }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--slate);
+    outline-offset: 2px;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- shell ---------- */
+
+  .topbar {
+    height: 56px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .brand-mark {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--green);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-name { font-size: 16px; font-weight: 700; letter-spacing: -0.1px; }
+
+  .divider-v { width: 1px; height: 20px; background: var(--border); }
+
+  .topbar-label { font-size: 13.5px; color: var(--text); }
+  .spacer { flex-grow: 1; }
+
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    background: #EFEDE6;
+    border-radius: 7px;
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
+  .badge-muted { color: var(--muted); font-weight: 400; background: transparent; }
+
+  .page-header {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 22px 32px 16px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .page-header h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+  }
+  .page-header .sub {
+    font-size: 13.5px;
+    color: var(--text);
+    margin-top: 5px;
+  }
+  .live-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #0CA30C; flex-shrink: 0; }
+  .dot.idle { background: #C7C4B8; }
+
+  /* ---------- columns ---------- */
+
+  .columns {
+    flex-grow: 1;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 0 32px;
+    display: flex;
+    gap: 18px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-left { width: 380px; flex-shrink: 0; }
+  .panel-right { flex-grow: 1; min-width: 320px; }
+  .panel-center {
+    width: 420px;
+    flex-shrink: 0;
+    background: var(--panel-dark);
+    border-radius: 16px;
+    border: none;
+    padding: 18px;
+    align-items: center;
+  }
+
+  .panel-head {
+    box-sizing: border-box;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .panel-head .icon { color: var(--green); display: flex; flex-shrink: 0; }
+  .panel-head .title { font-size: 14.5px; font-weight: 600; }
+  .panel-head .tag-right {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; color: var(--muted);
+  }
+
+  .panel-body {
+    flex-grow: 1;
+    min-height: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .panel-subhead {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: -4px 0 2px;
+  }
+
+  /* ---------- left panel: account context ---------- */
+
+  .label-caps {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .account-block { display: flex; flex-direction: column; gap: 6px; }
+  .account-name { font-size: 16px; font-weight: 600; }
+  .account-contact { font-size: 13px; color: var(--text); }
+  .account-invoice-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+  .invoice-id { font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; }
+  .pill {
+    font-size: 11px; font-weight: 700;
+    border-radius: 999px;
+    padding: 3px 9px;
+    white-space: nowrap;
+  }
+  .pill-bucket { background: var(--neutral-soft); color: var(--neutral-text); }
+  .account-amount { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; margin-top: 2px; }
+  .account-overdue { font-size: 12.5px; color: var(--muted); }
+
+  .deferred-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    border-top: 1px dashed var(--border);
+    padding-top: 10px;
+    margin-top: 2px;
+  }
+  .deferred-note strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- captured-live cards ---------- */
+
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .captured-card {
+    box-sizing: border-box;
+    background: var(--ground);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--neutral-edge);
+    border-radius: 10px;
+    padding: 11px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .captured-card.validated { border-left-color: var(--green); }
+  .captured-card .kind { font-size: 12.5px; font-weight: 600; }
+  .captured-card .fields { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+  .captured-card .tool-line {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .captured-card .status-tag {
+    align-self: flex-start;
+    font-size: 10.5px; font-weight: 700;
+    color: var(--neutral-text);
+    background: var(--neutral-soft);
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin-top: 2px;
+  }
+  .captured-card.validated .status-tag { color: var(--green-ink); background: var(--green-soft); }
+
+  .empty-state {
+    box-sizing: border-box;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 16px 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  /* ---------- specialist chips ---------- */
+
+  .chip {
+    box-sizing: border-box;
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 11px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .chip-head { display: flex; align-items: center; gap: 8px; }
+  .chip-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .chip-icon svg { display: block; }
+  .chip.pending .chip-icon { color: var(--muted); }
+  .chip.ok .chip-icon { color: var(--green); }
+  .chip.violation .chip-icon { color: var(--ink); }
+  .chip-name { font-size: 13px; font-weight: 600; flex-grow: 1; }
+  .chip-confidence { font-size: 11.5px; font-family: var(--font-mono); color: var(--muted); }
+  .chip-detail { font-size: 12px; color: var(--text); line-height: 1.55; }
+  .chip-detail .fact-line { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; }
+  .chip-detail .fact-line .k { color: var(--muted); }
+  .chip.violation .chip-detail .flag {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--neutral-edge);
+  }
+  .spinner {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    border-top-color: var(--muted);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- write-decision card ---------- */
+
+  .decision-card {
+    box-sizing: border-box;
+    border-radius: 12px;
+    padding: 15px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid var(--green-border);
+    background: var(--green-soft);
+  }
+  .decision-card.amber { border-color: var(--amber-border); background: var(--amber-soft); }
+  .decision-card .decision-head { display: flex; align-items: center; gap: 8px; }
+  .decision-card .decision-icon { color: var(--green-ink); display: flex; flex-shrink: 0; }
+  .decision-card.amber .decision-icon { color: var(--amber); }
+  .decision-card .decision-title { font-size: 14px; font-weight: 700; color: var(--green-ink); }
+  .decision-card.amber .decision-title { color: var(--amber); }
+  .decision-card .decision-body { font-size: 12.5px; line-height: 1.6; color: var(--green-ink); }
+  .decision-card.amber .decision-body { color: #6B440F; }
+  .decision-card .decision-note {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--green-ink);
+    opacity: 0.85;
+    border-top: 1px solid var(--green-border);
+    padding-top: 8px;
+    margin-top: 2px;
+  }
+  .decision-card.amber .decision-note { color: #6B440F; border-top-color: var(--amber-border); }
+
+  .sheet-rows { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .sheet-row {
+    box-sizing: border-box;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sheet-row .tab-name {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+  .sheet-row .row-fields { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); line-height: 1.6; }
+  .sheet-link { font-size: 12px; margin-top: 2px; }
+
+  /* ---------- center panel ---------- */
+
+  .center-top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .center-top .rec-note { display: flex; align-items: center; gap: 6px; color: var(--panel-dark-muted); font-size: 12px; }
+  .center-timer {
+    font-size: 12px; font-weight: 600;
+    color: #C9CBD8;
+    background: rgba(255,255,255,0.09);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .who-line {
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--panel-dark-muted);
+    margin-top: 14px;
+  }
+
+  .account-line {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #C9CBD8;
+    margin-top: 5px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cap-bar-wrap { width: 100%; margin-top: 16px; flex-shrink: 0; }
+  .cap-bar-label { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--panel-dark-muted); margin-bottom: 5px; }
+  .cap-bar { height: 6px; border-radius: 4px; background: rgba(255,255,255,0.1); overflow: hidden; }
+  .cap-bar-fill { height: 100%; background: var(--slate-light); border-radius: 4px; transition: width 0.4s ease; }
+  .cap-bar-fill.ended { background: var(--panel-dark-muted); }
+
+  .ripple-wrap { flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 170px; margin-top: 8px; }
+
+  .ripple-stage {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ripple-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2.5px solid var(--slate-light);
+    opacity: 0;
+  }
+
+  /* speaking: brisk, large-amplitude outward pulse — the agent is actively pushing audio */
+  .ripple-stage.speaking .ripple-ring {
+    border-width: 3px;
+    animation: ripple-pulse-brisk 1.9s ease-out infinite;
+  }
+  .ripple-stage.speaking .ripple-ring.r2 { animation-delay: 0.63s; }
+  .ripple-stage.speaking .ripple-ring.r3 { animation-delay: 1.27s; }
+
+  @keyframes ripple-pulse-brisk {
+    0%   { transform: scale(0.38); opacity: 1; }
+    60%  { opacity: 0.28; }
+    100% { transform: scale(1.18); opacity: 0; }
+  }
+
+  /* listening: slower, smaller-amplitude, dimmer — responsive but not assertive */
+  .ripple-stage.listening .ripple-ring {
+    border-width: 2px;
+    animation: ripple-pulse-soft 3.6s ease-in-out infinite;
+  }
+  .ripple-stage.listening .ripple-ring.r2 { animation-delay: 1.2s; }
+  .ripple-stage.listening .ripple-ring.r3 { animation-delay: 2.4s; }
+
+  @keyframes ripple-pulse-soft {
+    0%   { transform: scale(0.62); opacity: 0.7; }
+    60%  { opacity: 0.18; }
+    100% { transform: scale(0.96); opacity: 0; }
+  }
+
+  .ripple-core {
+    position: relative;
+    z-index: 1;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 34% 28%, #1B2A46 0%, #0B0B12 72%);
+    border: 1.5px solid rgba(255,255,255,0.14);
+    color: #E8E9F0;
+    transition: box-shadow 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+  }
+
+  /* speaking: green, brisk outward pulse, unmistakably "live" */
+  .ripple-stage.speaking .ripple-ring { border-color: #3FB58C; }
+  .ripple-stage.speaking .ripple-core {
+    box-shadow: 0 0 0 1px rgba(63,181,140,0.3), 0 0 46px rgba(63,181,140,0.55);
+    border-color: rgba(94,234,212,0.55);
+    color: #8FF0D0;
+  }
+
+  /* listening: slate/blue, slower and gentler than speaking */
+  .ripple-stage.listening .ripple-ring { border-color: #6E8CD8; }
+  .ripple-stage.listening .ripple-core {
+    box-shadow: 0 0 0 1px rgba(110,140,216,0.28), 0 0 40px rgba(110,140,216,0.5);
+    border-color: rgba(157,189,245,0.55);
+    color: #B9CBF6;
+  }
+
+  /* idle: one slow, near-still breath, muted — not a flatline */
+  .ripple-stage.idle .ripple-ring {
+    border-color: rgba(255,255,255,0.16);
+    animation: ripple-breathe 4.5s ease-in-out infinite;
+  }
+  .ripple-stage.idle .ripple-ring.r2,
+  .ripple-stage.idle .ripple-ring.r3 { display: none; }
+  .ripple-stage.idle .ripple-core {
+    box-shadow: none;
+    border-color: rgba(255,255,255,0.14);
+    color: var(--panel-dark-muted);
+  }
+
+  @keyframes ripple-breathe {
+    0%, 100% { transform: scale(0.9); opacity: 0.3; }
+    50% { transform: scale(1.02); opacity: 0.55; }
+  }
+
+  .waveform { height: 26px; display: flex; align-items: center; gap: 3px; margin-top: 16px; flex-shrink: 0; }
+  .waveform span { width: 3px; border-radius: 2px; background: var(--slate-light); display: block; }
+  .waveform.speaking span { background: #5EEAD4; }
+
+  .status-line { font-size: 13px; color: var(--panel-dark-muted); margin-top: 10px; flex-shrink: 0; }
+
+  .call-quote {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--panel-dark-text);
+    flex-shrink: 0;
+  }
+
+  .replay-btn {
+    margin-top: 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--panel-dark-text);
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .replay-btn:hover { background: rgba(255,255,255,0.15); }
+
+  .controls-row { display: flex; align-items: center; gap: 16px; margin-top: 16px; flex-shrink: 0; }
+  .round-btn {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: var(--panel-dark-text);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .round-btn:hover:not(:disabled) { background: rgba(255,255,255,0.16); }
+  .round-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .round-btn.end { width: 58px; height: 58px; background: var(--danger); }
+  .round-btn.end:hover:not(:disabled) { background: #9c3a35; }
+  .round-btn.start { width: 58px; height: 58px; background: var(--green); }
+  .round-btn.start:hover:not(:disabled) { background: var(--green-dark); }
+
+  .mic-note { font-size: 11.5px; color: #74778A; margin-top: 12px; text-align: center; flex-shrink: 0; }
+  .record-note { font-size: 11px; color: #74778A; margin-top: 3px; text-align: center; flex-shrink: 0; }
+
+  /* ---------- transcript ---------- */
+
+  .transcript-meta { text-align: center; font-size: 11.5px; color: var(--muted); }
+
+  .turn { display: flex; flex-direction: column; gap: 4px; max-width: 86%; }
+  .turn.agent { align-self: flex-start; }
+  .turn.customer { align-self: flex-end; align-items: flex-end; }
+  .turn-head { display: flex; align-items: center; gap: 7px; }
+  .turn.customer .turn-head { flex-direction: row-reverse; }
+  .avatar {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; flex-shrink: 0;
+  }
+  .avatar.agent-avatar { background: var(--green-soft); color: var(--green); }
+  .avatar.customer-avatar { background: var(--slate-soft); color: var(--slate); }
+  .turn-name { font-size: 12.5px; font-weight: 600; }
+  .turn-time { font-size: 11px; color: var(--muted); }
+  .bubble {
+    box-sizing: border-box;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .turn.agent .bubble { background: var(--ground); border-top-left-radius: 3px; }
+  .turn.customer .bubble { background: var(--slate-soft); border-top-right-radius: 3px; }
+  .turn.speaking-now .bubble {
+    box-shadow: 0 0 0 2px var(--green-border);
+  }
+
+  .annotation {
+    display: flex; align-items: center; gap: 6px; justify-content: center;
+    font-size: 11.5px; font-weight: 600; color: var(--slate);
+    padding: 2px 0;
+  }
+  .annotation.decline { font-weight: 700; text-decoration: underline; text-decoration-color: #B7C0D6; text-underline-offset: 2px; }
+  .annotation svg { flex-shrink: 0; }
+
+  .transcript-footer {
+    box-sizing: border-box;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border-soft);
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .transcript-footer span.footer-text { font-size: 11.5px; color: var(--text); }
+  .lang-pill { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); }
+
+  /* ---------- cost bar ---------- */
+
+  .cost-bar-wrap { flex-shrink: 0; box-sizing: border-box; padding: 14px 32px 0; }
+  .cost-bar {
+    box-sizing: border-box;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .cost-cell { display: flex; flex-direction: column; gap: 2px; min-width: 108px; }
+  .cost-cell .cost-label { font-size: 11.5px; color: var(--muted); }
+  .cost-cell .cost-value { font-size: 21px; font-weight: 600; letter-spacing: -0.3px; font-variant-numeric: tabular-nums; }
+  .cost-cell .cost-value.pending { font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .cost-cell .cost-note { font-size: 11px; color: var(--muted); }
+  .cost-divider { width: 1px; background: var(--border-soft); flex-shrink: 0; }
+
+  .cost-toggle-block { display: flex; flex-direction: column; gap: 6px; min-width: 230px; }
+  .toggle-row { display: flex; gap: 6px; }
+  .toggle-row button {
+    font-size: 12px; font-weight: 600;
+    padding: 6px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .toggle-row button[aria-pressed="true"] {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .toggle-caption { font-size: 10.5px; color: var(--muted); }
+  .toggle-consequence { font-size: 11.5px; color: var(--text); line-height: 1.5; max-width: 260px; }
+
+  /* ---------- footer ---------- */
+
+  .page-footer {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 12px 32px 18px;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .page-footer .note { font-size: 11.5px; color: var(--muted); }
+
+  /* ---------- responsive ---------- */
+
+  @media (max-width: 1100px) {
+    .columns { flex-direction: column; padding: 0 20px; overflow-y: auto; }
+    .panel-left, .panel-right, .panel-center { width: 100%; }
+    .panel-left, .panel-right { min-height: 320px; }
+    .cost-bar-wrap { padding: 14px 20px 0; }
+    .page-header { padding: 20px 20px 14px; }
+    .page-footer { padding: 12px 20px 18px; }
+  }
+
+  @media (max-width: 600px) {
+    .page-header h1 { font-size: 26px; }
+    .cost-bar { flex-direction: column; }
+    .cost-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M5 10v4"/><path d="M9 6v12"/><path d="M13 9v6"/><path d="M17 4v16"/><path d="M21 10v4"/></svg>
+      </span>
+      <span class="brand-name">Northgate Materials Co.</span>
+    </div>
+    <div class="divider-v"></div>
+    <span class="topbar-label">Collections voice agent — demo console</span>
+    <div class="spacer"></div>
+    <span class="badge badge-muted">Synthetic data · demo session</span>
+  </header>
+
+  <div class="page-header">
+    <div>
+      <h1>A call that ends in a decision, not just a transcript.</h1>
+      <div class="sub" id="headerSub">Press start for a real call, through the real pipeline.</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="live-pill">
+      <span class="dot idle" id="liveDot"></span>
+      <span id="livePillText">Idle</span>
+    </div>
+  </div>
+
+  <main class="columns">
+
+    <!-- LEFT: what the agent captured -->
+    <section class="panel panel-left" aria-label="What the agent captured">
+      <div class="panel-head">
+        <span class="icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>
+        </span>
+        <span class="title">What the agent captured</span>
+        <div class="spacer"></div>
+        <span class="tag-right">LIVE</span>
+      </div>
+      <div class="panel-body">
+        <p class="panel-subhead">This is what gets written to the ledger — nothing here is spoken back with more certainty than the system actually has.</p>
+
+        <div class="account-block" id="accountBlock">
+          <span class="label-caps">Account</span>
+          <div class="account-name" id="acctName">Waiting for a replay to start…</div>
+          <div class="account-contact" id="acctContact">—</div>
+          <div class="account-invoice-row">
+            <span class="invoice-id" id="acctInvoiceId">—</span>
+            <span class="pill pill-bucket" id="acctBucket" style="display:none;"></span>
+          </div>
+          <div class="account-amount" id="acctAmount">—</div>
+          <div class="account-overdue" id="acctOverdue"></div>
+          <div class="deferred-note" id="acctDeferredNote" style="display:none;"></div>
+          <div class="deferred-note" id="acctHistoricalNote" style="display:none;"></div>
+        </div>
+
+        <div id="capturedSection">
+          <span class="section-title">Captured live</span>
+          <div id="capturedCards" style="display:flex; flex-direction:column; gap:10px; margin-top:8px;"></div>
+        </div>
+
+        <div id="specialistSection">
+          <span class="section-title">Analysis</span>
+          <div id="specialistChips" style="display:flex; flex-direction:column; gap:10px; margin-top:8px;"></div>
+        </div>
+
+        <div id="decisionSection"></div>
+      </div>
+    </section>
+
+    <!-- CENTER: the call -->
+    <section class="panel panel-center" aria-label="The call">
+      <div class="center-top">
+        <span class="rec-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l7 2.9v4.8c0 4.1-2.8 7.4-7 8.9-4.2-1.5-7-4.8-7-8.9V6.1z"/></svg>
+          Not recorded · synthetic scenario
+        </span>
+        <span class="center-timer" id="centerTimer">00:00</span>
+      </div>
+
+      <span class="who-line" id="whoLine">No call in progress</span>
+      <span class="account-line" id="accountLine"></span>
+
+      <div class="cap-bar-wrap" id="capBarWrap">
+        <div class="cap-bar-label"><span>Call length</span><span id="capBarText">00:00 / 03:00 cap</span></div>
+        <div class="cap-bar"><div class="cap-bar-fill" id="capBarFill" style="width:0%"></div></div>
+      </div>
+
+      <div class="ripple-wrap">
+        <div class="ripple-stage idle" id="rippleStage" aria-hidden="true">
+          <span class="ripple-ring r1"></span>
+          <span class="ripple-ring r2"></span>
+          <span class="ripple-ring r3"></span>
+          <span class="ripple-core">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="waveform" id="waveform" aria-hidden="true" style="visibility:hidden;"></div>
+
+      <p class="status-line" id="statusLine" aria-live="polite">Ready to replay a saved call.</p>
+
+      <p class="call-quote" id="callQuote" style="display:none;"></p>
+
+      <button type="button" class="replay-btn" id="replayBtn" style="display:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M5.5 15a7 7 0 0012.6 2.1M18.5 9A7 7 0 005.9 6.9"/></svg>
+        Replay a flagged call
+      </button>
+
+      <div class="controls-row">
+        <button type="button" class="round-btn" id="muteMicBtn" aria-label="Mute microphone" disabled>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
+        </button>
+        <button type="button" class="round-btn end" id="endCallBtn" aria-label="End call" disabled style="display:none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.9 13.5c4.5-4.7 11.7-4.7 16.2 0a1.3 1.3 0 01-.1 1.9l-1.9 1.6a1.3 1.3 0 01-1.7-.1l-1.3-1.3a1 1 0 00-.6-.3 11.6 11.6 0 00-5 0 1 1 0 00-.6.3l-1.3 1.3a1.3 1.3 0 01-1.7.1L4 15.4a1.3 1.3 0 01-.1-1.9z"/></svg>
+        </button>
+        <button type="button" class="round-btn start" id="startCallBtn" aria-label="Start call">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5c0 8.3 6.7 15 15 15h1a2 2 0 002-2v-2.2a1 1 0 00-.8-1L17 13.5a1 1 0 00-1 .3l-1.2 1.4a12.7 12.7 0 01-5-5L11.2 9a1 1 0 00.3-1L10 3.8a1 1 0 00-1-.8H6a2 2 0 00-2 2z"/></svg>
+        </button>
+        <button type="button" class="round-btn" id="muteAgentBtn" aria-label="Mute agent audio" disabled>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.2 5L6.6 9H3.2v6h3.4l4.6 4z"/><path d="M15.4 9.6a3.6 3.6 0 010 4.8"/><path d="M18.2 7.2a7.4 7.4 0 010 9.6"/></svg>
+        </button>
+      </div>
+
+      <p class="mic-note" id="micNote">No live microphone in this pass — replaying a saved call through the real pipeline.</p>
+      <p class="record-note">Demo calls are never recorded or stored as audio.</p>
+    </section>
+
+    <!-- RIGHT: conversation -->
+    <section class="panel panel-right" aria-label="Conversation">
+      <div class="panel-head">
+        <span class="icon" style="color: var(--text);" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 12.6a5.6 5.6 0 01-5.6 5.6H9l-4.4 3.1v-8.7A5.6 5.6 0 0110.2 7h4.2a5.6 5.6 0 015.6 5.6z"/></svg>
+        </span>
+        <span class="title">Conversation</span>
+        <div class="spacer"></div>
+        <span class="lang-pill">ENGLISH</span>
+      </div>
+      <div class="panel-body" id="transcriptBody" aria-live="polite">
+        <div class="transcript-meta">No transcript yet — press start to replay a saved call.</div>
+      </div>
+      <div class="transcript-footer">
+        <span class="dot idle" id="transcriptDot"></span>
+        <span class="footer-text" id="transcriptFooterText">Nothing to show yet</span>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="cost-bar-wrap">
+    <div class="cost-bar">
+      <div class="cost-cell">
+        <span class="cost-label">Call duration</span>
+        <span class="cost-value" id="costDuration">00:00</span>
+        <span class="cost-note" id="costDurationNote">not started</span>
+      </div>
+      <div class="cost-divider"></div>
+      <div class="cost-cell">
+        <span class="cost-label">Voice call cost</span>
+        <span class="cost-value" id="costVoice">—</span>
+        <span class="cost-note">Vapi — STT + model + TTS</span>
+      </div>
+      <div class="cost-divider"></div>
+      <div class="cost-cell">
+        <span class="cost-label">Post-call pipeline</span>
+        <span class="cost-value" id="costPipeline">—</span>
+        <span class="cost-note">5 specialists, gpt-4o-mini</span>
+      </div>
+      <div class="cost-divider"></div>
+      <div class="cost-cell">
+        <span class="cost-label">Total this call</span>
+        <span class="cost-value" id="costTotal">—</span>
+        <span class="cost-note">voice + pipeline</span>
+      </div>
+      <div class="cost-divider"></div>
+      <div class="cost-cell">
+        <span class="cost-label">At 1,000 calls / month</span>
+        <span class="cost-value" id="costMonthly">—</span>
+        <span class="cost-note">extrapolated, not measured</span>
+      </div>
+      <div class="cost-divider"></div>
+      <div class="cost-toggle-block">
+        <div class="toggle-row" role="group" aria-label="In-call backend model">
+          <button type="button" data-model="gpt-4o-mini" aria-pressed="false">gpt-4o-mini</button>
+          <button type="button" data-model="gpt-4o" aria-pressed="false">gpt-4o</button>
+        </div>
+        <span class="toggle-caption">n = 1 per model, same account and script</span>
+        <span class="toggle-consequence" id="toggleConsequence"></span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <span class="note">No kept rate is shown here — not enough call volume for one to mean anything. See the written case study.</span>
+    <div class="spacer"></div>
+    <span class="note">Real call, real pipeline — local testing build</span>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- reference cost/latency data (real, measured, n=1 each control call) ----
+     Independent of whatever call is currently replayed — an explicit comparison, not a
+     recomputation of the replayed call under a different model. Click a pressed button again
+     to return to the real replayed figures. */
+
+  var MODEL_DATA = {
+    "gpt-4o-mini": {
+      voiceCost: 0.1954,
+      meanLatency: 1.86,
+      consequence: "gpt-4o-mini narrated one tool call without invoking it, and never asked whether the full amount or only part of it would be paid."
+    },
+    "gpt-4o": {
+      voiceCost: 0.2538,
+      meanLatency: 2.16,
+      consequence: "gpt-4o fired both tool calls and asked the full-or-partial question explicitly. It cost about 30% more and answered about 0.3s slower per turn."
+    }
+  };
+  var currentModel = null; // null = showing the real replayed call's own figures
+
+  var liveCost = { durationLabel: "00:00", durationNote: "not started", voice: null, pipelineStatus: "not_started" };
+
+  var SPECIALIST_ORDER = ["outcome", "promise", "dispute", "compliance", "summary"];
+  var SPECIALIST_LABELS = {
+    outcome: "Outcome",
+    promise: "Promise validation",
+    dispute: "Dispute",
+    compliance: "Compliance",
+    summary: "Summary"
+  };
+
+  var ICON_CHECK = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6"/></svg>';
+  var ICON_WARN = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.4v5.2"/><path d="M12 16.3v.2"/></svg>';
+  var ICON_CONFIRM = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.3 12.4l2.6 2.6 4.8-5.4"/></svg>';
+
+  /* ---------------- specialist chips ---------------- */
+
+  function factsToHtml(facts) {
+    return facts.map(function (f) {
+      var isFlag = typeof f[1] === "string" && f[1].indexOf("hard violation") !== -1;
+      return '<div class="fact-line' + (isFlag ? " flag" : "") + '"><span class="k">' + f[0] + '</span><span>' + f[1] + '</span></div>';
+    }).join("");
+  }
+
+  function renderSpecialistsEmpty() {
+    document.getElementById("specialistChips").innerHTML =
+      '<div class="empty-state">Analysis begins once the call ends — the five specialists and the supervisor merge run after, not during, the call.</div>';
+  }
+
+  function renderSpecialistsPending() {
+    document.getElementById("specialistChips").innerHTML = SPECIALIST_ORDER.map(function (name) {
+      return (
+        '<div class="chip pending" id="chip-' + name + '">' +
+          '<div class="chip-head"><span class="spinner" aria-hidden="true"></span><span class="chip-name">' + SPECIALIST_LABELS[name] + '</span></div>' +
+        '</div>'
+      );
+    }).join("");
+  }
+
+  function resolveSpecialistChip(payload) {
+    var el = document.getElementById("chip-" + payload.name);
+    if (!el) return;
+    var cls = payload.violation ? "violation" : "ok";
+    var icon = payload.violation ? ICON_WARN : ICON_CHECK;
+    var confHtml = (typeof payload.confidence === "number")
+      ? '<span class="chip-confidence">' + payload.confidence.toFixed(2) + '</span>'
+      : '';
+    var detailHtml = payload.facts
+      ? factsToHtml(payload.facts)
+      : '<span class="summary-text" style="display:block; font-style:italic;"></span>';
+    el.className = "chip " + cls;
+    el.innerHTML =
+      '<div class="chip-head"><span class="chip-icon">' + icon + '</span><span class="chip-name">' + SPECIALIST_LABELS[payload.name] + '</span>' + confHtml + '</div>' +
+      '<div class="chip-detail">' + detailHtml + '</div>';
+    if (!payload.facts) {
+      el.querySelector(".summary-text").textContent = payload.text;
+    }
+  }
+
+  /* ---------------- write decision ---------------- */
+
+  function renderDecisionEmpty() {
+    document.getElementById("decisionSection").innerHTML =
+      '<span class="section-title">Write decision</span><div class="empty-state" style="margin-top:8px;">Call in progress — nothing has been decided yet.</div>';
+  }
+
+  function renderDecisionPending() {
+    document.getElementById("decisionSection").innerHTML =
+      '<span class="section-title">Write decision</span><div class="empty-state" style="margin-top:8px;">Analysis is running — the write decision is pending until every specialist resolves.</div>';
+  }
+
+  function renderDecisionFinal(payload) {
+    var rowsHtml = payload.sheet_rows.map(function (r) {
+      return '<div class="sheet-row"><span class="tab-name">' + r.tab + '</span><span class="row-fields"></span></div>';
+    }).join("");
+    var el = document.getElementById("decisionSection");
+    var isAuto = payload.write_decision === "auto_write";
+    el.innerHTML =
+      '<span class="section-title">Write decision</span>' +
+      '<div class="decision-card' + (isAuto ? "" : " amber") + '" style="margin-top:8px;">' +
+        '<div class="decision-head"><span class="decision-icon">' + (isAuto ? ICON_CHECK : ICON_WARN) + '</span><span class="decision-title">' + payload.write_decision + '</span></div>' +
+        '<div class="decision-body"></div>' +
+        (payload.decision_note ? '<div class="decision-note"></div>' : "") +
+        '<div class="sheet-rows">' + rowsHtml + '</div>' +
+        '<div class="sheet-link"><a href="#" aria-disabled="true">View the demo sheet →</a></div>' +
+      '</div>';
+    el.querySelector(".decision-body").textContent = isAuto
+      ? "Written to the ledger. Every material specialist cleared its threshold and none disagreed."
+      : "Held for human review. Reason: " + payload.reason_label + (payload.supervisor_notes ? " — " + payload.supervisor_notes : "") + ".";
+    if (payload.decision_note) {
+      el.querySelector(".decision-note").textContent = payload.decision_note;
+    }
+    var rowFieldEls = el.querySelectorAll(".row-fields");
+    payload.sheet_rows.forEach(function (r, i) { rowFieldEls[i].textContent = r.fields; });
+  }
+
+  /* ---------------- captured-live cards ---------------- */
+
+  function resetCaptured() {
+    document.getElementById("capturedCards").innerHTML =
+      '<div class="empty-state">Nothing captured yet — cards appear the moment a tool call is received.</div>';
+  }
+
+  function appendCapturedCard(payload) {
+    var el = document.getElementById("capturedCards");
+    if (el.querySelector(".empty-state")) el.innerHTML = "";
+    var card = document.createElement("div");
+    card.className = "captured-card";
+    card.innerHTML =
+      '<span class="kind"></span><span class="fields"></span><span class="tool-line"></span><span class="status-tag">Pending validation</span>';
+    card.querySelector(".kind").textContent = payload.kind;
+    card.querySelector(".fields").textContent = payload.fields;
+    card.querySelector(".tool-line").textContent = payload.tool_line;
+    el.appendChild(card);
+  }
+
+  function markCapturedCardsValidated() {
+    document.querySelectorAll(".captured-card").forEach(function (card) {
+      card.classList.add("validated");
+      var tag = card.querySelector(".status-tag");
+      if (tag) tag.textContent = "Validated";
+    });
+  }
+
+  /* ---------------- transcript ---------------- */
+
+  function resetTranscript() {
+    document.getElementById("transcriptBody").innerHTML = "";
+  }
+
+  function fmtElapsed(seconds) {
+    if (typeof seconds !== "number" || isNaN(seconds)) return "00:00";
+    seconds = Math.max(0, Math.floor(seconds));
+    var m = Math.floor(seconds / 60), s = seconds % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function initials(fullName) {
+    var parts = (fullName || "").trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return "?";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  var lastTurnEl = null;
+
+  function appendTurn(payload, contactFullName) {
+    if (lastTurnEl) lastTurnEl.classList.remove("speaking-now");
+    var el = document.getElementById("transcriptBody");
+    var isAgent = payload.role === "agent";
+    var firstName = (contactFullName || "Customer").split(" ")[0];
+    var turn = document.createElement("div");
+    turn.className = "turn " + payload.role + " speaking-now";
+    turn.innerHTML =
+      '<div class="turn-head">' +
+        '<span class="avatar ' + (isAgent ? "agent-avatar" : "customer-avatar") + '"></span>' +
+        '<span class="turn-name"></span>' +
+        '<span class="turn-time"></span>' +
+      '</div>' +
+      '<div class="bubble"></div>';
+    turn.querySelector(".avatar").textContent = isAgent ? "AG" : initials(contactFullName);
+    turn.querySelector(".turn-name").textContent = isAgent ? "Agent" : firstName;
+    turn.querySelector(".turn-time").textContent = fmtElapsed(payload.seconds_from_start);
+    turn.querySelector(".bubble").textContent = payload.text;
+    el.appendChild(turn);
+    el.scrollTop = el.scrollHeight;
+    lastTurnEl = turn;
+  }
+
+  function appendAnnotation(text) {
+    var el = document.getElementById("transcriptBody");
+    var div = document.createElement("div");
+    div.className = "annotation";
+    div.innerHTML = ICON_CONFIRM + '<span></span>';
+    div.querySelector("span").textContent = text;
+    el.appendChild(div);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  /* ---------------- waveform bars ---------------- */
+
+  function buildWaveform() {
+    var el = document.getElementById("waveform");
+    var heights = [8, 16, 26, 13, 22, 26, 18, 24, 11, 20, 14, 8];
+    el.innerHTML = heights.map(function (h) { return '<span style="height:' + h + 'px;"></span>'; }).join("");
+  }
+  buildWaveform();
+
+  /* ---------------- cost bar ---------------- */
+
+  function moneyShort(n) { return n > 0 && n < 0.01 ? "$" + n.toFixed(4) : "$" + n.toFixed(2); }
+
+  function renderCostBar() {
+    document.getElementById("costDuration").textContent = liveCost.durationLabel;
+    document.getElementById("costDurationNote").textContent = liveCost.durationNote;
+
+    var pipelineEl = document.getElementById("costPipeline");
+    var totalEl = document.getElementById("costTotal");
+    var monthlyEl = document.getElementById("costMonthly");
+    var voiceEl = document.getElementById("costVoice");
+
+    if (currentModel) {
+      var m = MODEL_DATA[currentModel];
+      var pipeline = (typeof liveCost.pipelineCostReal === "number") ? liveCost.pipelineCostReal : 0.001;
+      var total = m.voiceCost + pipeline;
+      voiceEl.textContent = moneyShort(m.voiceCost);
+      pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
+      pipelineEl.textContent = moneyShort(pipeline);
+      totalEl.textContent = moneyShort(total);
+      monthlyEl.textContent = "$" + (total * 1000).toFixed(0);
+      document.getElementById("toggleConsequence").textContent = m.consequence;
+      return;
+    }
+
+    voiceEl.textContent = (typeof liveCost.voice === "number") ? moneyShort(liveCost.voice) : "—";
+
+    if (liveCost.pipelineStatus === "not_started") {
+      pipelineEl.textContent = "—"; totalEl.textContent = "—"; monthlyEl.textContent = "—";
+      pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
+    } else if (liveCost.pipelineStatus === "calculating") {
+      pipelineEl.textContent = "calculating…"; totalEl.textContent = "calculating…"; monthlyEl.textContent = "calculating…";
+      pipelineEl.classList.add("pending"); totalEl.classList.add("pending"); monthlyEl.classList.add("pending");
+    } else {
+      pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
+      pipelineEl.textContent = moneyShort(liveCost.pipelineCostReal);
+      totalEl.textContent = moneyShort(liveCost.totalCostReal);
+      monthlyEl.textContent = "$" + liveCost.monthlyCostReal.toFixed(0);
+    }
+    document.getElementById("toggleConsequence").textContent = "";
+  }
+
+  var modelButtons = document.querySelectorAll(".toggle-row button[data-model]");
+  modelButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var model = btn.getAttribute("data-model");
+      if (currentModel === model) {
+        currentModel = null;
+        modelButtons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+      } else {
+        currentModel = model;
+        modelButtons.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+      }
+      renderCostBar();
+    });
+  });
+
+  /* ---------------- replay orchestration (real SSE from the real pipeline) ---------------- */
+
+  var eventSource = null;
+  var tickTimer = null;
+  var callStartWallClock = null;
+  var currentScenario = null;
+  var currentContactName = "Customer";
+
+  function setText(id, text) { document.getElementById(id).textContent = text; }
+
+  function stopClock() {
+    if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  }
+
+  function tickClock() {
+    var elapsed = (Date.now() - callStartWallClock) / 1000;
+    var label = fmtElapsed(elapsed);
+    setText("centerTimer", label);
+    liveCost.durationLabel = label;
+    renderCostBar();
+    var pct = Math.min(100, (elapsed / 180) * 100);
+    setText("capBarText", label + " / 03:00 cap");
+    document.getElementById("capBarFill").style.width = pct + "%";
+  }
+
+  function resetUiForCall(mode) {
+    document.getElementById("liveDot").className = "dot";
+    setText("livePillText", "In call");
+    setText("headerSub", "Connecting to the real pipeline…");
+    setText("whoLine", "Connecting…");
+    setText("accountLine", "");
+
+    setText("acctName", "Loading…");
+    setText("acctContact", "—");
+    setText("acctInvoiceId", "—");
+    var bucketEl = document.getElementById("acctBucket");
+    bucketEl.style.display = "none";
+    setText("acctAmount", "—");
+    setText("acctOverdue", "");
+    document.getElementById("acctDeferredNote").style.display = "none";
+    document.getElementById("acctHistoricalNote").style.display = "none";
+
+    resetCaptured();
+    renderSpecialistsEmpty();
+    renderDecisionEmpty();
+    resetTranscript();
+    setText("transcriptFooterText", "Live transcript · growing as they speak");
+    document.getElementById("transcriptDot").className = "dot";
+
+    document.getElementById("callQuote").style.display = "none";
+    document.getElementById("replayBtn").style.display = "none";
+    document.getElementById("rippleStage").className = "ripple-stage listening";
+    document.getElementById("waveform").style.visibility = "hidden";
+    setText("statusLine", "Connecting…");
+
+    document.getElementById("startCallBtn").style.display = "none";
+    document.getElementById("endCallBtn").style.display = "flex";
+    document.getElementById("endCallBtn").disabled = false;
+    setText("micNote", mode === "live" ? "Live microphone active — this is a real call." : "Replaying a saved call — no live microphone or audio in this pass.");
+
+    setText("centerTimer", "00:00");
+    setText("capBarText", "00:00 / 03:00 cap");
+    document.getElementById("capBarFill").style.width = "0%";
+    document.getElementById("capBarFill").className = "cap-bar-fill";
+
+    liveCost = { durationLabel: "00:00", durationNote: "call in progress", voice: null, pipelineStatus: "not_started" };
+    renderCostBar();
+
+    callStartWallClock = Date.now();
+    stopClock();
+    tickTimer = setInterval(tickClock, 1000);
+  }
+
+  function applyMeta(payload) {
+    var a = payload.account;
+    currentContactName = a.contact_name || "Customer";
+
+    var subParts = [a.customer_name, a.contact_name];
+    if (a.primary_invoice) subParts.push("invoice " + a.primary_invoice.invoice_number);
+    setText("headerSub", subParts.join(" · "));
+    setText("whoLine", "Calling " + a.contact_name + " · " + a.customer_name);
+
+    setText("acctName", a.customer_name);
+    setText("acctContact", a.contact_role ? a.contact_name + " · " + a.contact_role : a.contact_name);
+
+    if (a.primary_invoice) {
+      var pi = a.primary_invoice;
+      setText("accountLine", pi.invoice_number + " · ₹" + pi.amount.toLocaleString("en-IN") + " outstanding · " + pi.days_overdue + " days overdue");
+      setText("acctInvoiceId", pi.invoice_number);
+      setText("acctAmount", "₹" + pi.amount.toLocaleString("en-IN") + " outstanding");
+      setText("acctOverdue", pi.days_overdue + " days overdue");
+      var bucketEl = document.getElementById("acctBucket");
+      bucketEl.textContent = pi.aging_bucket + " days";
+      bucketEl.style.display = "inline-block";
+    }
+    if (a.deferred_invoice) {
+      var dn = document.getElementById("acctDeferredNote");
+      dn.innerHTML = 'Invoice <strong></strong> (₹' + a.deferred_invoice.amount.toLocaleString("en-IN") + ') is deferred to a callback — the agent works one invoice to a complete outcome per call, by design.';
+      dn.querySelector("strong").textContent = a.deferred_invoice.invoice_number;
+      dn.style.display = "block";
+    }
+    if (a.historical) {
+      var hn = document.getElementById("acctHistoricalNote");
+      hn.textContent = a.historical_note;
+      hn.style.display = "block";
+    }
+
+    setText("statusLine", "Listening");
+    document.getElementById("rippleStage").className = "ripple-stage listening";
+  }
+
+  function handleTurn(payload) {
+    appendTurn(payload, currentContactName);
+    var speaking = payload.role === "agent";
+    document.getElementById("rippleStage").className = "ripple-stage " + (speaking ? "speaking" : "listening");
+    var wave = document.getElementById("waveform");
+    wave.className = "waveform" + (speaking ? " speaking" : "");
+    wave.style.visibility = "visible";
+    setText("statusLine", speaking ? "Agent speaking" : "Listening");
+  }
+
+  function handleToolCall(payload) {
+    appendCapturedCard(payload);
+    appendAnnotation(payload.annotation);
+  }
+
+  function handleCallEnded(payload) {
+    stopClock();
+    var label = fmtElapsed(payload.duration_seconds);
+    setText("centerTimer", label);
+    var pct = Math.min(100, (payload.duration_seconds / 180) * 100);
+    setText("capBarText", label + " / 03:00 cap" + (payload.exceeded_cap ? " · cap reached" : " · call ended"));
+    var fill = document.getElementById("capBarFill");
+    fill.style.width = pct + "%";
+    fill.className = "cap-bar-fill ended";
+
+    document.getElementById("liveDot").className = "dot idle";
+    setText("livePillText", "Call ended");
+    setText("statusLine", "Processing the call…");
+    document.getElementById("rippleStage").className = "ripple-stage idle";
+    document.getElementById("waveform").style.visibility = "hidden";
+    setText("transcriptFooterText", "Transcript complete · analysis in progress");
+    document.getElementById("transcriptDot").className = "dot idle";
+
+    document.getElementById("endCallBtn").disabled = true;
+    setText("micNote", "Call ended — the real post-call pipeline is running now.");
+
+    liveCost.durationLabel = label;
+    liveCost.durationNote = "call ended";
+    liveCost.voice = payload.voice_cost;
+    liveCost.pipelineStatus = "calculating";
+    renderCostBar();
+
+    renderSpecialistsPending();
+    renderDecisionPending();
+  }
+
+  function handleFinal(payload) {
+    if (eventSource) { eventSource.close(); eventSource = null; }
+    markCapturedCardsValidated();
+    renderDecisionFinal(payload);
+
+    liveCost.pipelineStatus = "value";
+    liveCost.pipelineCostReal = payload.cost.pipeline_cost;
+    liveCost.totalCostReal = payload.cost.total_cost;
+    liveCost.monthlyCostReal = payload.cost.monthly_cost;
+    liveCost.voice = payload.cost.voice_cost;
+    renderCostBar();
+
+    var isAuto = payload.write_decision === "auto_write";
+    setText("livePillText", isAuto ? "Settled" : "Held for review");
+    setText("statusLine", isAuto ? "Written to the ledger" : "Held for human review");
+    var quoteEl = document.getElementById("callQuote");
+    quoteEl.style.display = "block";
+    quoteEl.textContent = isAuto
+      ? "Written to the ledger — no human review needed."
+      : "Held for human review — " + payload.reason_label + ".";
+
+    document.getElementById("startCallBtn").style.display = "flex";
+    document.getElementById("endCallBtn").style.display = "none";
+    setText("micNote", currentScenario === "live" ? "Call complete." : "Replay complete.");
+
+    document.getElementById("replayBtn").style.display = (isAuto && currentScenario !== "flagged") ? "inline-flex" : "none";
+  }
+
+  function startReplay(scenarioKey) {
+    if (eventSource) { eventSource.close(); eventSource = null; }
+    currentScenario = scenarioKey;
+    resetUiForCall("replay");
+
+    eventSource = new EventSource("/demo/replay/" + scenarioKey);
+    eventSource.addEventListener("meta", function (e) { applyMeta(JSON.parse(e.data)); });
+    eventSource.addEventListener("turn", function (e) { handleTurn(JSON.parse(e.data)); });
+    eventSource.addEventListener("tool_call", function (e) { handleToolCall(JSON.parse(e.data)); });
+    eventSource.addEventListener("call_ended", function (e) { handleCallEnded(JSON.parse(e.data)); });
+    eventSource.addEventListener("specialist", function (e) { resolveSpecialistChip(JSON.parse(e.data)); });
+    eventSource.addEventListener("final", function (e) { handleFinal(JSON.parse(e.data)); });
+    eventSource.onerror = function () {
+      if (eventSource) { eventSource.close(); eventSource = null; }
+      stopClock();
+      setText("statusLine", "Connection lost — press start to try again.");
+      document.getElementById("startCallBtn").style.display = "flex";
+      document.getElementById("endCallBtn").style.display = "none";
+    };
+  }
+
+  /* ---------------- live call (Pass 3) ---------------- */
+
+  var vapi = null;
+
+  function initVapiIfNeeded(publicKey) {
+    if (vapi) return vapi;
+    if (!window.vapiSDK) return null;
+    vapi = window.vapiSDK.run({ apiKey: publicKey });
+    // The CDN loader auto-injects its own floating call button; this page drives the call
+    // from its own controls instead, so hide it (same as fixtures/test_call.html.j2).
+    var defaultBtn = document.getElementById("vapi-support-btn");
+    if (defaultBtn) defaultBtn.style.display = "none";
+
+    vapi.on("call-start", function () {
+      setText("statusLine", "Listening");
+      document.getElementById("rippleStage").className = "ripple-stage listening";
+    });
+    vapi.on("call-start-failed", function () {
+      setText("statusLine", "Failed to connect — press start to try again.");
+      document.getElementById("startCallBtn").style.display = "flex";
+      document.getElementById("endCallBtn").style.display = "none";
+      if (eventSource) { eventSource.close(); eventSource = null; }
+      stopClock();
+    });
+    vapi.on("call-end", function () {
+      stopClock();
+      setText("statusLine", "Call ended — waiting for the pipeline…");
+      document.getElementById("endCallBtn").disabled = true;
+    });
+    vapi.on("speech-start", function () {
+      document.getElementById("rippleStage").className = "ripple-stage speaking";
+      var wave = document.getElementById("waveform");
+      wave.className = "waveform speaking";
+      wave.style.visibility = "visible";
+      setText("statusLine", "Agent speaking");
+    });
+    vapi.on("speech-end", function () {
+      document.getElementById("rippleStage").className = "ripple-stage listening";
+      document.getElementById("waveform").style.visibility = "hidden";
+      setText("statusLine", "Listening");
+    });
+    vapi.on("message", function (message) {
+      if (message && message.type === "transcript" && message.transcriptType === "final" && message.transcript) {
+        handleTurn({
+          role: message.role === "assistant" ? "agent" : "customer",
+          text: message.transcript,
+          seconds_from_start: callStartWallClock ? (Date.now() - callStartWallClock) / 1000 : 0
+        });
+      }
+    });
+    vapi.on("error", function () {
+      setText("statusLine", "Call error — press start to try again.");
+    });
+    return vapi;
+  }
+
+  function openLiveEventSource() {
+    if (eventSource) { eventSource.close(); eventSource = null; }
+    eventSource = new EventSource("/demo/live");
+    eventSource.addEventListener("tool_call", function (e) { handleToolCall(JSON.parse(e.data)); });
+    eventSource.addEventListener("call_ended", function (e) { handleCallEnded(JSON.parse(e.data)); });
+    eventSource.addEventListener("specialist", function (e) { resolveSpecialistChip(JSON.parse(e.data)); });
+    eventSource.addEventListener("final", function (e) { handleFinal(JSON.parse(e.data)); });
+    eventSource.onerror = function () {
+      // handleFinal already closes this connection once the call settles; an error before
+      // that means the live channel genuinely dropped.
+      if (eventSource) { eventSource.close(); eventSource = null; }
+    };
+  }
+
+  async function startLiveCall() {
+    currentScenario = "live";
+    resetUiForCall("live");
+    try {
+      var resp = await fetch("/demo/live/config");
+      var config = await resp.json();
+      if (!config.publicKey || !config.assistantId) {
+        setText("statusLine", "Missing Vapi configuration — set VAPI_PUBLIC_KEY / VAPI_ASSISTANT_ID in .env.");
+        document.getElementById("startCallBtn").style.display = "flex";
+        document.getElementById("endCallBtn").style.display = "none";
+        return;
+      }
+      applyMeta({ account: config.account });
+      openLiveEventSource();
+      var instance = initVapiIfNeeded(config.publicKey);
+      if (!instance) {
+        setText("statusLine", "Vapi SDK failed to load — check your network or an ad blocker.");
+        document.getElementById("startCallBtn").style.display = "flex";
+        document.getElementById("endCallBtn").style.display = "none";
+        return;
+      }
+      await instance.start(config.assistantId, config.assistantOverrides);
+    } catch (err) {
+      setText("statusLine", "Failed to start the call: " + (err && err.message ? err.message : String(err)));
+      document.getElementById("startCallBtn").style.display = "flex";
+      document.getElementById("endCallBtn").style.display = "none";
+      stopClock();
+    }
+  }
+
+  document.getElementById("startCallBtn").addEventListener("click", function () {
+    startLiveCall();
+  });
+
+  document.getElementById("endCallBtn").addEventListener("click", function () {
+    if (currentScenario === "live" && vapi) {
+      vapi.stop();
+    }
+    if (eventSource) { eventSource.close(); eventSource = null; }
+    stopClock();
+    setText("statusLine", "Ended.");
+    document.getElementById("startCallBtn").style.display = "flex";
+    document.getElementById("endCallBtn").style.display = "none";
+    document.getElementById("liveDot").className = "dot idle";
+    setText("livePillText", "Idle");
+  });
+
+  document.getElementById("replayBtn").addEventListener("click", function () {
+    startReplay("flagged");
+  });
+
+  renderCostBar();
+})();
+</script>
+
+</body>
+</html>

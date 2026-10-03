@@ -20,7 +20,13 @@ SYSTEM_PROMPT = (
 )
 
 
-def extract_outcome(transcript: Transcript, api_key: str) -> OutcomeExtraction:
+def extract_outcome(
+    transcript: Transcript, api_key: str, usage_sink: list | None = None
+) -> OutcomeExtraction:
     return extract_structured(
-        SYSTEM_PROMPT, format_transcript_for_llm(transcript), OutcomeExtraction, api_key
+        SYSTEM_PROMPT,
+        format_transcript_for_llm(transcript),
+        OutcomeExtraction,
+        api_key,
+        usage_sink=usage_sink,
     )
