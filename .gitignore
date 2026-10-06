@@ -28,6 +28,10 @@ fixtures/test_call.html
 fixtures/tool_calls.jsonl
 fixtures/webhook_requests.jsonl
 
+# Demo console cap-tracking state (visitor/day counts, cumulative spend) — runtime state,
+# not fixture data.
+fixtures/demo_state.db
+
 # Eval pipeline-run cache (fixtures/eval/pipeline_runs/) — regenerable any time via
 # `run-eval --refresh`, pure API output with no human effort invested, unlike
 # fixtures/eval/labels.json (the human labels themselves), which IS committed.

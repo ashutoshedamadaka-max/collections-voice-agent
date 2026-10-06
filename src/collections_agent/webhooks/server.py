@@ -19,10 +19,16 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
 from collections_agent.webhooks.auth import verify_vapi_secret
-from collections_agent.webhooks.demo_live import build_live_call_config, handle_end_of_call, live_stream, record_tool_call
+from collections_agent.webhooks.demo_live import (
+    build_live_call_config,
+    handle_end_of_call,
+    live_status,
+    live_stream,
+    record_tool_call,
+)
 from collections_agent.webhooks.demo_replay import SCENARIOS, replay_stream
 from collections_agent.webhooks.handlers import UnknownToolError, dispatch
 
@@ -135,8 +141,13 @@ async def demo_replay_endpoint(scenario: str) -> StreamingResponse:
 
 
 @app.get("/demo/live/config")
-async def demo_live_config() -> dict[str, Any]:
-    return build_live_call_config()
+async def demo_live_config(request: Request) -> JSONResponse:
+    return await build_live_call_config(request)
+
+
+@app.get("/demo/live/status")
+async def demo_live_status(request: Request) -> JSONResponse:
+    return await live_status(request)
 
 
 @app.get("/demo/live")

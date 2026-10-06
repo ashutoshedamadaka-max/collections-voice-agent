@@ -182,36 +182,47 @@ have started without it regardless. Already satisfied.
 | Piece | What's actually true now |
 |---|---|
 | Host | No deployment config of any kind (`Dockerfile`, `Procfile`, `render.yaml`, `fly.toml` — none exist). Your instinct to rule out Vercel is correct and verifiable from the code, not just a hunch: `demo_live.py`'s live SSE channel is a **module-level, in-process `asyncio.Queue`** — it requires one persistent process, not a per-request serverless function. Render/Railway/Fly (anything that runs a long-lived container) works; Vercel-style serverless does not, structurally. |
-| Hard caps (duration, per-visitor, per-day) | Not built. `demo_live.py`'s own docstring says so directly: "single-caller, local-testing scope only... would need revisiting before any multi-visitor deployment." No rate-limiting code anywhere in `webhooks/`. |
-| Separate demo sheet | Not built — and per the correction above, this is now a two-part gap: no write path exists yet at all (nothing to isolate), and the read path currently points at your one real `GOOGLE_SHEET_ID`. That read-coupling is two separate reasons to separate, not one: (1) contamination — if write-back ever gets wired into the demo, a demo visitor's call writes into your real eval sheet; (2) **exposure** — right now, with no write-back at all, anyone using the public demo still has account names, contacts, and invoice amounts read live out of your eval sheet and rendered on their screen. The second reason doesn't wait for write-back to matter — it's already true the moment the demo is reachable by anyone who isn't you. |
-| "Never recorded" claim | Literally on the page (`demo.html` line ~833: "Demo calls are never recorded or stored as audio.") with nothing backing it — no `recordingEnabled` (or equivalent) field set anywhere in `assistant_config.py`. Flagged, not fixed, when this was built, specifically because guessing an unverified Vapi field name has silently no-opped before in this project (`docs/FAILURES.md`). |
-| Vapi public key restriction | Can't be verified from the repo at all — this is a Vapi Dashboard setting (API Keys → restrict by domain + assistant), not code. Check it there directly. |
-| SQLite vs. replace | No SQLite anywhere in the codebase currently (checked `pyproject.toml` and all of `src/`). This is a forward decision tied to however hard caps (above) end up storing visitor/day counters, not an existing-code question — resolve it as part of designing that storage, not standalone. |
+| Hard caps (duration, per-visitor, per-day, spend floor) | **DONE.** `webhooks/demo_caps.py` (SQLite, stdlib) tracks per-visitor-window count, daily count, and cumulative spend; `demo_live.py`'s `/demo/live/config` and `/demo/live/status` check all three (spend floor → daily ceiling → visitor window, in that order) before ever handing the browser a working `publicKey`/`assistantOverrides`. All five numbers configurable via `.env` (`DEMO_BUDGET_USD`, `DEMO_SPEND_FLOOR_USD`, `DEMO_DAILY_CEILING`, `DEMO_VISITOR_WINDOW_HOURS`, `DEMO_CALLS_PER_VISITOR_WINDOW`). Verified live against the real server: seeded the daily ceiling and spend floor directly via `demo_caps` functions and confirmed `/demo/live/config` correctly blocks with the right `reason`, and the frontend falls into `startReplay('clean')` with an explanatory line instead of attempting `vapi.start()` — never a dead button. Duration cap (180s) was already handled via Vapi's own `maxDurationSeconds`, unchanged. **Known, accepted limitation:** no operator bypass (a capped-out day just shows replay, which is the designed-acceptable degradation) and the live SSE channel is still single-caller (concurrent visitors could interleave) — both deliberate, see the implementation plan for why. |
+| Separate demo sheet | **Partially resolved.** The *exposure* half — the part that was true the instant the page was reachable, with zero write-back even wired in — is fixed: `webhooks/demo_fixtures.py` inlines the real account/invoice values as a frozen fixture; both public demo paths (`demo_live.py`, `demo_replay.py`'s clean scenario) now call zero Sheets APIs at runtime, verified by pointing `GOOGLE_SHEET_ID` at garbage and confirming both still work. The *contamination* half is moot for now, same as before — write-back still isn't wired into either public demo path, so there's still nothing to contaminate. If that changes later, a real separate demo sheet is still the right answer; not needed today. |
+| "Never recorded" claim | **DONE — verified, not guessed.** `artifactPlan.recordingEnabled: false` confirmed against docs.vapi.ai/assistants/call-recording (works in both the base assistant config and per-call `assistantOverrides`; defaults `true` otherwise) and set in both, in `voice/assistant_config.py`. Covered by two new tests. **Operator action still needed:** re-run `create-assistant` against whatever URL the deployed/tunneled server is on — the code change alone doesn't update the already-registered live assistant. |
+| Vapi public key restriction | **Verified dashboard steps, documented below** — not a code change. See "Vapi public key restriction" at the end of this item. |
+| SQLite vs. replace | **Resolved: SQLite, for now.** `demo_caps.py` uses stdlib `sqlite3` against a configurable file path (`DEMO_STATE_DB_PATH`, default `fixtures/demo_state.db`). The deployment-time question is narrower than originally framed: not "SQLite or something else" but "does the chosen host's disk persist across restarts/redeploys." Render/Railway/Fly all support a persistent volume (usually an extra step, not the default) — mount one and point `DEMO_STATE_DB_PATH` at it; skip that and a redeploy silently zeroes the spend floor and daily ceiling, which is a real and easy-to-miss failure mode worth testing for specifically during the Host step below, not assuming away. |
 
 **Done when (per piece):**
-- Host: app reachable at a stable (non-tunnel) URL, SSE streaming confirmed working through it.
-- Hard caps: a call past the duration cap is actually cut off; a visitor past their call
-  allowance sees a blocked state, not a started one; this is true after a server restart too
-  (which is where the SQLite-or-not decision actually bites).
-- Demo sheet: demo reads (and, if write-back ever gets wired in, writes) hit a sheet that is
-  not your eval/production sheet, seeded with synthetic data — this closes both the exposure
-  gap (true today) and the contamination gap (true only once/if write-back is wired in).
-- Recording claim: either the claim is made true (a verified Vapi field, tested against a real
-  call's resulting record) or the copy is changed to not claim it. Either resolution is fine;
-  leaving it as an unverified claim on a public page is the thing to not ship.
-- Vapi key: dashboard shows the key restricted to your demo domain and assistant specifically.
-- SQLite: a one-line decision recorded somewhere (this file is fine) — "counters live in
-  [SQLite on a persistent volume / Postgres / Redis], because [host]'s disk
-  [persists/doesn't] across restarts."
+- Host: app reachable at a stable (non-tunnel) URL, SSE streaming confirmed working through it,
+  and `DEMO_STATE_DB_PATH` confirmed to survive a restart on that host (see the SQLite row).
+- Hard caps: ✅ done — see table row above.
+- Demo sheet: ✅ exposure half done — see table row above. Revisit the contamination half only
+  if/when write-back gets wired into a public demo path.
+- Recording claim: ✅ done — see table row above. Remember to re-run `create-assistant` once
+  deployed.
+- Vapi key: dashboard shows the key restricted to your demo domain and assistant specifically
+  (steps below).
+- SQLite: ✅ decision made — see table row above; the remaining "done when" is host-specific
+  (persistent volume mounted and tested, not just assumed).
 
-**Effort (rough, each is its own sitting, not a unit):**
-- Host + first deploy: 1–3 hours, mostly platform-specific friction (env vars, build config),
-  not code.
-- Hard caps: 2–4 hours (design the storage, write the checks, test the restart case).
-- Demo sheet separation: 1–2 hours (new sheet, adapt the seed script, settings wiring).
-- Recording claim: 15 minutes if you just change the copy; 30–60 minutes if you chase down and
-  verify a real `recordingEnabled`-equivalent field.
-- Vapi key restriction: 15 minutes, dashboard only.
+**Vapi public key restriction — exact dashboard steps** (verified against
+docs.vapi.ai/security-and-privacy/api-keys, not guessed):
+1. Dashboard → **API Keys** → **Public API Keys**.
+2. Select your existing public key (or **Add Key** for a dedicated demo-only one).
+3. **Allowed Origins** — add the deployed domain as a complete URL, no trailing slash (e.g.
+   `https://your-demo-domain.com`).
+4. **Allowed Assistants** — select the demo assistant specifically from the dropdown, not
+   "all assistants."
+5. Save. A request from any other origin, or for any other assistant, is rejected by Vapi
+   before it reaches your server — this is enforcement Vapi does, not something this repo's
+   code can do on its own, which is exactly why the public key being shipped to the browser
+   (by design, same as `test-call --dial` already does) is safe once restricted this way.
+
+**Effort remaining (rough, each is its own sitting, not a unit):**
+- Host + first deploy: 1–3 hours, mostly platform-specific friction (env vars, build config,
+  mounting a persistent volume for `DEMO_STATE_DB_PATH` and actually testing it survives a
+  restart), not code.
+- Vapi key restriction: 15 minutes, dashboard only (steps above).
+- Re-run `create-assistant` once deployed, so the live assistant picks up `recordingEnabled:
+  false`: 5 minutes.
+- Hard caps, recording claim, SQLite decision, demo-sheet exposure: **done**, no remaining
+  effort — see table above.
 
 **Blocks:** A live, public demo link. Nothing else.
 
@@ -228,10 +239,9 @@ have started without it regardless. Already satisfied.
    after) + video + write-up                   ┘   independent of each other)
 
 ── optional, additive, start only if you want a live link ──
-4a. Recording-claim decision + Vapi key restriction (cheap, do these first if you proceed)
-4b. Hard caps + SQLite/storage decision
-4c. Separate demo sheet
-4d. Host + deploy
+4a. Recording-claim fix, hard caps, demo-sheet exposure fix ── DONE
+4b. Vapi key restriction (dashboard, 15 min) + re-run create-assistant (5 min)
+4c. Host + deploy, with a persistent volume for the caps/spend state
 ```
 
 **You can ship without:** everything in section 4. Also without item 2, if you're willing to

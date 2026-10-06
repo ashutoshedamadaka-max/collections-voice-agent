@@ -17,6 +17,21 @@ def test_assistant_payload_has_hard_duration_cap():
     assert payload["maxDurationSeconds"] == 180 == MAX_CALL_DURATION_SECONDS
 
 
+def test_assistant_payload_disables_recording():
+    """Backs the demo console's "never recorded" claim — verified against
+    docs.vapi.ai/assistants/call-recording, not guessed (see docs/FAILURES.md for this
+    project's history with unverified Vapi field names)."""
+    payload = build_assistant_payload("Acme Supplies", "https://example.com")
+    assert payload["artifactPlan"]["recordingEnabled"] is False
+
+
+def test_call_overrides_also_disable_recording(sample_context_pack):
+    """Set in both places: per-call assistantOverrides take precedence over the base
+    assistant config, so the guarantee must hold here too, not just at the assistant level."""
+    overrides = build_call_overrides(sample_context_pack, "Acme Supplies")
+    assert overrides["artifactPlan"]["recordingEnabled"] is False
+
+
 def test_assistant_payload_first_message_is_generic_disclosure_plus_authority_question():
     """No ContextPack at this level, so no contact name — build_call_overrides supplies the
     personalized version for real calls (see the TestMergedOpening tests below)."""

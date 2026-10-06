@@ -585,6 +585,69 @@
   .mic-note { font-size: 11.5px; color: #74778A; margin-top: 12px; text-align: center; flex-shrink: 0; }
   .record-note { font-size: 11px; color: #74778A; margin-top: 3px; text-align: center; flex-shrink: 0; }
 
+  /* ---------- persona briefing, allowance note, mic pre-check ---------- */
+
+  .persona-briefing {
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .persona-intro { font-size: 12.5px; color: var(--panel-dark-text); line-height: 1.5; margin: 0 0 8px; }
+  .persona-intro strong { color: #fff; }
+  .persona-suggestions { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .persona-suggestions li {
+    font-size: 11.5px; color: var(--panel-dark-muted); line-height: 1.4;
+    padding-left: 14px; position: relative;
+  }
+  .persona-suggestions li::before {
+    content: "\2014"; position: absolute; left: 0; color: rgba(255,255,255,0.3);
+  }
+
+  .allowance-note {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 8px;
+    font-size: 11.5px;
+    color: var(--panel-dark-text);
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .mic-check { width: 100%; margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+  .mic-check-btn {
+    font-size: 12.5px; font-weight: 600;
+    color: var(--panel-dark-text);
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    padding: 8px 16px;
+  }
+  .mic-check-btn:hover { background: rgba(255,255,255,0.15); }
+  .mic-check-btn.passed { background: rgba(94,234,212,0.14); border-color: rgba(94,234,212,0.4); color: #8FF0D0; }
+  .mic-level-wrap { width: 100%; max-width: 220px; display: flex; flex-direction: column; gap: 5px; align-items: center; }
+  .mic-level-bar { width: 100%; height: 6px; border-radius: 4px; background: rgba(255,255,255,0.1); overflow: hidden; }
+  .mic-level-fill { height: 100%; width: 0%; background: var(--slate-light); border-radius: 4px; transition: width 0.1s linear; }
+  .mic-level-fill.ok { background: #5EEAD4; }
+  .mic-check-status { font-size: 11px; color: var(--panel-dark-muted); text-align: center; }
+
+  .replay-link-inline {
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--panel-dark-muted);
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.3);
+    background: none; border: none; padding: 0; cursor: pointer;
+  }
+  .replay-link-inline:hover { color: var(--panel-dark-text); }
+
   /* ---------- transcript ---------- */
 
   .transcript-meta { text-align: center; font-size: 11.5px; color: var(--muted); }
@@ -784,8 +847,17 @@
         <span class="center-timer" id="centerTimer">00:00</span>
       </div>
 
+      <p class="allowance-note" id="fallbackNote" style="display:none;"></p>
+
       <span class="who-line" id="whoLine">No call in progress</span>
       <span class="account-line" id="accountLine"></span>
+
+      <div class="persona-briefing" id="personaBriefing" style="display:none;">
+        <p class="persona-intro" id="personaIntro"></p>
+        <ul class="persona-suggestions" id="personaSuggestions"></ul>
+      </div>
+
+      <p class="allowance-note" id="allowanceNote" style="display:none;"></p>
 
       <div class="cap-bar-wrap" id="capBarWrap">
         <div class="cap-bar-label"><span>Call length</span><span id="capBarText">00:00 / 03:00 cap</span></div>
@@ -814,6 +886,14 @@
         Replay a flagged call
       </button>
 
+      <div class="mic-check" id="micCheck" style="display:none;">
+        <button type="button" class="mic-check-btn" id="micCheckBtn">Test microphone</button>
+        <div class="mic-level-wrap" id="micLevelWrap" style="display:none;">
+          <div class="mic-level-bar"><div class="mic-level-fill" id="micLevelFill"></div></div>
+          <span class="mic-check-status" id="micCheckStatus" aria-live="polite">Listening — try saying something…</span>
+        </div>
+      </div>
+
       <div class="controls-row">
         <button type="button" class="round-btn" id="muteMicBtn" aria-label="Mute microphone" disabled>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
@@ -821,7 +901,7 @@
         <button type="button" class="round-btn end" id="endCallBtn" aria-label="End call" disabled style="display:none;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.9 13.5c4.5-4.7 11.7-4.7 16.2 0a1.3 1.3 0 01-.1 1.9l-1.9 1.6a1.3 1.3 0 01-1.7-.1l-1.3-1.3a1 1 0 00-.6-.3 11.6 11.6 0 00-5 0 1 1 0 00-.6.3l-1.3 1.3a1.3 1.3 0 01-1.7.1L4 15.4a1.3 1.3 0 01-.1-1.9z"/></svg>
         </button>
-        <button type="button" class="round-btn start" id="startCallBtn" aria-label="Start call">
+        <button type="button" class="round-btn start" id="startCallBtn" aria-label="Start call" disabled>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5c0 8.3 6.7 15 15 15h1a2 2 0 002-2v-2.2a1 1 0 00-.8-1L17 13.5a1 1 0 00-1 .3l-1.2 1.4a12.7 12.7 0 01-5-5L11.2 9a1 1 0 00.3-1L10 3.8a1 1 0 00-1-.8H6a2 2 0 00-2 2z"/></svg>
         </button>
         <button type="button" class="round-btn" id="muteAgentBtn" aria-label="Mute agent audio" disabled>
@@ -829,7 +909,9 @@
         </button>
       </div>
 
-      <p class="mic-note" id="micNote">No live microphone in this pass — replaying a saved call through the real pipeline.</p>
+      <button type="button" class="replay-link-inline" id="replayLinkInline">Or see a replay instead</button>
+
+      <p class="mic-note" id="micNote">Checking what's available…</p>
       <p class="record-note">Demo calls are never recorded or stored as audio.</p>
     </section>
 
@@ -1235,6 +1317,11 @@
     document.getElementById("endCallBtn").disabled = false;
     setText("micNote", mode === "live" ? "Live microphone active — this is a real call." : "Replaying a saved call — no live microphone or audio in this pass.");
 
+    document.getElementById("personaBriefing").style.display = "none";
+    document.getElementById("allowanceNote").style.display = "none";
+    document.getElementById("micCheck").style.display = "none";
+    document.getElementById("replayLinkInline").style.display = "none";
+
     setText("centerTimer", "00:00");
     setText("capBarText", "00:00 / 03:00 cap");
     document.getElementById("capBarFill").style.width = "0%";
@@ -1248,8 +1335,7 @@
     tickTimer = setInterval(tickClock, 1000);
   }
 
-  function applyMeta(payload) {
-    var a = payload.account;
+  function applyAccountFields(a) {
     currentContactName = a.contact_name || "Customer";
 
     var subParts = [a.customer_name, a.contact_name];
@@ -1281,9 +1367,38 @@
       hn.textContent = a.historical_note;
       hn.style.display = "block";
     }
+  }
 
+  function applyMeta(payload) {
+    applyAccountFields(payload.account);
     setText("statusLine", "Listening");
     document.getElementById("rippleStage").className = "ripple-stage listening";
+  }
+
+  var PERSONA_SUGGESTIONS = [
+    "Say it's pending approval with your finance team",
+    "Give a specific payment date if asked",
+    "Ask what happens if you dispute the invoice",
+    "Try asking for a discount — see how the agent responds"
+  ];
+
+  function renderPersonaBriefing(a) {
+    applyAccountFields(a);
+    var intro = document.getElementById("personaIntro");
+    intro.innerHTML = "You'll be playing <strong></strong>, " + (a.contact_role || "the contact") +
+      " at <strong></strong>. The agent is calling about an overdue invoice.";
+    var strongs = intro.querySelectorAll("strong");
+    strongs[0].textContent = a.contact_name;
+    strongs[1].textContent = a.customer_name;
+
+    var list = document.getElementById("personaSuggestions");
+    list.innerHTML = "";
+    PERSONA_SUGGESTIONS.forEach(function (text) {
+      var li = document.createElement("li");
+      li.textContent = text;
+      list.appendChild(li);
+    });
+    document.getElementById("personaBriefing").style.display = "block";
   }
 
   function handleTurn(payload) {
@@ -1358,6 +1473,7 @@
     setText("micNote", currentScenario === "live" ? "Call complete." : "Replay complete.");
 
     document.getElementById("replayBtn").style.display = (isAuto && currentScenario !== "flagged") ? "inline-flex" : "none";
+    initPage();
   }
 
   function startReplay(scenarioKey) {
@@ -1457,6 +1573,21 @@
     try {
       var resp = await fetch("/demo/live/config");
       var config = await resp.json();
+
+      if (!config.available) {
+        // Caps enforced server-side mean the browser never even receives a working
+        // publicKey/assistantOverrides for a call that isn't allowed — fall back to a real
+        // replay instead of a dead end. fallbackNote survives the replay's own UI reset (see
+        // resetUiForCall) so the explanation stays visible for the whole replay, not just a
+        // flash before it starts.
+        stopClock();
+        startReplay("clean");
+        var note = document.getElementById("fallbackNote");
+        note.textContent = (config.message || "Live calling isn't available right now.") +
+          " Here's a real call through the full pipeline instead.";
+        note.style.display = "block";
+        return;
+      }
       if (!config.publicKey || !config.assistantId) {
         setText("statusLine", "Missing Vapi configuration — set VAPI_PUBLIC_KEY / VAPI_ASSISTANT_ID in .env.");
         document.getElementById("startCallBtn").style.display = "flex";
@@ -1481,6 +1612,144 @@
     }
   }
 
+  /* ---------------- mic pre-check ---------------- */
+
+  var micCheckPassed = false;
+  var micTestStream = null;
+  var micTestRaf = null;
+  var micTestAudioCtx = null;
+
+  function stopMicTest() {
+    if (micTestRaf) { cancelAnimationFrame(micTestRaf); micTestRaf = null; }
+    if (micTestStream) { micTestStream.getTracks().forEach(function (t) { t.stop(); }); micTestStream = null; }
+    if (micTestAudioCtx) { micTestAudioCtx.close(); micTestAudioCtx = null; }
+  }
+
+  function resetMicCheckUi() {
+    micCheckPassed = false;
+    stopMicTest();
+    var btn = document.getElementById("micCheckBtn");
+    btn.textContent = "Test microphone";
+    btn.classList.remove("passed");
+    document.getElementById("micLevelWrap").style.display = "none";
+    var fill = document.getElementById("micLevelFill");
+    fill.style.width = "0%";
+    fill.classList.remove("ok");
+  }
+
+  function setMicCheckPassed() {
+    micCheckPassed = true;
+    stopMicTest();
+    var btn = document.getElementById("micCheckBtn");
+    btn.textContent = "Microphone OK";
+    btn.classList.add("passed");
+    setText("micCheckStatus", "Audio detected — you're good to go.");
+    var startBtn = document.getElementById("startCallBtn");
+    startBtn.disabled = false;
+    startBtn.title = "";
+  }
+
+  async function startMicCheck() {
+    if (micCheckPassed) return;
+    var btn = document.getElementById("micCheckBtn");
+    btn.textContent = "Testing…";
+    document.getElementById("micLevelWrap").style.display = "flex";
+    setText("micCheckStatus", "Listening — try saying something…");
+
+    try {
+      micTestStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      setText("micCheckStatus", "Microphone permission denied or unavailable — check your browser/system settings, then try again.");
+      btn.textContent = "Test microphone";
+      return;
+    }
+
+    var AudioCtx = window.AudioContext || window.webkitAudioContext;
+    micTestAudioCtx = new AudioCtx();
+    var source = micTestAudioCtx.createMediaStreamSource(micTestStream);
+    var analyser = micTestAudioCtx.createAnalyser();
+    analyser.fftSize = 512;
+    source.connect(analyser);
+    var data = new Uint8Array(analyser.frequencyBinCount);
+    var deadline = Date.now() + 6000;
+
+    function tick() {
+      analyser.getByteTimeDomainData(data);
+      var maxDeviation = 0;
+      for (var i = 0; i < data.length; i++) {
+        maxDeviation = Math.max(maxDeviation, Math.abs(data[i] - 128));
+      }
+      var level = Math.min(100, (maxDeviation / 40) * 100);
+      var fill = document.getElementById("micLevelFill");
+      fill.style.width = level + "%";
+
+      if (maxDeviation > 6) {
+        fill.classList.add("ok");
+        setMicCheckPassed();
+        return;
+      }
+      if (Date.now() > deadline) {
+        stopMicTest();
+        setText("micCheckStatus", "No audio detected — check your microphone input, then try again.");
+        btn.textContent = "Test microphone";
+        return;
+      }
+      micTestRaf = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  document.getElementById("micCheckBtn").addEventListener("click", startMicCheck);
+
+  /* ---------------- page load: briefing + allowance + cap gating ---------------- */
+
+  function renderAllowanceNote(status) {
+    var el = document.getElementById("allowanceNote");
+    if (!status.available) {
+      el.textContent = status.message + " Press start to see a replay instead — a real saved call through the full pipeline.";
+      el.style.display = "block";
+    } else if (status.remaining_today <= 1) {
+      el.textContent = "Just " + status.remaining_today + " of " + status.daily_ceiling +
+        " live-call slot" + (status.remaining_today === 1 ? "" : "s") + " left today.";
+      el.style.display = "block";
+    } else {
+      el.style.display = "none";
+    }
+  }
+
+  async function initPage() {
+    resetMicCheckUi();
+    document.getElementById("replayLinkInline").style.display = "";
+    document.getElementById("fallbackNote").style.display = "none";
+    var startBtn = document.getElementById("startCallBtn");
+
+    try {
+      var resp = await fetch("/demo/live/status");
+      var status = await resp.json();
+      renderPersonaBriefing(status.account);
+      renderAllowanceNote(status);
+
+      if (status.available) {
+        document.getElementById("micCheck").style.display = "flex";
+        startBtn.disabled = true;
+        startBtn.title = "Test your microphone first";
+        startBtn.setAttribute("aria-label", "Start call");
+        setText("micNote", "Test your microphone, then start a real call.");
+      } else {
+        document.getElementById("micCheck").style.display = "none";
+        startBtn.disabled = false;
+        startBtn.setAttribute("aria-label", "Start a replay");
+        setText("micNote", "Live calling isn't available right now — Start plays a real call through the real pipeline instead.");
+      }
+      setText("statusLine", "Ready.");
+    } catch (err) {
+      // Status check itself failing must never brick the page — fail open to replay.
+      document.getElementById("micCheck").style.display = "none";
+      startBtn.disabled = false;
+      setText("micNote", "Start plays a real call through the real pipeline.");
+    }
+  }
+
   document.getElementById("startCallBtn").addEventListener("click", function () {
     startLiveCall();
   });
@@ -1496,13 +1765,19 @@
     document.getElementById("endCallBtn").style.display = "none";
     document.getElementById("liveDot").className = "dot idle";
     setText("livePillText", "Idle");
+    initPage();
   });
 
   document.getElementById("replayBtn").addEventListener("click", function () {
     startReplay("flagged");
   });
 
+  document.getElementById("replayLinkInline").addEventListener("click", function () {
+    startReplay("clean");
+  });
+
   renderCostBar();
+  initPage();
 })();
 </script>
 

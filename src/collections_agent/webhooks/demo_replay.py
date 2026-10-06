@@ -48,7 +48,7 @@ from collections_agent.postcall.transcript import (
     account_facts_from_system_prompt,
     parse_transcript,
 )
-from collections_agent.sheets.client import load_accounts_and_invoices
+from collections_agent.webhooks.demo_fixtures import DEMO_ACCOUNT, DEMO_INVOICES
 
 SCENARIOS: dict[str, dict[str, Any]] = {
     "clean": {"call_id": "01a0edd7-f19a-7000-956e-08f20925f97a", "account_id": "ACC-0019", "historical": False},
@@ -415,15 +415,16 @@ async def replay_stream(scenario_key: str) -> AsyncGenerator[bytes, None]:
         )
         invoices = facts["invoices"]
     else:
+        # The "clean" scenario's account is the same frozen fixture the live demo path
+        # dials against (demo_fixtures.py) — not a live Sheets read. Both public-facing
+        # demo paths touch zero external services besides OpenAI/Vapi at runtime.
         account_id = scenario["account_id"]
-        accounts, all_invoices = load_accounts_and_invoices(settings)
-        account = next(a for a in accounts if a.account_id == account_id)
         customer_name, contact_name, contact_role = (
-            account.customer_name,
-            account.contact_name,
-            account.contact_role,
+            DEMO_ACCOUNT.customer_name,
+            DEMO_ACCOUNT.contact_name,
+            DEMO_ACCOUNT.contact_role,
         )
-        invoices = [inv for inv in all_invoices if inv.account_id == account_id]
+        invoices = DEMO_INVOICES
 
     as_of = transcript.started_at.date() if transcript.started_at else date.today()
 

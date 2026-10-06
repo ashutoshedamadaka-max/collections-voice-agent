@@ -33,6 +33,13 @@ from collections_agent.voice.tool_schemas import ALL_TOOLS
 
 MAX_CALL_DURATION_SECONDS = 180  # hard stop (3 minutes), per the design doc's guardrails
 
+# Verified against docs.vapi.ai/assistants/call-recording: `artifactPlan.recordingEnabled`
+# (boolean, defaults true) works both in the base assistant config and in per-call
+# assistantOverrides — set in both places here so the demo console's "never recorded" claim
+# is actually true, not aspirational. `transcriptPlan`/`loggingEnabled` are deliberately left
+# alone: the post-call pipeline needs the transcript.
+ARTIFACT_PLAN = {"recordingEnabled": False}
+
 # How long Vapi waits for a webhook response (tool-calls, end-of-call-report, status-update)
 # before giving up — Server.timeoutSeconds, default 20s. Tightened to bound worst-case dead
 # air if the server is unreachable; tools normally return in well under a second (see
@@ -135,6 +142,7 @@ def build_assistant_payload(
             "timeoutSeconds": TOOL_CALL_TIMEOUT_SECONDS,
         },
         "serverMessages": ["tool-calls", "end-of-call-report", "status-update"],
+        "artifactPlan": ARTIFACT_PLAN,
     }
 
 
@@ -175,4 +183,5 @@ def build_call_overrides(
             **TRANSCRIBER_CONFIG,
             "language": transcriber_language(context_pack.preferred_language),
         },
+        "artifactPlan": ARTIFACT_PLAN,
     }

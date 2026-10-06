@@ -33,6 +33,16 @@ class Settings(BaseSettings):
     webhook_host: str = "0.0.0.0"
     webhook_port: int = 8000
 
+    # Demo console caps (webhooks/demo_caps.py) — all server-side, all configurable, because
+    # the live demo spends real Vapi credit against a small, finite balance. See docs/
+    # SHIP_PLAN.md for the budget this was tuned against.
+    demo_budget_usd: float = 4.87
+    demo_spend_floor_usd: float = 1.00
+    demo_daily_ceiling: int = 3
+    demo_visitor_window_hours: int = 24
+    demo_calls_per_visitor_window: int = 1
+    demo_state_db_path: str = "fixtures/demo_state.db"
+
 
 def get_settings() -> Settings:
     return Settings()

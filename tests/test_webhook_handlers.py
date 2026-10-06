@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import date, timedelta
 
 import pytest
 from fastapi.testclient import TestClient
@@ -46,6 +47,10 @@ def test_rejects_wrong_secret(client):
 
 
 def test_accepts_correct_secret_and_dispatches_record_ptp(client, _redirect_log):
+    # A relative date, not a hardcoded one — this was pinned to a literal "2026-10-01" since
+    # the initial commit, and quietly started failing the instant real time caught up to it,
+    # since record_ptp correctly rejects a promised date in the past.
+    future_date = (date.today() + timedelta(days=30)).isoformat()
     body = {
         "message": {
             "type": "tool-calls",
@@ -56,7 +61,7 @@ def test_accepts_correct_secret_and_dispatches_record_ptp(client, _redirect_log)
                     "arguments": {
                         "invoice_ids": ["INV-00001"],
                         "amount": 50000,
-                        "date": "2026-10-01",
+                        "date": future_date,
                         "method": "NEFT",
                     },
                 }
