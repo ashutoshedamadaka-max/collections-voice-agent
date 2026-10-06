@@ -59,6 +59,19 @@
     margin: 0 auto;
   }
 
+  /* While a call/replay is actively streaming, pin the shell to exactly one viewport so the
+     three call panels get a genuinely bounded height (min-height:100vh alone never clips —
+     it only sets a floor, so unbounded content just grows the whole page). Each panel's own
+     .panel-body overflow-y:auto then does real internal scrolling instead of the page moving.
+     Lifted once the call settles — see settleLayout()/unsettleLayout() in the script.
+     Scoped to the 3-column desktop layout only: on a short/narrow viewport the stacked fixed
+     chrome (header, tab bar, cost bar) can by itself exceed the viewport, and a hard 100vh
+     lock would squeeze .columns to zero instead of letting it scroll — see the narrow-layout
+     rule below for the gentler equivalent. */
+  @media (min-width: 1101px) {
+    .page-shell.call-locked { height: 100vh; overflow: hidden; }
+  }
+
   a { color: var(--green); }
   a:hover { color: var(--green-dark); }
   a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
@@ -175,6 +188,19 @@
 
   .panel-left { width: 380px; flex-shrink: 0; }
   .panel-right { flex-grow: 1; min-width: 320px; }
+
+  /* Once a call settles, the left column (captured fields + analysis + write decision) grows
+     to its full content height instead of scrolling internally, so nothing is hidden for a
+     screen recording. The call and transcript panels keep whatever fixed height they already
+     had at that moment (pinned via inline max-height in JS) and keep scrolling internally —
+     only the left column is meant to fully reveal itself once there's a final, finite amount
+     of content to show. */
+  .columns.settled { align-items: flex-start; flex-grow: 0; }
+  .columns.settled .panel-left { overflow: visible; }
+  .columns.settled .panel-left .panel-body { overflow-y: visible; flex-grow: 0; }
+  .columns.settled .panel-center,
+  .columns.settled .panel-right { flex-shrink: 0; }
+  .columns.settled .panel-center { overflow-y: auto; overflow-x: hidden; }
   .panel-center {
     width: 420px;
     flex-shrink: 0;
@@ -932,6 +958,10 @@
     .columns { flex-direction: column; padding: 0 20px; overflow-y: auto; }
     .panel-left, .panel-right, .panel-center { width: 100%; }
     .panel-left, .panel-right { min-height: 320px; }
+    /* Narrow-layout equivalent of the desktop 100vh lock above: cap the stacked column so it
+       scrolls internally during a call, without risking a hard page-level lock squeezing it
+       to zero on a short viewport. Lifted once settled, same as the desktop rule. */
+    .page-shell.call-locked .columns { max-height: 65vh; }
     .cost-bar-wrap { padding: 14px 20px 0; }
     .page-header { padding: 20px 20px 14px; }
     .page-footer { padding: 12px 20px 18px; }
@@ -1729,7 +1759,35 @@
     document.getElementById("capBarFill").style.width = pct + "%";
   }
 
+  /* ---------------- settle/unsettle the left column's height ---------------- */
+
+  function unsettleLayout() {
+    var columns = document.querySelector("#tabpanelDemo .columns");
+    columns.classList.remove("settled");
+    var center = columns.querySelector(".panel-center");
+    var right = columns.querySelector(".panel-right");
+    center.style.maxHeight = "";
+    right.style.maxHeight = "";
+    // Re-lock to one viewport for the next call/replay — settleLayout() lifts this once it ends.
+    document.querySelector(".page-shell").classList.add("call-locked");
+  }
+
+  function settleLayout() {
+    var columns = document.querySelector("#tabpanelDemo .columns");
+    var center = columns.querySelector(".panel-center");
+    var right = columns.querySelector(".panel-right");
+    // Measure while still call-locked, so the call/transcript panels pin to the height they
+    // already had — they keep scrolling internally instead of also stretching to match the
+    // now fully-expanded left column.
+    var pinned = columns.getBoundingClientRect().height;
+    center.style.maxHeight = pinned + "px";
+    right.style.maxHeight = pinned + "px";
+    columns.classList.add("settled");
+    document.querySelector(".page-shell").classList.remove("call-locked");
+  }
+
   function resetUiForCall(mode) {
+    unsettleLayout();
     document.getElementById("liveDot").className = "dot";
     setText("livePillText", "In call");
     setText("headerSub", "Connecting to the real pipeline…");
@@ -1921,6 +1979,7 @@
 
     document.getElementById("replayBtn").style.display = (isAuto && currentScenario !== "flagged") ? "inline-flex" : "none";
     initPage();
+    settleLayout();
   }
 
   function startReplay(scenarioKey) {
