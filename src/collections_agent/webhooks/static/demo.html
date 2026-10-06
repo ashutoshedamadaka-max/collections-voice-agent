@@ -747,6 +747,185 @@
   }
   .page-footer .note { font-size: 11.5px; color: var(--muted); }
 
+  /* ---------- tab bar ---------- */
+
+  .tab-bar {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .tab-btn:hover { background: var(--ground); }
+  .tab-btn[aria-selected="true"] {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: flex; flex-direction: column; flex-grow: 1; min-height: 0; }
+
+  /* ---------- documentation tabs (How it's built / Evals / What I learned) ---------- */
+
+  .doc-page {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 28px 32px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  .doc-page h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+  }
+  .doc-page .doc-sub { font-size: 13.5px; color: var(--text); margin-top: 6px; line-height: 1.6; }
+  .doc-section { display: flex; flex-direction: column; gap: 12px; }
+  .doc-section h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+  }
+  .doc-prose { font-size: 13.5px; line-height: 1.65; color: var(--text); }
+  .doc-prose strong { color: var(--ink); font-weight: 600; }
+  .doc-prose code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    background: var(--ground);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  .stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .stage-card {
+    box-sizing: border-box;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stage-card .stage-num {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; color: var(--muted);
+    text-transform: uppercase;
+  }
+  .stage-card h3 { margin: 0; font-size: 14.5px; font-weight: 600; }
+  .stage-card p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--text); }
+  .stage-card ul { margin: 2px 0 0; padding-left: 16px; font-size: 12.5px; line-height: 1.65; color: var(--text); }
+
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    box-sizing: border-box;
+    background: var(--ground);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    flex: 1 1 160px;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .flow-step .flow-title { font-size: 12.5px; font-weight: 700; }
+  .flow-step .flow-detail { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--neutral-edge);
+    flex: 0 0 20px;
+  }
+  .flow-caption { font-size: 11.5px; color: var(--muted); line-height: 1.6; margin-top: 2px; }
+
+  .decision-list { display: flex; flex-direction: column; gap: 12px; }
+  .decision-item {
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .decision-item h3 { margin: 0; font-size: 14px; font-weight: 600; }
+  .decision-item p { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--text); }
+
+  .finding-card {
+    box-sizing: border-box;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--slate);
+    border-radius: 10px;
+    padding: 15px 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .finding-card .finding-date { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); text-transform: uppercase; }
+  .finding-card h3 { margin: 0; font-size: 15px; font-weight: 600; }
+  .finding-card p { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--text); }
+  .finding-card .finding-lesson {
+    font-size: 12px; line-height: 1.6; color: var(--green-ink);
+    background: var(--green-soft); border: 1px solid var(--green-border);
+    border-radius: 8px; padding: 9px 11px; margin-top: 2px;
+  }
+
+  .minor-findings { display: flex; flex-direction: column; gap: 10px; }
+  .minor-finding { font-size: 12.5px; line-height: 1.6; color: var(--text); display: flex; gap: 8px; }
+  .minor-finding .mf-date { flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; color: var(--muted); white-space: nowrap; padding-top: 1px; }
+
+  .results-table-wrap { overflow-x: auto; }
+  table.results-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.results-table th, table.results-table td {
+    text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border-soft);
+  }
+  table.results-table th { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  table.results-table td.pending { color: var(--muted); font-style: italic; }
+
+  .method-steps { display: flex; flex-direction: column; gap: 10px; }
+  .method-step { display: flex; gap: 12px; align-items: flex-start; }
+  .method-step .method-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--slate-soft); color: var(--slate);
+    font-size: 11.5px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .method-step .method-body { font-size: 12.5px; line-height: 1.6; color: var(--text); }
+  .method-step .method-body strong { color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .stage-grid { grid-template-columns: 1fr; }
+    .flow-row { flex-direction: column; }
+    .flow-step { flex: 0 0 auto; }
+    .flow-arrow { transform: rotate(90deg); flex: 0 0 auto; padding: 2px 0; }
+  }
+
   /* ---------- responsive ---------- */
 
   @media (max-width: 1100px) {
@@ -756,12 +935,15 @@
     .cost-bar-wrap { padding: 14px 20px 0; }
     .page-header { padding: 20px 20px 14px; }
     .page-footer { padding: 12px 20px 18px; }
+    .doc-page { padding: 24px 20px 40px; }
+    .tab-bar { padding: 10px 20px; }
   }
 
   @media (max-width: 600px) {
     .page-header h1 { font-size: 26px; }
     .cost-bar { flex-direction: column; }
     .cost-divider { display: none; }
+    .doc-page h1 { font-size: 24px; }
   }
 </style>
 </head>
@@ -781,6 +963,15 @@
     <div class="spacer"></div>
     <span class="badge badge-muted">Synthetic data · demo session</span>
   </header>
+
+  <nav class="tab-bar" role="tablist" aria-label="Demo console sections">
+    <button type="button" class="tab-btn" id="tabBtnDemo" role="tab" aria-selected="true" aria-controls="tabpanelDemo">Demo</button>
+    <button type="button" class="tab-btn" id="tabBtnBuilt" role="tab" aria-selected="false" aria-controls="tabpanelBuilt">How it's built</button>
+    <button type="button" class="tab-btn" id="tabBtnEvals" role="tab" aria-selected="false" aria-controls="tabpanelEvals">Evals</button>
+    <button type="button" class="tab-btn" id="tabBtnLearned" role="tab" aria-selected="false" aria-controls="tabpanelLearned">What I learned</button>
+  </nav>
+
+  <div class="tab-panel active" id="tabpanelDemo" role="tabpanel" aria-labelledby="tabBtnDemo">
 
   <div class="page-header">
     <div>
@@ -985,12 +1176,268 @@
     <span class="note">Real call, real pipeline — local testing build</span>
   </footer>
 
+  </div>
+  <!-- /tabpanelDemo -->
+
+  <!-- ============== HOW IT'S BUILT ============== -->
+  <div class="tab-panel" id="tabpanelBuilt" role="tabpanel" aria-labelledby="tabBtnBuilt" hidden>
+  <div class="doc-page">
+
+    <div>
+      <h1>How it's built</h1>
+      <p class="doc-sub">Three stages — pre-call, the call, post-call — and a write-back at the end that an idempotent <code>call_id</code> key makes safe to re-run.</p>
+    </div>
+
+    <div class="doc-section">
+      <h2>The three stages</h2>
+      <div class="stage-grid">
+        <div class="stage-card">
+          <span class="stage-num">Stage 1 · Pre-call</span>
+          <h3>Suppression and priority</h3>
+          <p>Pure code, no LLM, costs nothing to run — and the part of the product that does the most work before anyone picks up a phone.</p>
+          <ul>
+            <li>Skip calling if: already paid, a dispute is open, an active promise hasn't come due, the contact opted out or is wrong-party, inside the cooldown window, outside calling hours, or the bucket is 90+ (routed to a human).</li>
+            <li>Every suppression is logged with a reason — "calls we correctly didn't make" is tracked as its own metric.</li>
+            <li>What's left is scored: <code>priority = balance_weight × bucket_weight × ptp_broken_escalation × contactability</code>. A broken promise escalates priority, it doesn't discount it.</li>
+            <li>Output is a context pack: contact, invoices, total outstanding, prior promises and whether they were kept, open disputes, last contact, preferred language.</li>
+          </ul>
+        </div>
+        <div class="stage-card">
+          <span class="stage-num">Stage 2 · The call</span>
+          <h3>Deterministic where it matters</h3>
+          <p>Model-driven only in phrasing and branch detection — everything that must never vary is hard-coded instead.</p>
+          <ul>
+            <li>Disclosure and the authority check are one fixed opening line, spoken before the model runs at all — never reworded, never skipped, never asked twice.</li>
+            <li>Hard 3-minute cap. No amount is ever spoken that isn't already in the context pack.</li>
+            <li>Works exactly one invoice — the most overdue — to a complete outcome, and books a callback for any others instead of racing the clock across all of them.</li>
+          </ul>
+        </div>
+        <div class="stage-card">
+          <span class="stage-num">Stage 3 · Post-call</span>
+          <h3>Five specialists, then a supervisor</h3>
+          <p>Once the call ends, five typed extractors run in parallel against the transcript:</p>
+          <ul>
+            <li><strong>Outcome</strong> — structured result, reason code, next action.</li>
+            <li><strong>Promise validation</strong> — complete, future-dated, within the outstanding balance, valid method. Computed in code from the extraction, never judged by the model.</li>
+            <li><strong>Dispute</strong> — reason code, invoice, routing target.</li>
+            <li><strong>Compliance &amp; QA</strong> — disclosure, authority, permitted statements, discounts/threats, a misstated total.</li>
+            <li><strong>Summary</strong> — a plain 2–3 sentence recap, purely descriptive.</li>
+          </ul>
+          <p>A supervisor merges all five. Anything below the confidence threshold, or any hard compliance violation, is held for human review instead of auto-written — regardless of how confident everything else felt.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-section">
+      <h2>The data path</h2>
+      <div class="flow-row">
+        <div class="flow-step">
+          <span class="flow-title">Pre-call</span>
+          <span class="flow-detail">AR sheet → suppression → priority → context pack</span>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-step">
+          <span class="flow-title">The call</span>
+          <span class="flow-detail">Vapi · disclosure → authority → one invoice to resolution</span>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-step">
+          <span class="flow-title">Post-call</span>
+          <span class="flow-detail">5 specialists in parallel → supervisor merge</span>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-step">
+          <span class="flow-title">Write-back</span>
+          <span class="flow-detail">Call log, PTP register, disputes, exceptions — Sheets as the CRM</span>
+        </div>
+      </div>
+      <p class="flow-caption">Every write is keyed on <code>call_id</code>, so re-running an analysis on the same call never duplicates a row — it reconciles the old one instead (see "What I learned").</p>
+    </div>
+
+    <div class="doc-section">
+      <h2>Design decisions worth defending</h2>
+      <div class="decision-list">
+        <div class="decision-item">
+          <h3>Deterministic in-call, orchestrated after</h3>
+          <p>The call's non-negotiables — disclosure, authority, the 3-minute cap, never speaking a number outside the context pack — are hard-coded, not left to a model to remember mid-conversation. A prompt instruction can be silently weakened by a later refactor (see "What I learned"); a structural guarantee can't. Post-call is the opposite on purpose: five LLM specialists reading the transcript in parallel, because judgment and extraction over unstructured text is exactly what a model is good at. The model's read is trusted for extraction, never for the final word — a confidence gate and a set of hard-violation overrides decide whether anything actually gets written.</p>
+        </div>
+        <div class="decision-item">
+          <h3>One invoice per call</h3>
+          <p>Early builds walked every open invoice in one call and raised the duration cap when it ran out of time. That only relocated the failure — any fixed cap eventually runs out against a chattier customer or a third invoice. The agent now resolves exactly one invoice — the most overdue — to a complete outcome and books a callback for the rest. It also matches how collections actually works: one clean resolution plus a booked callback beats several rushed, half-finished commitments squeezed into one call.</p>
+        </div>
+        <div class="decision-item">
+          <h3>90+ days overdue is never automated</h3>
+          <p>Accounts in the 90+ bucket are routed to a human, full stop. This is a product decision, not a technical limitation — those conversations carry legal and relationship risk an automated caller shouldn't be taking on.</p>
+        </div>
+        <div class="decision-item">
+          <h3>Why the caps and the replay fallback exist</h3>
+          <p>This demo runs against a small, finite Vapi balance, not a production account. Every live call is checked server-side — a spend floor, a daily ceiling, a one-call-per-visitor window — before the browser is ever handed a working call configuration; it never receives a usable key for a call that isn't actually allowed. A visitor who's capped out doesn't hit a dead button: the page falls back to replaying a real saved call through the exact same pipeline instead, so the system is still demonstrated honestly — on recorded input rather than their own voice — rather than just failing closed.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  <!-- /tabpanelBuilt -->
+
+  <!-- ============== EVALS ============== -->
+  <div class="tab-panel" id="tabpanelEvals" role="tabpanel" aria-labelledby="tabBtnEvals" hidden>
+  <div class="doc-page">
+
+    <div>
+      <h1>Evals</h1>
+      <p class="doc-sub">Specialist agreement with a human labeller, on the only real transcripts this project has. <strong>n = 9.</strong></p>
+    </div>
+
+    <div class="doc-section">
+      <h2>What this is, and isn't</h2>
+      <p class="doc-prose">This eval runs the real post-call pipeline against the nine saved calls in <code>fixtures/raw/</code> and reports how often it agrees with one person's independent judgement of the same calls. That is the entire scope. It is <strong>not</strong>:</p>
+      <ul class="doc-prose" style="margin:0; padding-left:18px;">
+        <li>a kept rate — not enough call volume for one to mean anything</li>
+        <li>an accuracy estimate at production volume</li>
+        <li>a claim about real-world performance — most of these nine calls are synthetic test calls against a fake dataset, not real customers</li>
+      </ul>
+      <p class="doc-prose">Read it as exactly what it is: on nine calls, did the pipeline's judgement match a human's.</p>
+      <p class="doc-prose">Before this, the only thing checking the five specialists was the unit test suite — which checks <strong>code behaviour</strong> given a fixed, hand-written input, not whether a specialist's <strong>judgement</strong> on a real transcript is correct. Nothing measured specialist judgement against ground truth until this.</p>
+    </div>
+
+    <div class="doc-section">
+      <h2>Method</h2>
+      <div class="method-steps">
+        <div class="method-step">
+          <span class="method-num">1</span>
+          <span class="method-body"><strong>Labeling</strong> (<code>label-calls</code>) — one saved call at a time, full transcript and tool calls, judged independently on: outcome type, whether a promise was captured and whether it was complete (amount, date, method, future-dated, within the outstanding balance, valid method), whether a dispute existed, whether any compliance rule was actually broken, and whether the call should have been auto-written or held for review. Labels save immediately per call, resumable, with no pipeline output ever shown while labeling.</span>
+        </div>
+        <div class="method-step">
+          <span class="method-num">2</span>
+          <span class="method-body"><strong>Comparison</strong> (<code>run-eval</code>) — for every labeled call, runs the real pipeline (the same function the live and replay paths use, not a separate eval-only code path) and compares its output to the label on each dimension. Cached per call so re-running the report doesn't re-spend OpenAI credit.</span>
+        </div>
+        <div class="method-step">
+          <span class="method-num">3</span>
+          <span class="method-body"><strong>Report</strong> — per-specialist agreement (count and percentage per judged dimension); write-decision accuracy split by direction — <em>false holds</em> (should have auto-written, pipeline held it) versus <em>false writes</em> (should have been held, pipeline auto-wrote it — the more dangerous direction); and every disagreement in full, not just the percentage.</span>
+        </div>
+      </div>
+      <p class="doc-prose" style="margin-top:4px;">Field-mapping notes: "promise complete" is scored only on calls where a promise was captured at all, against <code>has_promise and not downgraded_to_soft_commitment</code>. "Compliance violated" uses the exact same hard-violation test the supervisor itself uses to gate write-back — a low QA score alone, with no hard violation, doesn't count. Four of the nine calls belong to an account reassigned when the fake dataset was regenerated; their account facts are recovered from the call's own embedded system prompt rather than a live Sheet row.</p>
+    </div>
+
+    <div class="doc-section">
+      <h2>Results</h2>
+      <div class="results-table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Dimension</th><th>Agreement</th><th>n</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Outcome type</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>Promise captured</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>Promise complete</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>Dispute existed</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>Compliance violated</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>Write decision (auto-write vs. hold)</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>— false holds</td><td class="pending">pending</td><td class="pending">—</td></tr>
+            <tr><td>— false writes</td><td class="pending">pending</td><td class="pending">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="empty-state">Results pending — labeling against the 9 saved calls isn't complete yet. This table fills in once <code>run-eval</code> has numbers to report, not before.</div>
+    </div>
+
+  </div>
+  </div>
+  <!-- /tabpanelEvals -->
+
+  <!-- ============== WHAT I LEARNED ============== -->
+  <div class="tab-panel" id="tabpanelLearned" role="tabpanel" aria-labelledby="tabBtnLearned" hidden>
+  <div class="doc-page">
+
+    <div>
+      <h1>What I learned</h1>
+      <p class="doc-sub">From <code>docs/FAILURES.md</code> — real incidents hit during manual testing, kept separate from the design doc because these are things that actually happened, not things planned for.</p>
+    </div>
+
+    <div class="doc-section">
+      <h2>Three worth leading with</h2>
+
+      <div class="finding-card">
+        <span class="finding-date">2026-09-30</span>
+        <h3>An invoice-hyphen bug, silently downgrading valid promises</h3>
+        <p>Building the demo's replay mode meant pushing a real saved call through the real pipeline for the first time, instead of hand-written example data. The first real call landed in the exception queue looking like a genuine problem: a complete, correctly-recorded, in-full promise came back <code>amount_within_outstanding=false</code> and downgraded to a soft commitment.</p>
+        <p>Cause: the agent sometimes reads an invoice number back with an inserted hyphen — the transcript has the agent saying "invoice US-CS/26-27/0002," but the Sheet's own <code>invoice_number</code> for that invoice is <code>USCS/26-27/0002</code>, no hyphen. The matching code compared these with exact string equality, so the promise validator could never find the invoice and defaulted to "not within outstanding." A hardcoded demo fixture, written to already match, could never have exposed this — only real data, pushed through the real matching code, did.</p>
+        <p><strong>Fix:</strong> strip every non-alphanumeric character and uppercase both sides before comparing invoice references. Punctuation an invoice number picks up in transit no longer breaks a match the digits and letters otherwise confirm.</p>
+        <div class="finding-lesson">Replay mode wasn't just a demo feature — it was the first thing in this project to run real saved data through real matching code instead of fixtures written to already pass.</div>
+      </div>
+
+      <div class="finding-card">
+        <span class="finding-date">2026-09-17</span>
+        <h3>Two prompt regressions that ~280 passing tests missed</h3>
+        <p>Two real call defects, found the same day on a validation call: (1) the agent asked "what amount, when, and how" as one bundled turn, despite an explicit one-question-per-turn rule — because two other prompt sections, worded more specifically and sitting closer to the model's decision point, contradicted that rule with a compact conjunction. (2) The agent never asked how much the caller would pay at all — it stated the invoice's own outstanding total as fact and recorded the full amount as the promised one without the caller ever confirming it, even though the required-fields text still listed "amount" verbatim.</p>
+        <p>Neither was caught by the then-249 (then 254) passing tests, because every prompt test checked <em>facts</em> (does the right invoice number appear) or isolated <em>phrases</em> (does "one question per turn" appear somewhere) — never whether a specific branch actually instructed asking for each required field, explicitly, as its own question.</p>
+        <p><strong>Fix:</strong> rewrote every compact-conjunction branch into explicit sequential asks, and added a test that locks in the requirement directly: <code>test_will_pay_branch_asks_each_required_promise_field_explicitly</code>.</p>
+        <div class="finding-lesson">A prompt is code that produces behaviour exactly like any other code path — a refactor can silently delete a requirement from a paragraph of English as easily as from a line of Python, with no import error, no type error, nothing but a live call to catch it.</div>
+      </div>
+
+      <div class="finding-card">
+        <span class="finding-date">2026-09-16</span>
+        <h3>Delegating arithmetic to a language model</h3>
+        <p>Two specialist bugs, same root cause. The promise validator's <code>amount_within_outstanding</code> returned <code>false</code> for a promise of 365,500 against invoices totaling exactly 85,000 + 280,500 — at the limit, not over it; the model's comparison was simply wrong. Separately, the compliance reviewer's rubric only caught a number that was fabricated outright, not one that was stated correctly but summed incorrectly — a call with a misstated total scored <code>qa_score: 1.0</code>, no violation noted.</p>
+        <p>Root cause for both: asking an LLM to perform or verify arithmetic. A model that gets 85,000 + 280,500 ≠ 365,500 wrong has no reliable way to also grade whether its own sum is correct — verifying arithmetic is arithmetic.</p>
+        <p><strong>Fix:</strong> the promise validator split into extraction (LLM: what was said) and validation (pure code: is it complete, future-dated, within balance, a valid method — computed deterministically from the extraction and real invoice data). An arithmetic-consistency check moved into compliance as pure code too, comparing every stated total against the actual sum of outstanding balances — not against anything the model said about itself.</p>
+        <div class="finding-lesson">An LLM can extract facts from unstructured text far better than it can verify a computation over those facts — and it produces a plausible-sounding wrong answer rather than an obvious failure. Wherever a specialist's job includes a deterministic comparison, do the comparison in code and hand the model only the facts and the computed result — never ask it to compute or double-check its own arithmetic.</div>
+      </div>
+    </div>
+
+    <div class="doc-section">
+      <h2>More from the failure log</h2>
+      <div class="minor-findings">
+        <div class="minor-finding"><span class="mf-date">2026-09-16</span><span>A dead tunnel produced silence, not an error — an unreachable tool-call webhook fails silently from the caller's perspective, indistinguishable from the agent hanging. Fixed with a pre-call reachability check and a spoken fallback if a tool call times out mid-call.</span></div>
+        <div class="minor-finding"><span class="mf-date">2026-09-16</span><span>The model narrated calling a tool instead of actually calling it — "the tool call succeeded" and "the tool call happened" are not the same claim, and only logging raw webhook requests (not just dispatched ones) can tell them apart.</span></div>
+        <div class="minor-finding"><span class="mf-date">2026-09-17</span><span>A priority-score formula was tested and passing the whole time, and still backwards — the test asserted the exact wrong behaviour, because nothing in the codebase ever supplied real promise history until the step that finally did. "This is tested" and "this has ever run against real data" are different claims.</span></div>
+        <div class="minor-finding"><span class="mf-date">2026-09-17</span><span>A fake test backend that was more permissive than the real one made 200 tests pass while proving nothing about a real header-column bug — a new Sheet column was computed correctly and then silently dropped on write.</span></div>
+        <div class="minor-finding"><span class="mf-date">2026-09-17</span><span>Vapi's call-summary field has never once fired for this project — checked real payloads rather than trusting the documented default, found the whole mechanism marked deprecated, and added a fifth specialist instead of configuring a field that no longer runs.</span></div>
+        <div class="minor-finding"><span class="mf-date">2026-09-29</span><span>Hinglish support was tried twice, failed identically both times on two different models, and was dropped as a scope decision — not a bug waiting for a third rewrite.</span></div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  <!-- /tabpanelLearned -->
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
 <script>
 (function () {
   "use strict";
+
+  /* ---------------- tab navigation ---------------- */
+
+  var TABS = [
+    { btn: "tabBtnDemo", panel: "tabpanelDemo" },
+    { btn: "tabBtnBuilt", panel: "tabpanelBuilt" },
+    { btn: "tabBtnEvals", panel: "tabpanelEvals" },
+    { btn: "tabBtnLearned", panel: "tabpanelLearned" }
+  ];
+
+  function activateTab(panelId) {
+    TABS.forEach(function (t) {
+      var btn = document.getElementById(t.btn);
+      var panel = document.getElementById(t.panel);
+      var active = t.panel === panelId;
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+      panel.classList.toggle("active", active);
+      if (active) { panel.removeAttribute("hidden"); } else { panel.setAttribute("hidden", ""); }
+    });
+  }
+
+  TABS.forEach(function (t) {
+    document.getElementById(t.btn).addEventListener("click", function () { activateTab(t.panel); });
+  });
 
   /* ---------------- reference cost/latency data (real, measured, n=1 each control call) ----
      Independent of whatever call is currently replayed — an explicit comparison, not a

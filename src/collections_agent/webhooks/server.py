@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, StreamingResponse
 
 from collections_agent.webhooks.auth import verify_vapi_secret
 from collections_agent.webhooks.demo_live import (
@@ -115,6 +115,12 @@ async def _run_end_of_call_safely(message: dict[str, Any]) -> None:
 @app.get("/health")
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/")
+async def root() -> RedirectResponse:
+    """Anyone pasting the bare domain lands on the demo console, not a JSON 404."""
+    return RedirectResponse(url="/demo")
 
 
 @app.get("/test-call")
