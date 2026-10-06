@@ -1,0 +1,58 @@
+# Render Blueprint for the demo console's webhook/demo server. Deploys as a native Python
+# web service (uv.lock + .python-version are both already in this repo, so Render's
+# native Python runtime picks them up automatically — no Dockerfile needed).
+#
+# Free plan by default (see docs/SHIP_PLAN.md for what that does and doesn't persist across
+# restarts/redeploys — notably, DEMO_STATE_DB_PATH's SQLite file does not survive those on the
+# free plan, since free services can't attach a persistent disk). Upgrading to `starter` and
+# adding a `disk:` block is the exact fix if the caps/spend tracking needs to survive restarts
+# — see SHIP_PLAN.md's deployment section for the precise steps and cost.
+#
+# Google Sheets credentials (GOOGLE_SHEET_ID / GOOGLE_SERVICE_ACCOUNT_JSON) are deliberately
+# NOT declared here: neither public demo path (live or replay) reads Sheets anymore
+# (demo_fixtures.py). The one edge case — the live assistant choosing to call the
+# `lookup_invoices` tool mid-call, which still goes through webhooks/handlers.py's real
+# Sheets read — degrades to a graceful "internal error" tool response without those
+# credentials set, not a crash; see SHIP_PLAN.md for why that tradeoff was made deliberately
+# rather than silently.
+
+services:
+  - type: web
+    name: collections-voice-agent-demo
+    runtime: python
+    plan: free
+    buildCommand: uv sync --frozen
+    startCommand: uv run uvicorn collections_agent.webhooks.server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # Secrets — you'll be prompted for each of these in the Render dashboard when this
+      # Blueprint is created; see docs/SHIP_PLAN.md for exactly where each value comes from.
+      - key: VAPI_SERVER_SECRET
+        sync: false
+      - key: VAPI_PUBLIC_KEY
+        sync: false
+      - key: VAPI_ASSISTANT_ID
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      # Optional BYOK wiring — leave blank in the dashboard prompt if you don't use this.
+      - key: VAPI_OPENAI_CREDENTIAL_ID
+        sync: false
+
+      # Non-secret config — pre-filled with this project's current values; edit directly in
+      # the Render dashboard (Environment tab) any time without touching code.
+      - key: COMPANY_NAME
+        value: "Northgate Materials Co."
+      - key: CONFIDENCE_THRESHOLD
+        value: "0.75"
+      - key: DEMO_BUDGET_USD
+        value: "4.87"
+      - key: DEMO_SPEND_FLOOR_USD
+        value: "1.00"
+      - key: DEMO_DAILY_CEILING
+        value: "3"
+      - key: DEMO_VISITOR_WINDOW_HOURS
+        value: "24"
+      - key: DEMO_CALLS_PER_VISITOR_WINDOW
+        value: "1"
+      - key: DEMO_STATE_DB_PATH
+        value: "fixtures/demo_state.db"
