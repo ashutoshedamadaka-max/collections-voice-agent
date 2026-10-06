@@ -181,12 +181,12 @@ have started without it regardless. Already satisfied.
 
 | Piece | What's actually true now |
 |---|---|
-| Host | No deployment config of any kind (`Dockerfile`, `Procfile`, `render.yaml`, `fly.toml` — none exist). Your instinct to rule out Vercel is correct and verifiable from the code, not just a hunch: `demo_live.py`'s live SSE channel is a **module-level, in-process `asyncio.Queue`** — it requires one persistent process, not a per-request serverless function. Render/Railway/Fly (anything that runs a long-lived container) works; Vercel-style serverless does not, structurally. |
+| Host | **DONE — targeting Render.** `render.yaml` added: native Python runtime (uses the repo's existing `uv.lock`/`.python-version`, no Dockerfile), free plan by default, build `uv sync --frozen`, start `uv run uvicorn collections_agent.webhooks.server:app --host 0.0.0.0 --port $PORT`. Your instinct to rule out Vercel was correct and verified from the code, not just a hunch: `demo_live.py`'s live SSE channel is a module-level, in-process `asyncio.Queue` — it requires one persistent process, not a per-request serverless function. See "Deploying to Render" below for the exact dashboard walkthrough, every env var and where its value comes from, and what the free tier's cold-start behavior means for a recruiter clicking in. |
 | Hard caps (duration, per-visitor, per-day, spend floor) | **DONE.** `webhooks/demo_caps.py` (SQLite, stdlib) tracks per-visitor-window count, daily count, and cumulative spend; `demo_live.py`'s `/demo/live/config` and `/demo/live/status` check all three (spend floor → daily ceiling → visitor window, in that order) before ever handing the browser a working `publicKey`/`assistantOverrides`. All five numbers configurable via `.env` (`DEMO_BUDGET_USD`, `DEMO_SPEND_FLOOR_USD`, `DEMO_DAILY_CEILING`, `DEMO_VISITOR_WINDOW_HOURS`, `DEMO_CALLS_PER_VISITOR_WINDOW`). Verified live against the real server: seeded the daily ceiling and spend floor directly via `demo_caps` functions and confirmed `/demo/live/config` correctly blocks with the right `reason`, and the frontend falls into `startReplay('clean')` with an explanatory line instead of attempting `vapi.start()` — never a dead button. Duration cap (180s) was already handled via Vapi's own `maxDurationSeconds`, unchanged. **Known, accepted limitation:** no operator bypass (a capped-out day just shows replay, which is the designed-acceptable degradation) and the live SSE channel is still single-caller (concurrent visitors could interleave) — both deliberate, see the implementation plan for why. |
 | Separate demo sheet | **Partially resolved.** The *exposure* half — the part that was true the instant the page was reachable, with zero write-back even wired in — is fixed: `webhooks/demo_fixtures.py` inlines the real account/invoice values as a frozen fixture; both public demo paths (`demo_live.py`, `demo_replay.py`'s clean scenario) now call zero Sheets APIs at runtime, verified by pointing `GOOGLE_SHEET_ID` at garbage and confirming both still work. The *contamination* half is moot for now, same as before — write-back still isn't wired into either public demo path, so there's still nothing to contaminate. If that changes later, a real separate demo sheet is still the right answer; not needed today. |
 | "Never recorded" claim | **DONE — verified, not guessed.** `artifactPlan.recordingEnabled: false` confirmed against docs.vapi.ai/assistants/call-recording (works in both the base assistant config and per-call `assistantOverrides`; defaults `true` otherwise) and set in both, in `voice/assistant_config.py`. Covered by two new tests. **Operator action still needed:** re-run `create-assistant` against whatever URL the deployed/tunneled server is on — the code change alone doesn't update the already-registered live assistant. |
 | Vapi public key restriction | **Verified dashboard steps, documented below** — not a code change. See "Vapi public key restriction" at the end of this item. |
-| SQLite vs. replace | **Resolved: SQLite, for now.** `demo_caps.py` uses stdlib `sqlite3` against a configurable file path (`DEMO_STATE_DB_PATH`, default `fixtures/demo_state.db`). The deployment-time question is narrower than originally framed: not "SQLite or something else" but "does the chosen host's disk persist across restarts/redeploys." Render/Railway/Fly all support a persistent volume (usually an extra step, not the default) — mount one and point `DEMO_STATE_DB_PATH` at it; skip that and a redeploy silently zeroes the spend floor and daily ceiling, which is a real and easy-to-miss failure mode worth testing for specifically during the Host step below, not assuming away. |
+| SQLite vs. replace | **Resolved, verified against Render's own docs (docs.render.com/free, docs.render.com/disks): stays SQLite, on the free plan it does not persist.** `demo_caps.py` uses stdlib `sqlite3` against a configurable file path (`DEMO_STATE_DB_PATH`). Render's **free** web services cannot attach a persistent disk at all — any local filesystem write, SQLite included, is wiped on every restart, redeploy, *and* spin-down (free services spin down after 15 minutes idle). Practical effect: the spend floor and daily ceiling reset every time the demo wakes from idle, not just on a real redeploy. The fix is a **paid Starter plan ($7/mo) with a persistent disk attached (~$0.25/GB/mo — 1GB is overkill for this file)**, mounted at a path you then point `DEMO_STATE_DB_PATH` at. Decision for you: free is fine to ship with (caps still work correctly *within* a boot, which covers the realistic case of one recruiter clicking in at a time) as long as you accept that a cap count can reset after idle gaps; upgrade later if that bothers you. Not swapping SQLite for Postgres/Redis now — same underlying tradeoff, more moving parts, no benefit at this scale. |
 
 **Done when (per piece):**
 - Host: app reachable at a stable (non-tunnel) URL, SSE streaming confirmed working through it,
@@ -214,15 +214,57 @@ docs.vapi.ai/security-and-privacy/api-keys, not guessed):
    code can do on its own, which is exactly why the public key being shipped to the browser
    (by design, same as `test-call --dial` already does) is safe once restricted this way.
 
+**Deploying to Render — dashboard walkthrough.** `render.yaml` (committed) makes this a
+Blueprint deploy, not a field-by-field manual setup:
+
+1. **Render Dashboard → New → Blueprint.** Connect your GitHub account if you haven't, then
+   select `collections-voice-agent`. Render reads `render.yaml` from the repo root
+   automatically and shows you the one service it defines before creating anything.
+2. **You'll be prompted for each secret env var** (`sync: false` in the blueprint means
+   "ask the human," not "leave blank"): `VAPI_SERVER_SECRET`, `VAPI_PUBLIC_KEY`,
+   `VAPI_ASSISTANT_ID`, `OPENAI_API_KEY`, and optionally `VAPI_OPENAI_CREDENTIAL_ID`. Where
+   each value comes from:
+
+   | Variable | Where to get it |
+   |---|---|
+   | `VAPI_SERVER_SECRET` | Copy verbatim from your local `.env` — it's the credential Vapi already has attached to your assistant's server URL (`webhooks/auth.py`'s docstring: "the secret configured in the dashboard, attached to the server URL as a credential"). It must match what's already registered there, so don't invent a new one. |
+   | `VAPI_PUBLIC_KEY` | Copy verbatim from your local `.env` (Vapi Dashboard → API Keys, if you ever need to re-find it). |
+   | `VAPI_ASSISTANT_ID` | Copy verbatim from your local `.env`. |
+   | `OPENAI_API_KEY` | Copy verbatim from your local `.env`. |
+   | `VAPI_OPENAI_CREDENTIAL_ID` | Copy from local `.env` if you ever set one (BYOK billing); leave the prompt blank if not — it's optional. |
+
+   Everything else (`COMPANY_NAME`, `CONFIDENCE_THRESHOLD`, the five `DEMO_*` cap settings)
+   is pre-filled in the blueprint with this project's current values — nothing to type, and
+   each is editable later from the service's **Environment** tab without a code change.
+3. **Create Web Service.** First build takes a few minutes (watch the build log — `uv sync
+   --frozen` should report the same "Checked 61 packages" style output it does locally).
+4. **You get a URL** of the form `https://collections-voice-agent-demo.onrender.com` (or
+   whatever Render assigns/you customize). That's the deployed URL for everything below.
+5. *(Optional, only if you want caps to survive idle restarts — see the SQLite row above)*:
+   Dashboard → your service → **Settings** → change **Instance Type** from Free to
+   **Starter** ($7/mo), then **Disks** → add one (name `data`, mount path e.g.
+   `/var/data`, 1GB is plenty) → update `DEMO_STATE_DB_PATH` in **Environment** to
+   `/var/data/demo_state.db` → save (this redeploys).
+
+**What the free tier's cold start means for a recruiter clicking in** — verified against
+Render's own docs, not assumed: a free web service spins down after **15 minutes with no
+inbound traffic**, and the *next* request takes about **one minute** to spin back up. If a
+recruiter is the first visitor in a while, `/demo` itself will hang for up to a minute before
+anything renders — not a cap being hit, not an error, just the container waking up. Worth
+deciding whether that's acceptable for a job-search link (most will wait; some will bounce)
+or worth the $7/mo Starter plan, which has no spin-down. The two decisions (cold start,
+SQLite persistence) point at the same fix, so it's really one call: free (accept both
+tradeoffs) or Starter (fix both at once).
+
 **Effort remaining (rough, each is its own sitting, not a unit):**
-- Host + first deploy: 1–3 hours, mostly platform-specific friction (env vars, build config,
-  mounting a persistent volume for `DEMO_STATE_DB_PATH` and actually testing it survives a
-  restart), not code.
+- Render Blueprint deploy: 10–15 minutes (walkthrough above) — mostly waiting on the first
+  build, not decisions.
 - Vapi key restriction: 15 minutes, dashboard only (steps above).
 - Re-run `create-assistant` once deployed, so the live assistant picks up `recordingEnabled:
-  false`: 5 minutes.
-- Hard caps, recording claim, SQLite decision, demo-sheet exposure: **done**, no remaining
-  effort — see table above.
+  false` and points at the real URL instead of a dead tunnel: 5 minutes.
+- Optional Starter+disk upgrade, if cold starts/cap resets bother you: 10 minutes, +$7.25/mo.
+- Hard caps, recording claim, SQLite decision, demo-sheet exposure, the Render Blueprint
+  itself: **done**, no remaining effort — see table above.
 
 **Blocks:** A live, public demo link. Nothing else.
 
@@ -239,9 +281,11 @@ docs.vapi.ai/security-and-privacy/api-keys, not guessed):
    after) + video + write-up                   ┘   independent of each other)
 
 ── optional, additive, start only if you want a live link ──
-4a. Recording-claim fix, hard caps, demo-sheet exposure fix ── DONE
-4b. Vapi key restriction (dashboard, 15 min) + re-run create-assistant (5 min)
-4c. Host + deploy, with a persistent volume for the caps/spend state
+4a. Recording-claim fix, hard caps, demo-sheet exposure fix, Render Blueprint ── DONE
+4b. Render Blueprint deploy (10-15 min) + Vapi key restriction (15 min, dashboard)
+4c. Re-run create-assistant pointed at the deployed URL (5 min)
+4d. End-to-end check on the live URL: replay, caps, mic pre-check
+    optional: Starter + disk upgrade if cold starts/cap resets bother you ($7.25/mo)
 ```
 
 **You can ship without:** everything in section 4. Also without item 2, if you're willing to
