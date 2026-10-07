@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import uuid
 from unittest.mock import AsyncMock
 
@@ -252,7 +253,7 @@ def test_live_invoice_lookup_uses_fixtures_and_deduplicates(setup, monkeypatch):
         for _ in range(2)
     ]
     assert replies[0] == replies[1]
-    assert len(replies[0]["results"][0]["result"]["invoices"]) == 2
+    assert len(json.loads(replies[0]["results"][0]["result"])["invoices"]) == 2
     assert len(demo_sessions.events(settings.demo_state_db_path, sid, 0)) == 1
 
 

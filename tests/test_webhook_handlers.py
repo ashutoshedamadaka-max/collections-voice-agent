@@ -74,7 +74,7 @@ def test_accepts_correct_secret_and_dispatches_record_ptp(client, _redirect_log)
     assert resp.status_code == 200
     data = resp.json()
     assert data["results"][0]["toolCallId"] == "call-1"
-    assert data["results"][0]["result"]["ptp_id"].startswith("PTP-")
+    assert json.loads(data["results"][0]["result"])["ptp_id"].startswith("PTP-")
 
 
 def test_record_ptp_with_past_date_returns_structured_error_not_ptp_id(client, _redirect_log):
@@ -96,9 +96,9 @@ def test_record_ptp_with_past_date_returns_structured_error_not_ptp_id(client, _
     }
     resp = client.post("/vapi/tool-calls", json=body, headers={VAPI_SECRET_HEADER: SECRET})
     assert resp.status_code == 200
-    result = resp.json()["results"][0]["result"]
-    assert result["error"] == "date_in_the_past"
-    assert "ptp_id" not in result
+    result = resp.json()["results"][0]
+    assert result["error"].startswith("date_in_the_past:")
+    assert "result" not in result
 
 
 def test_dispatches_string_encoded_arguments(client, _redirect_log):
@@ -107,14 +107,14 @@ def test_dispatches_string_encoded_arguments(client, _redirect_log):
         "message": {"toolCallList": [{"id": "call-2", "name": "mark_opt_out", "arguments": encoded_args}]}
     }
     resp = client.post("/vapi/tool-calls", json=body, headers={VAPI_SECRET_HEADER: SECRET})
-    assert resp.json()["results"][0]["result"]["status"] == "confirmed"
+    assert json.loads(resp.json()["results"][0]["result"])["status"] == "confirmed"
 
 
 def test_unknown_tool_returns_error_result_not_500(client, _redirect_log):
     body = {"message": {"toolCallList": [{"id": "call-3", "name": "not_a_real_tool", "arguments": {}}]}}
     resp = client.post("/vapi/tool-calls", json=body, headers={VAPI_SECRET_HEADER: SECRET})
     assert resp.status_code == 200
-    assert "error" in resp.json()["results"][0]["result"]
+    assert "unknown tool" in resp.json()["results"][0]["error"]
 
 
 def test_tool_call_is_logged_to_jsonl(client, _redirect_log):

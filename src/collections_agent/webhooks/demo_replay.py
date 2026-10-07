@@ -143,6 +143,13 @@ def _fmt_money(amount: float) -> str:
 def _tool_call_payload(record: ToolCallRecord) -> dict[str, Any]:
     args = record.arguments
     result = record.result or {}
+    if result.get("error"):
+        return {
+            "kind": "Action not completed",
+            "fields": record.name.replace("_", " "),
+            "tool_line": str(result["error"]),
+            "annotation": f"{record.name.replace('_', ' ').capitalize()} was not completed",
+        }
 
     if record.name == "record_ptp":
         amount = args.get("amount")

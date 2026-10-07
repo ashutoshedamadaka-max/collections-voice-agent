@@ -65,6 +65,13 @@ def _parse_arguments(raw: Any) -> dict[str, Any]:
     return raw or {}
 
 
+def _vapi_tool_reply(call_id: str | None, result: dict[str, Any]) -> dict[str, str | None]:
+    if "error" in result:
+        detail = f": {result['message']}" if result.get("message") else ""
+        return {"toolCallId": call_id, "error": str(result["error"]) + detail}
+    return {"toolCallId": call_id, "result": json.dumps(result, ensure_ascii=False)}
+
+
 @app.post("/vapi/tool-calls", dependencies=[Depends(verify_vapi_secret)])
 async def vapi_tool_calls(request: Request) -> dict[str, Any]:
     body = await request.json()
@@ -87,7 +94,7 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
             else None
         )
         if cached is not None:
-            results.append({"toolCallId": call_id, "result": cached})
+            results.append(_vapi_tool_reply(call_id, cached))
             continue
         try:
             if session_id and name == "lookup_invoices":
@@ -126,7 +133,7 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
                     record_tool_call(session_id, name, arguments, result)
             except Exception:
                 logger.exception("failed to push live demo tool-call event")
-        results.append({"toolCallId": call_id, "result": result})
+        results.append(_vapi_tool_reply(call_id, result))
 
     return {"results": results}
 

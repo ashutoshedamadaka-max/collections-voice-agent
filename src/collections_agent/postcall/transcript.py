@@ -70,7 +70,7 @@ def _extract_tool_calls(messages: list[dict[str, Any]]) -> list[ToolCallRecord]:
     the result — counting both per call is exactly the double-count bug this replaced.
     """
     results_by_call_id: dict[str, Any] = {
-        m["toolCallId"]: m.get("result")
+        m["toolCallId"]: _normalize_tool_result(m.get("result"))
         for m in messages
         if m.get("role") == "tool_call_result" and m.get("toolCallId")
     }
@@ -95,6 +95,24 @@ def _extract_tool_calls(messages: list[dict[str, Any]]) -> list[ToolCallRecord]:
                 )
             )
     return records
+
+
+def _normalize_tool_result(result: Any) -> dict[str, Any] | None:
+    if result is None:
+        return None
+    if isinstance(result, dict):
+        return result
+    if isinstance(result, str):
+        try:
+            parsed = json.loads(result)
+        except json.JSONDecodeError:
+            parsed = None
+        if isinstance(parsed, dict):
+            return parsed
+        if result.startswith("No result returned"):
+            return {"error": result}
+        return {"raw_result": result}
+    return {"raw_result": str(result)}
 
 
 def parse_transcript(raw: dict[str, Any]) -> Transcript:

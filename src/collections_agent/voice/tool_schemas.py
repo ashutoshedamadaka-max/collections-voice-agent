@@ -88,7 +88,9 @@ LOG_DISPUTE = {
         "name": "log_dispute",
         "description": (
             "Call this immediately when the customer disputes any invoice or charge. Never "
-            "argue the claim — just capture and route it." + DO_NOT_NARRATE
+            "argue the claim — just capture and route it. Waiting for the customer's own finance "
+            "approval is a payment delay, not a dispute; do not call this tool for that alone."
+            + DO_NOT_NARRATE
         ),
         "parameters": {
             "type": "object",

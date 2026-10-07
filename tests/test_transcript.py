@@ -76,6 +76,16 @@ def test_parse_transcript_extracts_tool_calls():
     assert call.result == {"ptp_id": "PTP-1"}
 
 
+def test_parse_transcript_accepts_string_tool_result():
+    payload = {**SYNTHETIC_RAW_PAYLOAD, "messages": [dict(m) for m in SYNTHETIC_RAW_PAYLOAD["messages"]]}
+    payload["messages"][-1]["result"] = "No result returned."
+    transcript = parse_transcript(payload)
+    assert transcript.tool_calls[0].result == {"error": "No result returned."}
+
+    payload["messages"][-1]["result"] = '{"ptp_id":"PTP-2"}'
+    assert parse_transcript(payload).tool_calls[0].result == {"ptp_id": "PTP-2"}
+
+
 def test_parse_transcript_matches_result_by_tool_call_id_with_multiple_calls():
     payload = {
         "id": "call-two-tools",
