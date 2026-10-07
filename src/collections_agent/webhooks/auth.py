@@ -24,5 +24,7 @@ def verify_vapi_secret(request: Request) -> None:
         raise HTTPException(status_code=500, detail="VAPI_SERVER_SECRET is not configured")
 
     provided = request.headers.get(VAPI_SECRET_HEADER, "")
+    if not provided:
+        raise HTTPException(status_code=401, detail="missing Vapi secret header")
     if not hmac.compare_digest(provided, expected):
-        raise HTTPException(status_code=401, detail="invalid or missing Vapi secret")
+        raise HTTPException(status_code=401, detail="invalid Vapi secret")

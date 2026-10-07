@@ -35,6 +35,7 @@ def client():
 def test_rejects_missing_secret(client):
     resp = client.post("/vapi/tool-calls", json={"message": {"toolCallList": []}})
     assert resp.status_code == 401
+    assert resp.json()["detail"] == "missing Vapi secret header"
 
 
 def test_rejects_wrong_secret(client):
@@ -44,6 +45,7 @@ def test_rejects_wrong_secret(client):
         headers={VAPI_SECRET_HEADER: "wrong"},
     )
     assert resp.status_code == 401
+    assert resp.json()["detail"] == "invalid Vapi secret"
 
 
 def test_accepts_correct_secret_and_dispatches_record_ptp(client, _redirect_log):
