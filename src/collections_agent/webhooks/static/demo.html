@@ -722,6 +722,7 @@
   /* ---------- cost bar ---------- */
 
   .cost-bar-wrap { flex-shrink: 0; box-sizing: border-box; padding: 14px 32px 0; }
+  .cost-fx-note { margin: 8px 2px 0; color: var(--muted); font-size: 10px; }
   .cost-bar {
     box-sizing: border-box;
     background: var(--surface);
@@ -1482,7 +1483,7 @@
   </section>
 
   <section class="cost-bar-wrap" aria-label="Call economics">
-    <div class="section-heading"><div><span class="eyebrow">TRANSPARENT BY DESIGN</span><h2>Call economics</h2></div><span class="section-caption">Real usage. Measured costs.</span></div>
+    <div class="section-heading"><div><span class="eyebrow">TRANSPARENT BY DESIGN</span><h2>Call economics</h2></div><span class="section-caption">Real usage · costs shown in INR</span></div>
     <div class="cost-bar">
       <div class="cost-cell">
         <span class="cost-label">Call duration</span>
@@ -1523,6 +1524,7 @@
         <span class="toggle-consequence" id="toggleConsequence"></span>
       </div>
     </div>
+    <p class="cost-fx-note">Approximate conversion at ₹96.62 per US$1 (7 Oct 2026). Source costs are measured in USD.</p>
   </section>
 
   <footer class="page-footer">
@@ -2003,7 +2005,12 @@
 
   /* ---------------- cost bar ---------------- */
 
-  function moneyShort(n) { return n > 0 && n < 0.01 ? "$" + n.toFixed(4) : "$" + n.toFixed(2); }
+  // The API and model reference costs are USD. Convert only at display time.
+  var INR_PER_USD = 96.62;
+  var rupeeFormatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
+  var monthlyRupeeFormatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
+  function moneyShort(usd) { return rupeeFormatter.format(usd * INR_PER_USD); }
+  function moneyMonthly(usd) { return monthlyRupeeFormatter.format(usd * INR_PER_USD); }
 
   function renderCostBar() {
     document.getElementById("costDuration").textContent = liveCost.durationLabel;
@@ -2022,7 +2029,7 @@
       pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
       pipelineEl.textContent = moneyShort(pipeline);
       totalEl.textContent = moneyShort(total);
-      monthlyEl.textContent = "$" + (total * 1000).toFixed(0);
+      monthlyEl.textContent = moneyMonthly(total * 1000);
       document.getElementById("toggleConsequence").textContent = m.consequence;
       return;
     }
@@ -2039,7 +2046,7 @@
       pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
       pipelineEl.textContent = moneyShort(liveCost.pipelineCostReal);
       totalEl.textContent = typeof liveCost.totalCostReal === "number" ? moneyShort(liveCost.totalCostReal) : "—";
-      monthlyEl.textContent = typeof liveCost.monthlyCostReal === "number" ? "$" + liveCost.monthlyCostReal.toFixed(0) : "—";
+      monthlyEl.textContent = typeof liveCost.monthlyCostReal === "number" ? moneyMonthly(liveCost.monthlyCostReal) : "—";
     }
     document.getElementById("toggleConsequence").textContent = "";
   }
