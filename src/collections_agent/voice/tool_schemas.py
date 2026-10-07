@@ -65,8 +65,9 @@ RECORD_PTP = {
     "function": {
         "name": "record_ptp",
         "description": (
-            "Call this immediately once the caller has given a specific amount, date, and "
-            "method, and you have confirmed them back." + DO_NOT_NARRATE
+            "Call this only after the caller explicitly commits to pay a specific amount on a "
+            "specific date by a stated method, and you have confirmed all three back. An "
+            "approval estimate or possible payment date is not a promise." + DO_NOT_NARRATE
         ),
         "parameters": {
             "type": "object",
@@ -100,7 +101,6 @@ LOG_DISPUTE = {
                     "type": "string",
                     "enum": [
                         "invoice_not_received",
-                        "awaiting_internal_approval",
                         "po_mismatch",
                         "missing_documentation",
                         "quality_dispute",
@@ -167,8 +167,9 @@ SCHEDULE_CALLBACK = {
     "function": {
         "name": "schedule_callback",
         "description": (
-            "Call this immediately to hand off to a human: wrong person, escalation request, "
-            "or unanswerable question." + DO_NOT_NARRATE
+            "Call this to hand off to a human: wrong person, escalation request, unanswerable "
+            "question, or a separate overdue invoice deferred from this call. Only a reason is "
+            "required; do not ask for a callback date just to use this tool." + DO_NOT_NARRATE
         ),
         "parameters": {
             "type": "object",

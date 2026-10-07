@@ -96,6 +96,14 @@ def test_will_pay_branch_asks_each_required_promise_field_explicitly(sample_cont
     assert "never assume the full amount without asking" in prompt
 
 
+def test_payment_delay_asks_once_without_requiring_a_date(sample_context_pack):
+    prompt = " ".join(render_system_prompt(sample_context_pack, "Acme Supplies").split())
+    assert "ask once when they expect payment" in prompt
+    assert "a date is helpful, not required" in prompt
+    assert "Do not press for a date if they cannot give one" in prompt
+    assert "no dispute tool is needed" in prompt
+
+
 def test_discount_refusal_branch_gives_a_natural_example(sample_context_pack):
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     assert "Asked for a discount or waiver" in prompt
@@ -198,7 +206,7 @@ def test_never_reask_rule_and_cannot_pay_now_branch_reference_it(sample_context_
     for the reason anyway. The branch must not ask again for something already given."""
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     assert "Never ask again" in prompt
-    assert "If they haven't already told you why" in prompt
+    assert "If they have not given a reason, ask why once" in prompt
 
 
 class TestPrimaryInvoiceOnly:
@@ -237,18 +245,20 @@ class TestPrimaryInvoiceOnly:
     ):
         pack, _primary, _other = self._two_invoice_pack(base_account, make_invoice, as_of)
         prompt = render_system_prompt(pack, "Acme Supplies")
-        assert "Do not negotiate, ask about, or" in prompt
+        assert "Do not raise or negotiate these" in prompt
 
     def test_multi_invoice_prompt_instructs_callback_before_ending(
         self, base_account, make_invoice, as_of
     ):
         pack, _primary, _other = self._two_invoice_pack(base_account, make_invoice, as_of)
-        prompt = render_system_prompt(pack, "Acme Supplies")
-        assert "schedule_callback once, with a reason naming them" in prompt
+        prompt = " ".join(render_system_prompt(pack, "Acme Supplies").split())
+        assert "Call schedule_callback once with a reason naming the other invoice(s)" in prompt
+        assert "no callback date is required" in prompt
+        assert "Only if it succeeds, tell them someone will follow up" in prompt
 
     def test_single_invoice_prompt_has_no_callback_closing_instruction(self, sample_context_pack):
         prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
-        assert "schedule_callback once, with a reason naming them" not in prompt
+        assert "Call schedule_callback once with a reason naming the other invoice(s)" not in prompt
 
     def test_goal_section_scopes_to_primary_invoice_only(self, sample_context_pack):
         prompt = render_system_prompt(sample_context_pack, "Acme Supplies")

@@ -47,13 +47,15 @@ _REASON_MESSAGES = {
 
 
 def _demo_account_context():
+    as_of = datetime.now(UTC).date()
+    pack = build_context_pack(DEMO_ACCOUNT, DEMO_INVOICES, [], [], [], as_of=as_of)
     return _account_context(
         DEMO_ACCOUNT.customer_name,
         DEMO_ACCOUNT.contact_name,
         DEMO_ACCOUNT.contact_role,
         DEMO_INVOICES,
-        [],
-        datetime.now(UTC).date(),
+        [pack.primary_invoice_id],
+        as_of,
         False,
     )
 

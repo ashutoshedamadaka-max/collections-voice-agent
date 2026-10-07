@@ -26,6 +26,8 @@ SYSTEM_PROMPT = (
     "does that. If an amount, date, method, or invoice(s) were mentioned, extract them even if "
     "partial; leave a field null if it wasn't given. A vague answer like 'soon' or 'once you "
     "send the revised invoice' is not a date — leave promised_date null for that. "
+    "An expected approval date or a tentative date when payment might be possible is not a "
+    "promise-to-pay date unless the caller explicitly commits to paying then. "
     "confidence means your certainty that this extraction accurately reflects the transcript — "
     "not how complete or favorable the promise is. A confident 'no promise was made, or only a "
     "vague one' is high confidence, not low."

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import uuid
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock
 
 import pytest
@@ -10,8 +11,9 @@ from fastapi.testclient import TestClient
 
 from collections_agent.config import Settings
 from collections_agent.postcall.transcript import TranscriptTurn
+from collections_agent.precall.context_pack import build_context_pack
 from collections_agent.webhooks import demo_caps, demo_live, demo_sessions, server
-from collections_agent.webhooks.demo_fixtures import DEMO_ACCOUNT_ID
+from collections_agent.webhooks.demo_fixtures import DEMO_ACCOUNT, DEMO_ACCOUNT_ID, DEMO_INVOICES
 
 
 @pytest.fixture
@@ -62,6 +64,16 @@ def test_reservation_is_post_only_no_usage_and_single_caller(setup):
     assert client.get("/demo/live/status").json()["reason"] == "busy"
     assert client.post(f"/demo/live/{session_id}/cancel").status_code == 200
     assert client.get("/demo/live/status").json()["available"]
+
+
+def test_live_briefing_uses_the_voice_agent_primary_invoice(setup):
+    _, client = setup
+    pack = build_context_pack(
+        DEMO_ACCOUNT, DEMO_INVOICES, [], [], [], as_of=datetime.now(UTC).date()
+    )
+    primary = next(inv for inv in DEMO_INVOICES if inv.invoice_id == pack.primary_invoice_id)
+    status = client.get("/demo/live/status").json()
+    assert status["account"]["primary_invoice"]["invoice_number"] == primary.invoice_number
 
 
 def test_other_visitor_cannot_read_connect_or_cancel(setup):
