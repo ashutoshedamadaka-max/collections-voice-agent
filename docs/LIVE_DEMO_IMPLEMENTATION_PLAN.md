@@ -1,18 +1,18 @@
 # Live demo implementation plan
 
-Status: implementation in progress (2026-10-07). The browser and server integration is built;
-production provider configuration and a spoken acceptance call remain to be verified.
+Status: implementation deployed (2026-10-07). The Vapi webhook credential is attached and
+verified on the saved assistant. Render configuration and a spoken acceptance call remain.
 
 ### Activation checklist
 
 Live calls default to disabled (`DEMO_LIVE_ENABLED=false`) until provider authentication is
-ready. On 2026-10-07 the production webhook returned 401 for the local `.env` secret, and
-the saved Vapi assistant had no webhook credential. Automatic approval review blocked sending
-that existing secret to Vapi; explicit user approval is required for that configuration step.
+ready. On 2026-10-07 the production webhook returned 401 for the local `.env` secret.
+The user approved sending that secret to Vapi; the credential is now attached. Production
+still returns 401 until Render is set to the same secret.
 
-1. With approval, create the Vapi custom bearer credential using the existing local
-   `VAPI_SERVER_SECRET`, header `X-Vapi-Secret`, and `bearerPrefixEnabled=false`. Attach its
-   ID to the saved assistant's `server.credentialId`; do not put it in browser overrides.
+1. Done: Vapi custom bearer credential uses the existing local `VAPI_SERVER_SECRET`, header
+   `X-Vapi-Secret`, and `bearerPrefixEnabled=false`. Its ID is attached to the saved assistant's
+   `server.credentialId`; the assistant still has a 180-second cap and recording disabled.
 2. In the Render service Environment settings, set `VAPI_SERVER_SECRET` to that same value
    from the local `.env`, and set `DEMO_LIVE_ENABLED=true`. Never commit or paste the secret
    into a public document. Redeploy the environment changes.
