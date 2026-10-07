@@ -2243,7 +2243,7 @@
     steps.innerHTML = "";
     (replay ? ["Choose Replay a demo on the voice panel. No microphone is needed.",
       "Follow the transcript and captured actions as the saved conversation unfolds."] :
-      ["Test your microphone, allow access, then choose Talk to the agent. Headphones can help avoid echo.",
+      ["Choose Talk to the agent and allow microphone access when prompted. Test microphone first if you want to check your input. Headphones can help avoid echo.",
        "Listen to the opening and answer as the customer in your own words. No script is needed.",
        "Use the microphone and speaker buttons to mute. Choose End call when you're finished."]
     ).forEach(function (text) { var li = document.createElement("li"); li.textContent = text; steps.appendChild(li); });
@@ -2513,7 +2513,8 @@
   }
 
   async function startLiveCall() {
-    if (!micCheckPassed || ["connecting", "active", "analyzing"].indexOf(livePhase) !== -1) return;
+    if (["connecting", "active", "analyzing"].indexOf(livePhase) !== -1) return;
+    stopMicTest();
     var attempt = ++liveAttempt;
     currentScenario = "live"; livePhase = "connecting"; liveSessionId = null;
     resetUiForCall("live"); setLiveControls(false);
@@ -2701,10 +2702,10 @@
 
       if (status.available) {
         document.getElementById("micCheck").style.display = "flex";
-        startBtn.disabled = true;
-        startBtn.title = "Test your microphone first";
+        startBtn.disabled = false;
+        startBtn.title = "Start a live voice call";
         startBtn.setAttribute("aria-label", "Talk to the agent");
-        setText("micNote", "Test your microphone, then choose Talk to the agent.");
+        setText("micNote", "Choose Talk to the agent to start. Microphone test is optional.");
       } else {
         document.getElementById("micCheck").style.display = "none";
         startBtn.disabled = true;
