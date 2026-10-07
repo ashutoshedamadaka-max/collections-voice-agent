@@ -173,6 +173,7 @@ class TestMergedOpening:
 
     def test_call_overrides_set_a_personalized_first_message(self, sample_context_pack):
         overrides = build_call_overrides(sample_context_pack, "Acme Supplies")
+        assert overrides["firstMessageMode"] == "assistant-speaks-first"
         assert overrides["firstMessage"] == (
             "Hello, this is an automated call from Acme Supplies's accounts team about an "
             "overdue invoice. This call may be recorded. Am I speaking with "

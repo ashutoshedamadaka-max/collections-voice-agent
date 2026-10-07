@@ -1371,13 +1371,6 @@
 
       <div class="center-bottom">
       <p class="status-line" id="statusLine" aria-live="polite">Ready to replay a saved call.</p>
-      <div class="mic-check" id="micCheck" style="display:none;">
-        <button type="button" class="mic-check-btn" id="micCheckBtn">Test microphone</button>
-        <div class="mic-level-wrap" id="micLevelWrap" style="display:none;">
-          <div class="mic-level-bar"><div class="mic-level-fill" id="micLevelFill"></div></div>
-          <span class="mic-check-status" id="micCheckStatus" aria-live="polite">Listening — try saying something…</span>
-        </div>
-      </div>
       <div class="controls-row">
         <button type="button" class="round-btn" id="muteMicBtn" aria-label="Mute microphone" disabled>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
@@ -2045,8 +2038,8 @@
     } else {
       pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
       pipelineEl.textContent = moneyShort(liveCost.pipelineCostReal);
-      totalEl.textContent = moneyShort(liveCost.totalCostReal);
-      monthlyEl.textContent = "$" + liveCost.monthlyCostReal.toFixed(0);
+      totalEl.textContent = typeof liveCost.totalCostReal === "number" ? moneyShort(liveCost.totalCostReal) : "—";
+      monthlyEl.textContent = typeof liveCost.monthlyCostReal === "number" ? "$" + liveCost.monthlyCostReal.toFixed(0) : "—";
     }
     document.getElementById("toggleConsequence").textContent = "";
   }
@@ -2243,7 +2236,7 @@
     steps.innerHTML = "";
     (replay ? ["Choose Replay a demo on the voice panel. No microphone is needed.",
       "Follow the transcript and captured actions as the saved conversation unfolds."] :
-      ["Choose Talk to the agent and allow microphone access when prompted. Test microphone first if you want to check your input. Headphones can help avoid echo.",
+      ["Choose Talk to the agent once and allow microphone access when prompted. The agent will greet you first. Headphones can help avoid echo.",
        "Listen to the opening and answer as the customer in your own words. No script is needed.",
        "Use the microphone and speaker buttons to mute. Choose End call when you're finished."]
     ).forEach(function (text) { var li = document.createElement("li"); li.textContent = text; steps.appendChild(li); });
@@ -2383,6 +2376,9 @@
   var liveAttempt = 0;
   var connectionTimer = null;
   var analysisTimer = null;
+  var liveCallId = null;
+  var liveTurns = [];
+  var endReported = false;
   var micMuted = false;
   var speakerMuted = false;
 
@@ -2412,6 +2408,7 @@
   async function liveFailed(message) {
     var attempt = ++liveAttempt;
     var sessionId = liveSessionId;
+    var analysisFailed = livePhase === "analyzing";
     livePhase = "failed";
     clearLiveTimers(); stopClock(); setLiveControls(false);
     if (eventSource) { eventSource.close(); eventSource = null; }
@@ -2426,6 +2423,12 @@
     setText("livePillText", "Call unavailable");
     setText("statusLine", message);
     setText("transcriptFooterText", "Session ended · any conversation above is preserved");
+    if (analysisFailed) {
+      document.getElementById("specialistChips").innerHTML = '<div class="empty-state">Analysis could not finish for this call.</div>';
+      document.getElementById("decisionSection").innerHTML = '<span class="section-title">Write decision</span><div class="empty-state" style="margin-top:8px;">No decision was produced.</div>';
+      liveCost.pipelineStatus = "not_started";
+      renderCostBar();
+    }
     settleLayout();
     await initPage(true);
     if (attempt === liveAttempt) setText("statusLine", message);
@@ -2440,7 +2443,21 @@
     setText("statusLine", "Call ended · preparing your analysis");
     analysisTimer = setTimeout(function () {
       liveFailed("The call ended, but its results have not arrived. You can replay a demo while we recover.");
-    }, 180000);
+    }, 90000);
+  }
+
+  async function reportEndedCall() {
+    if (endReported || !liveSessionId || !liveCallId) return;
+    endReported = true;
+    try {
+      await liveAction(liveSessionId, "ended", {
+        callId: liveCallId,
+        durationSeconds: Math.max(0, Math.round((Date.now() - callStartWallClock) / 1000)),
+        turns: liveTurns
+      });
+    } catch (_) {
+      setText("statusLine", "Call ended · waiting for its results");
+    }
   }
 
   function initVapi(publicKey) {
@@ -2455,11 +2472,12 @@
       clearTimeout(connectionTimer); connectionTimer = null;
       callStartWallClock = Date.now();
       micMuted = false; speakerMuted = false; setLiveControls(true);
-      setText("statusLine", "Listening · speak as the customer");
+      instance.setVolume(1);
+      setText("statusLine", "Connected · the agent is opening the call");
       setText("micNote", "Microphone on · speak naturally. End call whenever you're ready.");
       document.getElementById("rippleStage").className = "ripple-stage listening";
     });
-    instance.on("call-end", function () { if (current()) awaitLiveAnalysis(); });
+    instance.on("call-end", function () { if (current()) { awaitLiveAnalysis(); reportEndedCall(); } });
     instance.on("speech-start", function () {
       if (!current() || livePhase !== "active") return;
       document.getElementById("rippleStage").className = "ripple-stage speaking";
@@ -2476,7 +2494,9 @@
     instance.on("message", function (message) {
       if (!current()) return;
       if (message && message.type === "transcript" && message.transcriptType === "final" && message.transcript) {
-        appendTurn({role: message.role === "assistant" ? "agent" : "customer", text: message.transcript,
+        var isAgent = message.role === "assistant" || message.role === "bot";
+        liveTurns.push({role: isAgent ? "bot" : "user", content: message.transcript});
+        appendTurn({role: isAgent ? "agent" : "customer", text: message.transcript,
           seconds_from_start: (Date.now() - callStartWallClock) / 1000}, currentContactName);
       }
     });
@@ -2514,14 +2534,22 @@
 
   async function startLiveCall() {
     if (["connecting", "active", "analyzing"].indexOf(livePhase) !== -1) return;
-    stopMicTest();
     var attempt = ++liveAttempt;
     currentScenario = "live"; livePhase = "connecting"; liveSessionId = null;
+    liveCallId = null; liveTurns = []; endReported = false;
     resetUiForCall("live"); setLiveControls(false);
     setText("livePillText", "Connecting");
     setText("micNote", "Connecting your microphone to Northgate…");
     try {
       if (!window.Vapi) throw new Error("Voice calling could not load. Refresh the page and try again.");
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia)
+        throw new Error("This browser cannot access a microphone. Use a current browser over HTTPS.");
+      setText("statusLine", "Checking microphone permission…");
+      var micStream = await navigator.mediaDevices.getUserMedia({audio: true});
+      var micReady = micStream.getAudioTracks().some(function (track) { return track.readyState === "live"; });
+      micStream.getTracks().forEach(function (track) { track.stop(); });
+      if (!micReady) throw new Error("No working microphone was found. Check your input device and try again.");
+      if (attempt !== liveAttempt) return;
       var resp = await fetch("/demo/live/config", {method: "POST"});
       if (!resp.ok) throw new Error("Live calling is temporarily unavailable. Please try again.");
       var config = await resp.json();
@@ -2536,12 +2564,14 @@
       openLiveEventSource(liveSessionId);
       var instance = initVapi(config.publicKey);
       connectionTimer = setTimeout(function () {
-        liveFailed("The connection took too long. Test your microphone and try again.");
+        liveFailed("The connection took too long. Check your microphone and connection, then try again.");
       }, 45000);
       var call = await instance.start(config.assistantId, config.assistantOverrides);
       if (attempt !== liveAttempt) { await instance.stop(); return; }
       if (!call || !call.id) throw new Error("The voice connection could not be established. Please try again.");
+      liveCallId = call.id;
       await liveAction(liveSessionId, "connected", {callId: call.id});
+      if (livePhase === "analyzing") reportEndedCall();
     } catch (err) {
       if (attempt === liveAttempt) await liveFailed(err.message || "The call could not connect. Please try again.");
     }
@@ -2559,112 +2589,6 @@
   });
 
 
-  /* ---------------- mic pre-check ---------------- */
-
-  var micCheckPassed = false;
-  var micTestStream = null;
-  var micTestRaf = null;
-  var micTestAudioCtx = null;
-  var micTestEpoch = 0;
-
-  function stopMicTest() {
-    micTestEpoch += 1;
-    if (micTestRaf) { cancelAnimationFrame(micTestRaf); micTestRaf = null; }
-    if (micTestStream) { micTestStream.getTracks().forEach(function (t) { t.stop(); }); micTestStream = null; }
-    if (micTestAudioCtx) { micTestAudioCtx.close(); micTestAudioCtx = null; }
-  }
-
-  function resetMicCheckUi() {
-    micCheckPassed = false;
-    stopMicTest();
-    var btn = document.getElementById("micCheckBtn");
-    btn.textContent = "Test microphone";
-    btn.disabled = false;
-    btn.classList.remove("passed");
-    document.getElementById("micLevelWrap").style.display = "none";
-    var fill = document.getElementById("micLevelFill");
-    fill.style.width = "0%";
-    fill.classList.remove("ok");
-  }
-
-  function setMicCheckPassed() {
-    micCheckPassed = true;
-    stopMicTest();
-    var btn = document.getElementById("micCheckBtn");
-    btn.textContent = "Microphone OK";
-    btn.disabled = false;
-    btn.classList.add("passed");
-    setText("micCheckStatus", "Audio detected — you're good to go.");
-    var startBtn = document.getElementById("startCallBtn");
-    startBtn.disabled = false;
-    startBtn.title = "";
-  }
-
-  async function startMicCheck() {
-    if (micCheckPassed || micTestStream || micTestRaf) return;
-    var btn = document.getElementById("micCheckBtn");
-    btn.disabled = true;
-    btn.textContent = "Testing…";
-    document.getElementById("micLevelWrap").style.display = "flex";
-    setText("micCheckStatus", "Listening — try saying something…");
-
-    var epoch = micTestEpoch;
-    try {
-      var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      if (epoch !== micTestEpoch) { stream.getTracks().forEach(function (t) { t.stop(); }); return; }
-      micTestStream = stream;
-    } catch (err) {
-      setText("micCheckStatus", "Microphone permission denied or unavailable — check your browser/system settings, then try again.");
-      btn.textContent = "Test microphone";
-      btn.disabled = false;
-      return;
-    }
-
-    try {
-      var AudioCtx = window.AudioContext || window.webkitAudioContext;
-      micTestAudioCtx = new AudioCtx();
-      var source = micTestAudioCtx.createMediaStreamSource(micTestStream);
-      var analyser = micTestAudioCtx.createAnalyser();
-      analyser.fftSize = 512;
-      source.connect(analyser);
-    } catch (_) {
-      stopMicTest();
-      setText("micCheckStatus", "Audio testing could not start. Check your browser's microphone settings and try again.");
-      btn.textContent = "Test microphone";
-      btn.disabled = false;
-      return;
-    }
-    var data = new Uint8Array(analyser.frequencyBinCount);
-    var deadline = Date.now() + 6000;
-
-    function tick() {
-      analyser.getByteTimeDomainData(data);
-      var maxDeviation = 0;
-      for (var i = 0; i < data.length; i++) {
-        maxDeviation = Math.max(maxDeviation, Math.abs(data[i] - 128));
-      }
-      var level = Math.min(100, (maxDeviation / 40) * 100);
-      var fill = document.getElementById("micLevelFill");
-      fill.style.width = level + "%";
-
-      if (maxDeviation > 6) {
-        fill.classList.add("ok");
-        setMicCheckPassed();
-        return;
-      }
-      if (Date.now() > deadline) {
-        stopMicTest();
-        setText("micCheckStatus", "No audio detected — check your microphone input, then try again.");
-        btn.textContent = "Test microphone";
-        btn.disabled = false;
-        return;
-      }
-      micTestRaf = requestAnimationFrame(tick);
-    }
-    tick();
-  }
-
-  document.getElementById("micCheckBtn").addEventListener("click", startMicCheck);
   document.getElementById("instructionsLive").addEventListener("click", function () { renderPersonaBriefing(null, "live"); });
   document.getElementById("instructionsReplay").addEventListener("click", function () { renderPersonaBriefing(null, "replay"); });
 
@@ -2685,7 +2609,6 @@
   }
 
   async function initPage(preserveResult) {
-    resetMicCheckUi();
     document.getElementById("replayLinkInline").style.display = "";
     document.getElementById("fallbackNote").style.display = "none";
     var startBtn = document.getElementById("startCallBtn");
@@ -2701,13 +2624,11 @@
       renderAllowanceNote(status);
 
       if (status.available) {
-        document.getElementById("micCheck").style.display = "flex";
         startBtn.disabled = false;
         startBtn.title = "Start a live voice call";
         startBtn.setAttribute("aria-label", "Talk to the agent");
-        setText("micNote", "Choose Talk to the agent to start. Microphone test is optional.");
+        setText("micNote", "Choose Talk to the agent once. Allow microphone access, then listen for the agent?s greeting.");
       } else {
-        document.getElementById("micCheck").style.display = "none";
         startBtn.disabled = true;
         startBtn.title = status.message || "Live calling is unavailable right now";
         setText("micNote", "Live calling is unavailable. Choose Replay a demo to explore a saved conversation.");
@@ -2715,7 +2636,6 @@
       if (!preserveResult) setText("statusLine", "Ready.");
     } catch (err) {
       // Status check itself failing must never brick the page — fail open to replay.
-      document.getElementById("micCheck").style.display = "none";
       startBtn.disabled = true;
       startBtn.title = "Live availability could not be checked";
       if (!preserveResult) renderPersonaBriefing(null, "replay");
@@ -2732,7 +2652,9 @@
       if (livePhase === "connecting") { liveFailed("Connection cancelled. You can try again."); return; }
       if (livePhase === "active" && vapi) {
         awaitLiveAnalysis();
-        Promise.resolve(vapi.stop()).catch(function () { setText("statusLine", "Ending the call…"); });
+        Promise.resolve(vapi.stop())
+          .then(reportEndedCall)
+          .catch(function () { setText("statusLine", "Ending the call…"); reportEndedCall(); });
       }
       return; // Keep the session stream open until analysis completes.
     }

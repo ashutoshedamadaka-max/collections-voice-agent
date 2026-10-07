@@ -8,6 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from collections_agent.config import Settings
+from collections_agent.postcall.transcript import TranscriptTurn
 from collections_agent.webhooks import demo_caps, demo_live, demo_sessions, server
 from collections_agent.webhooks.demo_fixtures import DEMO_ACCOUNT_ID
 
@@ -82,6 +83,70 @@ def test_connection_counts_once_and_cannot_be_refunded(setup):
     assert demo_caps.calls_today_count(settings.demo_state_db_path) == 1
     assert demo_sessions.get(settings.demo_state_db_path, sid)["state"] == "active"
     assert client.get("/demo/live/status").json()["reason"] == "visitor_window"
+
+
+def test_browser_end_requires_connected_owned_call(setup):
+    _, client = setup
+    sid = reserve(client)
+    call_id = str(uuid.uuid4())
+    body = {"callId": call_id, "durationSeconds": 20, "turns": [{"role": "bot", "content": "Hello."}]}
+    assert client.post(f"/demo/live/{sid}/ended", json=body).status_code == 409
+    assert client.post(f"/demo/live/{sid}/connected", json={"callId": call_id}).status_code == 200
+    wrong_call = {**body, "callId": str(uuid.uuid4())}
+    assert client.post(f"/demo/live/{sid}/ended", json=wrong_call).status_code == 409
+    wrong_turn = {**body, "turns": [{"role": "system", "content": "x"}]}
+    assert client.post(f"/demo/live/{sid}/ended", json=wrong_turn).status_code == 422
+
+
+def test_browser_transcript_recovers_missing_provider_report(setup, monkeypatch):
+    settings, client = setup
+    sid = reserve(client)
+    call_id = str(uuid.uuid4())
+    client.post(f"/demo/live/{sid}/connected", json={"callId": call_id})
+
+    async def no_wait(_):
+        return None
+
+    async def analyze(settings, transcript, emit):
+        assert transcript.call_id == call_id
+        assert [turn.content for turn in transcript.turns] == ["Hello.", "I can pay tomorrow."]
+        assert transcript.cost_usd is None
+        emit("final", {"cost": {"pipeline_cost": 0.01}})
+
+    monkeypatch.setattr(demo_live.asyncio, "sleep", no_wait)
+    monkeypatch.setattr(demo_live, "_analyze", AsyncMock(side_effect=analyze))
+    asyncio.run(
+        demo_live._recover_ended_call(
+            settings.demo_state_db_path,
+            sid,
+            call_id,
+            [
+                TranscriptTurn(role="bot", content="Hello."),
+                TranscriptTurn(role="user", content="I can pay tomorrow."),
+            ],
+            20,
+        )
+    )
+    assert demo_sessions.get(settings.demo_state_db_path, sid)["state"] == "complete"
+    assert demo_caps.calls_today_count(settings.demo_state_db_path) == 1
+
+
+def test_provider_report_wins_over_browser_recovery(setup, monkeypatch):
+    settings, client = setup
+    sid = reserve(client)
+    call_id = str(uuid.uuid4())
+    client.post(f"/demo/live/{sid}/connected", json={"callId": call_id})
+    with demo_sessions.connect(settings.demo_state_db_path) as conn:
+        conn.execute("UPDATE live_sessions SET state='analyzing',processing=1 WHERE id=?", (sid,))
+
+    async def no_wait(_):
+        return None
+
+    handler = AsyncMock()
+    monkeypatch.setattr(demo_live.asyncio, "sleep", no_wait)
+    monkeypatch.setattr(demo_live, "_finish_analysis", handler)
+    asyncio.run(demo_live._recover_ended_call(settings.demo_state_db_path, sid, call_id, [], 20))
+    handler.assert_not_awaited()
 
 
 def test_config_missing_secrets_is_unavailable(setup):

@@ -169,6 +169,7 @@ def build_call_overrides(
         "firstMessage": opening_message(
             context_pack.preferred_language, company_name, context_pack.contact_name
         ),
+        "firstMessageMode": "assistant-speaks-first",
         "model": _build_model_block(
             ALL_TOOLS,
             openai_credential_id,

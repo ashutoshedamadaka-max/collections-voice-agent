@@ -58,8 +58,9 @@ def test_test_webhook_passes_all_checks(_route_httpx_through_app):
         assert f"[PASS] {tool_name}" in result.output
 
 
-def test_test_webhook_requires_secret_configured(monkeypatch, _route_httpx_through_app):
+def test_test_webhook_requires_secret_configured(monkeypatch, tmp_path, _route_httpx_through_app):
     monkeypatch.delenv("VAPI_SERVER_SECRET", raising=False)
+    monkeypatch.chdir(tmp_path)  # A developer's local .env must not supply the missing secret.
     runner = CliRunner()
     result = runner.invoke(cli_module.app, ["test-webhook"])
     assert result.exit_code == 1

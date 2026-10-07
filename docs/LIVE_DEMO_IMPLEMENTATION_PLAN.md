@@ -1,31 +1,31 @@
 # Live demo implementation plan
 
-Status: implementation deployed (2026-10-07). The Vapi webhook credential is attached and
-verified on the saved assistant. Render configuration and a spoken acceptance call remain.
+Status: Vapi and Render authentication are configured and a spoken browser call completed on
+2026-10-07. The first call exposed a missing post-call result and confusing two-step microphone
+flow. A one-click microphone permission check and browser-transcript recovery are implemented;
+they still need a fresh deployed spoken acceptance call.
 
 ### Activation checklist
 
 Live calls default to disabled (`DEMO_LIVE_ENABLED=false`) until provider authentication is
-ready. On 2026-10-07 the production webhook returned 401 for the local `.env` secret.
-The user approved sending that secret to Vapi; the credential is now attached. Production
-still returns 401 until Render is set to the same secret.
+ready. The user configured the matching Render secret and enabled live calls. The production
+webhook now accepts authenticated requests.
 
 1. Done: Vapi custom bearer credential uses the existing local `VAPI_SERVER_SECRET`, header
    `X-Vapi-Secret`, and `bearerPrefixEnabled=false`. Its ID is attached to the saved assistant's
    `server.credentialId`; the assistant still has a 180-second cap and recording disabled.
-2. In the Render service Environment settings, set `VAPI_SERVER_SECRET` to that same value
-   from the local `.env`, and set `DEMO_LIVE_ENABLED=true`. Never commit or paste the secret
-   into a public document. Redeploy the environment changes.
-3. Verify an empty authenticated tool request succeeds, check `/demo/live/status`, then
-   complete one spoken browser call and verify transcript, tool results and post-call analysis.
+2. Done: Render has the matching `VAPI_SERVER_SECRET` and `DEMO_LIVE_ENABLED=true`.
+3. Verify the revised one-click flow with a fresh spoken browser call, including the opening,
+   transcript, tool results and post-call analysis.
 4. Keep replay available throughout. The current rollout flag deliberately blocks calls
    while the webhook configuration is incomplete.
 
-Implemented: pinned Vapi Web SDK 2.7.1, microphone precheck, mute and playback controls,
+Implemented: pinned Vapi Web SDK 2.7.1, one-click microphone permission check, mute and playback controls,
 separate live/replay guidance, visitor-owned SQLite sessions, single-call reservations,
 connected-call accounting, resumable SSE events, duplicate webhook protection, authenticated
 end-report routing on both webhook URLs, synthetic invoice lookup, bounded failure states,
-and analysis continuing after hangup. The current demo still shows ledger previews only.
+analysis continuing after hangup, and browser-transcript recovery if the provider final report
+does not arrive. The current demo still shows ledger previews only.
 
 Validation so far: 293 Python tests pass. Browser simulations at 1440, 1280, 1024, 390 and
 320 pixels cover denied microphone access, retry, both mute controls, transcript, hangup,
@@ -72,8 +72,9 @@ Live-call instructions should cover:
 
 1. **Your role:** "You're playing [customer name], [role] at [company]. The agent is calling
    about the overdue invoice shown below." Populate this from the current scenario.
-2. **Before starting:** allow microphone access, complete the microphone test, and choose
-   **Talk to the agent**. Headphones are optional and can help avoid speaker echo.
+2. **Before starting:** choose **Talk to the agent** once and allow microphone access when
+   prompted. The call starts automatically once the microphone is available. Headphones can
+   help avoid speaker echo.
 3. **During the conversation:** listen to the opening, answer as the customer in your own
    words, and speak naturally into the microphone. No memorized script is required.
 4. **Things to try:** explain that payment is pending approval, offer a specific payment

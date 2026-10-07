@@ -6,7 +6,7 @@ import asyncio
 import functools
 import logging
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -16,7 +16,7 @@ from fastapi.responses import JSONResponse
 from collections_agent.config import Settings, get_settings
 from collections_agent.models.domain import PostCallAnalysis
 from collections_agent.postcall.pipeline import run_postcall
-from collections_agent.postcall.transcript import ToolCallRecord, parse_transcript
+from collections_agent.postcall.transcript import ToolCallRecord, Transcript, TranscriptTurn, parse_transcript
 from collections_agent.precall.context_pack import build_context_pack
 from collections_agent.voice.assistant_config import build_call_overrides
 from collections_agent.webhooks import demo_caps
@@ -168,7 +168,7 @@ async def build_live_call_config(request: Request):
 
 async def session_action(request: Request, session_id: str, action: str):
     require_same_origin(request)
-    owned_session(request, session_id)
+    session = owned_session(request, session_id)
     db = get_settings().demo_state_db_path
     if action == "connected":
         body = await request.json()
@@ -180,9 +180,56 @@ async def session_action(request: Request, session_id: str, action: str):
             raise HTTPException(409, "Session is no longer available")
     elif action == "cancel":
         sessions.cancel(db, session_id)
+    elif action == "ended":
+        body = await request.json()
+        if session["state"] not in ("active", "analyzing") or body.get("callId") != session["call_id"]:
+            raise HTTPException(409, "Call has not been connected")
+        raw_turns = body.get("turns")
+        if not isinstance(raw_turns, list) or len(raw_turns) > 100:
+            raise HTTPException(422, "Invalid transcript")
+        turns = []
+        for turn in raw_turns:
+            if not isinstance(turn, dict) or turn.get("role") not in ("user", "bot"):
+                raise HTTPException(422, "Invalid transcript turn")
+            content = turn.get("content")
+            if not isinstance(content, str) or not content.strip() or len(content) > 4000:
+                raise HTTPException(422, "Invalid transcript turn")
+            turns.append(TranscriptTurn(role=turn["role"], content=content))
+        duration = body.get("durationSeconds")
+        if not isinstance(duration, (int, float)) or not 0 <= duration <= 420:
+            raise HTTPException(422, "Invalid call duration")
+        # The provider's signed report is authoritative. If it never arrives, the
+        # visitor-owned live transcript still lets this synthetic demo finish visibly.
+        asyncio.create_task(_recover_ended_call(db, session_id, session["call_id"], turns, duration))
     else:
         raise HTTPException(404)
     return {"status": "ok"}
+
+
+async def _recover_ended_call(db, session_id, call_id, turns, duration):
+    await asyncio.sleep(12)
+    try:
+        session = sessions.get(db, session_id)
+        if not session or session["state"] != "active" or session["call_id"] != call_id:
+            return
+        logger.warning("Provider report did not arrive for live call %s; using browser transcript", call_id)
+        transcript = Transcript(
+            call_id=call_id,
+            turns=turns,
+            tool_calls=[],
+            started_at=datetime.now(UTC) - timedelta(seconds=duration),
+            duration_seconds=duration,
+            ended_reason="customer-ended-call",
+        )
+        await _finish_analysis(get_settings(), db, session_id, transcript)
+    except Exception:
+        logger.exception("Live call recovery failed")
+        sessions.push(
+            db,
+            session_id,
+            "session_error",
+            {"message": "The call ended, but analysis could not finish. Your transcript is still shown."},
+        )
 
 
 def record_tool_call(session_id: str, name: str, arguments: dict, result: dict):
@@ -203,7 +250,11 @@ async def handle_end_of_call(message: dict[str, Any]):
     # Provider timestamps also confirm calls if the browser closed before its acknowledgement.
     if transcript.started_at or transcript.turns:
         sessions.connected(db, session_id, call_id)
-    if not sessions.begin_analysis(db, session_id, call_id, transcript.cost_usd):
+    await _finish_analysis(settings, db, session_id, transcript)
+
+
+async def _finish_analysis(settings, db, session_id, transcript):
+    if not sessions.begin_analysis(db, session_id, transcript.call_id, transcript.cost_usd):
         return
 
     def emit(name, payload):
@@ -286,8 +337,8 @@ async def _analyze(settings, transcript, emit):
     input_tokens = sum(getattr(u, "prompt_tokens", 0) for u in usage_sink)
     output_tokens = sum(getattr(u, "completion_tokens", 0) for u in usage_sink)
     pipeline_cost = input_tokens * _INPUT_PRICE_PER_TOKEN + output_tokens * _OUTPUT_PRICE_PER_TOKEN
-    voice_cost = transcript.cost_usd or 0.0
-    total_cost = voice_cost + pipeline_cost
+    voice_cost = transcript.cost_usd
+    total_cost = voice_cost + pipeline_cost if voice_cost is not None else None
 
     emit(
         "final",
@@ -303,7 +354,7 @@ async def _analyze(settings, transcript, emit):
                 "voice_cost": voice_cost,
                 "pipeline_cost": pipeline_cost,
                 "total_cost": total_cost,
-                "monthly_cost": total_cost * 1000,
+                "monthly_cost": total_cost * 1000 if total_cost is not None else None,
                 "input_tokens": input_tokens,
                 "output_tokens": output_tokens,
             },
