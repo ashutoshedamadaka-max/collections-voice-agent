@@ -6,7 +6,7 @@
 <title>Collections voice agent — live demo console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --ground: #F7F6F2;
@@ -57,19 +57,6 @@
     max-width: 1800px;
     width: 100%;
     margin: 0 auto;
-  }
-
-  /* While a call/replay is actively streaming, pin the shell to exactly one viewport so the
-     three call panels get a genuinely bounded height (min-height:100vh alone never clips —
-     it only sets a floor, so unbounded content just grows the whole page). Each panel's own
-     .panel-body overflow-y:auto then does real internal scrolling instead of the page moving.
-     Lifted once the call settles — see settleLayout()/unsettleLayout() in the script.
-     Scoped to the 3-column desktop layout only: on a short/narrow viewport the stacked fixed
-     chrome (header, tab bar, cost bar) can by itself exceed the viewport, and a hard 100vh
-     lock would squeeze .columns to zero instead of letting it scroll — see the narrow-layout
-     rule below for the gentler equivalent. */
-  @media (min-width: 1101px) {
-    .page-shell.call-locked { height: 100vh; overflow: hidden; }
   }
 
   a { color: var(--green); }
@@ -189,18 +176,6 @@
   .panel-left { width: 380px; flex-shrink: 0; }
   .panel-right { flex-grow: 1; min-width: 320px; }
 
-  /* Once a call settles, the left column (captured fields + analysis + write decision) grows
-     to its full content height instead of scrolling internally, so nothing is hidden for a
-     screen recording. The call and transcript panels keep whatever fixed height they already
-     had at that moment (pinned via inline max-height in JS) and keep scrolling internally —
-     only the left column is meant to fully reveal itself once there's a final, finite amount
-     of content to show. */
-  .columns.settled { align-items: flex-start; flex-grow: 0; }
-  .columns.settled .panel-left { overflow: visible; }
-  .columns.settled .panel-left .panel-body { overflow-y: visible; flex-grow: 0; }
-  .columns.settled .panel-center,
-  .columns.settled .panel-right { flex-shrink: 0; }
-  .columns.settled .panel-center { overflow-y: auto; overflow-x: hidden; }
   .panel-center {
     width: 420px;
     flex-shrink: 0;
@@ -209,6 +184,27 @@
     border: none;
     padding: 18px;
     align-items: center;
+  }
+
+  /* Only call content scrolls; the controls remain inside the panel's visible bounds. */
+  .center-scroll {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .center-scroll > * { flex-shrink: 0; }
+  .center-bottom {
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--panel-dark);
   }
 
   .panel-head {
@@ -952,29 +948,259 @@
     .flow-arrow { transform: rotate(90deg); flex: 0 0 auto; padding: 2px 0; }
   }
 
-  /* ---------- responsive ---------- */
-
+  /* ---------- voice workspace ---------- */
+  :root {
+    --ground: #f3f6f6;
+    --border: #dfe7e6;
+    --border-soft: #e9eeee;
+    --ink: #172e31;
+    --text: #496066;
+    --muted: #687d81;
+    --green: #167565;
+    --green-dark: #105a4e;
+    --green-soft: #edf8f4;
+    --green-border: #bce1d2;
+    --green-ink: #185c4c;
+    --slate: #3f6573;
+    --slate-soft: #ecf2f7;
+    --panel-dark: #102c31;
+    --panel-dark-muted: #a3c0c2;
+    --font-display: var(--font-ui);
+  }
+  html { scrollbar-gutter: stable; background: #192d33; }
+  body { font-size: 14px; line-height: 1.5; background: linear-gradient(145deg, #29434a 0%, #192d33 65%); }
+  button, a, summary { -webkit-tap-highlight-color: transparent; }
+  button { transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  :focus-visible { outline: 3px solid #52af9b; outline-offset: 4px; }
+  * { scrollbar-width: thin; scrollbar-color: #bed0ce transparent; }
+  .page-shell { max-width: 1600px; }
+  .topbar { height: 68px; padding: 0 40px; gap: 20px; background: #152a30; color: #eef6f4; border-color: #ffffff14; }
+  .brand-mark { width: 34px; height: 34px; border-radius: 11px; }
+  .brand-name { letter-spacing: -.4px; }
+  .topbar-label { font-size: 12px; color: #b4c6c9; }
+  .badge-muted { font-size: 11px; color: #b4c6c9; }
+  .topbar .divider-v { background: #ffffff25; }
+  .tab-bar { padding: 0 40px; gap: 28px; background: #152a30; border-color: #ffffff14; }
+  .tab-btn { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: 14px 0; background: transparent; font-size: 12px; color: #b4c6c9; }
+  .tab-btn[aria-selected="true"] { background: transparent; color: #91dfc3; border-color: #91dfc3; }
+  .tab-btn:hover { background: transparent; color: #d5f4e8; }
+  #tabpanelDemo { padding: 0 40px; gap: 22px; }
+  .page-header { padding: 28px 0 0; align-items: center; gap: 16px; }
+  .eyebrow { display: block; font-size: 10px; letter-spacing: 1.6px; font-weight: 700; color: var(--green); }
+  .page-header h1 { font-size: clamp(26px, 2.8vw, 36px); font-weight: 600; letter-spacing: -1.3px; line-height: 1.2; margin-top: 8px; }
+  .page-intro { margin: 7px 0 0; font-size: 13px; color: var(--muted); }
+  .page-header h1, .section-heading h2 { color: #f0f7f5; }
+  .page-header .eyebrow, .section-heading .eyebrow { color: #91dfc3; }
+  .page-header .page-intro, .section-heading .section-caption,
+  .intelligence-section > .panel-subhead, .page-footer .note { color: #b4c6c9; }
+  .live-pill { font-size: 12px; padding: 8px 14px; box-shadow: 0 2px 5px #173b3510; }
+  .dot { background: #31ad80; width: 7px; height: 7px; }
+  .dot.idle { background: #9fb4b1; }
+  .account-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px 22px; }
+  .account-summary > .sub { color: var(--muted); font-size: 11px; border-bottom: 1px solid var(--border-soft); padding-bottom: 10px; margin-bottom: 12px; }
+  .account-block { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 3px 24px; align-items: center; }
+  .account-block > .label-caps { grid-column: 1; grid-row: 1; }
+  .account-name { grid-column: 1; grid-row: 2; font-size: 14px; line-height: 1.4; }
+  .account-contact { grid-column: 1; grid-row: 3; font-size: 12px; }
+  .account-invoice-row { grid-column: 2; grid-row: 2; margin: 0; }
+  .account-invoice-row::before { content: "INVOICE"; display: block; width: 100%; font-size: 9px; letter-spacing: 1.2px; color: var(--muted); }
+  .invoice-id { font-size: 12px; }
+  .account-amount { grid-column: 3; grid-row: 2; font-size: clamp(17px, 1.65vw, 23px); margin: 0; text-align: right; letter-spacing: -.6px; }
+  .account-overdue { grid-column: 3; grid-row: 3; text-align: right; font-size: 11px; color: #95612d; }
+  .deferred-note { grid-column: 1 / -1; font-size: 11px; padding-top: 10px; margin-top: 9px; }
+  .columns { display: grid; grid-template-columns: minmax(320px, .85fr) minmax(0, 1.45fr); gap: 22px; padding: 0; flex-grow: 0; min-height: 0; align-items: stretch; }
+  .panel { border-radius: 18px; box-shadow: 0 4px 18px #183a3404; }
+  .panel-center, .panel-right { width: auto; min-width: 0; height: 520px; max-height: none; }
+  .panel-center { background: radial-gradient(ellipse at 50% 45%, #1b4549 0%, #102c31 70%); padding: 20px 24px 18px; border: 1px solid #23474b; color: #e4f5ef; }
+  .voice-heading { display: flex; align-items: center; gap: 9px; width: 100%; font-size: 12px; font-weight: 600; margin-bottom: 16px; flex-shrink: 0; }
+  .voice-mark { font-size: 21px; letter-spacing: 2px; color: #8ddcc5; line-height: 1; }
+  .voice-badge { margin-left: auto; font-size: 8px; letter-spacing: 1.2px; border: 1px solid #6fb2a044; border-radius: 5px; padding: 3px 6px; color: #b4ded2; }
+  .center-scroll { padding: 0 5px; scrollbar-color: #466769 transparent; }
+  .center-top .rec-note { font-size: 10px; }
+  .center-timer { font-size: 11px; padding: 3px 8px; }
+  .who-line { font-size: 12px; font-weight: 500; text-transform: none; letter-spacing: 0; margin-top: 14px; color: #f0f9f6; }
+  .account-line { font-size: 10px; line-height: 1.5; color: var(--panel-dark-muted); }
+  .cap-bar-wrap { margin-top: 12px; }
+  .cap-bar { height: 3px; }
+  .cap-bar-label { font-size: 9px; }
+  .cap-bar-fill { background: #82d9be; }
+  .persona-briefing { padding: 9px 11px; margin-top: 10px; }
+  .persona-briefing summary { cursor: pointer; color: #d8eeea; font-size: 11px; font-weight: 600; }
+  .persona-briefing summary span { float: right; font-size: 10px; font-weight: 400; color: var(--panel-dark-muted); }
+  .persona-briefing[open] summary { margin-bottom: 10px; }
+  .persona-intro { font-size: 12px; }
+  .allowance-note { font-size: 11px; margin: 8px 0 0; line-height: 1.45; }
+  .ripple-wrap { min-height: 132px; margin: 7px 0 0; width: 100%; flex: 1 0 132px; }
+  .ripple-stage { width: 132px; height: 132px; }
+  .ripple-ring { border-width: 1px !important; }
+  .ripple-core { width: 76px; height: 76px; background: radial-gradient(circle at 30% 20%, #5ea79a, #245555 65%, #1a4046); box-shadow: inset 0 0 20px #a1ecce16, 0 0 40px #65c2a31a; color: #c8f4e8; border-color: #99d4c444; }
+  .ripple-stage.idle .ripple-core { color: #bde9dc; box-shadow: 0 0 35px #79ceb31a; }
+  .ripple-stage.listening .ripple-ring { border-color: #85bbb8; }
+  .ripple-stage.listening .ripple-core { color: #c7ebef; box-shadow: 0 0 30px #78c1c332; border-color: #98d8d5; }
+  .ripple-stage.speaking .ripple-ring { border-color: #8ce7c3; }
+  .ripple-stage.speaking .ripple-core { box-shadow: 0 0 36px #71dfad55; }
+  .waveform { height: 22px; margin-top: 5px; gap: 4px; }
+  .waveform span { width: 2px; background: #9fd0c7; }
+  .waveform.speaking span { animation: voice-bar .8s ease-in-out infinite alternate; transform-origin: center; }
+  .waveform span:nth-child(3n) { animation-delay: -.3s; }
+  .waveform span:nth-child(3n + 1) { animation-delay: -.6s; }
+  @keyframes voice-bar { from { transform: scaleY(.45); } to { transform: scaleY(1); } }
+  .status-line { font-size: 12px; text-align: center; margin: 9px 0 6px; color: #c9e5de; }
+  .call-quote { font-size: 13px; margin: 6px 0; }
+  .center-bottom { padding-top: 12px; background: transparent; border-top: 1px solid #b0d7cd19; margin-top: 10px; }
+  .controls-row { margin-top: 0; gap: 18px; }
+  .round-btn { width: 42px; height: 42px; border: 1px solid #ffffff15; }
+  .round-btn.start, .round-btn.end { width: 52px; height: 52px; }
+  .round-btn.start { background: #81d9b7; color: #113e32; box-shadow: 0 3px 15px #75d1af22; }
+  .round-btn.start:hover:not(:disabled) { background: #a3e8ce; }
+  .round-btn.end { background: #df635e; }
+  .round-btn:disabled { opacity: .45; }
+  .replay-link-inline { font-size: 11px; margin-top: 10px; color: #c5dfd9; }
+  .mic-note { font-size: 10px; line-height: 1.5; color: #aec9c3; margin: 9px 0 0; max-width: 350px; }
+  .record-note { font-size: 9px; color: #8dada7; margin: 5px 0 0; }
+  .mic-check { margin: 0 0 10px; }
+  .center-bottom .status-line { margin: 0 0 10px; }
+  .mic-check-btn, .replay-btn { font-size: 11px; padding: 7px 13px; }
+  .panel-head { padding: 17px 22px; min-height: 57px; }
+  .panel-head .title { font-size: 14px; }
+  .transcript-label { font-size: 8px; letter-spacing: 1px; color: var(--muted); margin-left: 5px; }
+  .lang-pill { border: 1px solid var(--border); border-radius: 5px; padding: 3px 7px; font-size: 9px; }
+  #transcriptBody { padding: 22px; gap: 20px; overscroll-behavior: contain; }
+  #transcriptBody:empty::before { content: "Your conversation starts here"; margin: auto auto 0; color: var(--ink); font-size: 16px; font-weight: 500; }
+  #transcriptBody:empty::after { content: "Start a call or replay a saved conversation to follow each turn."; text-align: center; margin: 0 auto auto; max-width: 280px; font-size: 12px; color: var(--muted); }
+  .transcript-meta { margin: auto; padding: 28px; border-radius: 12px; background: var(--ground); max-width: 300px; font-size: 13px; }
+  .turn { max-width: 88%; flex-shrink: 0; gap: 7px; animation: enter-soft .24s ease-out; }
+  .turn-head { gap: 8px; }
+  .avatar { width: 23px; height: 23px; }
+  .turn-name { font-size: 12px; }
+  .turn-time { font-size: 10px; }
+  .bubble { font-size: 13px; line-height: 1.65; padding: 12px 15px; border: 1px solid transparent; }
+  .turn.agent .bubble { background: #f3f7f6; }
+  .turn.customer .bubble { background: #edf2f7; }
+  .turn.speaking-now .bubble { box-shadow: none; border-color: #bddbce; }
+  .annotation { flex-shrink: 0; font-size: 10px; background: #f1f8f5; border-radius: 7px; padding: 8px 10px; }
+  .transcript-footer { padding: 11px 22px; background: #fcfdfd; }
+  .transcript-footer span.footer-text { font-size: 10px; }
+  .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 15px; margin-bottom: 15px; }
+  .section-heading h2 { margin: 4px 0 0; font-size: 21px; font-weight: 600; letter-spacing: -.6px; }
+  .section-heading .eyebrow { font-size: 9px; }
+  .section-caption { color: var(--muted); font-size: 11px; }
+  .intelligence-section { padding-top: 5px; scroll-margin-top: 24px; }
+  .intelligence-section > .panel-subhead { font-size: 12px; margin: -5px 0 17px; }
+  .intelligence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .insight-panel { min-width: 0; padding: 21px; background: white; border: 1px solid var(--border); border-radius: 16px; }
+  .analysis-panel { grid-column: 1 / -1; }
+  .section-title { display: block; font-size: 11px; letter-spacing: .6px; margin: 0; color: var(--ink); }
+  #capturedCards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  #specialistChips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; align-items: start; }
+  #capturedCards > .empty-state, #specialistChips > .empty-state { grid-column: 1 / -1; }
+  #chip-summary { grid-column: span 2; }
+  .empty-state { border: 0; background: #f6f9f8; font-size: 12px; padding: 22px; text-align: left; border-radius: 10px; }
+  .captured-card { background: #f8fbfa; padding: 15px; border-radius: 10px; }
+  .captured-card .fields { font-size: 12px; }
+  .captured-card .tool-line { font-size: 10px; overflow-wrap: anywhere; }
+  .chip { background: #fbfcfc; padding: 16px; animation: enter-soft .25s ease-out; }
+  .chip-name { font-size: 12px; }
+  .chip-confidence { font-size: 10px; padding: 2px 5px; background: #edf5f1; border-radius: 4px; color: var(--green); }
+  .chip-detail { font-size: 12px; margin-top: 5px; }
+  .fact-line > span:last-child { text-align: right; overflow-wrap: anywhere; }
+  .chip.violation { border-color: var(--amber-border); background: #fffcf6; }
+  .decision-card { padding: 16px; }
+  .decision-card .decision-title { font-family: var(--font-mono); font-size: 13px; }
+  .sheet-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row-fields { overflow-wrap: anywhere; }
+  .sheet-link a[aria-disabled="true"] { cursor: default; }
+  .cost-bar-wrap { padding: 5px 0 0; }
+  .cost-bar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 0; gap: 0; overflow: hidden; border-radius: 16px; }
+  .cost-cell { min-width: 0; padding: 22px; border-right: 1px solid var(--border-soft); gap: 5px; }
+  .cost-cell:nth-last-of-type(3) { border-right: 0; }
+  .cost-cell .cost-label { font-size: 11px; }
+  .cost-cell .cost-value { font-size: 25px; letter-spacing: -.8px; }
+  .cost-cell .cost-note { font-size: 10px; }
+  .cost-divider { display: none; }
+  .cost-toggle-block { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px 20px; min-width: 0; padding: 16px 22px; border-top: 1px solid var(--border-soft); background: #fbfcfc; }
+  .toggle-caption { font-size: 11px; }
+  .toggle-consequence { grid-column: 1 / -1; font-size: 12px; max-width: none; }
+  .toggle-consequence:empty { display: none; }
+  .toggle-row button { font-size: 11px; }
+  .page-footer { padding: 0 0 28px; gap: 15px; }
+  .page-footer .note { font-size: 10px; }
+  .doc-page { max-width: 1100px; width: calc(100% - 48px); padding: 40px; gap: 28px; margin: 28px auto 40px; background: var(--surface); border-radius: 20px; }
+  .doc-page h1 { font-weight: 600; font-size: 32px; letter-spacing: -1px; }
+  .doc-section h2 { font-weight: 600; font-size: 21px; letter-spacing: -.4px; }
+  .doc-prose { font-size: 14px; line-height: 1.8; }
+  .doc-page code { overflow-wrap: anywhere; }
+  .stage-card, .decision-item, .finding-card { padding: 22px; }
+  @keyframes enter-soft { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  @media (min-width: 901px) and (max-height: 760px) {
+    .panel-center, .panel-right { height: 450px; }
+  }
   @media (max-width: 1100px) {
-    .columns { flex-direction: column; padding: 0 20px; overflow-y: auto; }
-    .panel-left, .panel-right, .panel-center { width: 100%; }
-    .panel-left, .panel-right { min-height: 320px; }
-    /* Narrow-layout equivalent of the desktop 100vh lock above: cap the stacked column so it
-       scrolls internally during a call, without risking a hard page-level lock squeezing it
-       to zero on a short viewport. Lifted once settled, same as the desktop rule. */
-    .page-shell.call-locked .columns { max-height: 65vh; }
-    .cost-bar-wrap { padding: 14px 20px 0; }
-    .page-header { padding: 20px 20px 14px; }
-    .page-footer { padding: 12px 20px 18px; }
-    .doc-page { padding: 24px 20px 40px; }
-    .tab-bar { padding: 10px 20px; }
+    #tabpanelDemo { padding: 0 24px; }
+    .topbar, .tab-bar { padding-left: 24px; padding-right: 24px; }
+    .columns { grid-template-columns: minmax(300px, .9fr) minmax(0, 1.1fr); gap: 16px; }
+    .panel-center { padding: 18px; }
+    #capturedCards { grid-template-columns: 1fr; }
+    .cost-cell { padding: 16px; }
+    .transcript-label { display: none; }
+  }
+  @media (max-width: 900px) {
+    .topbar-label, .divider-v { display: none; }
+    .account-block { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 7px 18px; }
+    .account-invoice-row { grid-column: 1; grid-row: 4; }
+    .account-amount { grid-column: 2; grid-row: 2; font-size: 20px; }
+    .account-overdue { grid-column: 2; grid-row: 3; }
+    .columns { grid-template-columns: 1fr; }
+    .panel-center { height: 520px; }
+    .panel-right { height: 460px; }
+    #specialistChips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #chip-summary { grid-column: 1 / -1; }
+    .intelligence-grid { grid-template-columns: 1fr; }
+    #capturedCards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cost-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .section-caption { max-width: 180px; text-align: right; }
+    .stage-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    #tabpanelDemo { padding: 0 16px; gap: 18px; }
+    .topbar { height: auto; min-height: 64px; padding: 12px 16px; flex-wrap: wrap; gap: 4px 12px; }
+    .brand-name { font-size: 14px; }
+    .badge-muted { font-size: 9px; padding: 0; margin-left: 43px; }
+    .topbar .spacer { display: none; }
+    .tab-bar { padding: 0 16px; gap: 22px; flex-wrap: nowrap; overflow-x: auto; }
+    .tab-btn { font-size: 11px; white-space: nowrap; }
+    .page-header { padding-top: 22px; gap: 12px; }
+    .page-header .spacer { display: none; }
+    .page-header h1 { font-size: 27px; }
+    .page-intro { font-size: 12px; max-width: 280px; }
+    .live-pill { font-size: 10px; padding: 5px 10px; }
+    .account-summary { padding: 16px; }
+    .account-block { grid-template-columns: 1fr; }
+    .account-block > * { grid-column: 1; grid-row: auto; text-align: left; }
+    .account-amount { font-size: 21px; margin-top: 8px; }
+    .account-invoice-row { margin-top: 6px; }
+    .panel-center { padding: 18px; height: 500px; }
+    .panel-right { height: 440px; }
+    .panel-head, #transcriptBody { padding: 16px; }
+    .bubble { font-size: 12px; }
+    .section-heading { align-items: flex-start; }
+    .section-heading h2 { font-size: 20px; }
+    .section-caption { font-size: 9px; max-width: 120px; }
+    .insight-panel { padding: 16px; }
+    #capturedCards, #specialistChips, .sheet-rows { grid-template-columns: 1fr; }
+    #chip-summary { grid-column: auto; }
+    .cost-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cost-cell { padding: 16px; border-bottom: 1px solid var(--border-soft); }
+    .cost-toggle-block { grid-template-columns: 1fr; padding: 16px; }
+    .doc-page { padding: 28px 16px; }
+    .doc-page h1 { font-size: 27px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .ripple-stage .ripple-ring.r1 { opacity: .35; }
   }
 
-  @media (max-width: 600px) {
-    .page-header h1 { font-size: 26px; }
-    .cost-bar { flex-direction: column; }
-    .cost-divider { display: none; }
-    .doc-page h1 { font-size: 24px; }
-  }
 </style>
 </head>
 <body>
@@ -1005,8 +1231,10 @@
 
   <div class="page-header">
     <div>
-      <h1>A call that ends in a decision, not just a transcript.</h1>
-      <div class="sub" id="headerSub">Press start for a real call, through the real pipeline.</div>
+      <span class="eyebrow">NORTHGATE / VOICE WORKSPACE</span>
+      <h1>Collections, in conversation.</h1>
+      <p class="page-intro">A call that ends in a decision, not just a transcript.</p>
+
     </div>
     <div class="spacer"></div>
     <div class="live-pill">
@@ -1015,23 +1243,10 @@
     </div>
   </div>
 
-  <main class="columns">
-
-    <!-- LEFT: what the agent captured -->
-    <section class="panel panel-left" aria-label="What the agent captured">
-      <div class="panel-head">
-        <span class="icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>
-        </span>
-        <span class="title">What the agent captured</span>
-        <div class="spacer"></div>
-        <span class="tag-right">LIVE</span>
-      </div>
-      <div class="panel-body">
-        <p class="panel-subhead">This is what gets written to the ledger — nothing here is spoken back with more certainty than the system actually has.</p>
-
+  <section class="account-summary" aria-label="Account overview">
+    <div class="sub" id="headerSub">Press start for a real call, through the real pipeline.</div>
         <div class="account-block" id="accountBlock">
-          <span class="label-caps">Account</span>
+          <span class="label-caps">Account overview</span>
           <div class="account-name" id="acctName">Waiting for a replay to start…</div>
           <div class="account-contact" id="acctContact">—</div>
           <div class="account-invoice-row">
@@ -1044,22 +1259,14 @@
           <div class="deferred-note" id="acctHistoricalNote" style="display:none;"></div>
         </div>
 
-        <div id="capturedSection">
-          <span class="section-title">Captured live</span>
-          <div id="capturedCards" style="display:flex; flex-direction:column; gap:10px; margin-top:8px;"></div>
-        </div>
+  </section>
 
-        <div id="specialistSection">
-          <span class="section-title">Analysis</span>
-          <div id="specialistChips" style="display:flex; flex-direction:column; gap:10px; margin-top:8px;"></div>
-        </div>
-
-        <div id="decisionSection"></div>
-      </div>
-    </section>
+  <main class="columns" aria-label="Voice workspace">
 
     <!-- CENTER: the call -->
     <section class="panel panel-center" aria-label="The call">
+      <div class="voice-heading"><span class="voice-mark" aria-hidden="true">ııı</span><span>Northgate voice agent</span><span class="voice-badge">VOICE AI</span></div>
+      <div class="center-scroll">
       <div class="center-top">
         <span class="rec-note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l7 2.9v4.8c0 4.1-2.8 7.4-7 8.9-4.2-1.5-7-4.8-7-8.9V6.1z"/></svg>
@@ -1073,10 +1280,11 @@
       <span class="who-line" id="whoLine">No call in progress</span>
       <span class="account-line" id="accountLine"></span>
 
-      <div class="persona-briefing" id="personaBriefing" style="display:none;">
+      <details class="persona-briefing" id="personaBriefing" style="display:none;">
+        <summary>Your role in this demo <span>View briefing</span></summary>
         <p class="persona-intro" id="personaIntro"></p>
         <ul class="persona-suggestions" id="personaSuggestions"></ul>
-      </div>
+      </details>
 
       <p class="allowance-note" id="allowanceNote" style="display:none;"></p>
 
@@ -1098,8 +1306,6 @@
 
       <div class="waveform" id="waveform" aria-hidden="true" style="visibility:hidden;"></div>
 
-      <p class="status-line" id="statusLine" aria-live="polite">Ready to replay a saved call.</p>
-
       <p class="call-quote" id="callQuote" style="display:none;"></p>
 
       <button type="button" class="replay-btn" id="replayBtn" style="display:none;">
@@ -1107,6 +1313,13 @@
         Replay a flagged call
       </button>
 
+      </div>
+      <!-- /center-scroll: everything above shrinks/scrolls on a short viewport; everything
+           below is fixed furniture — the controls a live call must always be reachable to end
+           are never allowed to scroll out of view, at any viewport height. -->
+
+      <div class="center-bottom">
+      <p class="status-line" id="statusLine" aria-live="polite">Ready to replay a saved call.</p>
       <div class="mic-check" id="micCheck" style="display:none;">
         <button type="button" class="mic-check-btn" id="micCheckBtn">Test microphone</button>
         <div class="mic-level-wrap" id="micLevelWrap" style="display:none;">
@@ -1114,7 +1327,6 @@
           <span class="mic-check-status" id="micCheckStatus" aria-live="polite">Listening — try saying something…</span>
         </div>
       </div>
-
       <div class="controls-row">
         <button type="button" class="round-btn" id="muteMicBtn" aria-label="Mute microphone" disabled>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
@@ -1126,7 +1338,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5c0 8.3 6.7 15 15 15h1a2 2 0 002-2v-2.2a1 1 0 00-.8-1L17 13.5a1 1 0 00-1 .3l-1.2 1.4a12.7 12.7 0 01-5-5L11.2 9a1 1 0 00.3-1L10 3.8a1 1 0 00-1-.8H6a2 2 0 00-2 2z"/></svg>
         </button>
         <button type="button" class="round-btn" id="muteAgentBtn" aria-label="Mute agent audio" disabled>
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.2 5L6.6 9H3.2v6h3.4l4.6 4z"/><path d="M15.4 9.6a3.6 3.6 0 010 4.8"/><path d="M18.2 7.2a7.4 7.4 0 010 9.6"/></svg>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M11.2 5L6.6 9H3.2v6h3.4l4.6 4z"/><path d="M15.4 9.6a3.6 3.6 0 010 4.8"/><path d="M18.2 7.2a7.4 7.4 0 010 9.6"/></svg>
         </button>
       </div>
 
@@ -1134,6 +1346,7 @@
 
       <p class="mic-note" id="micNote">Checking what's available…</p>
       <p class="record-note">Demo calls are never recorded or stored as audio.</p>
+      </div>
     </section>
 
     <!-- RIGHT: conversation -->
@@ -1142,7 +1355,7 @@
         <span class="icon" style="color: var(--text);" aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 12.6a5.6 5.6 0 01-5.6 5.6H9l-4.4 3.1v-8.7A5.6 5.6 0 0110.2 7h4.2a5.6 5.6 0 015.6 5.6z"/></svg>
         </span>
-        <span class="title">Conversation</span>
+        <span class="title">Conversation</span><span class="transcript-label">LIVE TRANSCRIPT</span>
         <div class="spacer"></div>
         <span class="lang-pill">ENGLISH</span>
       </div>
@@ -1157,7 +1370,35 @@
 
   </main>
 
-  <div class="cost-bar-wrap">
+  <section class="intelligence-section" aria-labelledby="intelligenceTitle">
+    <div class="section-heading">
+      <div><span class="eyebrow">FROM CONVERSATION TO ACTION</span><h2 id="intelligenceTitle">Call intelligence</h2></div>
+      <span class="section-caption">Captured facts · specialist analysis · write decision</span>
+    </div>
+    <p class="panel-subhead">This is what gets written to the ledger — nothing here is spoken back with more certainty than the system actually has.</p>
+    <div class="intelligence-grid">
+      <section class="insight-panel" aria-label="What the agent captured">
+                <div id="capturedSection">
+          <span class="section-title">Captured live</span>
+          <div id="capturedCards"></div>
+        </div>
+
+
+      </section>
+      <section class="insight-panel decision-panel" aria-label="Write decision"><div id="decisionSection"></div></section>
+      <section class="insight-panel analysis-panel" aria-label="Specialist analysis">
+                <div id="specialistSection">
+          <span class="section-title">Analysis</span>
+          <div id="specialistChips"></div>
+        </div>
+
+
+      </section>
+    </div>
+  </section>
+
+  <section class="cost-bar-wrap" aria-label="Call economics">
+    <div class="section-heading"><div><span class="eyebrow">TRANSPARENT BY DESIGN</span><h2>Call economics</h2></div><span class="section-caption">Real usage. Measured costs.</span></div>
     <div class="cost-bar">
       <div class="cost-cell">
         <span class="cost-label">Call duration</span>
@@ -1198,7 +1439,7 @@
         <span class="toggle-consequence" id="toggleConsequence"></span>
       </div>
     </div>
-  </div>
+  </section>
 
   <footer class="page-footer">
     <span class="note">No kept rate is shown here — not enough call volume for one to mean anything. See the written case study.</span>
@@ -1759,31 +2000,42 @@
     document.getElementById("capBarFill").style.width = pct + "%";
   }
 
-  /* ---------------- settle/unsettle the left column's height ---------------- */
+  /* Workspace geometry is stable; only its session state changes. */
+  var intelligenceRevealed = false;
+
+  function revealCallIntelligence() {
+    if (intelligenceRevealed) return;
+    requestAnimationFrame(function () {
+      if (intelligenceRevealed || !document.getElementById("tabpanelDemo").classList.contains("active")) return;
+      intelligenceRevealed = true;
+      document.querySelector(".intelligence-section").scrollIntoView({
+        block: "start",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+      });
+    });
+  }
+
+  function revealVoicePanel() {
+    requestAnimationFrame(function () {
+      if (!document.getElementById("tabpanelDemo").classList.contains("active")) return;
+      document.querySelector(".panel-center").scrollIntoView({
+        block: "center",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+      });
+    });
+  }
 
   function unsettleLayout() {
-    var columns = document.querySelector("#tabpanelDemo .columns");
-    columns.classList.remove("settled");
-    var center = columns.querySelector(".panel-center");
-    var right = columns.querySelector(".panel-right");
-    center.style.maxHeight = "";
-    right.style.maxHeight = "";
-    // Re-lock to one viewport for the next call/replay — settleLayout() lifts this once it ends.
+    intelligenceRevealed = false;
     document.querySelector(".page-shell").classList.add("call-locked");
+    document.querySelector("#tabpanelDemo .columns").classList.remove("settled");
+    // Bring the voice controls into view when the user explicitly starts a session.
+    revealVoicePanel();
   }
 
   function settleLayout() {
-    var columns = document.querySelector("#tabpanelDemo .columns");
-    var center = columns.querySelector(".panel-center");
-    var right = columns.querySelector(".panel-right");
-    // Measure while still call-locked, so the call/transcript panels pin to the height they
-    // already had — they keep scrolling internally instead of also stretching to match the
-    // now fully-expanded left column.
-    var pinned = columns.getBoundingClientRect().height;
-    center.style.maxHeight = pinned + "px";
-    right.style.maxHeight = pinned + "px";
-    columns.classList.add("settled");
     document.querySelector(".page-shell").classList.remove("call-locked");
+    document.querySelector("#tabpanelDemo .columns").classList.add("settled");
   }
 
   function resetUiForCall(mode) {
@@ -1876,6 +2128,8 @@
 
   function applyMeta(payload) {
     applyAccountFields(payload.account);
+    // Account details can wrap differently after loading, especially on a narrow phone.
+    revealVoicePanel();
     setText("statusLine", "Listening");
     document.getElementById("rippleStage").className = "ripple-stage listening";
   }
@@ -1950,6 +2204,7 @@
 
     renderSpecialistsPending();
     renderDecisionPending();
+    revealCallIntelligence();
   }
 
   function handleFinal(payload) {
@@ -1978,7 +2233,8 @@
     setText("micNote", currentScenario === "live" ? "Call complete." : "Replay complete.");
 
     document.getElementById("replayBtn").style.display = (isAuto && currentScenario !== "flagged") ? "inline-flex" : "none";
-    initPage();
+    setText("transcriptFooterText", "Transcript complete · analysis complete");
+    initPage(true);
     settleLayout();
   }
 
@@ -2000,6 +2256,7 @@
       setText("statusLine", "Connection lost — press start to try again.");
       document.getElementById("startCallBtn").style.display = "flex";
       document.getElementById("endCallBtn").style.display = "none";
+      settleLayout();
     };
   }
 
@@ -2031,6 +2288,7 @@
       stopClock();
       setText("statusLine", "Call ended — waiting for the pipeline…");
       document.getElementById("endCallBtn").disabled = true;
+      revealCallIntelligence();
     });
     vapi.on("speech-start", function () {
       document.getElementById("rippleStage").className = "ripple-stage speaking";
@@ -2223,7 +2481,7 @@
     }
   }
 
-  async function initPage() {
+  async function initPage(preserveResult) {
     resetMicCheckUi();
     document.getElementById("replayLinkInline").style.display = "";
     document.getElementById("fallbackNote").style.display = "none";
@@ -2232,7 +2490,8 @@
     try {
       var resp = await fetch("/demo/live/status");
       var status = await resp.json();
-      renderPersonaBriefing(status.account);
+      // Refresh next-call availability without replacing the completed call's context.
+      if (!preserveResult) renderPersonaBriefing(status.account);
       renderAllowanceNote(status);
 
       if (status.available) {
@@ -2247,7 +2506,7 @@
         startBtn.setAttribute("aria-label", "Start a replay");
         setText("micNote", "Live calling isn't available right now — Start plays a real call through the real pipeline instead.");
       }
-      setText("statusLine", "Ready.");
+      if (!preserveResult) setText("statusLine", "Ready.");
     } catch (err) {
       // Status check itself failing must never brick the page — fail open to replay.
       document.getElementById("micCheck").style.display = "none";
@@ -2271,7 +2530,9 @@
     document.getElementById("endCallBtn").style.display = "none";
     document.getElementById("liveDot").className = "dot idle";
     setText("livePillText", "Idle");
+    settleLayout();
     initPage();
+    revealCallIntelligence();
   });
 
   document.getElementById("replayBtn").addEventListener("click", function () {
@@ -2282,6 +2543,9 @@
     startReplay("clean");
   });
 
+  resetCaptured();
+  renderSpecialistsEmpty();
+  renderDecisionEmpty();
   renderCostBar();
   initPage();
 })();
