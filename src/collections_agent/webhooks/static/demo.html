@@ -1196,6 +1196,73 @@
     .doc-page { padding: 28px 16px; }
     .doc-page h1 { font-size: 27px; }
   }
+  /* Three clear jobs: operate the agent, understand the scenario, follow the conversation. */
+  .columns { grid-template-columns: minmax(0, .86fr) minmax(0, 1fr) minmax(0, 1.44fr); gap: 18px; align-items: start; }
+  .panel-center, .panel-right { height: 650px; }
+  .panel-center { padding: 20px; }
+  .voice-heading { flex-wrap: wrap; gap: 8px; font-size: 12px; }
+  .voice-badge { font-size: 7px; }
+  .center-top { gap: 6px; align-items: flex-start; }
+  .center-top .rec-note { font-size: 9px; }
+  .center-scroll { overflow-y: auto; padding: 0 3px; }
+  .ripple-wrap { min-height: 165px; flex-basis: 165px; }
+  .ripple-stage { width: 150px; height: 150px; }
+  .cap-bar-wrap { margin-top: 20px; }
+  .call-quote { font-size: 12px; }
+  .controls-row { width: 100%; gap: 10px; justify-content: center; }
+  .round-btn.start { width: 100%; height: 46px; border-radius: 10px; font-size: 12px; font-weight: 700; gap: 9px; }
+  .round-btn.end { width: auto; min-width: 116px; height: 46px; border-radius: 10px; font-size: 12px; font-weight: 600; gap: 8px; padding: 0 13px; }
+  .round-btn:not(.start):not(.end) { display: none; }
+  .call-locked .round-btn:not(.start):not(.end) { display: flex; width: 36px; height: 36px; }
+  .replay-link-inline { width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid #91c9b94d; text-decoration: none; font-size: 12px; font-weight: 600; background: #ffffff08; }
+  .replay-link-inline:hover { background: #ffffff14; }
+  .mic-check-btn { width: 100%; border-radius: 8px; }
+  .mic-note { font-size: 10px; }
+  .record-note { font-size: 9px; }
+  .center-bottom .allowance-note { text-align: left; font-size: 10px; padding: 9px; }
+  .panel-briefing { width: auto; min-width: 0; min-height: 650px; overflow: visible; background: #f3eddf; border-color: #d8cdb8; color: #363c35; }
+  .panel-briefing .panel-head { padding: 16px 20px; background: #e9dfcb; border-color: #d8cdb8; border-radius: 17px 17px 0 0; }
+  .scenario-step { color: #635436; background: #fff9e9; border-radius: 6px; padding: 3px 6px; font-family: var(--font-mono); font-size: 10px; }
+  .briefing-body { padding: 20px; display: flex; flex-direction: column; gap: 19px; }
+  .panel-briefing .persona-briefing { margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; }
+  .scenario-mode { color: #706039; font-size: 9px; letter-spacing: 1px; font-weight: 700; }
+  .panel-briefing .persona-intro { color: #4b5148; font-size: 12px; line-height: 1.65; margin: 8px 0; }
+  .panel-briefing .persona-intro strong { color: var(--ink); }
+  .scenario-guidance { font-size: 11px; color: #6d6b5c; line-height: 1.6; margin: 0; }
+  .panel-briefing .account-block { display: flex; flex-direction: column; align-items: stretch; gap: 5px; padding: 15px; background: #fffdf7; border: 1px solid #e2d8c5; border-radius: 12px; }
+  .panel-briefing .account-block > * { text-align: left; }
+  .panel-briefing .label-caps { font-size: 9px; }
+  .panel-briefing .account-name { font-size: 13px; }
+  .panel-briefing .account-contact { font-size: 11px; }
+  .panel-briefing .account-invoice-row { gap: 5px; margin-top: 8px; }
+  .panel-briefing .invoice-id { font-size: 11px; overflow-wrap: anywhere; }
+  .panel-briefing .pill { font-size: 9px; }
+  .panel-briefing .account-amount { font-size: 20px; margin-top: 7px; line-height: 1.3; }
+  .panel-briefing .deferred-note { font-size: 10px; line-height: 1.6; margin-top: 6px; padding-top: 8px; }
+  .scenario-prompts h3 { font-size: 12px; font-weight: 600; margin: 0 0 10px; }
+  .panel-briefing .persona-suggestions { gap: 9px; }
+  .panel-briefing .persona-suggestions li { color: #4b5148; font-size: 11px; line-height: 1.6; padding-left: 17px; }
+  .panel-briefing .persona-suggestions li::before { content: "↗"; color: #827044; }
+  .panel-right .transcript-label { display: none; }
+  #transcriptBody { padding: 20px; }
+  @media (max-width: 1199px) {
+    .columns { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 18px; }
+    .panel-center { grid-column: 1; grid-row: 1; height: 640px; }
+    .panel-briefing { grid-column: 2; grid-row: 1; min-height: 640px; }
+    .panel-right { grid-column: 1 / -1; grid-row: 2; height: 480px; }
+    .panel-right .transcript-label { display: inline; }
+  }
+  @media (max-width: 699px) {
+    .columns { grid-template-columns: minmax(0, 1fr); }
+    .panel-briefing { grid-column: 1; grid-row: 1; min-height: 0; }
+    .panel-center { grid-column: 1; grid-row: 2; height: 580px; }
+    .panel-right { grid-column: 1; grid-row: 3; height: 460px; }
+    .briefing-body { padding: 18px; gap: 18px; }
+    .panel-briefing .persona-intro { font-size: 13px; }
+    .panel-briefing .persona-suggestions li { font-size: 12px; }
+    .ripple-wrap { min-height: 140px; flex-basis: 140px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     .ripple-stage .ripple-ring.r1 { opacity: .35; }
@@ -1243,24 +1310,6 @@
     </div>
   </div>
 
-  <section class="account-summary" aria-label="Account overview">
-    <div class="sub" id="headerSub">Press start for a real call, through the real pipeline.</div>
-        <div class="account-block" id="accountBlock">
-          <span class="label-caps">Account overview</span>
-          <div class="account-name" id="acctName">Waiting for a replay to start…</div>
-          <div class="account-contact" id="acctContact">—</div>
-          <div class="account-invoice-row">
-            <span class="invoice-id" id="acctInvoiceId">—</span>
-            <span class="pill pill-bucket" id="acctBucket" style="display:none;"></span>
-          </div>
-          <div class="account-amount" id="acctAmount">—</div>
-          <div class="account-overdue" id="acctOverdue"></div>
-          <div class="deferred-note" id="acctDeferredNote" style="display:none;"></div>
-          <div class="deferred-note" id="acctHistoricalNote" style="display:none;"></div>
-        </div>
-
-  </section>
-
   <main class="columns" aria-label="Voice workspace">
 
     <!-- CENTER: the call -->
@@ -1274,19 +1323,6 @@
         </span>
         <span class="center-timer" id="centerTimer">00:00</span>
       </div>
-
-      <p class="allowance-note" id="fallbackNote" style="display:none;"></p>
-
-      <span class="who-line" id="whoLine">No call in progress</span>
-      <span class="account-line" id="accountLine"></span>
-
-      <details class="persona-briefing" id="personaBriefing" style="display:none;">
-        <summary>Your role in this demo <span>View briefing</span></summary>
-        <p class="persona-intro" id="personaIntro"></p>
-        <ul class="persona-suggestions" id="personaSuggestions"></ul>
-      </details>
-
-      <p class="allowance-note" id="allowanceNote" style="display:none;"></p>
 
       <div class="cap-bar-wrap" id="capBarWrap">
         <div class="cap-bar-label"><span>Call length</span><span id="capBarText">00:00 / 03:00 cap</span></div>
@@ -1333,19 +1369,53 @@
         </button>
         <button type="button" class="round-btn end" id="endCallBtn" aria-label="End call" disabled style="display:none;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.9 13.5c4.5-4.7 11.7-4.7 16.2 0a1.3 1.3 0 01-.1 1.9l-1.9 1.6a1.3 1.3 0 01-1.7-.1l-1.3-1.3a1 1 0 00-.6-.3 11.6 11.6 0 00-5 0 1 1 0 00-.6.3l-1.3 1.3a1.3 1.3 0 01-1.7.1L4 15.4a1.3 1.3 0 01-.1-1.9z"/></svg>
+          <span>End call</span>
         </button>
-        <button type="button" class="round-btn start" id="startCallBtn" aria-label="Start call" disabled>
+        <button type="button" class="round-btn start" id="startCallBtn" aria-label="Talk to the agent" disabled>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5c0 8.3 6.7 15 15 15h1a2 2 0 002-2v-2.2a1 1 0 00-.8-1L17 13.5a1 1 0 00-1 .3l-1.2 1.4a12.7 12.7 0 01-5-5L11.2 9a1 1 0 00.3-1L10 3.8a1 1 0 00-1-.8H6a2 2 0 00-2 2z"/></svg>
+          <span>Talk to the agent</span>
         </button>
         <button type="button" class="round-btn" id="muteAgentBtn" aria-label="Mute agent audio" disabled>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M11.2 5L6.6 9H3.2v6h3.4l4.6 4z"/><path d="M15.4 9.6a3.6 3.6 0 010 4.8"/><path d="M18.2 7.2a7.4 7.4 0 010 9.6"/></svg>
         </button>
       </div>
 
-      <button type="button" class="replay-link-inline" id="replayLinkInline">Or see a replay instead</button>
+      <button type="button" class="replay-link-inline" id="replayLinkInline">Replay a demo</button>
 
+      <p class="allowance-note" id="fallbackNote" style="display:none;"></p>
+      <p class="allowance-note" id="allowanceNote" style="display:none;"></p>
       <p class="mic-note" id="micNote">Checking what's available…</p>
       <p class="record-note">Demo calls are never recorded or stored as audio.</p>
+      </div>
+    </section>
+
+    <!-- MIDDLE: visible customer context and instructions -->
+    <section class="panel panel-briefing" aria-labelledby="scenarioTitle">
+      <div class="panel-head"><span class="scenario-step" aria-hidden="true">01</span><span class="title" id="scenarioTitle">Instructions</span></div>
+      <div class="briefing-body">
+        <div class="persona-briefing" id="personaBriefing">
+          <span class="scenario-mode" id="scenarioMode">YOU'RE THE CUSTOMER</span>
+          <p class="persona-intro" id="personaIntro">The agent will call about an overdue invoice. Respond as the customer.</p>
+          <p class="scenario-guidance" id="scenarioGuidance">Speak naturally. There is no script to follow.</p>
+        </div>
+        <div class="account-block" id="accountBlock">
+          <span class="label-caps">Account overview</span>
+          <div class="account-name" id="acctName">Waiting for a replay to start…</div>
+          <div class="account-contact" id="acctContact">—</div>
+          <div class="account-invoice-row">
+            <span class="invoice-id" id="acctInvoiceId">—</span>
+            <span class="pill pill-bucket" id="acctBucket" style="display:none;"></span>
+          </div>
+          <div class="account-amount" id="acctAmount">—</div>
+          <div class="account-overdue" id="acctOverdue"></div>
+          <div class="deferred-note" id="acctDeferredNote" style="display:none;"></div>
+          <div class="deferred-note" id="acctHistoricalNote" style="display:none;"></div>
+        </div>
+
+        <div class="scenario-prompts">
+          <h3 id="suggestionsTitle">Things you can try</h3>
+          <ul class="persona-suggestions" id="personaSuggestions"></ul>
+        </div>
       </div>
     </section>
 
@@ -1360,7 +1430,7 @@
         <span class="lang-pill">ENGLISH</span>
       </div>
       <div class="panel-body" id="transcriptBody" aria-live="polite">
-        <div class="transcript-meta">No transcript yet — press start to replay a saved call.</div>
+        <div class="transcript-meta">Start a live call or replay a saved conversation. Each turn will appear here.</div>
       </div>
       <div class="transcript-footer">
         <span class="dot idle" id="transcriptDot"></span>
@@ -2042,9 +2112,6 @@
     unsettleLayout();
     document.getElementById("liveDot").className = "dot";
     setText("livePillText", "In call");
-    setText("headerSub", "Connecting to the real pipeline…");
-    setText("whoLine", "Connecting…");
-    setText("accountLine", "");
 
     setText("acctName", "Loading…");
     setText("acctContact", "—");
@@ -2074,7 +2141,7 @@
     document.getElementById("endCallBtn").disabled = false;
     setText("micNote", mode === "live" ? "Live microphone active — this is a real call." : "Replaying a saved call — no live microphone or audio in this pass.");
 
-    document.getElementById("personaBriefing").style.display = "none";
+    renderPersonaBriefing(null, mode);
     document.getElementById("allowanceNote").style.display = "none";
     document.getElementById("micCheck").style.display = "none";
     document.getElementById("replayLinkInline").style.display = "none";
@@ -2095,17 +2162,11 @@
   function applyAccountFields(a) {
     currentContactName = a.contact_name || "Customer";
 
-    var subParts = [a.customer_name, a.contact_name];
-    if (a.primary_invoice) subParts.push("invoice " + a.primary_invoice.invoice_number);
-    setText("headerSub", subParts.join(" · "));
-    setText("whoLine", "Calling " + a.contact_name + " · " + a.customer_name);
-
     setText("acctName", a.customer_name);
     setText("acctContact", a.contact_role ? a.contact_name + " · " + a.contact_role : a.contact_name);
 
     if (a.primary_invoice) {
       var pi = a.primary_invoice;
-      setText("accountLine", pi.invoice_number + " · ₹" + pi.amount.toLocaleString("en-IN") + " outstanding · " + pi.days_overdue + " days overdue");
       setText("acctInvoiceId", pi.invoice_number);
       setText("acctAmount", "₹" + pi.amount.toLocaleString("en-IN") + " outstanding");
       setText("acctOverdue", pi.days_overdue + " days overdue");
@@ -2124,6 +2185,7 @@
       hn.textContent = a.historical_note;
       hn.style.display = "block";
     }
+    renderPersonaBriefing(a);
   }
 
   function applyMeta(payload) {
@@ -2141,23 +2203,42 @@
     "Try asking for a discount — see how the agent responds"
   ];
 
-  function renderPersonaBriefing(a) {
-    applyAccountFields(a);
-    var intro = document.getElementById("personaIntro");
-    intro.innerHTML = "You'll be playing <strong></strong>, " + (a.contact_role || "the contact") +
-      " at <strong></strong>. The agent is calling about an overdue invoice.";
-    var strongs = intro.querySelectorAll("strong");
-    strongs[0].textContent = a.contact_name;
-    strongs[1].textContent = a.customer_name;
+  var briefingMode = "live";
+  var briefingAccount = null;
+  var REPLAY_SUGGESTIONS = [
+    "Notice how the agent confirms who it is speaking with",
+    "Listen for a specific payment date and amount",
+    "Watch captured actions appear during the conversation",
+    "Follow the specialist analysis and final write decision"
+  ];
 
+  function renderPersonaBriefing(a, mode) {
+    if (a) briefingAccount = a;
+    if (mode) briefingMode = mode;
+    var replay = briefingMode === "replay";
+    setText("scenarioMode", replay ? "YOU'RE WATCHING A SAVED CALL" : "YOU'RE THE CUSTOMER");
+    setText("scenarioGuidance", replay
+      ? "No microphone needed. Follow the conversation, then see how it becomes a decision."
+      : "Speak naturally. There is no script to follow — these are optional ideas to explore.");
+    setText("suggestionsTitle", replay ? "What to listen for" : "Things you can try");
+    var intro = document.getElementById("personaIntro");
+    if (briefingAccount) {
+      intro.innerHTML = (replay ? "A saved conversation with <strong></strong>, " : "You'll be playing <strong></strong>, ") +
+        "<span></span>. The agent is calling about an overdue invoice.";
+      intro.querySelector("strong").textContent = briefingAccount.contact_name;
+      intro.querySelector("span").textContent = briefingAccount.contact_role || "the customer";
+    } else {
+      intro.textContent = replay
+        ? "Watch the agent work through an overdue invoice with a customer."
+        : "The agent will call about an overdue invoice. Respond as the customer.";
+    }
     var list = document.getElementById("personaSuggestions");
     list.innerHTML = "";
-    PERSONA_SUGGESTIONS.forEach(function (text) {
+    (replay ? REPLAY_SUGGESTIONS : PERSONA_SUGGESTIONS).forEach(function (text) {
       var li = document.createElement("li");
       li.textContent = text;
       list.appendChild(li);
     });
-    document.getElementById("personaBriefing").style.display = "block";
   }
 
   function handleTurn(payload) {
@@ -2253,7 +2334,8 @@
     eventSource.onerror = function () {
       if (eventSource) { eventSource.close(); eventSource = null; }
       stopClock();
-      setText("statusLine", "Connection lost — press start to try again.");
+      setText("statusLine", "Connection lost — choose Replay a demo to try again.");
+      document.getElementById("replayLinkInline").style.display = "";
       document.getElementById("startCallBtn").style.display = "flex";
       document.getElementById("endCallBtn").style.display = "none";
       settleLayout();
@@ -2470,7 +2552,7 @@
   function renderAllowanceNote(status) {
     var el = document.getElementById("allowanceNote");
     if (!status.available) {
-      el.textContent = status.message + " Press start to see a replay instead — a real saved call through the full pipeline.";
+      el.textContent = status.message + " Choose Replay a demo to see a real saved call through the full pipeline.";
       el.style.display = "block";
     } else if (status.remaining_today <= 1) {
       el.textContent = "Just " + status.remaining_today + " of " + status.daily_ceiling +
@@ -2491,27 +2573,32 @@
       var resp = await fetch("/demo/live/status");
       var status = await resp.json();
       // Refresh next-call availability without replacing the completed call's context.
-      if (!preserveResult) renderPersonaBriefing(status.account);
+      if (!preserveResult) {
+        briefingMode = status.available ? "live" : "replay";
+        applyAccountFields(status.account);
+      }
       renderAllowanceNote(status);
 
       if (status.available) {
         document.getElementById("micCheck").style.display = "flex";
         startBtn.disabled = true;
         startBtn.title = "Test your microphone first";
-        startBtn.setAttribute("aria-label", "Start call");
-        setText("micNote", "Test your microphone, then start a real call.");
+        startBtn.setAttribute("aria-label", "Talk to the agent");
+        setText("micNote", "Test your microphone, then choose Talk to the agent.");
       } else {
         document.getElementById("micCheck").style.display = "none";
-        startBtn.disabled = false;
-        startBtn.setAttribute("aria-label", "Start a replay");
-        setText("micNote", "Live calling isn't available right now — Start plays a real call through the real pipeline instead.");
+        startBtn.disabled = true;
+        startBtn.title = status.message || "Live calling is unavailable right now";
+        setText("micNote", "Live calling is unavailable. Choose Replay a demo to explore a saved conversation.");
       }
       if (!preserveResult) setText("statusLine", "Ready.");
     } catch (err) {
       // Status check itself failing must never brick the page — fail open to replay.
       document.getElementById("micCheck").style.display = "none";
-      startBtn.disabled = false;
-      setText("micNote", "Start plays a real call through the real pipeline.");
+      startBtn.disabled = true;
+      startBtn.title = "Live availability could not be checked";
+      if (!preserveResult) renderPersonaBriefing(null, "replay");
+      setText("micNote", "Live availability could not be checked. You can still replay a demo.");
     }
   }
 
