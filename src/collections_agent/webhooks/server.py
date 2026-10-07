@@ -21,13 +21,18 @@ from typing import Any
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, StreamingResponse
 
+from collections_agent.config import get_settings
+from collections_agent.webhooks import demo_sessions
 from collections_agent.webhooks.auth import verify_vapi_secret
+from collections_agent.webhooks.demo_fixtures import DEMO_ACCOUNT_ID, DEMO_INVOICES
 from collections_agent.webhooks.demo_live import (
     build_live_call_config,
     handle_end_of_call,
     live_status,
     live_stream,
+    owned_session,
     record_tool_call,
+    session_action,
 )
 from collections_agent.webhooks.demo_replay import SCENARIOS, replay_stream
 from collections_agent.webhooks.handlers import UnknownToolError, dispatch
@@ -65,6 +70,10 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
     body = await request.json()
     _log_raw_request("/vapi/tool-calls", body)
     message = body.get("message", {})
+    if message.get("type") == "end-of-call-report":
+        asyncio.create_task(_run_end_of_call_safely(message))
+        return {"status": "ok"}
+    session_id = demo_sessions.correlate(get_settings().demo_state_db_path, message)
     tool_calls = message.get("toolCallList") or message.get("toolCalls") or []
 
     results = []
@@ -72,8 +81,32 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
         call_id = call.get("id")
         name = call.get("name") or call.get("function", {}).get("name")
         arguments = _parse_arguments(call.get("arguments") or call.get("function", {}).get("arguments"))
+        cached = (
+            demo_sessions.tool_result(get_settings().demo_state_db_path, session_id, call_id)
+            if session_id and call_id
+            else None
+        )
+        if cached is not None:
+            results.append({"toolCallId": call_id, "result": cached})
+            continue
         try:
-            result = dispatch(name, arguments)
+            if session_id and name == "lookup_invoices":
+                result = {
+                    "account_id": DEMO_ACCOUNT_ID,
+                    "invoices": [
+                        {
+                            "invoice_number": inv.invoice_number,
+                            "amount": inv.amount,
+                            "outstanding": inv.outstanding(),
+                            "due_date": inv.due_date.isoformat(),
+                            "status": inv.status.value,
+                        }
+                        for inv in DEMO_INVOICES
+                        if arguments.get("account_id") == DEMO_ACCOUNT_ID
+                    ],
+                }
+            else:
+                result = dispatch(name, arguments)
         except UnknownToolError:
             logger.warning("unknown tool call: %s", name)
             result = {"error": f"unknown tool: {name}"}
@@ -85,7 +118,12 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
             # page happens to be listening. Never lets a demo-console problem affect the actual
             # webhook response Vapi is waiting on.
             try:
-                record_tool_call(name, arguments, result)
+                if session_id:
+                    if call_id:
+                        demo_sessions.tool_result(
+                            get_settings().demo_state_db_path, session_id, call_id, result
+                        )
+                    record_tool_call(session_id, name, arguments, result)
             except Exception:
                 logger.exception("failed to push live demo tool-call event")
         results.append({"toolCallId": call_id, "result": result})
@@ -135,6 +173,15 @@ async def demo_page() -> FileResponse:
     return FileResponse(DEMO_PAGE, media_type="text/html")
 
 
+@app.get("/demo/assets/vapi-web-2.7.1.js")
+async def demo_voice_sdk() -> FileResponse:
+    return FileResponse(
+        DEMO_PAGE.parent / "vapi-web-2.7.1.js",
+        media_type="application/javascript",
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+    )
+
+
 @app.get("/demo/replay/{scenario}")
 async def demo_replay_endpoint(scenario: str) -> StreamingResponse:
     if scenario not in SCENARIOS:
@@ -146,7 +193,7 @@ async def demo_replay_endpoint(scenario: str) -> StreamingResponse:
     )
 
 
-@app.get("/demo/live/config")
+@app.post("/demo/live/config")
 async def demo_live_config(request: Request) -> JSONResponse:
     return await build_live_call_config(request)
 
@@ -156,10 +203,16 @@ async def demo_live_status(request: Request) -> JSONResponse:
     return await live_status(request)
 
 
-@app.get("/demo/live")
-async def demo_live_endpoint() -> StreamingResponse:
+@app.post("/demo/live/{session_id}/{action}")
+async def demo_live_action(request: Request, session_id: str, action: str):
+    return await session_action(request, session_id, action)
+
+
+@app.get("/demo/live/{session_id}")
+async def demo_live_endpoint(request: Request, session_id: str) -> StreamingResponse:
+    owned_session(request, session_id)
     return StreamingResponse(
-        live_stream(),
+        live_stream(request, session_id),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )

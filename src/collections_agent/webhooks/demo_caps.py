@@ -9,11 +9,10 @@ unless `demo_live.py` has already decided a call is allowed (see its module docs
 Day boundary for the daily ceiling is the UTC calendar day — simple and deterministic,
 not the visitor's local day.
 
-Known limitation, accepted not fixed (see docs/SHIP_PLAN.md): `record_call_cost` attributes
-the real Vapi cost to whichever row is "most recent with no cost yet," which is only correct
-if calls are processed one at a time — the same single-caller assumption `demo_live.py`'s
-live SSE channel already documents. True concurrent calls from different visitors would
-misattribute cost between their rows.
+The legacy record_call_start/record_call_cost helpers remain for compatibility. Browser live
+sessions now insert and update this ledger by an explicit usage row ID in demo_sessions.py,
+so duplicate or delayed reports cannot charge another caller. Only connected calls count.
+The public browser key is not an abuse-proof provider spending boundary; see the live plan.
 """
 
 from __future__ import annotations

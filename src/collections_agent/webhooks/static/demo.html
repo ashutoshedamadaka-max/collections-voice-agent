@@ -1263,6 +1263,21 @@
     .ripple-wrap { min-height: 140px; flex-basis: 140px; }
   }
 
+
+  .instruction-modes { display: flex; gap: 4px; padding: 4px; background: #e6decc; border-radius: 9px; }
+  .instruction-modes button { flex: 1; border: 0; border-radius: 6px; padding: 8px 5px; background: transparent; color: #575444; font: inherit; font-size: 10px; cursor: pointer; }
+  .instruction-modes button[aria-pressed="true"] { background: #fffdf7; color: #343a32; box-shadow: 0 1px 4px #54472b16; }
+  .instruction-steps { margin: 12px 0 0; padding-left: 18px; color: #4b5148; font-size: 11px; line-height: 1.65; }
+  .instruction-steps li + li { margin-top: 6px; }
+  .instruction-after { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid #d8cdb8; font-size: 10px; color: #6d6b5c; line-height: 1.6; }
+  .round-btn.muted { background: #773d3d; color: #fff; box-shadow: inset 0 0 0 1px #ffb2a8; }
+  .briefing-body { gap: 16px; }
+  .panel-center, .panel-right { height: 830px; }
+  .panel-center { max-height: calc(100dvh - 32px); }
+  .panel-briefing { min-height: 830px; }
+  @media (max-width: 1199px) { .panel-center { height: 830px; } .panel-right { height: 480px; } }
+  @media (max-width: 699px) { .panel-center { height: 580px; } .panel-briefing { min-height: 0; } .panel-right { height: 460px; } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     .ripple-stage .ripple-ring.r1 { opacity: .35; }
@@ -1393,10 +1408,15 @@
     <section class="panel panel-briefing" aria-labelledby="scenarioTitle">
       <div class="panel-head"><span class="scenario-step" aria-hidden="true">01</span><span class="title" id="scenarioTitle">Instructions</span></div>
       <div class="briefing-body">
+        <div class="instruction-modes" aria-label="Instruction mode">
+          <button type="button" id="instructionsLive" aria-pressed="true">Talk to the agent</button>
+          <button type="button" id="instructionsReplay" aria-pressed="false">Replay a demo</button>
+        </div>
         <div class="persona-briefing" id="personaBriefing">
           <span class="scenario-mode" id="scenarioMode">YOU'RE THE CUSTOMER</span>
           <p class="persona-intro" id="personaIntro">The agent will call about an overdue invoice. Respond as the customer.</p>
           <p class="scenario-guidance" id="scenarioGuidance">Speak naturally. There is no script to follow.</p>
+          <ol class="instruction-steps" id="instructionSteps"></ol>
         </div>
         <div class="account-block" id="accountBlock">
           <span class="label-caps">Account overview</span>
@@ -1415,6 +1435,7 @@
         <div class="scenario-prompts">
           <h3 id="suggestionsTitle">Things you can try</h3>
           <ul class="persona-suggestions" id="personaSuggestions"></ul>
+          <p class="instruction-after">After the call, we'll move to Call intelligence. Analysis takes a moment; your transcript stays available.</p>
         </div>
       </div>
     </section>
@@ -1445,7 +1466,7 @@
       <div><span class="eyebrow">FROM CONVERSATION TO ACTION</span><h2 id="intelligenceTitle">Call intelligence</h2></div>
       <span class="section-caption">Captured facts · specialist analysis · write decision</span>
     </div>
-    <p class="panel-subhead">This is what gets written to the ledger — nothing here is spoken back with more certainty than the system actually has.</p>
+    <p class="panel-subhead">Preview of what would be written to the ledger — nothing here is spoken back with more certainty than the system actually has.</p>
     <div class="intelligence-grid">
       <section class="insight-panel" aria-label="What the agent captured">
                 <div id="capturedSection">
@@ -1751,7 +1772,7 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+<script src="/demo/assets/vapi-web-2.7.1.js"></script>
 <script>
 (function () {
   "use strict";
@@ -2198,8 +2219,8 @@
 
   var PERSONA_SUGGESTIONS = [
     "Say it's pending approval with your finance team",
-    "Give a specific payment date if asked",
-    "Ask what happens if you dispute the invoice",
+    "Offer a specific payment date and amount if asked",
+    "Dispute the invoice or ask for a callback",
     "Try asking for a discount — see how the agent responds"
   ];
 
@@ -2216,10 +2237,20 @@
     if (a) briefingAccount = a;
     if (mode) briefingMode = mode;
     var replay = briefingMode === "replay";
+    document.getElementById("instructionsLive").setAttribute("aria-pressed", String(!replay));
+    document.getElementById("instructionsReplay").setAttribute("aria-pressed", String(replay));
+    var steps = document.getElementById("instructionSteps");
+    steps.innerHTML = "";
+    (replay ? ["Choose Replay a demo on the voice panel. No microphone is needed.",
+      "Follow the transcript and captured actions as the saved conversation unfolds."] :
+      ["Test your microphone, allow access, then choose Talk to the agent. Headphones can help avoid echo.",
+       "Listen to the opening and answer as the customer in your own words. No script is needed.",
+       "Use the microphone and speaker buttons to mute. Choose End call when you're finished."]
+    ).forEach(function (text) { var li = document.createElement("li"); li.textContent = text; steps.appendChild(li); });
     setText("scenarioMode", replay ? "YOU'RE WATCHING A SAVED CALL" : "YOU'RE THE CUSTOMER");
     setText("scenarioGuidance", replay
       ? "No microphone needed. Follow the conversation, then see how it becomes a decision."
-      : "Speak naturally. There is no script to follow — these are optional ideas to explore.");
+      : "A real conversation through your browser microphone, up to three minutes.");
     setText("suggestionsTitle", replay ? "What to listen for" : "Things you can try");
     var intro = document.getElementById("personaIntro");
     if (briefingAccount) {
@@ -2302,11 +2333,11 @@
 
     var isAuto = payload.write_decision === "auto_write";
     setText("livePillText", isAuto ? "Settled" : "Held for review");
-    setText("statusLine", isAuto ? "Written to the ledger" : "Held for human review");
+    setText("statusLine", isAuto ? "Ready for the ledger · demo preview" : "Held for human review");
     var quoteEl = document.getElementById("callQuote");
     quoteEl.style.display = "block";
     quoteEl.textContent = isAuto
-      ? "Written to the ledger — no human review needed."
+      ? "Ready for the ledger — preview only in this demo."
       : "Held for human review — " + payload.reason_label + ".";
 
     document.getElementById("startCallBtn").style.display = "flex";
@@ -2320,6 +2351,9 @@
   }
 
   function startReplay(scenarioKey) {
+    if (["connecting", "active", "analyzing"].indexOf(livePhase) !== -1) return;
+    stopMicTest();
+    setLiveControls(false);
     if (eventSource) { eventSource.close(); eventSource = null; }
     currentScenario = scenarioKey;
     resetUiForCall("replay");
@@ -2342,121 +2376,187 @@
     };
   }
 
-  /* ---------------- live call (Pass 3) ---------------- */
-
+  /* ---------------- live browser call ---------------- */
   var vapi = null;
+  var liveSessionId = null;
+  var livePhase = "idle";
+  var liveAttempt = 0;
+  var connectionTimer = null;
+  var analysisTimer = null;
+  var micMuted = false;
+  var speakerMuted = false;
 
-  function initVapiIfNeeded(publicKey) {
-    if (vapi) return vapi;
-    if (!window.vapiSDK) return null;
-    vapi = window.vapiSDK.run({ apiKey: publicKey });
-    // The CDN loader auto-injects its own floating call button; this page drives the call
-    // from its own controls instead, so hide it (same as fixtures/test_call.html.j2).
-    var defaultBtn = document.getElementById("vapi-support-btn");
-    if (defaultBtn) defaultBtn.style.display = "none";
-
-    vapi.on("call-start", function () {
-      setText("statusLine", "Listening");
-      document.getElementById("rippleStage").className = "ripple-stage listening";
-    });
-    vapi.on("call-start-failed", function () {
-      setText("statusLine", "Failed to connect — press start to try again.");
-      document.getElementById("startCallBtn").style.display = "flex";
-      document.getElementById("endCallBtn").style.display = "none";
-      if (eventSource) { eventSource.close(); eventSource = null; }
-      stopClock();
-    });
-    vapi.on("call-end", function () {
-      stopClock();
-      setText("statusLine", "Call ended — waiting for the pipeline…");
-      document.getElementById("endCallBtn").disabled = true;
-      revealCallIntelligence();
-    });
-    vapi.on("speech-start", function () {
-      document.getElementById("rippleStage").className = "ripple-stage speaking";
-      var wave = document.getElementById("waveform");
-      wave.className = "waveform speaking";
-      wave.style.visibility = "visible";
-      setText("statusLine", "Agent speaking");
-    });
-    vapi.on("speech-end", function () {
-      document.getElementById("rippleStage").className = "ripple-stage listening";
-      document.getElementById("waveform").style.visibility = "hidden";
-      setText("statusLine", "Listening");
-    });
-    vapi.on("message", function (message) {
-      if (message && message.type === "transcript" && message.transcriptType === "final" && message.transcript) {
-        handleTurn({
-          role: message.role === "assistant" ? "agent" : "customer",
-          text: message.transcript,
-          seconds_from_start: callStartWallClock ? (Date.now() - callStartWallClock) / 1000 : 0
-        });
-      }
-    });
-    vapi.on("error", function () {
-      setText("statusLine", "Call error — press start to try again.");
-    });
-    return vapi;
+  function clearLiveTimers() {
+    clearTimeout(connectionTimer); connectionTimer = null;
+    clearTimeout(analysisTimer); analysisTimer = null;
   }
 
-  function openLiveEventSource() {
+  function setLiveControls(enabled) {
+    [["muteMicBtn", micMuted, "microphone"], ["muteAgentBtn", speakerMuted, "agent audio"]].forEach(function (item) {
+      var button = document.getElementById(item[0]);
+      button.disabled = !enabled;
+      button.setAttribute("aria-pressed", String(item[1]));
+      button.setAttribute("aria-label", (item[1] ? "Unmute " : "Mute ") + item[2]);
+      button.title = button.getAttribute("aria-label");
+      button.classList.toggle("muted", item[1]);
+    });
+  }
+
+  async function liveAction(sessionId, action, body) {
+    var response = await fetch("/demo/live/" + encodeURIComponent(sessionId) + "/" + action, {
+      method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})
+    });
+    if (!response.ok) throw new Error("The live session could not be updated.");
+  }
+
+  async function liveFailed(message) {
+    var attempt = ++liveAttempt;
+    var sessionId = liveSessionId;
+    livePhase = "failed";
+    clearLiveTimers(); stopClock(); setLiveControls(false);
     if (eventSource) { eventSource.close(); eventSource = null; }
-    eventSource = new EventSource("/demo/live");
-    eventSource.addEventListener("tool_call", function (e) { handleToolCall(JSON.parse(e.data)); });
-    eventSource.addEventListener("call_ended", function (e) { handleCallEnded(JSON.parse(e.data)); });
-    eventSource.addEventListener("specialist", function (e) { resolveSpecialistChip(JSON.parse(e.data)); });
-    eventSource.addEventListener("final", function (e) { handleFinal(JSON.parse(e.data)); });
-    eventSource.onerror = function () {
-      // handleFinal already closes this connection once the call settles; an error before
-      // that means the live channel genuinely dropped.
-      if (eventSource) { eventSource.close(); eventSource = null; }
+    if (vapi) { try { await vapi.stop(); } catch (_) {} }
+    if (sessionId) { try { await liveAction(sessionId, "cancel"); } catch (_) {} }
+    if (attempt !== liveAttempt) return;
+    document.getElementById("startCallBtn").style.display = "flex";
+    document.getElementById("endCallBtn").style.display = "none";
+    document.getElementById("liveDot").className = "dot idle";
+    document.getElementById("rippleStage").className = "ripple-stage idle";
+    document.getElementById("waveform").style.visibility = "hidden";
+    setText("livePillText", "Call unavailable");
+    setText("statusLine", message);
+    setText("transcriptFooterText", "Session ended · any conversation above is preserved");
+    settleLayout();
+    await initPage(true);
+    if (attempt === liveAttempt) setText("statusLine", message);
+  }
+
+  function awaitLiveAnalysis() {
+    if (currentScenario !== "live" || ["failed", "complete", "analyzing"].indexOf(livePhase) !== -1) return;
+    livePhase = "analyzing";
+    clearTimeout(connectionTimer); connectionTimer = null;
+    setLiveControls(false);
+    handleCallEnded({duration_seconds: Math.max(0, Math.round((Date.now() - callStartWallClock) / 1000)), voice_cost: null});
+    setText("statusLine", "Call ended · preparing your analysis");
+    analysisTimer = setTimeout(function () {
+      liveFailed("The call ended, but its results have not arrived. You can replay a demo while we recover.");
+    }, 180000);
+  }
+
+  function initVapi(publicKey) {
+    if (!window.Vapi) throw new Error("Voice calling could not load. Refresh the page and try again.");
+    if (vapi) vapi.removeAllListeners();
+    var instance = new window.Vapi(publicKey);
+    vapi = instance;
+    function current() { return currentScenario === "live" && vapi === instance && ["connecting", "active", "analyzing"].indexOf(livePhase) !== -1; }
+    instance.on("call-start", function () {
+      if (!current() || livePhase !== "connecting") { instance.stop(); return; }
+      livePhase = "active";
+      clearTimeout(connectionTimer); connectionTimer = null;
+      callStartWallClock = Date.now();
+      micMuted = false; speakerMuted = false; setLiveControls(true);
+      setText("statusLine", "Listening · speak as the customer");
+      setText("micNote", "Microphone on · speak naturally. End call whenever you're ready.");
+      document.getElementById("rippleStage").className = "ripple-stage listening";
+    });
+    instance.on("call-end", function () { if (current()) awaitLiveAnalysis(); });
+    instance.on("speech-start", function () {
+      if (!current() || livePhase !== "active") return;
+      document.getElementById("rippleStage").className = "ripple-stage speaking";
+      document.getElementById("waveform").className = "waveform speaking";
+      document.getElementById("waveform").style.visibility = "visible";
+      setText("statusLine", "Agent speaking");
+    });
+    instance.on("speech-end", function () {
+      if (!current() || livePhase !== "active") return;
+      document.getElementById("rippleStage").className = "ripple-stage listening";
+      document.getElementById("waveform").style.visibility = "hidden";
+      setText("statusLine", micMuted ? "Microphone muted" : "Listening · your turn");
+    });
+    instance.on("message", function (message) {
+      if (!current()) return;
+      if (message && message.type === "transcript" && message.transcriptType === "final" && message.transcript) {
+        appendTurn({role: message.role === "assistant" ? "agent" : "customer", text: message.transcript,
+          seconds_from_start: (Date.now() - callStartWallClock) / 1000}, currentContactName);
+      }
+    });
+    instance.on("error", function (error) {
+      if (!current()) return;
+      if (error && /audio-processing|audio-processor/.test(error.type || "")) return;
+      if (livePhase === "active") setText("statusLine", "Connection interrupted · you can end the call and view its results");
+    });
+    return instance;
+  }
+
+  function openLiveEventSource(sessionId) {
+    if (eventSource) eventSource.close();
+    var stream = new EventSource("/demo/live/" + encodeURIComponent(sessionId));
+    eventSource = stream;
+    var lastEventId = 0;
+    function listen(name, handler) {
+      stream.addEventListener(name, function (e) {
+        if (eventSource !== stream) return;
+        if (e.lastEventId && Number(e.lastEventId) <= lastEventId) return;
+        if (e.lastEventId) lastEventId = Number(e.lastEventId);
+        handler(JSON.parse(e.data));
+      });
+    }
+    listen("tool_call", handleToolCall);
+    listen("call_ended", function (payload) { awaitLiveAnalysis(); handleCallEnded(payload); });
+    listen("specialist", resolveSpecialistChip);
+    listen("final", function (payload) { livePhase = "complete"; clearLiveTimers(); setLiveControls(false); handleFinal(payload); });
+    listen("session_error", function (payload) { liveFailed(payload.message); });
+    stream.onerror = function () {
+      if (eventSource === stream) setText("transcriptFooterText", "Reconnecting to call results… Your voice call can continue.");
+      // EventSource reconnects with Last-Event-ID; keep already-rendered results.
     };
   }
 
   async function startLiveCall() {
-    currentScenario = "live";
-    resetUiForCall("live");
+    if (!micCheckPassed || ["connecting", "active", "analyzing"].indexOf(livePhase) !== -1) return;
+    var attempt = ++liveAttempt;
+    currentScenario = "live"; livePhase = "connecting"; liveSessionId = null;
+    resetUiForCall("live"); setLiveControls(false);
+    setText("livePillText", "Connecting");
+    setText("micNote", "Connecting your microphone to Northgate…");
     try {
-      var resp = await fetch("/demo/live/config");
+      if (!window.Vapi) throw new Error("Voice calling could not load. Refresh the page and try again.");
+      var resp = await fetch("/demo/live/config", {method: "POST"});
+      if (!resp.ok) throw new Error("Live calling is temporarily unavailable. Please try again.");
       var config = await resp.json();
-
-      if (!config.available) {
-        // Caps enforced server-side mean the browser never even receives a working
-        // publicKey/assistantOverrides for a call that isn't allowed — fall back to a real
-        // replay instead of a dead end. fallbackNote survives the replay's own UI reset (see
-        // resetUiForCall) so the explanation stays visible for the whole replay, not just a
-        // flash before it starts.
-        stopClock();
-        startReplay("clean");
-        var note = document.getElementById("fallbackNote");
-        note.textContent = (config.message || "Live calling isn't available right now.") +
-          " Here's a real call through the full pipeline instead.";
-        note.style.display = "block";
+      if (attempt !== liveAttempt) {
+        if (config.sessionId) await liveAction(config.sessionId, "cancel");
         return;
       }
-      if (!config.publicKey || !config.assistantId) {
-        setText("statusLine", "Missing Vapi configuration — set VAPI_PUBLIC_KEY / VAPI_ASSISTANT_ID in .env.");
-        document.getElementById("startCallBtn").style.display = "flex";
-        document.getElementById("endCallBtn").style.display = "none";
-        return;
-      }
-      applyMeta({ account: config.account });
-      openLiveEventSource();
-      var instance = initVapiIfNeeded(config.publicKey);
-      if (!instance) {
-        setText("statusLine", "Vapi SDK failed to load — check your network or an ad blocker.");
-        document.getElementById("startCallBtn").style.display = "flex";
-        document.getElementById("endCallBtn").style.display = "none";
-        return;
-      }
-      await instance.start(config.assistantId, config.assistantOverrides);
+      if (!config.available) throw new Error(config.message || "Live calling is unavailable right now.");
+      liveSessionId = config.sessionId;
+      applyMeta({account: config.account});
+      setText("statusLine", "Connecting your call…");
+      openLiveEventSource(liveSessionId);
+      var instance = initVapi(config.publicKey);
+      connectionTimer = setTimeout(function () {
+        liveFailed("The connection took too long. Test your microphone and try again.");
+      }, 45000);
+      var call = await instance.start(config.assistantId, config.assistantOverrides);
+      if (attempt !== liveAttempt) { await instance.stop(); return; }
+      if (!call || !call.id) throw new Error("The voice connection could not be established. Please try again.");
+      await liveAction(liveSessionId, "connected", {callId: call.id});
     } catch (err) {
-      setText("statusLine", "Failed to start the call: " + (err && err.message ? err.message : String(err)));
-      document.getElementById("startCallBtn").style.display = "flex";
-      document.getElementById("endCallBtn").style.display = "none";
-      stopClock();
+      if (attempt === liveAttempt) await liveFailed(err.message || "The call could not connect. Please try again.");
     }
   }
+
+  document.getElementById("muteMicBtn").addEventListener("click", function () {
+    if (!vapi || livePhase !== "active") return;
+    micMuted = !micMuted; vapi.setMuted(micMuted); setLiveControls(true);
+    setText("statusLine", micMuted ? "Microphone muted" : "Listening · microphone on");
+  });
+  document.getElementById("muteAgentBtn").addEventListener("click", function () {
+    if (!vapi || livePhase !== "active") return;
+    speakerMuted = !speakerMuted; vapi.setVolume(speakerMuted ? 0 : 1); setLiveControls(true);
+    setText("micNote", speakerMuted ? "Agent audio muted · the transcript continues below." : "Agent audio on · speak naturally.");
+  });
+
 
   /* ---------------- mic pre-check ---------------- */
 
@@ -2464,8 +2564,10 @@
   var micTestStream = null;
   var micTestRaf = null;
   var micTestAudioCtx = null;
+  var micTestEpoch = 0;
 
   function stopMicTest() {
+    micTestEpoch += 1;
     if (micTestRaf) { cancelAnimationFrame(micTestRaf); micTestRaf = null; }
     if (micTestStream) { micTestStream.getTracks().forEach(function (t) { t.stop(); }); micTestStream = null; }
     if (micTestAudioCtx) { micTestAudioCtx.close(); micTestAudioCtx = null; }
@@ -2476,6 +2578,7 @@
     stopMicTest();
     var btn = document.getElementById("micCheckBtn");
     btn.textContent = "Test microphone";
+    btn.disabled = false;
     btn.classList.remove("passed");
     document.getElementById("micLevelWrap").style.display = "none";
     var fill = document.getElementById("micLevelFill");
@@ -2488,6 +2591,7 @@
     stopMicTest();
     var btn = document.getElementById("micCheckBtn");
     btn.textContent = "Microphone OK";
+    btn.disabled = false;
     btn.classList.add("passed");
     setText("micCheckStatus", "Audio detected — you're good to go.");
     var startBtn = document.getElementById("startCallBtn");
@@ -2496,26 +2600,39 @@
   }
 
   async function startMicCheck() {
-    if (micCheckPassed) return;
+    if (micCheckPassed || micTestStream || micTestRaf) return;
     var btn = document.getElementById("micCheckBtn");
+    btn.disabled = true;
     btn.textContent = "Testing…";
     document.getElementById("micLevelWrap").style.display = "flex";
     setText("micCheckStatus", "Listening — try saying something…");
 
+    var epoch = micTestEpoch;
     try {
-      micTestStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (epoch !== micTestEpoch) { stream.getTracks().forEach(function (t) { t.stop(); }); return; }
+      micTestStream = stream;
     } catch (err) {
       setText("micCheckStatus", "Microphone permission denied or unavailable — check your browser/system settings, then try again.");
       btn.textContent = "Test microphone";
+      btn.disabled = false;
       return;
     }
 
-    var AudioCtx = window.AudioContext || window.webkitAudioContext;
-    micTestAudioCtx = new AudioCtx();
-    var source = micTestAudioCtx.createMediaStreamSource(micTestStream);
-    var analyser = micTestAudioCtx.createAnalyser();
-    analyser.fftSize = 512;
-    source.connect(analyser);
+    try {
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      micTestAudioCtx = new AudioCtx();
+      var source = micTestAudioCtx.createMediaStreamSource(micTestStream);
+      var analyser = micTestAudioCtx.createAnalyser();
+      analyser.fftSize = 512;
+      source.connect(analyser);
+    } catch (_) {
+      stopMicTest();
+      setText("micCheckStatus", "Audio testing could not start. Check your browser's microphone settings and try again.");
+      btn.textContent = "Test microphone";
+      btn.disabled = false;
+      return;
+    }
     var data = new Uint8Array(analyser.frequencyBinCount);
     var deadline = Date.now() + 6000;
 
@@ -2538,6 +2655,7 @@
         stopMicTest();
         setText("micCheckStatus", "No audio detected — check your microphone input, then try again.");
         btn.textContent = "Test microphone";
+        btn.disabled = false;
         return;
       }
       micTestRaf = requestAnimationFrame(tick);
@@ -2546,6 +2664,8 @@
   }
 
   document.getElementById("micCheckBtn").addEventListener("click", startMicCheck);
+  document.getElementById("instructionsLive").addEventListener("click", function () { renderPersonaBriefing(null, "live"); });
+  document.getElementById("instructionsReplay").addEventListener("click", function () { renderPersonaBriefing(null, "replay"); });
 
   /* ---------------- page load: briefing + allowance + cap gating ---------------- */
 
@@ -2574,7 +2694,7 @@
       var status = await resp.json();
       // Refresh next-call availability without replacing the completed call's context.
       if (!preserveResult) {
-        briefingMode = status.available ? "live" : "replay";
+        briefingMode = "live";
         applyAccountFields(status.account);
       }
       renderAllowanceNote(status);
@@ -2607,12 +2727,17 @@
   });
 
   document.getElementById("endCallBtn").addEventListener("click", function () {
-    if (currentScenario === "live" && vapi) {
-      vapi.stop();
+    if (currentScenario === "live") {
+      if (livePhase === "connecting") { liveFailed("Connection cancelled. You can try again."); return; }
+      if (livePhase === "active" && vapi) {
+        awaitLiveAnalysis();
+        Promise.resolve(vapi.stop()).catch(function () { setText("statusLine", "Ending the call…"); });
+      }
+      return; // Keep the session stream open until analysis completes.
     }
     if (eventSource) { eventSource.close(); eventSource = null; }
     stopClock();
-    setText("statusLine", "Ended.");
+    setText("statusLine", "Replay ended.");
     document.getElementById("startCallBtn").style.display = "flex";
     document.getElementById("endCallBtn").style.display = "none";
     document.getElementById("liveDot").className = "dot idle";

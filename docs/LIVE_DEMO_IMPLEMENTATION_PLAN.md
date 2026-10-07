@@ -1,8 +1,46 @@
 # Live demo implementation plan
 
-Status: proposed; live capability changes await discussion and approval. The current UI update
-separates voice controls, Instructions, and Conversation. It does not complete the live-call
-integration described below.
+Status: implementation in progress (2026-10-07). The browser and server integration is built;
+production provider configuration and a spoken acceptance call remain to be verified.
+
+### Activation checklist
+
+Live calls default to disabled (`DEMO_LIVE_ENABLED=false`) until provider authentication is
+ready. On 2026-10-07 the production webhook returned 401 for the local `.env` secret, and
+the saved Vapi assistant had no webhook credential. Automatic approval review blocked sending
+that existing secret to Vapi; explicit user approval is required for that configuration step.
+
+1. With approval, create the Vapi custom bearer credential using the existing local
+   `VAPI_SERVER_SECRET`, header `X-Vapi-Secret`, and `bearerPrefixEnabled=false`. Attach its
+   ID to the saved assistant's `server.credentialId`; do not put it in browser overrides.
+2. In the Render service Environment settings, set `VAPI_SERVER_SECRET` to that same value
+   from the local `.env`, and set `DEMO_LIVE_ENABLED=true`. Never commit or paste the secret
+   into a public document. Redeploy the environment changes.
+3. Verify an empty authenticated tool request succeeds, check `/demo/live/status`, then
+   complete one spoken browser call and verify transcript, tool results and post-call analysis.
+4. Keep replay available throughout. The current rollout flag deliberately blocks calls
+   while the webhook configuration is incomplete.
+
+Implemented: pinned Vapi Web SDK 2.7.1, microphone precheck, mute and playback controls,
+separate live/replay guidance, visitor-owned SQLite sessions, single-call reservations,
+connected-call accounting, resumable SSE events, duplicate webhook protection, authenticated
+end-report routing on both webhook URLs, synthetic invoice lookup, bounded failure states,
+and analysis continuing after hangup. The current demo still shows ledger previews only.
+
+Validation so far: 293 Python tests pass. Browser simulations at 1440, 1280, 1024, 390 and
+320 pixels cover denied microphone access, retry, both mute controls, transcript, hangup,
+late analysis, failed connection and replay fallback. These do not establish real audio quality.
+
+Hosting: keep the existing free Render service for the initial test. SQLite sessions and
+usage survive application restarts with the same filesystem, but not free-service redeploys.
+Before wider public launch, choose a persistent disk or external database; no paid hosting
+change is included here. Run a single service instance until shared storage is configured.
+
+Security boundary: session endpoints enforce visitor ownership, origin checks, caps and one
+reservation at a time. Vapi's public browser key is not a secret; a determined client can call
+the provider API outside this UI. Restrict the public key's allowed origins/assistants in Vapi.
+Strict abuse-proof provider spending limits require server-created calls or provider-side
+restrictions in addition to these application controls.
 
 ## Intended experience
 

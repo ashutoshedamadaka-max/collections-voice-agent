@@ -42,6 +42,8 @@ class Settings(BaseSettings):
     demo_visitor_window_hours: int = 24
     demo_calls_per_visitor_window: int = 1
     demo_state_db_path: str = "fixtures/demo_state.db"
+    # Enable after the deployed webhook secret and saved Vapi credential match.
+    demo_live_enabled: bool = False
 
 
 def get_settings() -> Settings:
