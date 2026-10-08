@@ -1284,6 +1284,106 @@
     .ripple-stage .ripple-ring.r1 { opacity: .35; }
   }
 
+  /* ---------- recruiter-facing project story ---------- */
+  .doc-page { max-width: 1240px; width: calc(100% - 64px); margin: 30px auto 70px; padding: 0; gap: 34px; background: transparent; }
+  .story-hero { position: relative; overflow: hidden; padding: clamp(28px, 4vw, 52px); border: 1px solid #4c736f; border-radius: 22px; color: #f1f8f5; background: radial-gradient(circle at 82% 0%, #29695f 0%, transparent 40%), linear-gradient(125deg, #12383a, #173039 72%); box-shadow: 0 18px 42px #071b2138; }
+  .story-hero::after { content: ""; position: absolute; width: 390px; height: 390px; right: -90px; top: -175px; border: 1px solid #a1e9ce2b; border-radius: 50%; box-shadow: 0 0 0 55px #a1e9ce0a, 0 0 0 110px #a1e9ce08; pointer-events: none; }
+  .story-kicker, .story-index { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.4px; font-weight: 700; color: #91dfc3; }
+  .doc-page .story-hero h1 { max-width: 760px; margin: 14px 0 12px; color: #f2faf6; font-size: clamp(31px, 3.8vw, 49px); line-height: 1.09; letter-spacing: -1.9px; font-weight: 600; }
+  .story-hero > p { position: relative; max-width: 760px; margin: 0; color: #c7dcd9; font-size: 15px; line-height: 1.7; }
+  .story-hero code { color: #d6f5e7; font-family: var(--font-mono); }
+  .story-metrics { position: relative; display: flex; flex-wrap: wrap; gap: 14px 34px; margin-top: 32px; padding-top: 23px; border-top: 1px solid #ffffff2b; }
+  .story-metrics > div { display: flex; flex-direction: column; gap: 1px; min-width: 130px; }
+  .story-metrics strong { font-size: 24px; font-weight: 600; letter-spacing: -.7px; color: #b9f4d9; }
+  .story-metrics span { font-size: 11px; color: #b6cdca; }
+  .story-section { display: flex; flex-direction: column; gap: 18px; }
+  .story-section-head { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: baseline; gap: 4px 22px; padding: 0 2px; }
+  .story-section-head .story-index { grid-row: 1 / 3; color: #9edfc9; }
+  .doc-page .story-section-head h2 { margin: 0; color: #f2f8f6; font: 600 clamp(21px, 2vw, 27px)/1.2 var(--font-ui); letter-spacing: -.5px; }
+  .story-section-head p { margin: 0; color: #b6c9ca; font-size: 12.5px; line-height: 1.5; }
+  .architecture-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .architecture-node { position: relative; min-height: 148px; padding: 19px; display: flex; flex-direction: column; gap: 8px; border: 1px solid #dce6e3; border-radius: 14px; background: #f9fcfa; box-shadow: 0 5px 16px #081f1a12; }
+  .architecture-node:not(:last-child)::after { content: "→"; position: absolute; z-index: 1; right: -15px; top: 48%; width: 18px; color: #5c9a89; font-size: 21px; font-weight: 700; text-align: center; }
+  .architecture-node .node-icon { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 8px; background: #ddf1e8; color: #166353; font: 700 10px var(--font-mono); }
+  .architecture-node strong { color: var(--ink); font-size: 14px; line-height: 1.3; }
+  .architecture-node small { color: var(--text); font-size: 11px; line-height: 1.5; }
+  .story-footnote { margin: 0; padding: 11px 15px; border-left: 2px solid #83d6b4; color: #c3d6d3; background: #ffffff0a; border-radius: 0 8px 8px 0; font-size: 11px; line-height: 1.65; }
+  .story-footnote code { color: #d4f2e5; }
+  .story-card-grid { display: grid; gap: 14px; }
+  .story-card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .story-card { display: flex; flex-direction: column; gap: 12px; padding: 24px; border: 1px solid #dce6e3; border-radius: 16px; background: #fbfcfb; }
+  .story-card-top { display: flex; align-items: center; gap: 9px; font: 700 10px var(--font-mono); letter-spacing: .7px; color: #34766b; }
+  .story-icon { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 8px; background: #e4f4ed; color: #176a59; font: 700 20px var(--font-ui); }
+  .story-card h3, .decision-grid h3, .eval-flow h3, .evidence-panel h3, .field-note-grid h3 { margin: 0; color: var(--ink); font-size: 18px; line-height: 1.25; letter-spacing: -.3px; }
+  .story-card p, .decision-grid p, .eval-flow p, .evidence-panel p, .field-note-grid p { margin: 0; color: var(--text); font-size: 12px; line-height: 1.65; }
+  .story-card-rule { display: flex; flex-direction: column; gap: 5px; margin: auto 0 0; padding: 12px; border-radius: 9px; background: #eaf4ef; color: #315b53; font-size: 11px; line-height: 1.5; }
+  .story-card-rule strong { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; }
+  .story-card-rule code { font: 11px/1.5 var(--font-mono); overflow-wrap: anywhere; }
+  .decision-grid, .field-note-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+  .decision-grid article, .field-note-grid article { padding: 21px 23px; border: 1px solid #dce6e3; border-radius: 13px; background: #fbfcfb; }
+  .decision-grid article > span, .field-note-grid article > span { display: block; margin-bottom: 11px; color: #30806c; font: 700 10px var(--font-mono); letter-spacing: .7px; }
+  .decision-grid h3, .field-note-grid h3 { margin-bottom: 7px; font-size: 15px; }
+  .eval-hero { background: radial-gradient(circle at 80% 0%, #315d66 0%, transparent 42%), linear-gradient(125deg, #153d3f, #203842); }
+  .eval-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+  .eval-flow > div { position: relative; padding: 22px; border: 1px solid #dce6e3; border-radius: 14px; background: #fbfcfb; }
+  .eval-flow > div:not(:last-child)::after { content: "→"; position: absolute; right: -16px; top: 42%; z-index: 1; color: #4d9b83; font-size: 22px; }
+  .eval-step { display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 15px; background: #def2e8; border-radius: 9px; color: #165e50; font: 700 12px var(--font-mono); }
+  .eval-flow h3 { font-size: 15px; margin-bottom: 8px; }
+  .eval-flow code { color: #155d4b; font-family: var(--font-mono); }
+  .scorecard-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .scorecard-grid > div { display: grid; grid-template-columns: 25px 1fr; gap: 3px 10px; padding: 15px; background: #fbfcfb; border: 1px solid #dce6e3; border-radius: 10px; }
+  .scorecard-grid span { grid-row: 1 / 3; color: #36836e; font: 700 10px var(--font-mono); }
+  .scorecard-grid strong { color: var(--ink); font-size: 12px; }
+  .scorecard-grid small { color: var(--muted); font-size: 10.5px; }
+  .eval-risk-grid, .evidence-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .eval-risk-grid > div { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; background: #eaf4ef; border: 1px solid #c8e4d5; border-radius: 10px; color: #345e54; font-size: 11px; line-height: 1.5; }
+  .eval-risk-grid strong { color: #185749; font-size: 13px; }
+  .eval-risk-grid .risk-critical { background: #fff1e9; border-color: #f0cfc0; color: #704b3f; }
+  .eval-risk-grid .risk-critical strong { color: #7a3e2d; }
+  .evidence-panel > div { padding: 21px; background: #fbfcfb; border: 1px solid #dce6e3; border-radius: 13px; }
+  .evidence-mark { display: grid; place-items: center; width: 30px; height: 30px; margin-bottom: 12px; border-radius: 50%; color: #176b56; background: #dcf0e5; font-size: 17px; }
+  .evidence-panel h3 { font-size: 15px; margin-bottom: 7px; }
+  .eval-status { display: flex; gap: 10px; align-items: flex-start; padding: 15px 18px; border: 1px solid #eddfbb; border-radius: 10px; background: #fff8e7; color: #604d2a; font-size: 12px; line-height: 1.6; }
+  .status-dot { flex: 0 0 auto; width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: #c78e36; }
+  .lessons-hero { background: radial-gradient(circle at 80% 0%, #455869 0%, transparent 42%), linear-gradient(125deg, #153d3f, #243540); }
+  .lesson-stack { display: flex; flex-direction: column; gap: 15px; }
+  .lesson-case { overflow: hidden; border: 1px solid #dce6e3; border-radius: 15px; background: #fbfcfb; }
+  .lesson-heading { display: flex; align-items: baseline; gap: 15px; padding: 18px 22px; border-bottom: 1px solid #e6eeea; }
+  .lesson-heading span { flex: 0 0 190px; color: #34806e; font: 700 10px var(--font-mono); letter-spacing: .5px; }
+  .lesson-heading h3 { margin: 0; color: var(--ink); font-size: 18px; line-height: 1.3; }
+  .lesson-chain { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lesson-chain > div { padding: 18px 22px; border-right: 1px solid #e6eeea; }
+  .lesson-chain > div:last-child { border-right: 0; background: #f0f8f3; }
+  .lesson-chain small { display: block; margin-bottom: 8px; color: #387c6c; font: 700 10px var(--font-mono); letter-spacing: .6px; }
+  .lesson-chain p { margin: 0; color: var(--text); font-size: 11.5px; line-height: 1.65; }
+  .lesson-chain code { font-size: 10px; overflow-wrap: anywhere; }
+  .lesson-takeaway { margin: 0; padding: 12px 22px; border-top: 1px solid #e6eeea; color: #205b4b; background: #eaf4ee; font-size: 11.5px; font-weight: 600; line-height: 1.5; }
+  .field-note-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .field-note-grid article { padding: 18px; }
+  @media (max-width: 1050px) {
+    .architecture-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .architecture-node:nth-child(3)::after { display: none; }
+    .story-card-grid.three { grid-template-columns: 1fr; }
+    .field-note-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 700px) {
+    .doc-page { width: calc(100% - 32px); margin: 18px auto 45px; gap: 30px; padding: 0; }
+    .story-hero { padding: 26px 22px; }
+    .doc-page .story-hero h1 { font-size: 32px; letter-spacing: -1px; }
+    .story-hero > p { font-size: 13px; }
+    .story-metrics { gap: 17px 10px; }
+    .story-metrics > div { min-width: calc(50% - 10px); }
+    .story-metrics strong { font-size: 19px; }
+    .story-section-head { grid-template-columns: 1fr; gap: 6px; }
+    .story-section-head .story-index { grid-row: auto; }
+    .architecture-flow, .eval-flow, .decision-grid, .scorecard-grid, .eval-risk-grid, .evidence-panel, .field-note-grid, .lesson-chain { grid-template-columns: 1fr; }
+    .architecture-node { min-height: 0; }
+    .architecture-node:not(:last-child)::after, .eval-flow > div:not(:last-child)::after { right: 50%; top: auto; bottom: -19px; transform: rotate(90deg); }
+    .lesson-heading { flex-direction: column; gap: 6px; }
+    .lesson-heading span { flex-basis: auto; }
+    .lesson-chain > div { border-right: 0; border-bottom: 1px solid #e6eeea; }
+  }
+
 </style>
 </head>
 <body>
@@ -1538,230 +1638,133 @@
 
   <!-- ============== HOW IT'S BUILT ============== -->
   <div class="tab-panel" id="tabpanelBuilt" role="tabpanel" aria-labelledby="tabBtnBuilt" hidden>
-  <div class="doc-page">
+    <div class="doc-page">
+      <header class="story-hero">
+        <span class="story-kicker">SYSTEM DESIGN / 01</span>
+        <h1>From overdue invoice to a reviewable decision.</h1>
+        <p>A collections call is useful only if it produces a trustworthy next action. This system decides whom to call, conducts one focused conversation, then turns the transcript into structured evidence.</p>
+        <div class="story-metrics" aria-label="System at a glance">
+          <div><strong>1</strong><span>invoice per call</span></div>
+          <div><strong>3 min</strong><span>hard call limit</span></div>
+          <div><strong>5</strong><span>post-call specialists</span></div>
+          <div><strong>1</strong><span>supervised write decision</span></div>
+        </div>
+      </header>
 
-    <div>
-      <h1>How it's built</h1>
-      <p class="doc-sub">Three stages — pre-call, the call, post-call — and a write-back at the end that an idempotent <code>call_id</code> key makes safe to re-run.</p>
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">01 / ARCHITECTURE</span><h2>One continuous data path</h2><p>The same post-call pipeline handles live calls and saved replays.</p></div>
+        <div class="architecture-flow" aria-label="Account data flows through eligibility, voice call, analysis, and write-back">
+          <div class="architecture-node"><span class="node-icon">01</span><strong>Account data</strong><small>AR sheet · invoices · contact history</small></div>
+          <div class="architecture-node"><span class="node-icon">02</span><strong>Pre-call gate</strong><small>Suppress ineligible accounts · score priority · build context</small></div>
+          <div class="architecture-node"><span class="node-icon">03</span><strong>Voice agent</strong><small>Fixed disclosure · authority check · one invoice</small></div>
+          <div class="architecture-node"><span class="node-icon">04</span><strong>Post-call review</strong><small>Five parallel extractors · supervisor merge</small></div>
+          <div class="architecture-node"><span class="node-icon">05</span><strong>Next action</strong><small>Auto-write or human exception queue</small></div>
+        </div>
+        <p class="story-footnote">Production write-back reconciles rows by <code>call_id</code>, so retrying a call analysis does not duplicate records. The public demo previews the same row shape; it does not write to a customer Sheet.</p>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">02 / EXECUTION</span><h2>Where each decision lives</h2><p>Code handles the fixed rules. Models handle conversation and transcript interpretation. Humans take the high-risk cases.</p></div>
+        <div class="story-card-grid three">
+          <article class="story-card"><div class="story-card-top"><span class="story-icon">⌁</span><span>BEFORE THE CALL</span></div><h3>Eligibility before outreach</h3><p>Code suppresses paid accounts, open disputes, active promises, opt-outs, wrong contacts, cooldowns, out-of-hours calls, and 90+ day debt routed to a person. Every suppression has a logged reason.</p><div class="story-card-rule"><strong>Priority</strong><code>balance × aging × broken-PTP escalation × contactability</code></div><p>The context pack carries contact, invoices, total balance, promise history, disputes, last contact, and language.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon">◉</span><span>DURING THE CALL</span></div><h3>A focused voice conversation</h3><p>Vapi starts with a fixed disclosure and authority check before the model speaks. The agent works the most overdue invoice, asks for a concrete payment commitment when possible, and hands off other invoices.</p><div class="story-card-rule"><strong>Guardrails</strong><span>One question per turn · supplied invoice facts only · three-minute cap</span></div><p>Tool results must be checked before the agent says an action was completed.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon">◇</span><span>AFTER THE CALL</span></div><h3>Extract, validate, route</h3><p>Outcome, promise, dispute, compliance, and summary specialists read the transcript in parallel. Code validates dates, amounts, methods, and arithmetic.</p><div class="story-card-rule"><strong>Supervisor</strong><span>Low confidence or a hard compliance violation sends the call to human review.</span></div><p>A valid result maps to call log, promise, dispute, or exception records.</p></article>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">03 / TRADE-OFFS</span><h2>Design choices worth defending</h2></div>
+        <div class="decision-grid">
+          <article><span>01</span><h3>One invoice, fully handled</h3><p>Early calls tried to cover every invoice and ran out of time. A complete outcome on the oldest debt plus a separate callback is more useful than several partial conversations.</p></article>
+          <article><span>02</span><h3>Arithmetic stays in code</h3><p>The model extracts what the caller said. Deterministic checks decide whether a promise is complete, future-dated, within the balance, and supported by a valid method.</p></article>
+          <article><span>03</span><h3>90+ days goes to a human</h3><p>This is a product boundary for higher-risk conversations, not a limitation of the voice stack.</p></article>
+          <article><span>04</span><h3>Live demo with a replay fallback</h3><p>Server-side spend, daily, and visitor caps protect the finite Vapi balance. When a live call is unavailable, a saved conversation still runs through the actual analysis path.</p></article>
+        </div>
+      </section>
     </div>
-
-    <div class="doc-section">
-      <h2>The three stages</h2>
-      <div class="stage-grid">
-        <div class="stage-card">
-          <span class="stage-num">Stage 1 · Pre-call</span>
-          <h3>Suppression and priority</h3>
-          <p>Pure code, no LLM, costs nothing to run — and the part of the product that does the most work before anyone picks up a phone.</p>
-          <ul>
-            <li>Skip calling if: already paid, a dispute is open, an active promise hasn't come due, the contact opted out or is wrong-party, inside the cooldown window, outside calling hours, or the bucket is 90+ (routed to a human).</li>
-            <li>Every suppression is logged with a reason — "calls we correctly didn't make" is tracked as its own metric.</li>
-            <li>What's left is scored: <code>priority = balance_weight × bucket_weight × ptp_broken_escalation × contactability</code>. A broken promise escalates priority, it doesn't discount it.</li>
-            <li>Output is a context pack: contact, invoices, total outstanding, prior promises and whether they were kept, open disputes, last contact, preferred language.</li>
-          </ul>
-        </div>
-        <div class="stage-card">
-          <span class="stage-num">Stage 2 · The call</span>
-          <h3>Deterministic where it matters</h3>
-          <p>Model-driven only in phrasing and branch detection — everything that must never vary is hard-coded instead.</p>
-          <ul>
-            <li>Disclosure and the authority check are one fixed opening line, spoken before the model runs at all — never reworded, never skipped, never asked twice.</li>
-            <li>Hard 3-minute cap. No amount is ever spoken that isn't already in the context pack.</li>
-            <li>Works exactly one invoice — the most overdue — to a complete outcome, and books a callback for any others instead of racing the clock across all of them.</li>
-          </ul>
-        </div>
-        <div class="stage-card">
-          <span class="stage-num">Stage 3 · Post-call</span>
-          <h3>Five specialists, then a supervisor</h3>
-          <p>Once the call ends, five typed extractors run in parallel against the transcript:</p>
-          <ul>
-            <li><strong>Outcome</strong> — structured result, reason code, next action.</li>
-            <li><strong>Promise validation</strong> — complete, future-dated, within the outstanding balance, valid method. Computed in code from the extraction, never judged by the model.</li>
-            <li><strong>Dispute</strong> — reason code, invoice, routing target.</li>
-            <li><strong>Compliance &amp; QA</strong> — disclosure, authority, permitted statements, discounts/threats, a misstated total.</li>
-            <li><strong>Summary</strong> — a plain 2–3 sentence recap, purely descriptive.</li>
-          </ul>
-          <p>A supervisor merges all five. Anything below the confidence threshold, or any hard compliance violation, is held for human review instead of auto-written — regardless of how confident everything else felt.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="doc-section">
-      <h2>The data path</h2>
-      <div class="flow-row">
-        <div class="flow-step">
-          <span class="flow-title">Pre-call</span>
-          <span class="flow-detail">AR sheet → suppression → priority → context pack</span>
-        </div>
-        <div class="flow-arrow" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </div>
-        <div class="flow-step">
-          <span class="flow-title">The call</span>
-          <span class="flow-detail">Vapi · disclosure → authority → one invoice to resolution</span>
-        </div>
-        <div class="flow-arrow" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </div>
-        <div class="flow-step">
-          <span class="flow-title">Post-call</span>
-          <span class="flow-detail">5 specialists in parallel → supervisor merge</span>
-        </div>
-        <div class="flow-arrow" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </div>
-        <div class="flow-step">
-          <span class="flow-title">Write-back</span>
-          <span class="flow-detail">Call log, PTP register, disputes, exceptions — Sheets as the CRM</span>
-        </div>
-      </div>
-      <p class="flow-caption">Every write is keyed on <code>call_id</code>, so re-running an analysis on the same call never duplicates a row — it reconciles the old one instead (see "What I learned").</p>
-    </div>
-
-    <div class="doc-section">
-      <h2>Design decisions worth defending</h2>
-      <div class="decision-list">
-        <div class="decision-item">
-          <h3>Deterministic in-call, orchestrated after</h3>
-          <p>The call's non-negotiables — disclosure, authority, the 3-minute cap, never speaking a number outside the context pack — are hard-coded, not left to a model to remember mid-conversation. A prompt instruction can be silently weakened by a later refactor (see "What I learned"); a structural guarantee can't. Post-call is the opposite on purpose: five LLM specialists reading the transcript in parallel, because judgment and extraction over unstructured text is exactly what a model is good at. The model's read is trusted for extraction, never for the final word — a confidence gate and a set of hard-violation overrides decide whether anything actually gets written.</p>
-        </div>
-        <div class="decision-item">
-          <h3>One invoice per call</h3>
-          <p>Early builds walked every open invoice in one call and raised the duration cap when it ran out of time. That only relocated the failure — any fixed cap eventually runs out against a chattier customer or a third invoice. The agent now resolves exactly one invoice — the most overdue — to a complete outcome and books a callback for the rest. It also matches how collections actually works: one clean resolution plus a booked callback beats several rushed, half-finished commitments squeezed into one call.</p>
-        </div>
-        <div class="decision-item">
-          <h3>90+ days overdue is never automated</h3>
-          <p>Accounts in the 90+ bucket are routed to a human, full stop. This is a product decision, not a technical limitation — those conversations carry legal and relationship risk an automated caller shouldn't be taking on.</p>
-        </div>
-        <div class="decision-item">
-          <h3>Why the caps and the replay fallback exist</h3>
-          <p>This demo runs against a small, finite Vapi balance, not a production account. Every live call is checked server-side — a spend floor, a daily ceiling, a one-call-per-visitor window — before the browser is ever handed a working call configuration; it never receives a usable key for a call that isn't actually allowed. A visitor who's capped out doesn't hit a dead button: the page falls back to replaying a real saved call through the exact same pipeline instead, so the system is still demonstrated honestly — on recorded input rather than their own voice — rather than just failing closed.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
   </div>
   <!-- /tabpanelBuilt -->
 
   <!-- ============== EVALS ============== -->
   <div class="tab-panel" id="tabpanelEvals" role="tabpanel" aria-labelledby="tabBtnEvals" hidden>
-  <div class="doc-page">
-
-    <div>
-      <h1>Evals</h1>
-      <p class="doc-sub">Specialist agreement with a human labeller, on the only real transcripts this project has. <strong>n = 9.</strong></p>
-    </div>
-
-    <div class="doc-section">
-      <h2>What this is, and isn't</h2>
-      <p class="doc-prose">This eval runs the real post-call pipeline against the nine saved calls in <code>fixtures/raw/</code> and reports how often it agrees with one person's independent judgement of the same calls. That is the entire scope. It is <strong>not</strong>:</p>
-      <ul class="doc-prose" style="margin:0; padding-left:18px;">
-        <li>a kept rate — not enough call volume for one to mean anything</li>
-        <li>an accuracy estimate at production volume</li>
-        <li>a claim about real-world performance — most of these nine calls are synthetic test calls against a fake dataset, not real customers</li>
-      </ul>
-      <p class="doc-prose">Read it as exactly what it is: on nine calls, did the pipeline's judgement match a human's.</p>
-      <p class="doc-prose">Before this, the only thing checking the five specialists was the unit test suite — which checks <strong>code behaviour</strong> given a fixed, hand-written input, not whether a specialist's <strong>judgement</strong> on a real transcript is correct. Nothing measured specialist judgement against ground truth until this.</p>
-    </div>
-
-    <div class="doc-section">
-      <h2>Method</h2>
-      <div class="method-steps">
-        <div class="method-step">
-          <span class="method-num">1</span>
-          <span class="method-body"><strong>Labeling</strong> (<code>label-calls</code>) — one saved call at a time, full transcript and tool calls, judged independently on: outcome type, whether a promise was captured and whether it was complete (amount, date, method, future-dated, within the outstanding balance, valid method), whether a dispute existed, whether any compliance rule was actually broken, and whether the call should have been auto-written or held for review. Labels save immediately per call, resumable, with no pipeline output ever shown while labeling.</span>
+    <div class="doc-page">
+      <header class="story-hero eval-hero">
+        <span class="story-kicker">EVALUATION / 02</span>
+        <h1>Can the pipeline agree with a human reader?</h1>
+        <p>Nine saved calls have independent human labels. The comparison run is still pending, so this page shows the method and the exact evidence boundary rather than invented accuracy numbers.</p>
+        <div class="story-metrics" aria-label="Evaluation status">
+          <div><strong>9 / 9</strong><span>calls labeled locally</span></div>
+          <div><strong>6</strong><span>judged dimensions</span></div>
+          <div><strong>Pending</strong><span>pipeline comparison</span></div>
         </div>
-        <div class="method-step">
-          <span class="method-num">2</span>
-          <span class="method-body"><strong>Comparison</strong> (<code>run-eval</code>) — for every labeled call, runs the real pipeline (the same function the live and replay paths use, not a separate eval-only code path) and compares its output to the label on each dimension. Cached per call so re-running the report doesn't re-spend OpenAI credit.</span>
-        </div>
-        <div class="method-step">
-          <span class="method-num">3</span>
-          <span class="method-body"><strong>Report</strong> — per-specialist agreement (count and percentage per judged dimension); write-decision accuracy split by direction — <em>false holds</em> (should have auto-written, pipeline held it) versus <em>false writes</em> (should have been held, pipeline auto-wrote it — the more dangerous direction); and every disagreement in full, not just the percentage.</span>
-        </div>
-      </div>
-      <p class="doc-prose" style="margin-top:4px;">Field-mapping notes: "promise complete" is scored only on calls where a promise was captured at all, against <code>has_promise and not downgraded_to_soft_commitment</code>. "Compliance violated" uses the exact same hard-violation test the supervisor itself uses to gate write-back — a low QA score alone, with no hard violation, doesn't count. Four of the nine calls belong to an account reassigned when the fake dataset was regenerated; their account facts are recovered from the call's own embedded system prompt rather than a live Sheet row.</p>
-    </div>
+      </header>
 
-    <div class="doc-section">
-      <h2>Results</h2>
-      <div class="results-table-wrap">
-        <table class="results-table">
-          <thead>
-            <tr><th>Dimension</th><th>Agreement</th><th>n</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Outcome type</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>Promise captured</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>Promise complete</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>Dispute existed</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>Compliance violated</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>Write decision (auto-write vs. hold)</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>— false holds</td><td class="pending">pending</td><td class="pending">—</td></tr>
-            <tr><td>— false writes</td><td class="pending">pending</td><td class="pending">—</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="empty-state">Results pending — labeling against the 9 saved calls isn't complete yet. This table fills in once <code>run-eval</code> has numbers to report, not before.</div>
-    </div>
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">01 / METHOD</span><h2>Keep the human answer independent</h2></div>
+        <div class="eval-flow" aria-label="Evaluation process">
+          <div><span class="eval-step">1</span><h3>Read and label</h3><p>One person reads each transcript and tool call without seeing the specialists' answers. Labels save per call and can be resumed.</p></div>
+          <div><span class="eval-step">2</span><h3>Run the real pipeline</h3><p><code>run-eval</code> uses the same post-call function as live and replay calls. Per-call caching avoids repeat API spend.</p></div>
+          <div><span class="eval-step">3</span><h3>Inspect disagreements</h3><p>Compare each field, count false holds and false writes separately, then read each mismatch with its transcript, tool calls, specialist notes, and confidence.</p></div>
+        </div>
+      </section>
 
-  </div>
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">02 / SCORECARD</span><h2>The six questions being scored</h2><p>Agreement will be shown as a count and denominator for each field once the comparison is run.</p></div>
+        <div class="scorecard-grid">
+          <div><span>01</span><strong>Outcome type</strong><small>What happened on the call?</small></div>
+          <div><span>02</span><strong>Promise captured</strong><small>Did the caller commit to pay?</small></div>
+          <div><span>03</span><strong>Promise complete</strong><small>Amount, date, method, valid bounds?</small></div>
+          <div><span>04</span><strong>Dispute existed</strong><small>Was the invoice itself challenged?</small></div>
+          <div><span>05</span><strong>Compliance violated</strong><small>Did a hard rule actually fail?</small></div>
+          <div><span>06</span><strong>Write decision</strong><small>Auto-write or human review?</small></div>
+        </div>
+        <div class="eval-risk-grid">
+          <div><strong>False hold</strong><span>The human would auto-write; the pipeline held it. This creates extra manual work.</span></div>
+          <div class="risk-critical"><strong>False write</strong><span>The human would hold it; the pipeline auto-wrote. This is the more serious error.</span></div>
+        </div>
+        <p class="story-footnote">Promise completeness is scored only when the human label says a promise exists. Hard compliance violations include an unverified contact, unsupported facts, a misstated total, threats, or an offered discount; a low QA score alone does not count. Four historical calls recover account facts from their embedded call prompt because the fake dataset was regenerated. Date checks use each call's recorded date.</p>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">03 / EVIDENCE BOUNDARY</span><h2>What these nine calls can tell us</h2></div>
+        <div class="evidence-panel"><div><span class="evidence-mark">✓</span><h3>Useful for diagnosis</h3><p>They can reveal which transcript judgments disagree with one human label and where to inspect a specialist or prompt.</p></div><div><span class="evidence-mark">—</span><h3>Not a production claim</h3><p>Most calls are synthetic tests against a fake account dataset. Nine calls cannot establish a kept-payment rate or production accuracy.</p></div></div>
+        <div class="eval-status"><span class="status-dot"></span><span><strong>Comparison results not yet published.</strong> As of 8 Oct 2026, all nine labels exist locally, but they are not included in this public demo and no eval-specific pipeline runs have been cached. Results, percentages, and disagreement examples will appear only after the real comparison is run.</span></div>
+      </section>
+    </div>
   </div>
   <!-- /tabpanelEvals -->
 
   <!-- ============== WHAT I LEARNED ============== -->
   <div class="tab-panel" id="tabpanelLearned" role="tabpanel" aria-labelledby="tabBtnLearned" hidden>
-  <div class="doc-page">
+    <div class="doc-page">
+      <header class="story-hero lessons-hero">
+        <span class="story-kicker">FIELD NOTES / 03</span>
+        <h1>The real calls changed the system.</h1>
+        <p>These are incidents from manual testing, recorded in <code>docs/FAILURES.md</code>. Each exposed a gap between a passing implementation and the behavior a caller actually experienced.</p>
+        <div class="story-metrics" aria-label="Lessons at a glance"><div><strong>3</strong><span>deep investigations</span></div><div><strong>6</strong><span>additional field findings</span></div><div><strong>1</strong><span>principle: verify with real calls</span></div></div>
+      </header>
 
-    <div>
-      <h1>What I learned</h1>
-      <p class="doc-sub">From <code>docs/FAILURES.md</code> — real incidents hit during manual testing, kept separate from the design doc because these are things that actually happened, not things planned for.</p>
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">01 / INCIDENTS</span><h2>Three failures that changed the design</h2></div>
+        <div class="lesson-stack">
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-30 · DATA MATCHING</span><h3>A spoken hyphen downgraded a valid promise</h3></div><div class="lesson-chain"><div><small>OBSERVED</small><p>A complete, in-full promise landed in the exception queue with <code>amount_within_outstanding=false</code>.</p></div><div><small>ROOT CAUSE</small><p>The transcript said <code>US-CS/26-27/0002</code>; the account record said <code>USCS/26-27/0002</code>. Exact string matching missed the invoice.</p></div><div><small>CHANGE</small><p>Normalize invoice references to uppercase letters and digits before matching.</p></div></div><p class="lesson-takeaway">Saved-call replay exposed a production-shaped data mismatch that hand-written fixtures had hidden.</p></article>
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-17 · PROMPT BEHAVIOR</span><h3>Passing tests missed two conversation regressions</h3></div><div class="lesson-chain"><div><small>OBSERVED</small><p>The agent bundled amount, date, and method into one turn, then sometimes recorded the full invoice balance without asking what the caller would pay.</p></div><div><small>ROOT CAUSE</small><p>More specific branch wording contradicted the one-question rule. Tests checked that phrases existed, not what the branch instructed the agent to do.</p></div><div><small>CHANGE</small><p>Make each required ask explicit and sequential, with a regression test for the will-pay branch.</p></div></div><p class="lesson-takeaway">A prompt is executable behavior; a green test suite does not prove its branches work in conversation.</p></article>
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-16 · ARITHMETIC</span><h3>The model was asked to verify its own math</h3></div><div class="lesson-chain"><div><small>OBSERVED</small><p>A promise of 365,500 against 85,000 + 280,500 was marked over balance. A separate misstated total passed compliance with a perfect score.</p></div><div><small>ROOT CAUSE</small><p>Both specialists relied on language-model arithmetic where an exact comparison was required.</p></div><div><small>CHANGE</small><p>Keep extraction in the model; validate balance, dates, methods, and stated totals in code.</p></div></div><p class="lesson-takeaway">Use the model to read unstructured speech, then let code decide deterministic facts.</p></article>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">02 / MORE SIGNAL</span><h2>Smaller incidents, concrete fixes</h2></div>
+        <div class="field-note-grid">
+          <article><span>WEBHOOKS</span><h3>Dead air was a routing failure</h3><p>An expired tool endpoint left the caller in silence. Add a pre-call reachability check and a spoken timeout fallback.</p></article>
+          <article><span>TOOL USE</span><h3>Speech is not execution</h3><p>The agent said it logged a dispute without calling the tool. Tighten tool instructions and log raw webhook requests, including no-op requests.</p></article>
+          <article><span>PRIORITY</span><h3>A passing test asserted the wrong rule</h3><p>Broken promises lowered priority until real promise history exercised the formula. They now escalate it.</p></article>
+          <article><span>INTEGRATION</span><h3>The fake backend was too forgiving</h3><p>It accepted a new Sheet field that the real writer silently dropped. Test the real header mapping.</p></article>
+          <article><span>PROVIDER DATA</span><h3>The summary field never arrived</h3><p>Real Vapi payloads showed the built-in summary path was deprecated. A dedicated summary specialist replaced it.</p></article>
+          <article><span>SCOPE</span><h3>Hinglish was cut deliberately</h3><p>It failed the same way on two models. The demo now focuses on reliable English rather than a third unverified rewrite.</p></article>
+        </div>
+      </section>
     </div>
-
-    <div class="doc-section">
-      <h2>Three worth leading with</h2>
-
-      <div class="finding-card">
-        <span class="finding-date">2026-09-30</span>
-        <h3>An invoice-hyphen bug, silently downgrading valid promises</h3>
-        <p>Building the demo's replay mode meant pushing a real saved call through the real pipeline for the first time, instead of hand-written example data. The first real call landed in the exception queue looking like a genuine problem: a complete, correctly-recorded, in-full promise came back <code>amount_within_outstanding=false</code> and downgraded to a soft commitment.</p>
-        <p>Cause: the agent sometimes reads an invoice number back with an inserted hyphen — the transcript has the agent saying "invoice US-CS/26-27/0002," but the Sheet's own <code>invoice_number</code> for that invoice is <code>USCS/26-27/0002</code>, no hyphen. The matching code compared these with exact string equality, so the promise validator could never find the invoice and defaulted to "not within outstanding." A hardcoded demo fixture, written to already match, could never have exposed this — only real data, pushed through the real matching code, did.</p>
-        <p><strong>Fix:</strong> strip every non-alphanumeric character and uppercase both sides before comparing invoice references. Punctuation an invoice number picks up in transit no longer breaks a match the digits and letters otherwise confirm.</p>
-        <div class="finding-lesson">Replay mode wasn't just a demo feature — it was the first thing in this project to run real saved data through real matching code instead of fixtures written to already pass.</div>
-      </div>
-
-      <div class="finding-card">
-        <span class="finding-date">2026-09-17</span>
-        <h3>Two prompt regressions that ~280 passing tests missed</h3>
-        <p>Two real call defects, found the same day on a validation call: (1) the agent asked "what amount, when, and how" as one bundled turn, despite an explicit one-question-per-turn rule — because two other prompt sections, worded more specifically and sitting closer to the model's decision point, contradicted that rule with a compact conjunction. (2) The agent never asked how much the caller would pay at all — it stated the invoice's own outstanding total as fact and recorded the full amount as the promised one without the caller ever confirming it, even though the required-fields text still listed "amount" verbatim.</p>
-        <p>Neither was caught by the then-249 (then 254) passing tests, because every prompt test checked <em>facts</em> (does the right invoice number appear) or isolated <em>phrases</em> (does "one question per turn" appear somewhere) — never whether a specific branch actually instructed asking for each required field, explicitly, as its own question.</p>
-        <p><strong>Fix:</strong> rewrote every compact-conjunction branch into explicit sequential asks, and added a test that locks in the requirement directly: <code>test_will_pay_branch_asks_each_required_promise_field_explicitly</code>.</p>
-        <div class="finding-lesson">A prompt is code that produces behaviour exactly like any other code path — a refactor can silently delete a requirement from a paragraph of English as easily as from a line of Python, with no import error, no type error, nothing but a live call to catch it.</div>
-      </div>
-
-      <div class="finding-card">
-        <span class="finding-date">2026-09-16</span>
-        <h3>Delegating arithmetic to a language model</h3>
-        <p>Two specialist bugs, same root cause. The promise validator's <code>amount_within_outstanding</code> returned <code>false</code> for a promise of 365,500 against invoices totaling exactly 85,000 + 280,500 — at the limit, not over it; the model's comparison was simply wrong. Separately, the compliance reviewer's rubric only caught a number that was fabricated outright, not one that was stated correctly but summed incorrectly — a call with a misstated total scored <code>qa_score: 1.0</code>, no violation noted.</p>
-        <p>Root cause for both: asking an LLM to perform or verify arithmetic. A model that gets 85,000 + 280,500 ≠ 365,500 wrong has no reliable way to also grade whether its own sum is correct — verifying arithmetic is arithmetic.</p>
-        <p><strong>Fix:</strong> the promise validator split into extraction (LLM: what was said) and validation (pure code: is it complete, future-dated, within balance, a valid method — computed deterministically from the extraction and real invoice data). An arithmetic-consistency check moved into compliance as pure code too, comparing every stated total against the actual sum of outstanding balances — not against anything the model said about itself.</p>
-        <div class="finding-lesson">An LLM can extract facts from unstructured text far better than it can verify a computation over those facts — and it produces a plausible-sounding wrong answer rather than an obvious failure. Wherever a specialist's job includes a deterministic comparison, do the comparison in code and hand the model only the facts and the computed result — never ask it to compute or double-check its own arithmetic.</div>
-      </div>
-    </div>
-
-    <div class="doc-section">
-      <h2>More from the failure log</h2>
-      <div class="minor-findings">
-        <div class="minor-finding"><span class="mf-date">2026-09-16</span><span>A dead tunnel produced silence, not an error — an unreachable tool-call webhook fails silently from the caller's perspective, indistinguishable from the agent hanging. Fixed with a pre-call reachability check and a spoken fallback if a tool call times out mid-call.</span></div>
-        <div class="minor-finding"><span class="mf-date">2026-09-16</span><span>The model narrated calling a tool instead of actually calling it — "the tool call succeeded" and "the tool call happened" are not the same claim, and only logging raw webhook requests (not just dispatched ones) can tell them apart.</span></div>
-        <div class="minor-finding"><span class="mf-date">2026-09-17</span><span>A priority-score formula was tested and passing the whole time, and still backwards — the test asserted the exact wrong behaviour, because nothing in the codebase ever supplied real promise history until the step that finally did. "This is tested" and "this has ever run against real data" are different claims.</span></div>
-        <div class="minor-finding"><span class="mf-date">2026-09-17</span><span>A fake test backend that was more permissive than the real one made 200 tests pass while proving nothing about a real header-column bug — a new Sheet column was computed correctly and then silently dropped on write.</span></div>
-        <div class="minor-finding"><span class="mf-date">2026-09-17</span><span>Vapi's call-summary field has never once fired for this project — checked real payloads rather than trusting the documented default, found the whole mechanism marked deprecated, and added a fifth specialist instead of configuring a field that no longer runs.</span></div>
-        <div class="minor-finding"><span class="mf-date">2026-09-29</span><span>Hinglish support was tried twice, failed identically both times on two different models, and was dropped as a scope decision — not a bug waiting for a third rewrite.</span></div>
-      </div>
-    </div>
-
-  </div>
   </div>
   <!-- /tabpanelLearned -->
 
