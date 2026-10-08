@@ -12,6 +12,30 @@ same calls. That is the entire scope. It is **not**:
 
 Read it as exactly what it is: on nine calls, did the pipeline's judgement match a human's.
 
+## First measured run — 2026-10-08
+
+The nine human labels were compared with the current post-call pipeline. These are agreement
+counts against one labeller, not estimates of production accuracy:
+
+| Judged field | Agreement |
+| --- | ---: |
+| Outcome type | 7/9 |
+| Promise captured | 8/9 |
+| Promise complete | 3/5 applicable calls |
+| Dispute existed | 8/9 |
+| Compliance violated | 7/9 |
+| Write decision (auto-write versus human review) | 4/9 |
+
+Six of nine calls disagreed on at least one field. The write-decision mismatches included
+**three false holds** (extra human review) and **two false writes** (the pipeline marked a call
+for auto-write when the human label called for review). The latter is the higher-risk direction.
+The next investigation should focus on outcome classification, dispute routing, promise
+completeness, and compliance false positives before considering unattended write-back. This
+priority is an inference from the small eval, not a claim about prevalence in production.
+
+The labels, cached analyses, and full transcripts stay local; the public demo publishes only
+these aggregate counts.
+
 ## Why this didn't exist before
 
 Before this, the only thing checking the five specialists was the unit test suite

@@ -1331,10 +1331,15 @@
   .eval-flow h3 { font-size: 15px; margin-bottom: 8px; }
   .eval-flow code { color: #155d4b; font-family: var(--font-mono); }
   .scorecard-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-  .scorecard-grid > div { display: grid; grid-template-columns: 25px 1fr; gap: 3px 10px; padding: 15px; background: #fbfcfb; border: 1px solid #dce6e3; border-radius: 10px; }
+  .scorecard-grid > div { display: grid; grid-template-columns: 25px minmax(0, 1fr) auto; gap: 3px 10px; padding: 15px; background: #fbfcfb; border: 1px solid #dce6e3; border-radius: 10px; }
   .scorecard-grid span { grid-row: 1 / 3; color: #36836e; font: 700 10px var(--font-mono); }
   .scorecard-grid strong { color: var(--ink); font-size: 12px; }
   .scorecard-grid small { color: var(--muted); font-size: 10.5px; }
+  .scorecard-grid .score-value { grid-column: 3; grid-row: 1 / 3; color: #185d4d; font: 700 16px var(--font-ui); white-space: nowrap; }
+  .scorecard-grid .score-meter { grid-column: 2 / 4; height: 5px; margin-top: 8px; overflow: hidden; border-radius: 99px; background: #e2ece8; }
+  .scorecard-grid .score-meter i { display: block; height: 100%; border-radius: inherit; background: #368b72; }
+  .scorecard-grid .score-concern .score-value { color: #9a513b; }
+  .scorecard-grid .score-concern .score-meter i { background: #c67356; }
   .eval-risk-grid, .evidence-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .eval-risk-grid > div { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; background: #eaf4ef; border: 1px solid #c8e4d5; border-radius: 10px; color: #345e54; font-size: 11px; line-height: 1.5; }
   .eval-risk-grid strong { color: #185749; font-size: 13px; }
@@ -1660,11 +1665,11 @@
           <div class="architecture-node"><span class="node-icon">04</span><strong>Post-call review</strong><small>Five parallel extractors · supervisor merge</small></div>
           <div class="architecture-node"><span class="node-icon">05</span><strong>Next action</strong><small>Auto-write or human exception queue</small></div>
         </div>
-        <p class="story-footnote">Production write-back reconciles rows by <code>call_id</code>, so retrying a call analysis does not duplicate records. The public demo previews the same row shape; it does not write to a customer Sheet.</p>
+        <p class="story-footnote">The write-back path reconciles rows by <code>call_id</code>, so retrying an analysis does not duplicate records. The public demo previews the row shape; it does not write to a customer Sheet. The first nine-call eval found two false writes, so this path still needs human oversight before real-customer use.</p>
       </section>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">02 / EXECUTION</span><h2>Where each decision lives</h2><p>Code handles the fixed rules. Models handle conversation and transcript interpretation. Humans take the high-risk cases.</p></div>
+        <div class="story-section-head"><span class="story-index">02 / EXECUTION</span><h2>Where each decision lives</h2><p>Code handles fixed rules. Models handle conversation and transcript interpretation. The supervisor routes low-confidence and rule-breaking calls to humans.</p></div>
         <div class="story-card-grid three">
           <article class="story-card"><div class="story-card-top"><span class="story-icon">⌁</span><span>BEFORE THE CALL</span></div><h3>Eligibility before outreach</h3><p>Code suppresses paid accounts, open disputes, active promises, opt-outs, wrong contacts, cooldowns, out-of-hours calls, and 90+ day debt routed to a person. Every suppression has a logged reason.</p><div class="story-card-rule"><strong>Priority</strong><code>balance × aging × broken-PTP escalation × contactability</code></div><p>The context pack carries contact, invoices, total balance, promise history, disputes, last contact, and language.</p></article>
           <article class="story-card"><div class="story-card-top"><span class="story-icon">◉</span><span>DURING THE CALL</span></div><h3>A focused voice conversation</h3><p>Vapi starts with a fixed disclosure and authority check before the model speaks. The agent works the most overdue invoice, asks for a concrete payment commitment when possible, and hands off other invoices.</p><div class="story-card-rule"><strong>Guardrails</strong><span>One question per turn · supplied invoice facts only · three-minute cap</span></div><p>Tool results must be checked before the agent says an action was completed.</p></article>
@@ -1691,11 +1696,11 @@
       <header class="story-hero eval-hero">
         <span class="story-kicker">EVALUATION / 02</span>
         <h1>Can the pipeline agree with a human reader?</h1>
-        <p>Nine saved calls have independent human labels. The comparison run is still pending, so this page shows the method and the exact evidence boundary rather than invented accuracy numbers.</p>
+        <p>Nine saved calls were labeled independently, then run through the actual post-call pipeline. The first comparison exposed a weak final write decision, so these numbers are a diagnostic baseline rather than a performance claim.</p>
         <div class="story-metrics" aria-label="Evaluation status">
-          <div><strong>9 / 9</strong><span>calls labeled locally</span></div>
-          <div><strong>6</strong><span>judged dimensions</span></div>
-          <div><strong>Pending</strong><span>pipeline comparison</span></div>
+          <div><strong>9</strong><span>labeled calls</span></div>
+          <div><strong>4 / 9</strong><span>write decisions agreed</span></div>
+          <div><strong>2</strong><span>false writes to investigate</span></div>
         </div>
       </header>
 
@@ -1709,18 +1714,18 @@
       </section>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">02 / SCORECARD</span><h2>The six questions being scored</h2><p>Agreement will be shown as a count and denominator for each field once the comparison is run.</p></div>
+        <div class="story-section-head"><span class="story-index">02 / SCORECARD</span><h2>Observed agreement</h2><p>Agreement with one human label on nine saved calls. Promise completeness applies to five calls.</p></div>
         <div class="scorecard-grid">
-          <div><span>01</span><strong>Outcome type</strong><small>What happened on the call?</small></div>
-          <div><span>02</span><strong>Promise captured</strong><small>Did the caller commit to pay?</small></div>
-          <div><span>03</span><strong>Promise complete</strong><small>Amount, date, method, valid bounds?</small></div>
-          <div><span>04</span><strong>Dispute existed</strong><small>Was the invoice itself challenged?</small></div>
-          <div><span>05</span><strong>Compliance violated</strong><small>Did a hard rule actually fail?</small></div>
-          <div><span>06</span><strong>Write decision</strong><small>Auto-write or human review?</small></div>
+          <div><span>01</span><strong>Outcome type</strong><small>What happened on the call?</small><b class="score-value">7 / 9</b><div class="score-meter"><i style="width:78%"></i></div></div>
+          <div><span>02</span><strong>Promise captured</strong><small>Did the caller commit to pay?</small><b class="score-value">8 / 9</b><div class="score-meter"><i style="width:89%"></i></div></div>
+          <div><span>03</span><strong>Promise complete</strong><small>Amount, date, method, valid bounds?</small><b class="score-value">3 / 5</b><div class="score-meter"><i style="width:60%"></i></div></div>
+          <div><span>04</span><strong>Dispute existed</strong><small>Was the invoice itself challenged?</small><b class="score-value">8 / 9</b><div class="score-meter"><i style="width:89%"></i></div></div>
+          <div><span>05</span><strong>Compliance violated</strong><small>Did a hard rule actually fail?</small><b class="score-value">7 / 9</b><div class="score-meter"><i style="width:78%"></i></div></div>
+          <div class="score-concern"><span>06</span><strong>Write decision</strong><small>Auto-write or human review?</small><b class="score-value">4 / 9</b><div class="score-meter"><i style="width:44%"></i></div></div>
         </div>
         <div class="eval-risk-grid">
-          <div><strong>False hold</strong><span>The human would auto-write; the pipeline held it. This creates extra manual work.</span></div>
-          <div class="risk-critical"><strong>False write</strong><span>The human would hold it; the pipeline auto-wrote. This is the more serious error.</span></div>
+          <div><strong>3 false holds</strong><span>The human would auto-write; the pipeline held the call. This creates extra manual work.</span></div>
+          <div class="risk-critical"><strong>2 false writes</strong><span>The human would hold the call; the pipeline marked it for auto-write. This is the more serious error.</span></div>
         </div>
         <p class="story-footnote">Promise completeness is scored only when the human label says a promise exists. Hard compliance violations include an unverified contact, unsupported facts, a misstated total, threats, or an offered discount; a low QA score alone does not count. Four historical calls recover account facts from their embedded call prompt because the fake dataset was regenerated. Date checks use each call's recorded date.</p>
       </section>
@@ -1728,7 +1733,7 @@
       <section class="story-section">
         <div class="story-section-head"><span class="story-index">03 / EVIDENCE BOUNDARY</span><h2>What these nine calls can tell us</h2></div>
         <div class="evidence-panel"><div><span class="evidence-mark">✓</span><h3>Useful for diagnosis</h3><p>They can reveal which transcript judgments disagree with one human label and where to inspect a specialist or prompt.</p></div><div><span class="evidence-mark">—</span><h3>Not a production claim</h3><p>Most calls are synthetic tests against a fake account dataset. Nine calls cannot establish a kept-payment rate or production accuracy.</p></div></div>
-        <div class="eval-status"><span class="status-dot"></span><span><strong>Comparison results not yet published.</strong> As of 8 Oct 2026, all nine labels exist locally, but they are not included in this public demo and no eval-specific pipeline runs have been cached. Results, percentages, and disagreement examples will appear only after the real comparison is run.</span></div>
+        <div class="eval-status"><span class="status-dot"></span><span><strong>What this run exposed:</strong> six of nine calls disagreed on at least one field. The two false writes make unattended write-back premature in this small test set; outcome classification and dispute routing are the first cases to investigate. This is an inference from the comparison, not a production accuracy estimate. Human labels and call transcripts remain local and are not published with this demo.</span></div>
       </section>
     </div>
   </div>
