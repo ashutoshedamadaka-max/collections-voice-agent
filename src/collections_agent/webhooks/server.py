@@ -189,6 +189,23 @@ async def demo_voice_sdk() -> FileResponse:
     )
 
 
+@app.get("/demo/assets/writeback-example.xlsx")
+async def demo_writeback_example() -> FileResponse:
+    return FileResponse(
+        DEMO_PAGE.parent / "writeback-example.xlsx",
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename="northgate-synthetic-writeback-example.xlsx",
+    )
+
+
+@app.get("/demo/assets/system-prompt.txt")
+async def demo_system_prompt() -> FileResponse:
+    return FileResponse(
+        DEMO_PAGE.parent.parent.parent / "voice" / "templates" / "system_prompt.j2",
+        media_type="text/plain; charset=utf-8",
+    )
+
+
 @app.get("/demo/replay/{scenario}")
 async def demo_replay_endpoint(scenario: str) -> StreamingResponse:
     if scenario not in SCENARIOS:

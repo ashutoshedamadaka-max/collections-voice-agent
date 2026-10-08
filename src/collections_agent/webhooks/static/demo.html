@@ -1307,6 +1307,17 @@
   .architecture-node .node-icon { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 8px; background: #ddf1e8; color: #166353; font: 700 10px var(--font-mono); }
   .architecture-node strong { color: var(--ink); font-size: 14px; line-height: 1.3; }
   .architecture-node small { color: var(--text); font-size: 11px; line-height: 1.5; }
+  .evidence-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .evidence-link-card { display: flex; flex-direction: column; gap: 12px; padding: 24px; border: 1px solid #dce6e3; border-radius: 16px; background: #fbfcfb; }
+  .evidence-link-card .card-label { color: #34766b; font: 700 10px var(--font-mono); letter-spacing: .7px; }
+  .evidence-link-card h3 { margin: 0; color: var(--ink); font-size: 18px; }
+  .evidence-link-card p { margin: 0; color: var(--text); font-size: 12px; line-height: 1.65; }
+  .evidence-link-card a { align-self: flex-start; margin-top: auto; padding: 9px 13px; border: 1px solid #acd1c1; border-radius: 9px; background: #e8f5ee; color: #155d4b; font-size: 12px; font-weight: 700; text-decoration: none; }
+  .evidence-link-card a:hover, .evidence-link-card a:focus-visible { background: #d7ede2; outline-color: #155d4b; }
+  .writeback-route { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .writeback-route > div { padding: 15px; border: 1px solid #9ebeb0; border-radius: 11px; background: #e8f4ed; }
+  .writeback-route strong { display: block; color: #174e43; font-size: 12px; }
+  .writeback-route span { display: block; margin-top: 5px; color: #41665a; font-size: 11px; line-height: 1.5; }
   .story-footnote { margin: 0; padding: 11px 15px; border-left: 2px solid #83d6b4; color: #c3d6d3; background: #ffffff0a; border-radius: 0 8px 8px 0; font-size: 11px; line-height: 1.65; }
   .story-footnote code { color: #d4f2e5; }
   .story-card-grid { display: grid; gap: 14px; }
@@ -1369,6 +1380,7 @@
     .architecture-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .architecture-node:nth-child(3)::after { display: none; }
     .story-card-grid.three { grid-template-columns: 1fr; }
+    .writeback-route { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .field-note-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 700px) {
@@ -1381,7 +1393,7 @@
     .story-metrics strong { font-size: 19px; }
     .story-section-head { grid-template-columns: 1fr; gap: 6px; }
     .story-section-head .story-index { grid-row: auto; }
-    .architecture-flow, .eval-flow, .decision-grid, .scorecard-grid, .eval-risk-grid, .evidence-panel, .field-note-grid, .lesson-chain { grid-template-columns: 1fr; }
+    .architecture-flow, .eval-flow, .decision-grid, .scorecard-grid, .eval-risk-grid, .evidence-panel, .evidence-links, .writeback-route, .field-note-grid, .lesson-chain { grid-template-columns: 1fr; }
     .architecture-node { min-height: 0; }
     .architecture-node:not(:last-child)::after, .eval-flow > div:not(:last-child)::after { right: 50%; top: auto; bottom: -19px; transform: rotate(90deg); }
     .lesson-heading { flex-direction: column; gap: 6px; }
@@ -1678,7 +1690,22 @@
       </section>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">03 / TRADE-OFFS</span><h2>Design choices worth defending</h2></div>
+        <div class="story-section-head"><span class="story-index">03 / INSPECT THE SYSTEM</span><h2>See the prompt and the rows</h2><p>These public artifacts show the instructions the agent follows and the shape of the ledger update. The sample rows are illustrative synthetic data.</p></div>
+        <div class="writeback-route" aria-label="Post-call write-back routing">
+          <div><strong>Call ends</strong><span>The transcript and tool events enter post-call analysis.</span></div>
+          <div><strong>Call_Log</strong><span>Every processed call receives a summary and outcome row.</span></div>
+          <div><strong>Specialized rows</strong><span>A cleared promise, soft commitment, or dispute goes to its matching tab.</span></div>
+          <div><strong>Exceptions</strong><span>Uncertain or rule-breaking calls are held for human review.</span></div>
+        </div>
+        <div class="evidence-links">
+          <article class="evidence-link-card"><span class="card-label">SYNTHETIC SHEET EXAMPLE</span><h3>Inspect the write-back tabs</h3><p>Download a sample workbook with the exact output column names and example rows in Call_Log, PTP_Register, Soft_Commitments, Disputes, and Exceptions. These are fictional records, not rows from a live visitor call.</p><a href="/demo/assets/writeback-example.xlsx" download>Download example workbook ↗</a></article>
+          <article class="evidence-link-card"><span class="card-label">AGENT INSTRUCTIONS</span><h3>Read the system prompt</h3><p>Open the actual Jinja prompt template. Account and invoice values are filled in for each call. The fixed opening and tool definitions are configured separately, so this template is the conversation layer rather than a complete Vapi payload.</p><a href="/demo/assets/system-prompt.txt" target="_blank" rel="noopener noreferrer">Open prompt template ↗</a></article>
+        </div>
+        <p class="story-footnote">The public demo previews proposed ledger rows. It never writes a visitor call to the customer Sheet. The example workbook illustrates the schema; it is not a live or continuously updated Google Sheet.</p>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">04 / TRADE-OFFS</span><h2>Design choices worth defending</h2></div>
         <div class="decision-grid">
           <article><span>01</span><h3>One invoice, fully handled</h3><p>Early calls tried to cover every invoice and ran out of time. A complete outcome on the oldest debt plus a separate callback is more useful than several partial conversations.</p></article>
           <article><span>02</span><h3>Arithmetic stays in code</h3><p>The model extracts what the caller said. Deterministic checks decide whether a promise is complete, future-dated, within the balance, and supported by a valid method.</p></article>
@@ -1907,10 +1934,10 @@
         '<div class="decision-body"></div>' +
         (payload.decision_note ? '<div class="decision-note"></div>' : "") +
         '<div class="sheet-rows">' + rowsHtml + '</div>' +
-        '<div class="sheet-link"><a href="#" aria-disabled="true">View the demo sheet →</a></div>' +
+        '<div class="sheet-link"><a href="/demo/assets/writeback-example.xlsx" download>Download synthetic sheet example →</a></div>' +
       '</div>';
     el.querySelector(".decision-body").textContent = isAuto
-      ? "Written to the ledger. Every material specialist cleared its threshold and none disagreed."
+      ? "Eligible for a ledger write. Every material specialist cleared its threshold and none disagreed. This public demo previews the row only."
       : "Held for human review. Reason: " + payload.reason_label + (payload.supervisor_notes ? " — " + payload.supervisor_notes : "") + ".";
     if (payload.decision_note) {
       el.querySelector(".decision-note").textContent = payload.decision_note;
