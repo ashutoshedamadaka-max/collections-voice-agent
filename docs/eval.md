@@ -128,3 +128,69 @@ Prints, in order:
 - **`as_of` is the call's own recorded date**, not today — otherwise the promise validator's
   future-dated check would spuriously fail (or pass) depending on which day the eval happens to
   run, for reasons that have nothing to do with the call itself.
+
+---
+
+# Eval 2 — the live call, simulated as text (`sim-eval`)
+
+The agreement eval above grades the **post-call** pipeline on a finished transcript. Almost
+every incident in `docs/FAILURES.md` happened **during** the call instead: a tool described
+aloud but never called, three questions bundled into one turn, raw digits read instead of the
+spoken form, the deferred invoice's callback never scheduled. Until this eval, those were only
+caught by listening to individual live calls, at roughly $0.15–0.25 of Vapi credit each.
+
+`sim-eval` replays scripted scenarios against the agent as plain text, with no Vapi involved:
+
+- **Real:** the per-call system prompt (`render_system_prompt`), the fixed opening line, the
+  seven tool schemas, the tool handlers' own validation (e.g. `record_ptp` rejecting a past
+  date), and — optionally — the full post-call pipeline on each simulated call.
+- **Simulated:** the customer, played by a second model from a short brief per scenario
+  (`config/sim_scenarios.yaml`).
+- **Not tested at all:** speech-to-text, text-to-speech, interruptions, latency — anything
+  about audio. Those still need real calls.
+
+## Running it
+
+```powershell
+uv run collections-agent sim-eval --dry-run          # cost estimate only, sends nothing
+uv run collections-agent sim-eval                    # all scenarios, gpt-4o-mini, $1.00 cap
+uv run collections-agent sim-eval -s promise_full_upi -s opt_out   # just these
+uv run collections-agent sim-eval --agent-model gpt-4o --max-usd 3 # the production model
+```
+
+Spend is capped (`--max-usd`, default $1.00). Every request is costed from its real token
+usage, and the run stops *before* any request that could cross the cap. A full run of the 21
+scenarios on gpt-4o-mini, including the post-call pipeline, is estimated at about $0.25; on
+gpt-4o (the current in-call model) about $2.50. Results are saved per scenario under
+`fixtures/eval/sim_runs/<timestamp>/` (git-ignored).
+
+## What is checked, in code
+
+Must-have checks (any failure fails the scenario):
+
+| Check | Catches |
+| --- | --- |
+| called the expected tool(s) correctly | the right tool, with the right invoice, amount, date, method, reason code or reference — compared in code, not by a model |
+| did not call forbidden tools | e.g. `record_ptp` on a vague "sometime next week", `log_dispute` for an approval delay |
+| no action claimed without a tool call | "I have recorded this payment promise" with no `record_ptp` (FAILURES.md, 2026-09-16 and 2026-09-26) |
+| no account facts spoken as digits | the invoice amount or number read as digits instead of the spoken form (FAILURES.md, 2026-09-29) |
+| only worked the primary invoice | a promise recorded against a deferred invoice |
+| disclosed nothing to the wrong person | amounts or invoice numbers said to someone who failed the authority gate |
+| call finished | the customer ended the call, rather than the turn limit or an error |
+
+Reported but not gating: more than one question in a turn, turns over 25 words, and any digit at
+all in the agent's speech (a customer-given phone number read back is legitimate).
+
+Post-call fields are scored only on scenarios where the agent passed every must-have check —
+if the agent got the call wrong, the transcript itself is wrong, and that's not a fair test of
+the post-call pipeline.
+
+## How to read the results
+
+- **Scripted, not real.** Twenty-one hand-written situations and a model playing the customer.
+  A pass rate here measures behaviour on these situations, not real-world accuracy.
+- **gpt-4o-mini results are not production results.** The live agent runs on gpt-4o
+  (`voice/assistant_config.py`). A mini run is cheap and catches harness bugs and prompt-level
+  problems; quote a gpt-4o run before claiming anything about the production agent.
+- **Write the expectation before the first run.** Each scenario's `expect` block is the ground
+  truth; editing it after watching the agent fail would grade the agent against itself.

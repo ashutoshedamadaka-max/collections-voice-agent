@@ -581,6 +581,43 @@ def run_eval_cmd(
     run_comparison(refresh=refresh)
 
 
+@app.command("sim-eval")
+def sim_eval_cmd(
+    scenario: list[str] = typer.Option(
+        None, "--scenario", "-s", help="Run only these scenario ids (repeatable). Default: all."
+    ),
+    agent_model: str = typer.Option("gpt-4o-mini", help="Model playing the agent."),
+    customer_model: str = typer.Option("gpt-4o-mini", help="Model playing the customer."),
+    max_usd: float = typer.Option(1.00, help="Hard spending cap for this run, in US dollars."),
+    max_turns: int = typer.Option(14, help="Maximum agent turns per simulated call."),
+    postcall: bool = typer.Option(True, "--postcall/--no-postcall", help="Also run the post-call pipeline."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Estimate cost only; send nothing to OpenAI."),
+    temperature: float = typer.Option(0.0, help="Sampling temperature for agent and customer."),
+) -> None:
+    """Simulates calls as text, with no Vapi spend: the real agent prompt and tools against a
+    model playing the customer from scripted scenarios (config/sim_scenarios.yaml), then code
+    checks of what the agent actually did — right tool with the right details, nothing it
+    shouldn't have called, no action claimed without a tool call, no account facts read as
+    digits. Optionally runs the post-call pipeline on each simulated call too.
+
+    Spending is capped (--max-usd, default $1.00) using each request's real token usage. Run
+    with --dry-run first to see the estimate. Says nothing about speech-to-text, text-to-speech,
+    interruptions or latency — see docs/eval.md.
+    """
+    from collections_agent.eval.sim_report import run_sim_eval
+
+    run_sim_eval(
+        only=scenario,
+        agent_model=agent_model,
+        customer_model=customer_model,
+        max_usd=max_usd,
+        max_turns=max_turns,
+        postcall=postcall,
+        dry_run=dry_run,
+        temperature=temperature,
+    )
+
+
 @app.command("write-back")
 def write_back_cmd(call_id: str) -> None:
     """Step 5: write a completed post-call analysis to Google Sheets. Reads
