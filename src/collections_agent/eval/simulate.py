@@ -38,6 +38,7 @@ from collections_agent.eval.sim_scenarios import MaterializedScenario, ToolExpec
 from collections_agent.postcall.transcript import ToolCallRecord, Transcript, TranscriptTurn
 from collections_agent.voice.language import opening_message
 from collections_agent.voice.prompt_template import render_system_prompt
+from collections_agent.voice.speakable import invoice_words_to_number
 from collections_agent.voice.tool_schemas import ALL_TOOLS
 from collections_agent.webhooks import handlers
 
@@ -74,6 +75,12 @@ Ending the call:
 - When the assistant has wrapped up (thanked you, said goodbye, or said it will end the call), \
 reply with a short goodbye and then the exact text <END_CALL>.
 - If your goal is done and the assistant keeps going in circles, say goodbye and <END_CALL>.
+
+Dates:
+- Today is {today}. Every date in your brief is in {year} or later. If you say a year, it is \
+the one in your brief — never an earlier year.
+- If the assistant reads a date back, check the day, month and year against your brief. Agree \
+if they match; correct it only if something is actually different.
 
 YOUR BRIEF:
 {brief}"""
@@ -250,7 +257,14 @@ def run_conversation(
         {"role": "assistant", "content": opening},
     ]
     customer_messages: list[dict[str, Any]] = [
-        {"role": "system", "content": CUSTOMER_SYSTEM_PROMPT.format(brief=ms.customer_brief)},
+        {
+            "role": "system",
+            "content": CUSTOMER_SYSTEM_PROMPT.format(
+                brief=ms.customer_brief,
+                today=ms.as_of.strftime("%A %d %B %Y"),
+                year=ms.as_of.year,
+            ),
+        },
         {"role": "user", "content": opening},
     ]
     convo = SimConversation(
@@ -315,6 +329,15 @@ class Check:
     must_pass: bool = True  # False = reported, but doesn't fail the scenario
 
 
+def _invoice_key(value: Any) -> str:
+    """The same normalization the post-call promise matcher uses, so "matches the invoice" here
+    means exactly what it means downstream — including resolving the spoken, spelled-out form
+    back to the raw identifier."""
+    from collections_agent.postcall.specialists.promise import _normalize_invoice_ref
+
+    return _normalize_invoice_ref(str(value or ""))
+
+
 def _norm_ref(value: Any) -> str:
     return re.sub(r"[^A-Za-z0-9]", "", str(value or "")).upper()
 
@@ -338,8 +361,10 @@ def _mismatches(exp: ToolExpectation, call: SimToolCall, ms: MaterializedScenari
 
     if exp.invoice:
         targets = [ms.primary_invoice] if exp.invoice == "primary" else ms.other_invoices
-        wanted = {_norm_ref(i.invoice_number) for i in targets} | {_norm_ref(i.invoice_id) for i in targets}
-        given = {_norm_ref(i) for i in _invoice_args(args)}
+        wanted = {_invoice_key(i.invoice_number) for i in targets} | {
+            _invoice_key(i.invoice_id) for i in targets
+        }
+        given = {_invoice_key(i) for i in _invoice_args(args)}
         if not given & wanted:
             problems.append(f"invoice {sorted(given) or 'missing'} is not the {exp.invoice} invoice")
 
@@ -414,6 +439,22 @@ _CLAIM_RE = re.compile(
 )
 
 
+def _word_count_without_facts(text: str, ms: MaterializedScenario) -> int:
+    """Words in a turn, not counting the pre-written spoken forms of invoice numbers, amounts
+    and dates — "S, G, P, slash, two, six, ..." is 14 words on its own, and reading supplied
+    facts aloud is what the prompt's 25-word rule explicitly allows."""
+    from collections_agent.voice.speakable import amount_to_words, date_to_words, invoice_number_to_words
+
+    for inv in ms.invoices:
+        for fact in (
+            invoice_number_to_words(inv.invoice_number),
+            amount_to_words(inv.outstanding()),
+            date_to_words(inv.due_date),
+        ):
+            text = re.sub(re.escape(fact), " ", text, flags=re.IGNORECASE)
+    return len(text.split())
+
+
 def run_checks(ms: MaterializedScenario, convo: SimConversation) -> list[Check]:
     checks: list[Check] = []
     exp = ms.scenario.expect
@@ -440,11 +481,11 @@ def run_checks(ms: MaterializedScenario, convo: SimConversation) -> list[Check]:
 
     # 3. Never promised against an invoice that isn't this call's primary one.
     if ms.other_invoices:
-        others = {_norm_ref(i.invoice_number) for i in ms.other_invoices}
+        others = {_invoice_key(i.invoice_number) for i in ms.other_invoices}
         bad = [
             c
             for c in convo.tool_calls
-            if c.name == "record_ptp" and others & {_norm_ref(i) for i in _invoice_args(c.arguments)}
+            if c.name == "record_ptp" and others & {_invoice_key(i) for i in _invoice_args(c.arguments)}
         ]
         checks.append(
             Check(
@@ -489,10 +530,24 @@ def run_checks(ms: MaterializedScenario, convo: SimConversation) -> list[Check]:
         )
     )
 
+    # Reported, not gating — the invoice argument was the spoken form, which the post-call
+    # matcher now resolves in code, but which any other consumer of tool arguments would not.
+    spoken_args = [
+        ref for c in convo.tool_calls for ref in _invoice_args(c.arguments) if invoice_words_to_number(ref)
+    ]
+    checks.append(
+        Check(
+            "invoice arguments use the raw identifier",
+            not spoken_args,
+            f"{len(spoken_args)} spoken-form invoice argument(s)",
+            must_pass=False,
+        )
+    )
+
     # Reported, not gating — conversation quality.
     bundled = [t[:100] for t in agent_turns if t.count("?") > 1]
     checks.append(Check("one question per turn", not bundled, " | ".join(bundled), must_pass=False))
-    long_turns = [t[:60] for t in agent_turns if len(t.split()) > 25]
+    long_turns = [t[:60] for t in agent_turns if _word_count_without_facts(t, ms) > 25]
     checks.append(
         Check("turns under 25 words", not long_turns, f"{len(long_turns)} long turn(s)", must_pass=False)
     )

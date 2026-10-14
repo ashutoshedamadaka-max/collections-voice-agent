@@ -122,8 +122,11 @@ def _ordinal(day: int) -> str:
 
 
 def spoken_date(d: date) -> str:
-    """How a person would say a date on the phone, e.g. 'Friday the 23rd of October'."""
-    return f"{d.strftime('%A')} the {_ordinal(d.day)} of {d.strftime('%B')}"
+    """How a person would say a date on the phone, e.g. 'Friday the 23rd of October 2026'. The
+    year is included on purpose: without it, the simulated customer filled in its own year
+    (2023) and insisted on it, which made a harness bug look like an agent bug (first sim-eval
+    run, 2026-10-14)."""
+    return f"{d.strftime('%A')} the {_ordinal(d.day)} of {d.strftime('%B')} {d.year}"
 
 
 def next_occurrence_of_day(day: int, as_of: date) -> date:

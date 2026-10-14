@@ -136,8 +136,8 @@ def test_next_occurrence_of_day_skips_short_months():
 
 
 def test_spoken_date():
-    assert spoken_date(date(2026, 10, 23)) == "Friday the 23rd of October"
-    assert spoken_date(date(2026, 10, 11)) == "Sunday the 11th of October"
+    assert spoken_date(date(2026, 10, 23)) == "Friday the 23rd of October 2026"
+    assert spoken_date(date(2026, 10, 11)) == "Sunday the 11th of October 2026"
 
 
 # --- Conversations and checks ----------------------------------------------------------------
@@ -497,3 +497,54 @@ def test_sim_eval_rejects_an_unknown_scenario_id():
 
     result = CliRunner().invoke(cli.app, ["sim-eval", "-s", "no_such_scenario", "--dry-run"])
     assert result.exit_code != 0
+
+
+# --- Fixes from the first real run (2026-10-14) ----------------------------------------------
+
+
+def test_customer_is_told_today_and_the_year(scenarios, isolated_log, tmp_path):
+    """First run: the simulated customer insisted on 2023 (its own training-era year), which
+    made a harness bug look like an agent bug."""
+    ms = _materialize(scenarios, "promise_all_details_upfront")
+    client = FakeClient(customer=["Yes. <END_CALL>"], agent=[])
+    _run(ms, client, tmp_path)
+    customer_prompt = client.requests[0]["messages"][0]["content"]
+    assert "Today is Wednesday 14 October 2026" in customer_prompt
+    assert "2026" in ms.customer_brief
+
+
+def test_spoken_form_invoice_argument_matches_but_is_noted(scenarios, isolated_log, tmp_path):
+    """First run: gpt-4o-mini passed "S, G, P, slash, ..." as the invoice id. The post-call
+    matcher now resolves that in code, so it counts as the right invoice — but it's still
+    reported, because any other consumer of the tool arguments wouldn't resolve it."""
+    from collections_agent.voice.speakable import invoice_number_to_words
+
+    ms = _materialize(scenarios, "promise_full_upi")
+    promise = ms.resolved_dates["promise_date"]
+    spoken = invoice_number_to_words(ms.primary_invoice.invoice_number)
+    client = FakeClient(
+        customer=["Yes.", "Bye. <END_CALL>"],
+        agent=[
+            call_tool(
+                "record_ptp", invoice_ids=[spoken], amount=204500, date=promise.isoformat(), method="UPI"
+            ),
+            say("Thank you."),
+        ],
+    )
+    checks = run_checks(ms, _run(ms, client, tmp_path))
+    assert "called record_ptp" not in _failed(checks)
+    note = next(c for c in checks if c.name == "invoice arguments use the raw identifier")
+    assert not note.passed and not note.must_pass
+
+
+def test_reading_the_spoken_invoice_number_does_not_count_as_a_long_turn(scenarios, isolated_log, tmp_path):
+    from collections_agent.voice.speakable import invoice_number_to_words
+
+    ms = _materialize(scenarios, "vague_next_week")
+    spoken = invoice_number_to_words(ms.primary_invoice.invoice_number)
+    client = FakeClient(
+        customer=["Yes.", "Bye. <END_CALL>"],
+        agent=[say(f"I'm calling about invoice number {spoken}. When can you pay it?")],
+    )
+    checks = run_checks(ms, _run(ms, client, tmp_path))
+    assert next(c for c in checks if c.name == "turns under 25 words").passed
