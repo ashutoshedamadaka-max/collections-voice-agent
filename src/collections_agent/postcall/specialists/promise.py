@@ -18,6 +18,7 @@ from collections_agent.models.domain import Invoice, PromiseExtraction, PromiseV
 from collections_agent.postcall.openai_client import extract_structured
 from collections_agent.postcall.specialists._common import format_transcript_for_llm
 from collections_agent.postcall.transcript import Transcript
+from collections_agent.voice.speakable import invoice_words_to_number
 
 SYSTEM_PROMPT = (
     "You are extracting a promise-to-pay from a B2B collections call transcript. Extract only "
@@ -53,6 +54,10 @@ def _normalize_invoice_ref(value: str) -> str:
     silently downgraded an otherwise-complete promise to a soft commitment. The digits and
     letters are what identify an invoice; punctuation is a rendering detail, not part of the
     identity, so it shouldn't be able to break the match."""
+    spelled_out = invoice_words_to_number(value)
+    if spelled_out is not None:
+        # The spoken form ("S, G, P, slash, ...") in a tool argument — see speakable.py.
+        value = spelled_out
     return re.sub(r"[^A-Za-z0-9]", "", value).upper()
 
 

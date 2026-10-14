@@ -123,3 +123,30 @@ def invoice_number_to_words(value: str) -> str:
         elif not ch.isspace():
             words.append(ch)
     return ", ".join(words)
+
+
+def invoice_words_to_number(value: str) -> str | None:
+    """The inverse of `invoice_number_to_words`: "K, F, C, slash, two, six" -> "KFC/26".
+
+    Returns None if `value` isn't in that spoken form. Exists because the model sometimes fills
+    a tool call's invoice argument with the spoken form it has just been saying instead of the
+    raw identifier from REFERENCE VALUES — found by `sim-eval` (docs/FAILURES.md, 2026-10-14).
+    Resolving it in code means a correct promise isn't downgraded just because of how the
+    identifier was written."""
+    if "," not in value:
+        return None
+    digit_words = {word: str(n) for n, word in enumerate(_ONES[:10])}
+    symbol_words = {word: ch for ch, word in _LETTER_WORDS.items()}
+    chars = []
+    for token in (t.strip().lower() for t in value.split(",")):
+        if not token:
+            continue
+        if token in digit_words:
+            chars.append(digit_words[token])
+        elif token in symbol_words:
+            chars.append(symbol_words[token])
+        elif len(token) == 1 and token.isalnum():
+            chars.append(token.upper())
+        else:
+            return None
+    return "".join(chars) or None

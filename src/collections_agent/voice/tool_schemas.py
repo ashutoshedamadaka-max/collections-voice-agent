@@ -11,6 +11,15 @@ from __future__ import annotations
 
 from typing import Any
 
+# Every invoice argument must be the raw identifier, never the spoken form the agent has just
+# been saying aloud — sim-eval caught gpt-4o-mini filling these with "S, G, P, slash, ..."
+# (docs/FAILURES.md, 2026-10-14). The post-call matcher also resolves the spoken form in code,
+# so this description is the first line of defence, not the only one.
+_INVOICE_REF = (
+    "The invoice's exact identifier as written in REFERENCE VALUES (e.g. KFC/26-27/0026) — never "
+    "the spoken, spelled-out form."
+)
+
 # Appended to every action tool's description — the model narrated "I will log this as a
 # dispute" twice in testing and never actually called log_dispute (see docs/FAILURES.md).
 # Vapi doesn't expose a tool-choice/forced-function setting (checked against its current
@@ -72,7 +81,7 @@ RECORD_PTP = {
         "parameters": {
             "type": "object",
             "properties": {
-                "invoice_ids": {"type": "array", "items": {"type": "string"}},
+                "invoice_ids": {"type": "array", "items": {"type": "string", "description": _INVOICE_REF}},
                 "amount": {"type": "number"},
                 "date": {"type": "string", "description": "ISO 8601 date, e.g. 2026-09-30"},
                 "method": {"type": "string", "enum": ["NEFT", "RTGS", "UPI", "cheque", "portal"]},
@@ -96,7 +105,7 @@ LOG_DISPUTE = {
         "parameters": {
             "type": "object",
             "properties": {
-                "invoice_id": {"type": "string"},
+                "invoice_id": {"type": "string", "description": _INVOICE_REF},
                 "reason_code": {
                     "type": "string",
                     "enum": [
@@ -132,7 +141,7 @@ LOG_PAYMENT_CLAIM = {
         "parameters": {
             "type": "object",
             "properties": {
-                "invoice_id": {"type": "string"},
+                "invoice_id": {"type": "string", "description": _INVOICE_REF},
                 "reference": {"type": "string", "description": "UTR or cheque number"},
                 "paid_on": {"type": "string", "description": "ISO 8601 date"},
             },
@@ -153,7 +162,7 @@ SEND_DOCUMENT = {
         "parameters": {
             "type": "object",
             "properties": {
-                "invoice_id": {"type": "string"},
+                "invoice_id": {"type": "string", "description": _INVOICE_REF},
                 "doc_type": {"type": "string"},
             },
             "required": ["invoice_id", "doc_type"],

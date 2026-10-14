@@ -1017,3 +1017,44 @@ disagree with itself. **Fix:** `temperature=0` on every specialist call
 own documentation is explicit that greedy sampling doesn't promise that — but it collapsed the
 variance enough that the same transcript now produces the same decision on repeated runs, where
 before the fix it did not.
+
+## 2026-10-14 — first sim-eval run: one real agent bug, one harness bug that looked like an agent bug
+
+The first run of `sim-eval` (21 scenarios, gpt-4o-mini as agent and customer, $0.06) failed
+10 of 21 scenarios. Reading the saved transcripts, not just the check output, split them into
+two very different causes.
+
+**1. Real: the agent passed the spoken invoice form as a tool argument.** In 6 tool calls
+across 5 scenarios, gpt-4o-mini filled `invoice_ids`/`invoice_id` with
+`"S, G, P, slash, two, six, dash, ..."` — the spoken form it had just been saying — instead
+of `SGP/26-27/0014` from REFERENCE VALUES. This is a side effect of the 2026-09-29 structural
+fix: the prompt now presents only spoken forms in YOUR ONLY FACTS, and the model copies the
+form it has been using. Consequence downstream, visible in the same run: on the
+discount-refused scenario a complete, correct promise was marked incomplete by the post-call
+pipeline and sent to the exception queue, because `_matches_invoice` couldn't match the
+spoken form to any invoice.
+
+**Fix, two layers:** every invoice argument in `tool_schemas.py` now says to use the exact
+identifier from REFERENCE VALUES, never the spoken form; and, because a description can be
+ignored, `speakable.invoice_words_to_number` converts the spoken form back to the raw
+identifier, used by `promise._normalize_invoice_ref` — so the match no longer depends on the
+model formatting it right. `sim-eval` still reports spoken-form arguments as a note, since
+anything else reading tool arguments wouldn't resolve them.
+
+**2. Harness bug: the simulated customer invented the year.** Two "wrong date" failures
+(`2023-10-21`, `2023-10-24`) came from the customer model, not the agent: the brief gave
+"Wednesday the 21st of October" with no year, the agent correctly read back "twenty twenty
+six", and the customer "corrected" it to 2023 — its own training-era year — and kept
+insisting. The agent behaved sensibly throughout: `record_ptp`'s past-date guard rejected
+2023 and the agent asked for a new date each time. **Fix:** briefs now include the year, and
+the customer's instructions state today's date and that every date is in the current year or
+later.
+
+**3. Measurement fix: the 25-word rule.** Reading a pre-written invoice number aloud is about
+14 words on its own ("S, G, P, slash, ..."), which the prompt's 25-word rule explicitly allows.
+The word count now excludes supplied spoken facts, so the note stops flagging turns the prompt
+permits.
+
+**Lesson:** read the failing transcripts before trusting a failure count. A simulated customer
+is itself a model and can be wrong; here it produced a third of the date failures, and without
+the transcripts they would have been "fixed" in the agent prompt, where nothing was broken.
