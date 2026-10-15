@@ -252,13 +252,13 @@ class TestPrimaryInvoiceOnly:
     ):
         pack, _primary, _other = self._two_invoice_pack(base_account, make_invoice, as_of)
         prompt = " ".join(render_system_prompt(pack, "Acme Supplies").split())
-        assert "Call schedule_callback once with a reason naming the other invoice(s)" in prompt
+        assert "call schedule_callback once with a reason naming the other invoice(s)" in prompt
         assert "no callback date is required" in prompt
         assert "Only if it succeeds, tell them someone will follow up" in prompt
 
     def test_single_invoice_prompt_has_no_callback_closing_instruction(self, sample_context_pack):
         prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
-        assert "Call schedule_callback once with a reason naming the other invoice(s)" not in prompt
+        assert "call schedule_callback once with a reason naming the other invoice(s)" not in prompt
 
     def test_goal_section_scopes_to_primary_invoice_only(self, sample_context_pack):
         prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
@@ -273,3 +273,9 @@ def test_state_invoice_number_once_then_say_this_invoice(sample_context_pack):
     prompt = render_system_prompt(sample_context_pack, "Acme Supplies")
     assert 'say "this invoice"' in prompt
     assert "never repeat the full number again" in prompt
+
+
+def test_dispute_is_logged_once_and_handed_to_a_human(sample_context_pack):
+    prompt = " ".join(render_system_prompt(sample_context_pack, "Acme Supplies").split())
+    assert "call log_dispute, exactly once" in prompt
+    assert "If you logged a dispute, a person must take it from here. Call schedule_callback once" in prompt
