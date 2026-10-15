@@ -48,10 +48,10 @@ def allowed(method: str, path: str) -> bool:
             "/demo/assets/writeback-example.xlsx",
             "/demo/replay/clean",
             "/demo/replay/flagged",
-        } or bool(re.fullmatch(r"/demo/live/[a-f0-9-]{36}", path))
+        } or bool(re.fullmatch(r"/demo/live/[A-Za-z0-9_-]{20,64}", path))
     return method == "POST" and (
         path == "/demo/live/config"
-        or bool(re.fullmatch(r"/demo/live/[a-f0-9-]{36}/(connected|cancel|ended)", path))
+        or bool(re.fullmatch(r"/demo/live/[A-Za-z0-9_-]{20,64}/(connected|cancel|ended)", path))
     )
 
 

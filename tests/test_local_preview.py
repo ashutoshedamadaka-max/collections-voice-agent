@@ -70,3 +70,11 @@ def test_events_are_forwarded_with_resume_id():
     response = client().get(f"/demo/live/{session}", headers={"Last-Event-ID": "12"})
     assert response.text == "event: final\ndata: {}\n\n"
     assert route.calls.last.request.headers["last-event-id"] == "12"
+
+
+@respx.mock
+def test_hosted_token_session_ids_are_forwarded():
+    session = "JDY2dLAy27E5-3n944X5gM78sombF941u-jHttX5HXA"  # secrets.token_urlsafe(32) shape
+    route = respx.post(HOSTED + f"/demo/live/{session}/cancel").mock(return_value=httpx.Response(200, json={}))
+    assert client().post(f"/demo/live/{session}/cancel").status_code == 200
+    assert route.called
