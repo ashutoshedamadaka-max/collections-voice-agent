@@ -5,6 +5,8 @@ happens here; sheets/client.py only knows about grids of strings.
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel
 
 from collections_agent.models.domain import (
@@ -60,6 +62,8 @@ TAB_SCHEMAS: dict[str, list[str]] = {
         "summary",
     ],
     "PTP_Register": [
+        "payment_allocations",
+        "resolved_on",
         "ptp_id",
         "account_id",
         "invoice_ids",
@@ -109,6 +113,19 @@ TAB_SCHEMAS: dict[str, list[str]] = {
         "checked_at",
     ],
     "Metrics": [
+        "metric_version",
+        "contacted_calls",
+        "business_outcome_calls",
+        "record_review_calls",
+        "resolved_promises",
+        "kept_promises",
+        "matured_unresolved_promises",
+        "legacy_unverified_promises",
+        "resolved_promised_value",
+        "attributed_payment_value",
+        "attributed_recovery_rate",
+        "call_cost_usd",
+        "cost_per_contact_usd",
         "date",
         "calls_made",
         "calls_suppressed",
@@ -120,6 +137,7 @@ TAB_SCHEMAS: dict[str, list[str]] = {
         "human_review_rate",
     ],
     "Payments": [
+        "payment_id",
         "invoice_id",
         "amount_paid",
         "paid_date",
@@ -136,7 +154,7 @@ _KEY_FIELDS: dict[str, list[str]] = {
     "Soft_Commitments": ["soft_commitment_id"],
     "Disputes": ["dispute_id"],
     "Exceptions": ["call_id"],
-    "Payments": ["invoice_id", "paid_date"],
+    "Payments": ["invoice_id", "paid_date", "method", "reference", "payment_id"],
     "Metrics": ["date"],
 }
 
@@ -146,6 +164,8 @@ def _row_from_model(model: BaseModel, headers: list[str]) -> dict[str, str]:
     row: dict[str, str] = {}
     for h in headers:
         value = data.get(h, "")
+        if isinstance(value, dict):
+            value = json.dumps(value, sort_keys=True)
         if isinstance(value, list):
             value = ";".join(str(v) for v in value)
         row[h] = "" if value is None else str(value)

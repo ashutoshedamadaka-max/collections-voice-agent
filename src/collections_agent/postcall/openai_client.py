@@ -62,8 +62,9 @@ def extract_structured(
     endpoint uses this to report a real per-call pipeline cost instead of an estimate. Optional
     and unused by every existing caller, so this changes nothing for them.
     """
-    client = OpenAI(api_key=api_key)
-    response = client.chat.completions.create(
+    budgeted = hasattr(usage_sink, "authorize")
+    client = OpenAI(api_key=api_key, max_retries=0, timeout=45) if budgeted else OpenAI(api_key=api_key)
+    request = dict(
         model=model,
         temperature=0,
         messages=[
@@ -79,7 +80,11 @@ def extract_structured(
             },
         },
     )
-    if usage_sink is not None and response.usage is not None:
-        usage_sink.append(response.usage)
+    if budgeted:
+        request["max_completion_tokens"] = 1024
+        usage_sink.authorize(model, request, 1024)
+    response = client.chat.completions.create(**request)
+    if usage_sink is not None:
+        usage_sink.append(getattr(response, "usage", None))
     content = response.choices[0].message.content
     return schema.model_validate_json(content)

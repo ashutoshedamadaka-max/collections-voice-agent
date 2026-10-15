@@ -226,14 +226,19 @@ def test_call(dial: bool = False, ignore_calling_hours: bool = False) -> None:
     if ignore_calling_hours:
         typer.echo("--ignore-calling-hours: bypassing the calling-hours check only (testing).\n")
 
-    # No real PTP/dispute/call-log history exists yet (fixtures only cover accounts and
-    # invoices) — real history flows in once calls happen and Step 5 write-back lands.
+    from collections_agent.sheets.client import load_call_history
+
+    ptp_history, disputes, call_log = load_call_history(settings)
     ranked: list[tuple[float, object]] = []
     for account in accounts:
-        suppression = is_suppressed(account, invoices, call_log=[], open_ptps=[], now=suppression_now)
+        suppression = is_suppressed(
+            account, invoices, call_log=call_log, open_ptps=ptp_history, now=suppression_now
+        )
         if suppression.suppressed:
             continue
-        score = priority_score(account, invoices, ptp_history=[], call_log=[], weights=weights, as_of=as_of)
+        score = priority_score(
+            account, invoices, ptp_history=ptp_history, call_log=call_log, weights=weights, as_of=as_of
+        )
         if score > 0:
             ranked.append((score, account))
 
@@ -249,11 +254,13 @@ def test_call(dial: bool = False, ignore_calling_hours: bool = False) -> None:
     top_score, top_account = ranked[0]
 
     context_pack = build_context_pack(
-        top_account, invoices, ptp_history=[], open_disputes=[], call_log=[], as_of=as_of
+        top_account, invoices, ptp_history=ptp_history, open_disputes=disputes, call_log=call_log, as_of=as_of
     )
     prompt = render_system_prompt(context_pack, settings.company_name, current_date=as_of)
 
-    typer.echo(f"Top-priority account: {top_account.account_id} ({top_account.customer_name}, score {top_score})")
+    typer.echo(
+        f"Top-priority account: {top_account.account_id} ({top_account.customer_name}, score {top_score})"
+    )
     typer.echo("\n===== RENDERED SYSTEM PROMPT =====\n")
     typer.echo(prompt)
     typer.echo("\n===================================")
@@ -400,9 +407,11 @@ def run_postcall_cmd(
     out_path.write_text(analysis.model_dump_json(indent=2), encoding="utf-8")
 
     typer.echo(f"outcome: {analysis.outcome.outcome.value} (confidence {analysis.outcome.confidence:.2f})")
-    typer.echo(f"promise: has_promise={analysis.promise.has_promise} complete={analysis.promise.is_complete} "
-               f"downgraded_to_soft_commitment={analysis.promise.downgraded_to_soft_commitment} "
-               f"(confidence {analysis.promise.confidence:.2f})")
+    typer.echo(
+        f"promise: has_promise={analysis.promise.has_promise} complete={analysis.promise.is_complete} "
+        f"downgraded_to_soft_commitment={analysis.promise.downgraded_to_soft_commitment} "
+        f"(confidence {analysis.promise.confidence:.2f})"
+    )
     typer.echo(
         f"dispute: has_dispute={analysis.dispute.has_dispute} (confidence {analysis.dispute.confidence:.2f})"
     )
@@ -426,12 +435,11 @@ def label_calls_cmd(
         None, "--call-id", help="Label (or relabel, with --redo) just this one call."
     ),
 ) -> None:
-    """Step 7 (eval): records your own independent judgement of each saved call in
-    fixtures/raw/ — outcome type, whether a promise was captured and complete, whether a
-    dispute existed, whether a compliance rule was actually broken, and whether the call should
-    have been auto-written or held for review. Saved to fixtures/eval/labels.json, entirely
-    separate from fixtures/postcall/ (the pipeline's own output) — nothing the pipeline said is
-    shown while you label, so there's no path for it to influence your answer.
+    """Record evidence-based independent labels in fixtures/eval/labels_v2.json.
+
+    Transcript facts, expected records and operational follow-up are separate. Uncertain
+    fields remain unscored. Original random labels are preserved but excluded. Pipeline
+    analysis is hidden; write correctness requires subsequent review of a specific record.
 
     Resumable: already-labeled calls are skipped by default, so you can stop at any point
     (including with Ctrl-C — whatever you've already answered for completed calls is saved) and
@@ -476,8 +484,8 @@ def label_calls_cmd(
 def _label_one_call(call_id: str, position: int, total: int) -> None:
     from datetime import UTC, datetime
 
-    from collections_agent.eval.labels import HumanLabel, save_label
-    from collections_agent.models.domain import CallOutcomeType, WriteDecision
+    from collections_agent.eval.labels import HumanLabel, save_label, source_hash
+    from collections_agent.models.domain import CallOutcomeType
     from collections_agent.postcall.transcript import RAW_DIR, parse_transcript
 
     raw = json.loads((RAW_DIR / f"{call_id}.json").read_text(encoding="utf-8"))
@@ -493,9 +501,9 @@ def _label_one_call(call_id: str, position: int, total: int) -> None:
 
     if not transcript.turns:
         typer.echo("(transcript has 0 turns — this call never connected / no audio received)")
-    for turn in transcript.turns:
+    for turn_number, turn in enumerate(transcript.turns, start=1):
         speaker = "AGENT" if turn.role in ("assistant", "bot") else "CUSTOMER"
-        typer.echo(f"{speaker}: {turn.content}")
+        typer.echo(f"[{turn_number}] {speaker}: {turn.content}")
     if transcript.tool_calls:
         typer.echo("\nTool calls made during the call:")
         for tc in transcript.tool_calls:
@@ -503,32 +511,60 @@ def _label_one_call(call_id: str, position: int, total: int) -> None:
     typer.echo()
 
     try:
-        outcome_values = [o.value for o in CallOutcomeType]
+        reviewer = typer.prompt("Reviewer name/identifier").strip()
+        assessability = _prompt_choice("Assessability", ["reviewed", "uncertain", "unusable"])
+        evidence = {}
+
+        def record_evidence(name):
+            while True:
+                quote = typer.prompt(f"Evidence for {name} (turn number/quote and reasoning)").strip()
+                if quote:
+                    evidence[name] = quote
+                    return
+
+        def judgment(name, question):
+            answer = _prompt_choice(question, ["yes", "no", "uncertain", "not_applicable"])
+            if answer in ("uncertain", "not_applicable"):
+                return None
+            record_evidence(name)
+            return answer == "yes"
+
+        outcome_values = [o.value for o in CallOutcomeType] + ["uncertain"]
         typer.echo("Outcome type:")
         for idx, v in enumerate(outcome_values, start=1):
             typer.echo(f"  {idx}. {v}")
         outcome = _prompt_choice("Outcome", outcome_values)
+        if outcome != "uncertain":
+            record_evidence("outcome")
 
-        promise_captured = typer.confirm("Was a promise to pay captured?")
+        promise_captured = judgment(
+            "promise_captured", "Did the caller make a future payment promise (not a past payment claim)?"
+        )
         promise_complete = None
         if promise_captured:
-            promise_complete = typer.confirm(
+            promise_complete = judgment(
+                "promise_complete",
                 "Was it complete (specific amount, date, and method; date strictly in the "
-                "future; amount within the outstanding balance; method valid)?"
+                "future; amount within the outstanding balance; method valid)?",
             )
 
-        dispute_existed = typer.confirm("Did a dispute exist on this call?")
-        compliance_violated = typer.confirm(
+        dispute_existed = judgment("dispute_existed", "Did a dispute exist on this call?")
+        compliance_violated = judgment(
+            "compliance_violated",
             "Was any compliance rule actually broken (discount/waiver offered, consequences "
             "threatened, authority not verified before stating amounts, a fact stated beyond "
-            "what was given, or a misstated total)?"
+            "what was given, or a misstated total)?",
         )
 
-        write_values = [w.value for w in WriteDecision]
-        typer.echo("Write decision:")
-        for idx, v in enumerate(write_values, start=1):
-            typer.echo(f"  {idx}. {v}")
-        write_decision = _prompt_choice("Should this call have been", write_values)
+        typer.echo("A correct record can be saved even when a human must resolve the business issue.")
+        expected_records = typer.prompt("Expected records and supported fields (or 'uncertain')")
+        operational_followup = judgment(
+            "operational_followup", "Does the business case require human follow-up?"
+        )
+        followup_reason = typer.prompt("Follow-up owner/reason/due window (or N/A)")
+        typer.echo(
+            "Write correctness is unscored until a specific proposed record is independently reviewed."
+        )
 
         notes = typer.prompt("Notes (optional, Enter to skip)", default="", show_default=False)
     except (KeyboardInterrupt, typer.Abort):
@@ -537,12 +573,18 @@ def _label_one_call(call_id: str, position: int, total: int) -> None:
 
     label = HumanLabel(
         call_id=call_id,
-        outcome=CallOutcomeType(outcome),
+        reviewer=reviewer,
+        assessability=assessability,
+        input_sha256=source_hash(RAW_DIR / f"{call_id}.json"),
+        evidence=evidence,
+        outcome=CallOutcomeType(outcome) if outcome != "uncertain" else None,
         promise_captured=promise_captured,
         promise_complete=promise_complete,
         dispute_existed=dispute_existed,
         compliance_violated=compliance_violated,
-        write_decision=WriteDecision(write_decision),
+        operational_followup=operational_followup,
+        followup_reason=followup_reason,
+        expected_records=expected_records,
         notes=notes,
         labeled_at=datetime.now(UTC),
     )
@@ -557,7 +599,9 @@ def _prompt_choice(prompt_text: str, values: list[str]) -> str:
             return values[int(raw) - 1]
         if raw in values:
             return raw
-        typer.echo(f"Not a valid choice: {raw!r}. Enter a number 1-{len(values)} or one of: {', '.join(values)}")
+        typer.echo(
+            f"Not a valid choice: {raw!r}. Enter a number 1-{len(values)} or one of: {', '.join(values)}"
+        )
 
 
 @app.command("run-eval")
@@ -583,7 +627,7 @@ def run_eval_cmd(
 
 @app.command("sim-eval")
 def sim_eval_cmd(
-    scenario: list[str] = typer.Option(
+    scenario: list[str] = typer.Option(  # noqa: B008
         None, "--scenario", "-s", help="Run only these scenario ids (repeatable). Default: all."
     ),
     agent_model: str = typer.Option("gpt-4o-mini", help="Model playing the agent."),
@@ -712,6 +756,8 @@ def followthrough_cmd(
 
     backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
     result = run_followthrough(backend, SheetPaymentsSource(backend), as_of=target_date)
+    for warning in result.attribution_warnings:
+        typer.echo(f"Attribution warning: {warning}")
 
     typer.echo(f"Checked promises as of {target_date.isoformat()}.")
     if result.resolved:
@@ -731,10 +777,12 @@ def followthrough_cmd(
         target_date=target_date,
     )
     write_metrics(backend, [metrics_row])
+    kept_rate = metrics_row.promise_to_pay_kept_rate
+    kept_value_rate = metrics_row.promise_to_pay_kept_rate_by_value
     typer.echo(
         f"\nMetrics for {target_date.isoformat()}: "
-        f"kept_rate={metrics_row.promise_to_pay_kept_rate:.2f} "
-        f"kept_rate_by_value={metrics_row.promise_to_pay_kept_rate_by_value:.2f} "
+        f"kept_rate={kept_rate if kept_rate is not None else 'N/A'} "
+        f"kept_rate_by_value={kept_value_rate if kept_value_rate is not None else 'N/A'} "
         f"calls_made={metrics_row.calls_made}"
     )
 
@@ -744,7 +792,9 @@ def test_webhook(
     host: str = "localhost",
     port: int | None = None,
     url: str | None = typer.Option(
-        None, "--url", help="Full base URL to test against (e.g. an https:// tunnel URL), overriding host/port."
+        None,
+        "--url",
+        help="Full base URL to test against (e.g. an https:// tunnel URL), overriding host/port.",
     ),
 ) -> None:
     """Dry-run the local webhook server against realistic fake payloads for all 7 tools plus
@@ -752,6 +802,9 @@ def test_webhook(
     auth path (including a deliberately wrong secret) so a 401 shows up here instead of as
     dead air on a live call. Run `serve-webhook` in another terminal first.
     """
+    from copy import deepcopy
+    from datetime import UTC, datetime, timedelta
+
     import httpx
 
     from collections_agent.webhooks.auth import VAPI_SECRET_HEADER
@@ -791,15 +844,19 @@ def test_webhook(
 
     typer.echo("\n== Tool-call dry run (correct secret) ==")
     all_ok = True
-    for call in SAMPLE_TOOL_CALLS:
+    for sample in SAMPLE_TOOL_CALLS:
+        call = deepcopy(sample)
+        if call["name"] == "record_ptp":
+            call["arguments"]["date"] = str(datetime.now(UTC).date() + timedelta(days=7))
         resp = httpx.post(
-            f"{base_url}/vapi/tool-calls",
+            f"{base_url}/diagnostics/tool-calls",
             json={"message": {"type": "tool-calls", "toolCallList": [call]}},
             headers=ok_headers,
             timeout=10,
         )
-        result = resp.json()["results"][0]["result"] if resp.status_code == 200 else resp.text
-        is_error = resp.status_code != 200 or "error" in result
+        reply = resp.json()["results"][0] if resp.status_code == 200 else {"error": resp.text}
+        result = reply.get("result", reply.get("error", "missing tool response"))
+        is_error = resp.status_code != 200 or "error" in reply
         all_ok = all_ok and not is_error
         status = "FAIL" if is_error else "PASS"
         typer.echo(f"[{status}] {call['name']}({call['arguments']}) -> {result}")
@@ -813,6 +870,80 @@ def test_webhook(
     if not all_ok:
         raise typer.Exit(code=1)
     typer.echo("\nAll checks passed.")
+
+
+@app.command("latency-report")
+def latency_report_cmd(
+    raw_dir: Path = typer.Option(  # noqa: B008
+        Path("fixtures/raw"), help="Directory of saved provider call payloads."
+    ),
+    out: Path | None = typer.Option(None, "--out", help="Save full timing evidence as JSON."),  # noqa: B008
+) -> None:
+    """Report measured historical turn timings; no network requests or model calls."""
+    from collections_agent.eval.latency import latency_report
+
+    result = latency_report(raw_dir)
+    if out:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    typer.echo(
+        f"{result['calls_inspected']} saved calls inspected; "
+        f"{result['calls_with_turn_measurements']} with turn measurements; "
+        f"{result['calls_without_turn_measurements']} unavailable."
+    )
+    for name, metric in result["metrics"].items():
+        typer.echo(
+            f"{name}: n={metric['samples']}, p50={metric['p50_ms']} ms, "
+            f"p95={metric['p95_ms']} ms, max={metric['max_ms']} ms"
+        )
+    typer.echo("Historical provider measurements; no production or model-ranking claim. No API calls made.")
+    if out:
+        typer.echo(f"Full evidence saved to {out}")
+
+
+@app.command("register-call")
+def register_call_cmd(call_id: str, account_id: str) -> None:
+    """Bind a provider call ID to an account before its first tool request (trusted operator)."""
+    from collections_agent.sheets.client import load_accounts_and_invoices
+    from collections_agent.webhooks.operations import register_call
+
+    settings = get_settings()
+    accounts, invoices = load_accounts_and_invoices(settings)
+    account = next((a for a in accounts if a.account_id == account_id), None)
+    if account is None or account.opted_out:
+        raise typer.BadParameter("Account unknown or suppressed")
+    register_call(
+        settings.operations_db_path,
+        call_id,
+        account_id,
+        account.contact_phone,
+        [i for i in invoices if i.account_id == account_id],
+    )
+    typer.echo("Trusted call scope saved. Context expires after four hours.")
+
+
+@app.command("operations")
+def operations_cmd(
+    complete: str | None = typer.Option(None, help="Receipt ID to mark complete after human action."),
+    resolution: str = typer.Option("", help="Evidence of completion, required with --complete."),
+    summary: bool = typer.Option(False, "--summary", help="Show queue counts, SLA and backlog age."),
+) -> None:
+    """Inspect durable follow-up work; completion is separate from accepting a request."""
+    from collections_agent.webhooks.operations import complete_action, list_actions, operation_metrics
+
+    path = get_settings().operations_db_path
+    if complete:
+        complete_action(path, complete, resolution)
+    if summary:
+        typer.echo(json.dumps(operation_metrics(path), indent=2))
+        return
+    actions = list_actions(path)
+    typer.echo(json.dumps(actions, indent=2))
+    typer.echo(
+        f"{sum(a['status'] == 'pending' for a in actions)} pending; "
+        f"{sum(a['status'] == 'completed' for a in actions)} completed. "
+        "No calls or documents sent by this command."
+    )
 
 
 def main() -> None:

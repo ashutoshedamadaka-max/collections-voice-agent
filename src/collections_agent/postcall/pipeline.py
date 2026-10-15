@@ -58,6 +58,10 @@ def _disagreements(
         reasons.append("outcome says promise_to_pay but the promise was downgraded to a soft commitment")
     if outcome.outcome == CallOutcomeType.DISPUTE and not dispute.has_dispute:
         reasons.append("outcome says dispute but the dispute specialist found none")
+    if outcome.outcome == CallOutcomeType.ALREADY_PAID and promise.has_promise:
+        reasons.append(
+            "past payment claim and future payment promise both extracted; review intent and invoice"
+        )
     return reasons
 
 

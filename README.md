@@ -58,8 +58,8 @@ mid-call and writing it back to the account so the *next* call opens in the righ
 
 ## Stack
 
-Python 3.11, managed with `uv`. Google Sheets as the CRM (single source of truth, no local
-DB). Vapi for the voice layer. OpenAI for the voice agent's backend model (`gpt-4o`, currently
+Python 3.11, managed with `uv`. Google Sheets stores CRM records; a local SQLite ledger stores
+registered-call action receipts and immediate opt-outs. Vapi provides the voice layer. OpenAI provides the voice agent's backend model (`gpt-4o`, currently
 — see `docs/FAILURES.md` for why this moved off `gpt-4o-mini`) and the post-call specialist
 pipeline (`gpt-4o-mini`, unaffected by that change) — chosen over Anthropic purely on available
 credit (no Anthropic credit; ~$8 OpenAI, ~$7 Vapi). The in-call model is wired as
@@ -92,6 +92,7 @@ uv run collections-agent write-back        # Step 5: write a post-call analysis 
 uv run collections-agent followthrough     # Step 6: resolve due promises against Payments, roll up Metrics
 uv run collections-agent label-calls       # Step 7: record your own judgement of a saved call (resumable)
 uv run collections-agent run-eval          # Step 7: compare the real pipeline against your labels
+uv run collections-agent latency-report   # Saved Vapi turn timings; no network or model calls
 ```
 
 More commands (`build-queue`) land as later build steps are implemented — see the execution
@@ -110,23 +111,15 @@ credentials required — see each module's tests for the pure-function/fake-back
 
 ## Eval
 
-**n = 9.** The only specialist-accuracy eval in this repo compares the real pipeline's output
-against one person's judgement on the nine saved calls in `fixtures/raw/` — most of them
-synthetic test calls, not real customer calls. It reports agreement with a human labeller on
-nine calls and nothing else: not a kept rate, not an accuracy estimate, not anything that
-should be read as implying production volume or real-world performance. See `docs/eval.md` for
-exactly what it measures, how account context is resolved for the four calls whose accounts no
-longer exist in the current dataset, and the full methodology.
+The original nine-call human benchmark is **invalidated**: the owner confirmed that its labels were entered randomly. All derived agreement, false-write and false-hold claims are withdrawn. Original labels remain local historical artifacts; the evaluator excludes them.
 
-```powershell
-uv run collections-agent label-calls   # one call at a time, resumable, saved to fixtures/eval/labels.json
-uv run collections-agent run-eval      # runs the real pipeline, reports agreement, prints every disagreement in full
-```
+`label-calls` now writes a separate v2 dataset with reviewer identity, input hashes, uncertainty and evidence. Operational follow-up is distinct from record correctness. No replacement accuracy score is available until independent review is complete. See [the labeling rubric](docs/EVAL_LABELING_RUBRIC_V2.md).
 
-`fixtures/eval/labels.json` (your labels) is committed — it's hard-won human judgement, not
-something to regenerate. `fixtures/eval/pipeline_runs/` (the pipeline's cached output per call)
-is not — it's regenerable any time with `run-eval --refresh` and costs real OpenAI credit to
-produce, same budget note as `run-postcall`.
+Text simulations exercise 21 scripted situations. Historical results (before evaluator v2): gpt-4o-mini 18/21 in-call passes; gpt-4o 17/21. These are single runs with different stochastic conversations, not a model ranking or audio/production accuracy. Updated checks require a fresh, explicitly budgeted experiment. No new paid run has been performed.
+
+See [production review](docs/PRODUCTION_REVIEW_2026-10-15.md), [evaluation methodology](docs/eval.md), and [metric definitions](docs/metrics.md).
+The [implementation status and operating instructions](docs/IMPLEMENTATION_STATUS_2026-10-15.md) describe the new registered-call path, its storage requirements, validation results and remaining pilot work.
+For a fresh manual evaluation, use the [12 caller scripts](docs/CALL_TEST_SCRIPTS_V2.md) and [evidence-based review guide](docs/CALL_REVIEW_GUIDE_V2.md). Start with four distinct calls; the included review template contains no prefilled judgments.
 
 ## Fixture discipline
 

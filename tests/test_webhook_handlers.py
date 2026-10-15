@@ -28,8 +28,37 @@ def _redirect_log(tmp_path, monkeypatch):
 
 
 @pytest.fixture
-def client():
-    return TestClient(app)
+def client(tmp_path, monkeypatch):
+    from collections_agent.models.domain import Invoice
+    from collections_agent.webhooks.operations import register_call
+
+    path = tmp_path / "operations.db"
+    monkeypatch.setenv("OPERATIONS_DB_PATH", str(path))
+    register_call(
+        path,
+        "provider-test-call",
+        "ACC-test",
+        "C1",
+        [
+            Invoice(
+                invoice_id="INV-00001",
+                invoice_number="INV-00001",
+                account_id="ACC-test",
+                amount=100000,
+                issue_date=date(2026, 1, 1),
+                due_date=date(2026, 2, 1),
+            )
+        ],
+    )
+
+    class ScopedClient(TestClient):
+        def post(self, url, **kwargs):
+            # Normal authorized calls carry a provider ID bound by trusted application code.
+            if "json" in kwargs and "message" in kwargs["json"]:
+                kwargs["json"]["message"].setdefault("call", {"id": "provider-test-call"})
+            return super().post(url, **kwargs)
+
+    return ScopedClient(app)
 
 
 def test_rejects_missing_secret(client):
@@ -74,7 +103,8 @@ def test_accepts_correct_secret_and_dispatches_record_ptp(client, _redirect_log)
     assert resp.status_code == 200
     data = resp.json()
     assert data["results"][0]["toolCallId"] == "call-1"
-    assert json.loads(data["results"][0]["result"])["ptp_id"].startswith("PTP-")
+    assert json.loads(data["results"][0]["result"])["ptp_id"]
+    assert json.loads(data["results"][0]["result"])["completed"] is False
 
 
 def test_record_ptp_with_past_date_returns_structured_error_not_ptp_id(client, _redirect_log):
@@ -97,7 +127,7 @@ def test_record_ptp_with_past_date_returns_structured_error_not_ptp_id(client, _
     resp = client.post("/vapi/tool-calls", json=body, headers={VAPI_SECRET_HEADER: SECRET})
     assert resp.status_code == 200
     result = resp.json()["results"][0]
-    assert result["error"].startswith("date_in_the_past:")
+    assert result["error"].startswith("invalid_action:")
     assert "result" not in result
 
 

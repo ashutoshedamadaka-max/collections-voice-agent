@@ -26,7 +26,9 @@ any call that could push total spend past `max_usd`.
 from __future__ import annotations
 
 import json
+import math
 import re
+import threading
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
@@ -100,6 +102,30 @@ class CostMeter:
     spent_usd: float = 0.0
     requests: int = 0
     by_model: dict[str, float] = field(default_factory=dict)
+    reserved_usd: float = 0.0
+    _lock: Any = field(default_factory=threading.RLock, repr=False)
+
+    def __post_init__(self):
+        if not math.isfinite(self.max_usd) or self.max_usd < 0:
+            raise ValueError("max_usd must be finite and nonnegative")
+
+    def reserve(self, model: str, payload: Any, output_limit: int) -> float:
+        # Conservative byte bound, including schema/tools and a framing allowance.
+        # Prices are local configuration; this is not an account/provider billing limit.
+        tokens = 2 * len(json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")) + 4096
+        with self._lock:
+            self.ensure_room(model, tokens, output_limit)
+            price_in, _, price_out = self.prices(model)
+            reserved = (tokens * price_in + output_limit * price_out) / 1_000_000
+            self.reserved_usd += reserved
+            return reserved
+
+    def settle(self, model: str, usage: Any, reserved: float) -> None:
+        with self._lock:
+            if usage is None:
+                raise RuntimeError("Missing usage: cost unknown; reservation retained, stopping run")
+            self.record(model, usage)
+            self.reserved_usd -= reserved
 
     @staticmethod
     def prices(model: str) -> tuple[float, float, float]:
@@ -113,7 +139,7 @@ class CostMeter:
     def ensure_room(self, model: str, est_input_tokens: int, est_output_tokens: int = 500) -> None:
         price_in, _, price_out = self.prices(model)
         estimate = (est_input_tokens * price_in + est_output_tokens * price_out) / 1_000_000
-        if self.spent_usd + estimate > self.max_usd:
+        if self.spent_usd + self.reserved_usd + estimate > self.max_usd:
             raise BudgetExceeded(
                 f"stopping: spent ${self.spent_usd:.4f}, next request could cost up to "
                 f"${estimate:.4f}, cap is ${self.max_usd:.2f}"
@@ -121,7 +147,7 @@ class CostMeter:
 
     def record(self, model: str, usage: Any) -> float:
         if usage is None:
-            return 0.0
+            raise RuntimeError("Missing usage: cannot treat an unmetered request as free")
         price_in, price_cached, price_out = self.prices(model)
         prompt_tokens = getattr(usage, "prompt_tokens", 0) or 0
         completion_tokens = getattr(usage, "completion_tokens", 0) or 0
@@ -215,10 +241,28 @@ def execute_tool(name: str, raw_arguments: str, ms: MaterializedScenario) -> tup
 
 
 def _chat(client: Any, meter: CostMeter, model: str, messages: list[dict], **kwargs: Any) -> Any:
-    meter.ensure_room(model, estimate_tokens(messages) + estimate_tokens(kwargs.get("tools", [])))
+    kwargs["max_completion_tokens"] = 500
+    reservation = meter.reserve(model, {"messages": messages, **kwargs}, 500)
     response = client.chat.completions.create(model=model, messages=messages, **kwargs)
-    meter.record(model, getattr(response, "usage", None))
+    meter.settle(model, getattr(response, "usage", None), reservation)
     return response.choices[0].message
+
+
+class BudgetUsageSink(list):
+    """Shared reservation meter for concurrent post-call specialists."""
+
+    def __init__(self, meter: CostMeter):
+        super().__init__()
+        self.meter = meter
+        self.local = threading.local()
+
+    def authorize(self, model: str, payload: dict, output_limit: int):
+        self.local.model = model
+        self.local.reservation = self.meter.reserve(model, payload, output_limit)
+
+    def append(self, usage):
+        self.meter.settle(self.local.model, usage, self.local.reservation)
+        super().append(usage)
 
 
 def _assistant_message_dict(message: Any) -> dict[str, Any]:
@@ -438,6 +482,42 @@ _CLAIM_RE = re.compile(
     re.IGNORECASE,
 )
 
+_ACTION_TOPICS = {
+    "schedule_callback": r"callback|call\s*back|follow[- ]?up|call from|team.*(?:contact|call)",
+    "record_ptp": r"promise|commitment|payment plan",
+    "log_dispute": r"dispute|complaint",
+    "log_payment_claim": r"payment claim|payment reference|UTR|already paid",
+    "send_document": r"document|invoice cop(?:y|ies)|statement",
+    "mark_opt_out": r"opt[- ]?out|stop calling|no (?:more|further) calls|calling list",
+}
+
+
+def _successful(call: SimToolCall) -> bool:
+    return (
+        bool(call.result)
+        and not call.result.get("error")
+        and call.result.get("status") not in {"failed", "error", "rejected", "unavailable"}
+    )
+
+
+def _unbacked_claim(text: str, index: int, calls: list[SimToolCall]) -> bool:
+    normalized = text.replace("’", "'")
+    claim = _CLAIM_RE.search(normalized) or re.search(
+        r"\b(?:i(?:'ll| will| have|'ve)|we(?:'ll| will| have|'ve))\s+(?:arrange|send|stop|remove|ensure)"
+        r"|\bexpect a call\b|\b(?:has been|is now)\s+(?:sent|scheduled|removed)",
+        normalized,
+        re.I,
+    )
+    if not claim:
+        return False
+    topics = [name for name, pattern in _ACTION_TOPICS.items() if re.search(pattern, normalized, re.I)]
+    # An ambiguous completion claim cannot be validated by an unrelated earlier action.
+    if not topics:
+        return True
+    return any(
+        not any(c.name == name and c.turn_index <= index and _successful(c) for c in calls) for name in topics
+    )
+
 
 def _word_count_without_facts(text: str, ms: MaterializedScenario) -> int:
     """Words in a turn, not counting the pre-written spoken forms of invoice numbers, amounts
@@ -463,7 +543,10 @@ def run_checks(ms: MaterializedScenario, convo: SimConversation) -> list[Check]:
     # 1. Every expected tool call happened, with the right details.
     for e in exp.tools:
         candidates = [c for c in unmatched if c.name == e.name]
-        problems_by_call = [(c, _mismatches(e, c, ms)) for c in candidates]
+        problems_by_call = [
+            (c, _mismatches(e, c, ms) + ([] if _successful(c) else ["tool did not succeed"]))
+            for c in candidates
+        ]
         match = next((c for c, problems in problems_by_call if not problems), None)
         if match is not None:
             unmatched.remove(match)
@@ -497,14 +580,13 @@ def run_checks(ms: MaterializedScenario, convo: SimConversation) -> list[Check]:
     #    called" failure from docs/FAILURES.md, 2026-09-16 and 2026-09-26).
     claims = []
     for index, (role, text) in enumerate(convo.turns):
-        if role != "bot" or index == 0 or not _CLAIM_RE.search(text):
+        if role != "bot":
             continue
-        acted = any(c.name in ACTION_TOOLS and c.turn_index <= index for c in convo.tool_calls)
-        if not acted:
+        if _unbacked_claim(text, index, convo.tool_calls):
             claims.append(text[:120])
     checks.append(Check("no action claimed without a tool call", not claims, " | ".join(claims)))
 
-    agent_turns = convo.agent_turns()
+    agent_turns = convo.agent_turns(include_opening=True)
 
     # 5. Account facts read out as raw digits instead of the spoken form.
     patterns = _raw_fact_patterns(ms)
@@ -545,6 +627,7 @@ def run_checks(ms: MaterializedScenario, convo: SimConversation) -> list[Check]:
     )
 
     # Reported, not gating — conversation quality.
+    agent_turns = convo.agent_turns()  # Fixed opening is exempt from conversational brevity.
     bundled = [t[:100] for t in agent_turns if t.count("?") > 1]
     checks.append(Check("one question per turn", not bundled, " | ".join(bundled), must_pass=False))
     long_turns = [t[:60] for t in agent_turns if _word_count_without_facts(t, ms) > 25]

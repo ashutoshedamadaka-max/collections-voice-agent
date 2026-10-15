@@ -1133,6 +1133,29 @@
   .doc-prose { font-size: 14px; line-height: 1.8; }
   .doc-page code { overflow-wrap: anywhere; }
   .stage-card, .decision-item, .finding-card { padding: 22px; }
+  .journey-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .journey-strip > div { padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .journey-strip span { color: var(--green); font: 11px var(--font-mono); margin-right: 8px; }
+  .journey-strip strong { font-size: 12px; font-weight: 600; }
+  .journey-strip p { margin: 5px 0 0 26px; color: var(--text); font-size: 11px; line-height: 1.6; }
+  .evidence-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 14px; }
+  .evidence-metric { border: 1px solid var(--border); border-radius: 12px; padding: 20px; background: #f8faf9; }
+  .evidence-metric > span { display: block; color: var(--text); font-size: 12px; }
+  .evidence-metric strong { display: block; margin: 10px 0 7px; font-size: 29px; letter-spacing: -1px; font-weight: 600; }
+  .evidence-metric small { color: var(--muted); font-size: 11px; }
+  .evidence-caption { color: var(--text); font-size: 12px; line-height: 1.8; }
+  .evidence-detail { border: 1px solid var(--border); padding: 16px 18px; border-radius: 10px; margin-top: 16px; }
+  .evidence-detail summary { cursor: pointer; font-size: 12px; font-weight: 600; }
+  .evidence-detail p { font-size: 12px; line-height: 1.8; color: var(--text); }
+  .evidence-status { display: inline-flex; color: var(--green); background: var(--green-soft); border: 1px solid var(--green-border); border-radius: 20px; padding: 5px 10px; font-size: 10px; }
+  .evidence-status.pending { color: var(--amber); background: var(--amber-soft); border-color: var(--amber-border); }
+  .captured-card[data-action-state="failed"] { background: var(--amber-soft); border: 1px solid var(--amber-border); }
+  .captured-card[data-action-state="failed"] .status-tag { color: var(--danger); }
+  @media (max-width: 560px) {
+    .journey-strip, .evidence-metrics { grid-template-columns: 1fr; }
+    .evidence-metric { padding: 16px; }
+    .evidence-metric strong { font-size: 25px; }
+  }
   @keyframes enter-soft { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
   @media (min-width: 901px) and (max-height: 760px) {
     .panel-center, .panel-right { height: 450px; }
@@ -1401,6 +1424,28 @@
     .lesson-chain > div { border-right: 0; border-bottom: 1px solid #e6eeea; }
   }
 
+  /* Evidence and navigation use explicit colors on the dark story canvas. */
+  .section-nav { display: flex; flex-wrap: wrap; gap: 8px; }
+  .section-nav a { padding: 10px 14px; border: 1px solid #668783; border-radius: 8px; color: #e0f0e9; font-size: 12px; line-height: 1.5; text-decoration: none; }
+  .section-nav a:hover { background: #ffffff12; }
+  .section-nav a:focus-visible, .tab-btn:focus-visible { outline: 3px solid #a1e9ce; outline-offset: 3px; }
+  .story-section { scroll-margin-top: 24px; }
+  .story-hero a, .story-footnote a, .page-footer a { color: #b9f4d9; text-underline-offset: 3px; }
+  .doc-page .evidence-caption { color: #c7dcd9; }
+  .doc-page .evidence-detail { background: #f8faf9; color: #243e38; border-color: #dce6e3; margin-top: 0; }
+  .doc-page .evidence-detail p { color: #3e5750; }
+  .doc-page .evidence-detail a { color: #17624e; }
+  .usage-note { color: #d5e6e1; font-size: 11px; line-height: 1.6; margin: 10px 0 6px; }
+  .center-bottom .record-note, .center-bottom .mic-note { color: #bfd4ce; font-size: 11px; line-height: 1.5; }
+  .cost-fx-note { color: #c7dcd9; font-size: 12px; line-height: 1.65; }
+  .cost-cell .cost-note { color: #52645f; font-size: 11px; line-height: 1.5; }
+  .page-footer .note { color: #c7dcd9; font-size: 12px; line-height: 1.65; }
+  .section-heading .section-caption { white-space: nowrap; }
+  @media (max-width: 699px) {
+    .section-heading { flex-wrap: wrap; gap: 8px; }
+    .section-nav a { flex-grow: 1; }
+    .cost-cell:has(#costMonthly) { grid-column: 1 / -1; }
+  }
 </style>
 </head>
 <body>
@@ -1433,7 +1478,7 @@
     <div>
       <span class="eyebrow">NORTHGATE / VOICE WORKSPACE</span>
       <h1>Collections, in conversation.</h1>
-      <p class="page-intro">A call that ends in a decision, not just a transcript.</p>
+      <p class="page-intro">An English-language collections assistant, from customer conversation to a reviewable next action. Explore with synthetic account data.</p>
 
     </div>
     <div class="spacer"></div>
@@ -1441,6 +1486,12 @@
       <span class="dot idle" id="liveDot"></span>
       <span id="livePillText">Idle</span>
     </div>
+  </div>
+
+  <div class="journey-strip" aria-label="How to explore this demo">
+    <div><span>01</span><strong>Take the customer role</strong><p>Read the briefing, then talk or replay a saved example.</p></div>
+    <div><span>02</span><strong>Follow the conversation</strong><p>Inspect what was said and which tools were acknowledged.</p></div>
+    <div><span>03</span><strong>Review the next action</strong><p>See the analysis and proposed records. Writes are previewed.</p></div>
   </div>
 
   <main class="columns" aria-label="Voice workspace">
@@ -1511,7 +1562,8 @@
       <p class="allowance-note" id="fallbackNote" style="display:none;"></p>
       <p class="allowance-note" id="allowanceNote" style="display:none;"></p>
       <p class="mic-note" id="micNote">Checking what's available…</p>
-      <p class="record-note">Demo calls are never recorded or stored as audio.</p>
+      <p class="usage-note">Free for visitors. Live calls and replay analysis use the project’s API budget. Live calls have a three-minute cap.</p>
+      <p class="record-note">Audio recording is disabled. Transcripts are processed to produce the review below.</p>
       </div>
     </section>
 
@@ -1600,7 +1652,7 @@
   </section>
 
   <section class="cost-bar-wrap" aria-label="Call economics">
-    <div class="section-heading"><div><span class="eyebrow">TRANSPARENT BY DESIGN</span><h2>Call economics</h2></div><span class="section-caption">Real usage · costs shown in INR</span></div>
+    <div class="section-heading"><div><span class="eyebrow">TRANSPARENT BY DESIGN</span><h2>Call economics</h2></div><span class="section-caption">Reported usage · USD</span></div>
     <div class="cost-bar">
       <div class="cost-cell">
         <span class="cost-label">Call duration</span>
@@ -1627,25 +1679,18 @@
       </div>
       <div class="cost-divider"></div>
       <div class="cost-cell">
-        <span class="cost-label">At 1,000 calls / month</span>
+        <span class="cost-label">Illustrative × 1,000</span>
         <span class="cost-value" id="costMonthly">—</span>
-        <span class="cost-note">extrapolated, not measured</span>
+        <span class="cost-note">same call cost × 1,000</span>
       </div>
       <div class="cost-divider"></div>
-      <div class="cost-toggle-block">
-        <div class="toggle-row" role="group" aria-label="In-call backend model">
-          <button type="button" data-model="gpt-4o-mini" aria-pressed="false">gpt-4o-mini</button>
-          <button type="button" data-model="gpt-4o" aria-pressed="false">gpt-4o</button>
-        </div>
-        <span class="toggle-caption">n = 1 per model, same account and script</span>
-        <span class="toggle-consequence" id="toggleConsequence"></span>
-      </div>
+
     </div>
-    <p class="cost-fx-note">Approximate conversion at ₹96.62 per US$1 (7 Oct 2026). Source costs are measured in USD.</p>
+    <p class="cost-fx-note">Reported voice cost plus model usage at configured prices. Illustration excludes hosting, retries and human operations; it is not a monthly forecast.</p>
   </section>
 
   <footer class="page-footer">
-    <span class="note">No kept rate is shown here — not enough call volume for one to mean anything. See the written case study.</span>
+    <span class="note">Verified payment outcomes are not available for this demo. Read the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/CASE_STUDY.md" target="_blank" rel="noopener noreferrer">case study and release boundaries ↗</a>.</span>
     <div class="spacer"></div>
     <span class="note">Real call, real pipeline — local testing build</span>
   </footer>
@@ -1669,23 +1714,23 @@
       </header>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">01 / ARCHITECTURE</span><h2>One continuous data path</h2><p>The same post-call pipeline handles live calls and saved replays.</p></div>
+        <div class="story-section-head"><span class="story-index">01 / ARCHITECTURE</span><h2>From conversation to a business record</h2><p>Live calls and saved replays use the same analysis function. The pre-call engine and Sheets write-back are separate application paths; the public demo uses frozen synthetic context and previews writes.</p></div>
         <div class="architecture-flow" aria-label="Account data flows through eligibility, voice call, analysis, and write-back">
           <div class="architecture-node"><span class="node-icon">01</span><strong>Account data</strong><small>AR sheet · invoices · contact history</small></div>
           <div class="architecture-node"><span class="node-icon">02</span><strong>Pre-call gate</strong><small>Suppress ineligible accounts · score priority · build context</small></div>
-          <div class="architecture-node"><span class="node-icon">03</span><strong>Voice agent</strong><small>Fixed disclosure · authority check · one invoice</small></div>
+          <div class="architecture-node"><span class="node-icon">03</span><strong>Voice agent</strong><small>Fixed opening · name confirmation · one invoice</small></div>
           <div class="architecture-node"><span class="node-icon">04</span><strong>Post-call review</strong><small>Five parallel extractors · supervisor merge</small></div>
           <div class="architecture-node"><span class="node-icon">05</span><strong>Next action</strong><small>Auto-write or human exception queue</small></div>
         </div>
-        <p class="story-footnote">The write-back path reconciles rows by <code>call_id</code>, so retrying an analysis does not duplicate records. The public demo previews the row shape; it does not write to a customer Sheet. The first nine-call eval found two false writes, so this path still needs human oversight before real-customer use.</p>
+        <p class="story-footnote">The write-back path reconciles rows by <code>call_id</code>, so retrying an analysis does not duplicate records. The public demo previews the row shape; it does not write to a customer Sheet. The original human benchmark was invalidated. Independent record-level review is required before real-customer use.</p>
       </section>
 
       <section class="story-section">
         <div class="story-section-head"><span class="story-index">02 / EXECUTION</span><h2>Where each decision lives</h2><p>Code handles fixed rules. Models handle conversation and transcript interpretation. The supervisor routes low-confidence and rule-breaking calls to humans.</p></div>
         <div class="story-card-grid three">
-          <article class="story-card"><div class="story-card-top"><span class="story-icon">⌁</span><span>BEFORE THE CALL</span></div><h3>Eligibility before outreach</h3><p>Code suppresses paid accounts, open disputes, active promises, opt-outs, wrong contacts, cooldowns, out-of-hours calls, and 90+ day debt routed to a person. Every suppression has a logged reason.</p><div class="story-card-rule"><strong>Priority</strong><code>balance × aging × broken-PTP escalation × contactability</code></div><p>The context pack carries contact, invoices, total balance, promise history, disputes, last contact, and language.</p></article>
-          <article class="story-card"><div class="story-card-top"><span class="story-icon">◉</span><span>DURING THE CALL</span></div><h3>A focused voice conversation</h3><p>Vapi starts with a fixed disclosure and authority check before the model speaks. The agent works the most overdue invoice, asks for a concrete payment commitment when possible, and hands off other invoices.</p><div class="story-card-rule"><strong>Guardrails</strong><span>One question per turn · supplied invoice facts only · three-minute cap</span></div><p>Tool results must be checked before the agent says an action was completed.</p></article>
-          <article class="story-card"><div class="story-card-top"><span class="story-icon">◇</span><span>AFTER THE CALL</span></div><h3>Extract, validate, route</h3><p>Outcome, promise, dispute, compliance, and summary specialists read the transcript in parallel. Code validates dates, amounts, methods, and arithmetic.</p><div class="story-card-rule"><strong>Supervisor</strong><span>Low confidence or a hard compliance violation sends the call to human review.</span></div><p>A valid result maps to call log, promise, dispute, or exception records.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon">⌁</span><span>BEFORE THE CALL</span></div><h3>Eligibility before outreach</h3><p>Code suppresses paid accounts, open disputes, active promises, opt-outs, wrong contacts, cooldowns, out-of-hours calls, and 90+ day debt routed to a person. The pre-call engine returns suppression reasons; dispatch-level logging remains a pilot requirement.</p><div class="story-card-rule"><strong>Priority</strong><code>balance × aging × broken-PTP escalation × contactability</code></div><p>The context pack carries contact, invoices, total balance, promise history, disputes, last contact, and language.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon">◉</span><span>DURING THE CALL</span></div><h3>A focused voice conversation</h3><p>Vapi starts with a fixed disclosure and name confirmation before the model speaks. Stronger recipient verification remains a pilot requirement. The agent works the most overdue invoice, asks for a concrete payment commitment when possible, and hands off other invoices.</p><div class="story-card-rule"><strong>Guardrails</strong><span>One question per turn · supplied invoice facts only · three-minute cap</span></div><p>Tool results must be checked before the agent says an action was completed.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon">◇</span><span>AFTER THE CALL</span></div><h3>Extract, validate, route</h3><p>Outcome, promise, dispute, compliance, and summary specialists read the transcript in parallel. Code validates dates, amounts, methods, and arithmetic.</p><div class="story-card-rule"><strong>Supervisor</strong><span>Low confidence, specific contradictions or a hard compliance finding sends the proposed result to record review.</span></div><p>The summary is descriptive; it cannot clear a write. A separate command persists eligible rows to Sheets.</p></article>
         </div>
       </section>
 
@@ -1693,7 +1738,7 @@
         <div class="story-section-head"><span class="story-index">03 / INSPECT THE SYSTEM</span><h2>See the prompt and the rows</h2><p>These public artifacts show the instructions the agent follows and the shape of the ledger update. The sample rows are illustrative synthetic data.</p></div>
         <div class="writeback-route" aria-label="Post-call write-back routing">
           <div><strong>Call ends</strong><span>The transcript and tool events enter post-call analysis.</span></div>
-          <div><strong>Call_Log</strong><span>Every processed call receives a summary and outcome row.</span></div>
+          <div><strong>Call_Log</strong><span>The write-back command saves a summary and outcome row; the public demo previews it.</span></div>
           <div><strong>Specialized rows</strong><span>A cleared promise, soft commitment, or dispute goes to its matching tab.</span></div>
           <div><strong>Exceptions</strong><span>Uncertain or rule-breaking calls are held for human review.</span></div>
         </div>
@@ -1702,6 +1747,7 @@
           <article class="evidence-link-card"><span class="card-label">AGENT INSTRUCTIONS</span><h3>Read the system prompt</h3><p>Open the actual Jinja prompt template. Account and invoice values are filled in for each call. The fixed opening and tool definitions are configured separately, so this template is the conversation layer rather than a complete Vapi payload.</p><a href="/demo/assets/system-prompt.txt" target="_blank" rel="noopener noreferrer">Open prompt template ↗</a></article>
         </div>
         <p class="story-footnote">The public demo previews proposed ledger rows. It never writes a visitor call to the customer Sheet. The example workbook illustrates the schema; it is not a live or continuously updated Google Sheet.</p>
+        <p class="story-footnote">Explore the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/CASE_STUDY.md" target="_blank" rel="noopener noreferrer">product case study ↗</a> and <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/tree/master/src/collections_agent" target="_blank" rel="noopener noreferrer">implementation ↗</a>.</p>
       </section>
 
       <section class="story-section">
@@ -1722,45 +1768,57 @@
     <div class="doc-page">
       <header class="story-hero eval-hero">
         <span class="story-kicker">EVALUATION / 02</span>
-        <h1>Can the pipeline agree with a human reader?</h1>
-        <p>Nine saved calls were labeled independently, then run through the actual post-call pipeline. The first comparison exposed a weak final write decision, so these numbers are a diagnostic baseline rather than a performance claim.</p>
-        <div class="story-metrics" aria-label="Evaluation status">
-          <div><strong>9</strong><span>labeled calls</span></div>
-          <div><strong>4 / 9</strong><span>write decisions agreed</span></div>
-          <div><strong>2</strong><span>false writes to investigate</span></div>
+        <h1>Test the conversation. Inspect the consequence.</h1>
+        <p>A good call needs the right understanding, a supported action and an accurate record. This evaluation separates those checks and shows the evidence available for each.</p>
+        <div class="story-metrics" aria-label="Evaluation evidence status">
+          <div><strong>21</strong><span>scripted text scenarios</span></div>
+          <div><strong>Pending</strong><span>independent human benchmark</span></div>
+          <div><strong>N/A</strong><span>validated audio success rate</span></div>
         </div>
       </header>
-
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">01 / METHOD</span><h2>Keep the human answer independent</h2></div>
-        <div class="eval-flow" aria-label="Evaluation process">
-          <div><span class="eval-step">1</span><h3>Read and label</h3><p>One person reads each transcript and tool call without seeing the specialists' answers. Labels save per call and can be resumed.</p></div>
-          <div><span class="eval-step">2</span><h3>Run the real pipeline</h3><p><code>run-eval</code> uses the same post-call function as live and replay calls. Per-call caching avoids repeat API spend.</p></div>
-          <div><span class="eval-step">3</span><h3>Inspect disagreements</h3><p>Compare each field, count false holds and false writes separately, then read each mismatch with its transcript, tool calls, specialist notes, and confidence.</p></div>
+        <div class="story-section-head"><span class="story-index">01 / EVIDENCE</span><h2>Three layers of evaluation</h2></div>
+        <div class="eval-flow">
+          <div><span class="eval-step">1</span><h3>Deterministic checks</h3><p>Validate payment amounts, invoice identity, attribution, durable actions and retry behavior with offline regression tests.</p></div>
+          <div><span class="eval-step">2</span><h3>Text simulations</h3><p>Exercise the prompt, tools and post-call pipeline. A successful tool call must match the action claimed. Text checks cannot measure speech or interruptions.</p></div>
+          <div><span class="eval-step">3</span><h3>Human and audio review</h3><p>Rebuild distinct cases with evidence and uncertainty. Measure record correctness separately from human follow-up. Audio benchmarks remain pending.</p></div>
         </div>
       </section>
-
-      <section class="story-section">
-        <div class="story-section-head"><span class="story-index">02 / SCORECARD</span><h2>Observed agreement</h2><p>Agreement with one human label on nine saved calls. Promise completeness applies to five calls.</p></div>
-        <div class="scorecard-grid">
-          <div><span>01</span><strong>Outcome type</strong><small>What happened on the call?</small><b class="score-value">7 / 9</b><div class="score-meter"><i style="width:78%"></i></div></div>
-          <div><span>02</span><strong>Promise captured</strong><small>Did the caller commit to pay?</small><b class="score-value">8 / 9</b><div class="score-meter"><i style="width:89%"></i></div></div>
-          <div><span>03</span><strong>Promise complete</strong><small>Amount, date, method, valid bounds?</small><b class="score-value">3 / 5</b><div class="score-meter"><i style="width:60%"></i></div></div>
-          <div><span>04</span><strong>Dispute existed</strong><small>Was the invoice itself challenged?</small><b class="score-value">8 / 9</b><div class="score-meter"><i style="width:89%"></i></div></div>
-          <div><span>05</span><strong>Compliance violated</strong><small>Did a hard rule actually fail?</small><b class="score-value">7 / 9</b><div class="score-meter"><i style="width:78%"></i></div></div>
-          <div class="score-concern"><span>06</span><strong>Write decision</strong><small>Auto-write or human review?</small><b class="score-value">4 / 9</b><div class="score-meter"><i style="width:44%"></i></div></div>
+      <section class="story-section" aria-labelledby="latencyEvidenceTitle">
+        <div class="story-section-head"><span class="story-index">02 / MEASURED VOICE TIMING</span><h2 id="latencyEvidenceTitle">How long does the agent take to respond?</h2><p>Provider-reported turn timings from the two saved demo examples. These are historical test calls, separate from your current session.</p></div>
+        <span class="evidence-status" id="latencyEvidenceStatus">Loading saved evidence</span>
+        <div class="evidence-metrics" aria-live="polite">
+          <div class="evidence-metric"><span>Typical turn · median / p50</span><strong id="latencyMedian">N/A</strong><small>Half of measured turns were faster</small></div>
+          <div class="evidence-metric"><span>Slower turns · p95</span><strong id="latencyP95">N/A</strong><small>Nearest-rank percentile</small></div>
+          <div class="evidence-metric"><span>Evidence size</span><strong id="latencySamples">N/A</strong><small id="latencyCallCount">Saved examples only</small></div>
         </div>
+        <p class="evidence-caption" id="latencyEvidenceNote">No timing is inferred when provider measurements are missing.</p>
+        <details class="evidence-detail"><summary>What this timing does—and does not—measure</summary><p>Turn latency is the provider-reported response interval, not a separately verified measurement at the listener. Component timings can overlap. The small sample does not establish production performance, model superiority, interruption recovery or time to a substantive answer.</p><p>p50 is the median; p95 uses the nearest-rank method over measured turns. Inspect the <a href="/demo/evidence/latency" target="_blank" rel="noopener noreferrer">aggregate timing evidence</a>. It contains no visitor transcripts or account details.</p></details>
+      </section>
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">03 / HISTORICAL TEXT RUNS</span><h2>Useful diagnostics, limited evidence</h2></div>
         <div class="eval-risk-grid">
-          <div><strong>3 false holds</strong><span>The human would auto-write; the pipeline held the call. This creates extra manual work.</span></div>
-          <div class="risk-critical"><strong>2 false writes</strong><span>The human would hold the call; the pipeline marked it for auto-write. This is the more serious error.</span></div>
+          <div><strong>gpt-4o-mini: 18 / 21</strong><span>In-call scenario passes. One text run on 14 October 2026; $0.0515 agent, customer and post-call API cost.</span></div>
+          <div><strong>gpt-4o: 17 / 21</strong><span>In-call scenario passes. One text run on 14 October 2026; $0.3780 agent, customer and post-call API cost.</span></div>
         </div>
-        <p class="story-footnote">Promise completeness is scored only when the human label says a promise exists. Hard compliance violations include an unverified contact, unsupported facts, a misstated total, threats, or an offered discount; a low QA score alone does not count. Four historical calls recover account facts from their embedded call prompt because the fake dataset was regenerated. Date checks use each call's recorded date.</p>
+        <p class="story-footnote">Historical evaluator v1. These figures do not include end-to-end post-call agreement and are not a model ranking. Evaluator v2 adds stricter checks; a fresh budgeted experiment is pending.</p>
       </section>
-
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">03 / EVIDENCE BOUNDARY</span><h2>What these nine calls can tell us</h2></div>
-        <div class="evidence-panel"><div><span class="evidence-mark">✓</span><h3>Useful for diagnosis</h3><p>They can reveal which transcript judgments disagree with one human label and where to inspect a specialist or prompt.</p></div><div><span class="evidence-mark">—</span><h3>Not a production claim</h3><p>Most calls are synthetic tests against a fake account dataset. Nine calls cannot establish a kept-payment rate or production accuracy.</p></div></div>
-        <div class="eval-status"><span class="status-dot"></span><span><strong>What this run exposed:</strong> six of nine calls disagreed on at least one field. The two false writes make unattended write-back premature in this small test set; outcome classification and dispute routing are the first cases to investigate. This is an inference from the comparison, not a production accuracy estimate. Human labels and call transcripts remain local and are not published with this demo.</span></div>
+        <div class="story-section-head"><span class="story-index">04 / MODEL AND HUMAN REVIEW</span><h2>Who checks the meaning?</h2></div>
+        <div class="evidence-panel">
+          <div><h3>Model-based operational checks</h3><p>Five AI specialists interpret the transcript. Compliance review judges qualitative rule violations; code checks amounts, dates and known contradictions. These are product components whose outputs also need independent evaluation.</p></div>
+          <div><h3>Independent judging · pending calibration</h3><p>A separate conversation judge must assess intent, corrections, unsupported commitments and summary faithfulness against human-reviewed examples. No calibrated judge accuracy or safe-write score is claimed.</p></div>
+        </div>
+        <details class="evidence-detail"><summary>Why the original nine-call benchmark is withdrawn</summary><p>The original labels were not reviewed reliably. All derived agreement and false-write/false-hold counts are withdrawn. Replacement review uses distinct cases, evidence spans and uncertainty. A correct dispute record can still require human follow-up; those are separate judgments.</p></details>
+      </section>
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">05 / METRIC CONTRACT</span><h2>Show the denominator and what it means</h2></div>
+        <div class="evidence-panel">
+          <div><h3>Business and workflow</h3><p>Contact rate, record review rate, matured promise fulfillment, attributed payment recovery and cost per contact. Human follow-up is a separate workflow, not an extraction error.</p></div>
+          <div><h3>Voice quality and reliability</h3><p>Historical response timings are available above. Controlled audio task completion, interruption recovery, full action fulfillment and production latency remain unvalidated. Missing signals display N/A.</p></div>
+        </div>
+        <div class="eval-status"><span class="status-dot"></span><span><strong>Release evidence:</strong> independent labels, audio tests and deployment reliability checks are still required before a real-customer pilot.</span></div>
+        <p class="story-footnote">Inspect the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/eval.md" target="_blank" rel="noopener noreferrer">evaluation method ↗</a>, <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/metrics.md" target="_blank" rel="noopener noreferrer">metric definitions ↗</a>, and <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/CALL_REVIEW_GUIDE_V2.md" target="_blank" rel="noopener noreferrer">human review guide ↗</a>.</p>
       </section>
     </div>
   </div>
@@ -1772,8 +1830,8 @@
       <header class="story-hero lessons-hero">
         <span class="story-kicker">FIELD NOTES / 03</span>
         <h1>The real calls changed the system.</h1>
-        <p>These are incidents from manual testing, recorded in <code>docs/FAILURES.md</code>. Each exposed a gap between a passing implementation and the behavior a caller actually experienced.</p>
-        <div class="story-metrics" aria-label="Lessons at a glance"><div><strong>3</strong><span>deep investigations</span></div><div><strong>6</strong><span>additional field findings</span></div><div><strong>1</strong><span>principle: verify with real calls</span></div></div>
+        <p>These are incidents from manual testing, recorded in the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/FAILURES.md" target="_blank" rel="noopener noreferrer">failure log ↗</a>. Each exposed a gap between a passing implementation and the behavior a caller actually experienced.</p>
+        <div class="story-metrics" aria-label="Lessons at a glance"><div><strong>3</strong><span>deep investigations</span></div><div><strong>8</strong><span>additional field findings</span></div><div><strong>1</strong><span>principle: verify with real calls</span></div></div>
       </header>
 
       <section class="story-section">
@@ -1792,8 +1850,10 @@
           <article><span>TOOL USE</span><h3>Speech is not execution</h3><p>The agent said it logged a dispute without calling the tool. Tighten tool instructions and log raw webhook requests, including no-op requests.</p></article>
           <article><span>PRIORITY</span><h3>A passing test asserted the wrong rule</h3><p>Broken promises lowered priority until real promise history exercised the formula. They now escalate it.</p></article>
           <article><span>INTEGRATION</span><h3>The fake backend was too forgiving</h3><p>It accepted a new Sheet field that the real writer silently dropped. Test the real header mapping.</p></article>
-          <article><span>PROVIDER DATA</span><h3>The summary field never arrived</h3><p>Real Vapi payloads showed the built-in summary path was deprecated. A dedicated summary specialist replaced it.</p></article>
-          <article><span>SCOPE</span><h3>Hinglish was cut deliberately</h3><p>It failed the same way on two models. The demo now focuses on reliable English rather than a third unverified rewrite.</p></article>
+          <article><span>PROVIDER DATA</span><h3>The summary field never arrived</h3><p>The saved payloads did not contain usable summaries. A dedicated specialist now generates a factual summary from the same transcript.</p></article>
+          <article><span>SCOPE</span><h3>English is the bounded release scope</h3><p>Language experiments exposed failures beyond pronunciation. The current demo focuses on English; multilingual end-to-end quality has not been validated.</p></article>
+          <article><span>MEASUREMENT</span><h3>The labels needed their own quality gate</h3><p>The first human benchmark was withdrawn when its labels proved unreliable. The replacement requires evidence, uncertainty and separate judgments for record correctness and business follow-up.</p></article>
+          <article><span>FOLLOW-THROUGH</span><h3>One payment cannot keep two promises</h3><p>Old matching could count money received before a promise or reuse it across promises. Allocations now persist, and legacy results require reconciliation before they count as verified fulfillment.</p></article>
         </div>
       </section>
     </div>
@@ -1828,27 +1888,35 @@
   }
 
   TABS.forEach(function (t) {
-    document.getElementById(t.btn).addEventListener("click", function () { activateTab(t.panel); });
+    document.getElementById(t.btn).addEventListener("click", function () {
+      activateTab(t.panel);
+      history.replaceState(null, "", "#" + t.panel);
+    });
   });
 
-  /* ---------------- reference cost/latency data (real, measured, n=1 each control call) ----
-     Independent of whatever call is currently replayed — an explicit comparison, not a
-     recomputation of the replayed call under a different model. Click a pressed button again
-     to return to the real replayed figures. */
+  document.querySelectorAll(".doc-page").forEach(function (page) {
+    var nav = document.createElement("nav");
+    nav.className = "section-nav";
+    nav.setAttribute("aria-label", "Sections in " + document.getElementById(page.parentElement.getAttribute("aria-labelledby")).textContent);
+    page.querySelectorAll(".story-section").forEach(function (section, index) {
+      section.id = page.parentElement.id + "-section-" + (index + 1);
+      var link = document.createElement("a");
+      link.href = "#" + section.id;
+      link.textContent = section.querySelector("h2").textContent;
+      nav.appendChild(link);
+    });
+    page.querySelector(".story-hero").after(nav);
+  });
 
-  var MODEL_DATA = {
-    "gpt-4o-mini": {
-      voiceCost: 0.1954,
-      meanLatency: 1.86,
-      consequence: "gpt-4o-mini narrated one tool call without invoking it, and never asked whether the full amount or only part of it would be paid."
-    },
-    "gpt-4o": {
-      voiceCost: 0.2538,
-      meanLatency: 2.16,
-      consequence: "gpt-4o fired both tool calls and asked the full-or-partial question explicitly. It cost about 30% more and answered about 0.3s slower per turn."
-    }
-  };
-  var currentModel = null; // null = showing the real replayed call's own figures
+  function openLinkedSection() {
+    var target = document.getElementById(location.hash.slice(1));
+    var panel = target && target.closest(".tab-panel");
+    if (!panel) return;
+    activateTab(panel.id);
+    if (target !== panel) target.scrollIntoView({ block: "start" });
+  }
+  window.addEventListener("hashchange", openLinkedSection);
+  openLinkedSection();
 
   var liveCost = { durationLabel: "00:00", durationNote: "not started", voice: null, pipelineStatus: "not_started" };
 
@@ -1867,10 +1935,16 @@
 
   /* ---------------- specialist chips ---------------- */
 
+  function escapeHtml(value) {
+    var span = document.createElement("span");
+    span.textContent = value == null ? "" : String(value);
+    return span.innerHTML;
+  }
+
   function factsToHtml(facts) {
     return facts.map(function (f) {
       var isFlag = typeof f[1] === "string" && f[1].indexOf("hard violation") !== -1;
-      return '<div class="fact-line' + (isFlag ? " flag" : "") + '"><span class="k">' + f[0] + '</span><span>' + f[1] + '</span></div>';
+      return '<div class="fact-line' + (isFlag ? " flag" : "") + '"><span class="k">' + escapeHtml(f[0]) + '</span><span>' + escapeHtml(f[1]) + '</span></div>';
     }).join("");
   }
 
@@ -1895,7 +1969,7 @@
     var cls = payload.violation ? "violation" : "ok";
     var icon = payload.violation ? ICON_WARN : ICON_CHECK;
     var confHtml = (typeof payload.confidence === "number")
-      ? '<span class="chip-confidence">' + payload.confidence.toFixed(2) + '</span>'
+      ? '<span class="chip-confidence" title="Model-reported confidence, not calibrated accuracy">' + payload.confidence.toFixed(2) + '</span>'
       : '';
     var detailHtml = payload.facts
       ? factsToHtml(payload.facts)
@@ -1930,7 +2004,7 @@
     el.innerHTML =
       '<span class="section-title">Write decision</span>' +
       '<div class="decision-card' + (isAuto ? "" : " amber") + '" style="margin-top:8px;">' +
-        '<div class="decision-head"><span class="decision-icon">' + (isAuto ? ICON_CHECK : ICON_WARN) + '</span><span class="decision-title">' + payload.write_decision + '</span></div>' +
+        '<div class="decision-head"><span class="decision-icon">' + (isAuto ? ICON_CHECK : ICON_WARN) + '</span><span class="decision-title">' + (isAuto ? "Eligible to save" : "Record review needed") + '</span></div>' +
         '<div class="decision-body"></div>' +
         (payload.decision_note ? '<div class="decision-note"></div>' : "") +
         '<div class="sheet-rows">' + rowsHtml + '</div>' +
@@ -1960,18 +2034,12 @@
     card.className = "captured-card";
     card.innerHTML =
       '<span class="kind"></span><span class="fields"></span><span class="tool-line"></span><span class="status-tag">Pending validation</span>';
+    card.querySelector(".status-tag").textContent = payload.status_label || "Result unavailable";
+    card.setAttribute("data-action-state", payload.action_state || "unknown");
     card.querySelector(".kind").textContent = payload.kind;
     card.querySelector(".fields").textContent = payload.fields;
     card.querySelector(".tool-line").textContent = payload.tool_line;
     el.appendChild(card);
-  }
-
-  function markCapturedCardsValidated() {
-    document.querySelectorAll(".captured-card").forEach(function (card) {
-      card.classList.add("validated");
-      var tag = card.querySelector(".status-tag");
-      if (tag) tag.textContent = "Validated";
-    });
   }
 
   /* ---------------- transcript ---------------- */
@@ -2040,13 +2108,11 @@
 
   /* ---------------- cost bar ---------------- */
 
-  // The API and model reference costs are USD. Convert only at display time.
-  var INR_PER_USD = 96.62;
-  var rupeeFormatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
-  var monthlyRupeeFormatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
-  function moneyShort(usd) { return rupeeFormatter.format(usd * INR_PER_USD); }
-  function moneyMonthly(usd) { return monthlyRupeeFormatter.format(usd * INR_PER_USD); }
-
+  // Provider and model usage are reported in their source currency, USD.
+  var costFormatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 3, maximumFractionDigits: 3 });
+  var scaleFormatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  function moneyShort(usd) { return typeof usd === "number" && Number.isFinite(usd) ? costFormatter.format(usd) : "N/A"; }
+  function moneyMonthly(usd) { return typeof usd === "number" && Number.isFinite(usd) ? scaleFormatter.format(usd) : "N/A"; }
   function renderCostBar() {
     document.getElementById("costDuration").textContent = liveCost.durationLabel;
     document.getElementById("costDurationNote").textContent = liveCost.durationNote;
@@ -2056,19 +2122,6 @@
     var monthlyEl = document.getElementById("costMonthly");
     var voiceEl = document.getElementById("costVoice");
 
-    if (currentModel) {
-      var m = MODEL_DATA[currentModel];
-      var pipeline = (typeof liveCost.pipelineCostReal === "number") ? liveCost.pipelineCostReal : 0.001;
-      var total = m.voiceCost + pipeline;
-      voiceEl.textContent = moneyShort(m.voiceCost);
-      pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
-      pipelineEl.textContent = moneyShort(pipeline);
-      totalEl.textContent = moneyShort(total);
-      monthlyEl.textContent = moneyMonthly(total * 1000);
-      document.getElementById("toggleConsequence").textContent = m.consequence;
-      return;
-    }
-
     voiceEl.textContent = (typeof liveCost.voice === "number") ? moneyShort(liveCost.voice) : "—";
 
     if (liveCost.pipelineStatus === "not_started") {
@@ -2077,29 +2130,17 @@
     } else if (liveCost.pipelineStatus === "calculating") {
       pipelineEl.textContent = "calculating…"; totalEl.textContent = "calculating…"; monthlyEl.textContent = "calculating…";
       pipelineEl.classList.add("pending"); totalEl.classList.add("pending"); monthlyEl.classList.add("pending");
+    } else if (liveCost.pipelineStatus === "error") {
+      pipelineEl.textContent = "Unavailable"; totalEl.textContent = "N/A"; monthlyEl.textContent = "N/A";
+      pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
     } else {
       pipelineEl.classList.remove("pending"); totalEl.classList.remove("pending"); monthlyEl.classList.remove("pending");
       pipelineEl.textContent = moneyShort(liveCost.pipelineCostReal);
       totalEl.textContent = typeof liveCost.totalCostReal === "number" ? moneyShort(liveCost.totalCostReal) : "—";
       monthlyEl.textContent = typeof liveCost.monthlyCostReal === "number" ? moneyMonthly(liveCost.monthlyCostReal) : "—";
     }
-    document.getElementById("toggleConsequence").textContent = "";
-  }
 
-  var modelButtons = document.querySelectorAll(".toggle-row button[data-model]");
-  modelButtons.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var model = btn.getAttribute("data-model");
-      if (currentModel === model) {
-        currentModel = null;
-        modelButtons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
-      } else {
-        currentModel = model;
-        modelButtons.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
-      }
-      renderCostBar();
-    });
-  });
+  }
 
   /* ---------------- replay orchestration (real SSE from the real pipeline) ---------------- */
 
@@ -2356,7 +2397,7 @@
 
   function handleFinal(payload) {
     if (eventSource) { eventSource.close(); eventSource = null; }
-    markCapturedCardsValidated();
+
     renderDecisionFinal(payload);
 
     liveCost.pipelineStatus = "value";
@@ -2367,7 +2408,7 @@
     renderCostBar();
 
     var isAuto = payload.write_decision === "auto_write";
-    setText("livePillText", isAuto ? "Settled" : "Held for review");
+    setText("livePillText", isAuto ? "Analysis complete" : "Held for review");
     setText("statusLine", isAuto ? "Ready for the ledger · demo preview" : "Held for human review");
     var quoteEl = document.getElementById("callQuote");
     quoteEl.style.display = "block";
@@ -2400,15 +2441,26 @@
     eventSource.addEventListener("call_ended", function (e) { handleCallEnded(JSON.parse(e.data)); });
     eventSource.addEventListener("specialist", function (e) { resolveSpecialistChip(JSON.parse(e.data)); });
     eventSource.addEventListener("final", function (e) { handleFinal(JSON.parse(e.data)); });
+    eventSource.addEventListener("session_error", function (e) { handleReplayFailure(JSON.parse(e.data).message); });
     eventSource.onerror = function () {
-      if (eventSource) { eventSource.close(); eventSource = null; }
-      stopClock();
-      setText("statusLine", "Connection lost — choose Replay a demo to try again.");
-      document.getElementById("replayLinkInline").style.display = "";
-      document.getElementById("startCallBtn").style.display = "flex";
-      document.getElementById("endCallBtn").style.display = "none";
-      settleLayout();
+      handleReplayFailure("Replay interrupted. The conversation above is preserved; no final result is available.");
     };
+  }
+
+  function handleReplayFailure(message) {
+    if (eventSource) { eventSource.close(); eventSource = null; }
+    stopClock();
+    liveCost.pipelineStatus = "error";
+    renderCostBar();
+    setText("statusLine", message);
+    setText("livePillText", "Replay incomplete");
+    setText("transcriptFooterText", "Replay incomplete · available conversation preserved");
+    document.getElementById("specialistChips").innerHTML = '<div class="empty-state">Analysis could not finish. No complete assessment is available.</div>';
+    document.getElementById("decisionSection").innerHTML = '<span class="section-title">Write decision</span><div class="empty-state">No write decision was produced.</div>';
+    document.getElementById("replayLinkInline").style.display = "";
+    document.getElementById("startCallBtn").style.display = "flex";
+    document.getElementById("endCallBtn").style.display = "none";
+    settleLayout();
   }
 
   /* ---------------- live browser call ---------------- */
@@ -2468,7 +2520,7 @@
     if (analysisFailed) {
       document.getElementById("specialistChips").innerHTML = '<div class="empty-state">Analysis could not finish for this call.</div>';
       document.getElementById("decisionSection").innerHTML = '<span class="section-title">Write decision</span><div class="empty-state" style="margin-top:8px;">No decision was produced.</div>';
-      liveCost.pipelineStatus = "not_started";
+      liveCost.pipelineStatus = "error";
       renderCostBar();
     }
     settleLayout();
@@ -2636,6 +2688,31 @@
 
   /* ---------------- page load: briefing + allowance + cap gating ---------------- */
 
+  async function loadTimingEvidence() {
+    var status = document.getElementById("latencyEvidenceStatus");
+    try {
+      var response = await fetch("/demo/evidence/latency");
+      if (!response.ok) throw new Error("Timing evidence unavailable");
+      var data = await response.json();
+      var turns = data.metrics.turn;
+      var available = turns.samples > 0;
+      function seconds(value) { return typeof value === "number" ? (value / 1000).toFixed(2) + " s" : "N/A"; }
+      setText("latencyMedian", seconds(turns.p50_ms));
+      setText("latencyP95", seconds(turns.p95_ms));
+      setText("latencySamples", available ? turns.samples + " turns" : "N/A");
+      setText("latencyCallCount", data.calls_with_turn_measurements + " of " + data.calls_inspected + " saved examples measured");
+      status.textContent = available ? "Measured · historical examples" : "No measured turns available";
+      status.classList.toggle("pending", !available);
+      setText("latencyEvidenceNote", available
+        ? "A small historical sample, pooled by measured turn. Missing measurements are excluded and counted; this is not a production SLA or model comparison."
+        : "Saved examples contain no usable per-turn timing. Results remain N/A.");
+    } catch (error) {
+      status.textContent = "Evidence unavailable";
+      status.classList.add("pending");
+      setText("latencyEvidenceNote", "Timing evidence could not be loaded. No results have been substituted.");
+    }
+  }
+
   function renderAllowanceNote(status) {
     var el = document.getElementById("allowanceNote");
     if (!status.available) {
@@ -2669,7 +2746,7 @@
         startBtn.disabled = false;
         startBtn.title = "Start a live voice call";
         startBtn.setAttribute("aria-label", "Talk to the agent");
-        setText("micNote", "Choose Talk to the agent once. Allow microphone access, then listen for the agent?s greeting.");
+        setText("micNote", "Choose Talk to the agent once. Allow microphone access, then listen for the greeting.");
       } else {
         startBtn.disabled = true;
         startBtn.title = status.message || "Live calling is unavailable right now";
@@ -2724,6 +2801,7 @@
   renderSpecialistsEmpty();
   renderDecisionEmpty();
   renderCostBar();
+  loadTimingEvidence();
   initPage();
 })();
 </script>

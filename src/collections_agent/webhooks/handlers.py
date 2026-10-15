@@ -10,6 +10,7 @@ on the live call.
 from __future__ import annotations
 
 import json
+import math
 import uuid
 from collections.abc import Callable
 from datetime import UTC, date, datetime
@@ -22,13 +23,21 @@ from collections_agent.sheets.client import load_accounts_and_invoices
 TOOL_CALL_LOG_PATH = Path(__file__).resolve().parents[3] / "fixtures" / "tool_calls.jsonl"
 
 
-def _log_event(tool_name: str, arguments: dict[str, Any], result: dict[str, Any]) -> None:
+def _log_event(
+    tool_name: str,
+    arguments: dict[str, Any],
+    result: dict[str, Any],
+    call_id: str | None = None,
+    tool_call_id: str | None = None,
+) -> None:
     TOOL_CALL_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     event = {
         "logged_at": datetime.now(UTC).isoformat(),
         "tool": tool_name,
         "arguments": arguments,
         "result": result,
+        "call_id": call_id,
+        "tool_call_id": tool_call_id,
     }
     with TOOL_CALL_LOG_PATH.open("a", encoding="utf-8") as f:
         f.write(json.dumps(event) + "\n")
@@ -84,6 +93,21 @@ def handle_record_ptp(arguments: dict[str, Any]) -> dict[str, Any]:
                 f"{promised_date.isoformat()} is in the past (today is {today.isoformat()}). "
                 "Ask the caller for a corrected date before recording this promise."
             ),
+        }
+        _log_event("record_ptp", arguments, result)
+        return result
+
+    amount = arguments.get("amount")
+    if (
+        promised_date == today
+        or isinstance(amount, bool)
+        or not isinstance(amount, (int, float))
+        or not math.isfinite(amount)
+        or amount <= 0
+    ):
+        result = {
+            "error": "invalid_promise",
+            "message": "Use a positive finite amount and a date strictly in the future.",
         }
         _log_event("record_ptp", arguments, result)
         return result

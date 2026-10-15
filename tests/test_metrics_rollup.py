@@ -35,6 +35,7 @@ def _ptp(status, amount=50_000, ptp_id="PTP-1") -> PTP:
         confidence=0.9,
         status=status,
         call_id="C1",
+        resolved_on=date(2026, 9, 4) if status not in ("open", "superseded") else None,
     )
 
 
@@ -44,9 +45,9 @@ def test_calls_made_counts_only_target_date():
     assert row.calls_made == 1
 
 
-def test_calls_suppressed_is_honestly_zero_not_fabricated():
+def test_calls_suppressed_is_unknown_without_dispatch_events():
     row = compute_metrics([], [], [], [], TARGET_DATE)
-    assert row.calls_suppressed == 0
+    assert row.calls_suppressed is None
 
 
 def test_contact_rate_excludes_no_answer_only():
@@ -142,12 +143,12 @@ def test_human_review_rate():
 
 def test_zero_calls_made_does_not_divide_by_zero():
     row = compute_metrics([], [], [], [], TARGET_DATE)
-    assert row.contact_rate == 0.0
-    assert row.structured_outcome_rate == 0.0
-    assert row.human_review_rate == 0.0
+    assert row.contact_rate is None
+    assert row.structured_outcome_rate is None
+    assert row.human_review_rate is None
 
 
 def test_no_resolved_ptps_gives_zero_kept_rate_not_a_crash():
     row = compute_metrics([], [_ptp("open")], [], [], TARGET_DATE)
-    assert row.promise_to_pay_kept_rate == 0.0
-    assert row.promise_to_pay_kept_rate_by_value == 0.0
+    assert row.promise_to_pay_kept_rate is None
+    assert row.promise_to_pay_kept_rate_by_value is None

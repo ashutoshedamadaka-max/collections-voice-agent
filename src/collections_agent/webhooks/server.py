@@ -35,7 +35,7 @@ from collections_agent.webhooks.demo_live import (
     session_action,
 )
 from collections_agent.webhooks.demo_replay import SCENARIOS, replay_stream
-from collections_agent.webhooks.handlers import UnknownToolError, dispatch
+from collections_agent.webhooks.handlers import UnknownToolError, _log_event, dispatch
 
 logger = logging.getLogger("collections_agent.webhooks")
 
@@ -61,7 +61,9 @@ def _log_raw_request(endpoint: str, body: dict[str, Any]) -> None:
 
 def _parse_arguments(raw: Any) -> dict[str, Any]:
     if isinstance(raw, str):
-        return json.loads(raw)
+        raw = json.loads(raw)
+    if raw is not None and not isinstance(raw, dict):
+        raise ValueError("Tool arguments must be a JSON object")
     return raw or {}
 
 
@@ -87,7 +89,11 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
     for call in tool_calls:
         call_id = call.get("id")
         name = call.get("name") or call.get("function", {}).get("name")
-        arguments = _parse_arguments(call.get("arguments") or call.get("function", {}).get("arguments"))
+        try:
+            arguments = _parse_arguments(call.get("arguments") or call.get("function", {}).get("arguments"))
+        except (ValueError, TypeError):
+            results.append(_vapi_tool_reply(call_id, {"error": "invalid_arguments"}))
+            continue
         cached = (
             demo_sessions.tool_result(get_settings().demo_state_db_path, session_id, call_id)
             if session_id and call_id
@@ -113,7 +119,17 @@ async def vapi_tool_calls(request: Request) -> dict[str, Any]:
                     ],
                 }
             else:
-                result = dispatch(name, arguments)
+                if session_id:
+                    # The public synthetic demo remains isolated from operational accounts.
+                    result = dispatch(name, arguments)
+                else:
+                    from collections_agent.webhooks.operations import dispatch_scoped
+
+                    provider_call_id = (message.get("call") or {}).get("id")
+                    result = dispatch_scoped(
+                        get_settings().operations_db_path, provider_call_id, call_id, name, arguments
+                    )
+                    _log_event(name, arguments, result, provider_call_id, call_id)
         except UnknownToolError:
             logger.warning("unknown tool call: %s", name)
             result = {"error": f"unknown tool: {name}"}
@@ -150,6 +166,42 @@ async def vapi_events(request: Request) -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.post("/diagnostics/tool-calls", dependencies=[Depends(verify_vapi_secret)])
+async def diagnostic_tool_calls(request: Request) -> dict[str, Any]:
+    """Exercise auth, validation and durable receipts using isolated synthetic state."""
+    from datetime import timedelta
+    from tempfile import TemporaryDirectory
+
+    from collections_agent.models.domain import Invoice
+    from collections_agent.webhooks.operations import dispatch_scoped, register_call
+
+    body = await request.json()
+    today = datetime.now(UTC).date()
+    invoices = [
+        Invoice(
+            invoice_id=f"INV-{index:05}",
+            invoice_number=f"INV-{index:05}",
+            account_id="ACC-0001",
+            amount=100000,
+            issue_date=today - timedelta(days=60),
+            due_date=today - timedelta(days=30),
+        )
+        for index in range(1, 5)
+    ]
+    results = []
+    with TemporaryDirectory(prefix="collections-webhook-diagnostic-") as directory:
+        path = Path(directory) / "operations.db"
+        register_call(path, "diagnostic", "ACC-0001", "synthetic-contact", invoices)
+        for call in body.get("message", {}).get("toolCallList", []):
+            try:
+                arguments = _parse_arguments(call.get("arguments"))
+                result = dispatch_scoped(path, "diagnostic", call.get("id"), call.get("name"), arguments)
+            except (ValueError, TypeError):
+                result = {"error": "invalid_arguments"}
+            results.append(_vapi_tool_reply(call.get("id"), result))
+    return {"results": results, "scope": "synthetic diagnostics; no production actions"}
+
+
 async def _run_end_of_call_safely(message: dict[str, Any]) -> None:
     try:
         await handle_end_of_call(message)
@@ -178,6 +230,16 @@ async def test_call_page() -> FileResponse:
 @app.get("/demo")
 async def demo_page() -> FileResponse:
     return FileResponse(DEMO_PAGE, media_type="text/html")
+
+
+@app.get("/demo/evidence/latency")
+async def demo_latency_evidence() -> JSONResponse:
+    from collections_agent.eval.latency import latency_report
+
+    # Public evidence is restricted to the two fixed examples, never visitor call logs.
+    result = latency_report(include_calls=False, only_call_ids={s["call_id"] for s in SCENARIOS.values()})
+    result["data_scope"] = "Two saved demo examples; historical provider-reported timings"
+    return JSONResponse(result, headers={"Cache-Control": "public, max-age=300"})
 
 
 @app.get("/demo/assets/vapi-web-2.7.1.js")

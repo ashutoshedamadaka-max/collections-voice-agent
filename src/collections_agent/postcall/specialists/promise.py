@@ -11,6 +11,7 @@ kind of error — only re-doing the arithmetic in code does.
 
 from __future__ import annotations
 
+import math
 import re
 from datetime import date
 
@@ -83,12 +84,20 @@ def validate_promise_facts(
     is_future_dated = bool(extraction.promised_date and extraction.promised_date > as_of)
     method_valid = extraction.method is not None
 
-    relevant = [inv for inv in invoices if _matches_invoice(inv, extraction.invoice_ids)]
+    # Every supplied reference must resolve uniquely. A valid reference alongside an
+    # invented one must not silently validate the whole promise.
+    resolved = [[inv for inv in invoices if _matches_invoice(inv, [ref])] for ref in extraction.invoice_ids]
+    references_valid = bool(resolved) and all(len(matches) == 1 for matches in resolved)
+    relevant = list({matches[0].invoice_id: matches[0] for matches in resolved if len(matches) == 1}.values())
     outstanding_total = sum(inv.outstanding() for inv in relevant) if relevant else None
     if extraction.amount is None or outstanding_total is None:
         amount_within_outstanding = False
     else:
-        amount_within_outstanding = extraction.amount <= outstanding_total
+        amount_within_outstanding = (
+            references_valid
+            and math.isfinite(extraction.amount)
+            and 0 < extraction.amount <= outstanding_total
+        )
 
     downgraded = extraction.has_promise and not (
         is_complete and is_future_dated and amount_within_outstanding and method_valid
@@ -104,7 +113,7 @@ def validate_promise_facts(
         amount=extraction.amount,
         promised_date=extraction.promised_date,
         method=extraction.method,
-        invoice_ids=extraction.invoice_ids,
+        invoice_ids=[inv.invoice_id for inv in relevant] if references_valid else [],
         confidence=extraction.confidence,
         notes=extraction.notes,
     )

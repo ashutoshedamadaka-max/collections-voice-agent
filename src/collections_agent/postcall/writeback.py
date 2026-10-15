@@ -122,6 +122,25 @@ def write_back(backend: SheetsBackend, analysis: PostCallAnalysis, transcript: T
             "this codebase rejects missing data rather than fabricating a timestamp)."
         )
 
+    existing_ptp = next((p for p in read_ptps(backend) if p.ptp_id == f"PTP-{analysis.call_id}"), None)
+    settled = existing_ptp and existing_ptp.status in (PTPStatus.KEPT, PTPStatus.PARTIAL, PTPStatus.BROKEN)
+    if settled and analysis.write_decision == WriteDecision.AUTO_WRITE:
+        promise = analysis.promise
+        if (
+            not promise.has_promise
+            or promise.downgraded_to_soft_commitment
+            or (promise.amount, promise.promised_date, promise.method, set(promise.invoice_ids))
+            != (
+                existing_ptp.amount_promised,
+                existing_ptp.promised_date,
+                existing_ptp.payment_method,
+                set(existing_ptp.invoice_ids),
+            )
+        ):
+            raise ValueError(
+                "Settled promise differs from re-analysis; reconcile manually before changing it"
+            )
+
     _reconcile_stale_rows(backend, analysis)
 
     call_log_entry = CallLogEntry(
@@ -157,7 +176,7 @@ def write_back(backend: SheetsBackend, analysis: PostCallAnalysis, transcript: T
         return
 
     promise = analysis.promise
-    if promise.has_promise and not promise.downgraded_to_soft_commitment:
+    if promise.has_promise and not promise.downgraded_to_soft_commitment and not settled:
         write_ptps(
             backend,
             [

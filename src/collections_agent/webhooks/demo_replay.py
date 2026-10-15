@@ -51,7 +51,11 @@ from collections_agent.postcall.transcript import (
 from collections_agent.webhooks.demo_fixtures import DEMO_ACCOUNT, DEMO_INVOICES
 
 SCENARIOS: dict[str, dict[str, Any]] = {
-    "clean": {"call_id": "01a0edd7-f19a-7000-956e-08f20925f97a", "account_id": "ACC-0019", "historical": False},
+    "clean": {
+        "call_id": "01a0edd7-f19a-7000-956e-08f20925f97a",
+        "account_id": "ACC-0019",
+        "historical": False,
+    },
     "flagged": {"call_id": "01a0a8b0-8c17-7557-a077-16bf9def6431", "account_id": None, "historical": True},
 }
 
@@ -141,6 +145,20 @@ def _fmt_money(amount: float) -> str:
 
 
 def _tool_call_payload(record: ToolCallRecord) -> dict[str, Any]:
+    payload = _tool_call_details(record)
+    result = record.result or {}
+    if result.get("error") or result.get("status") in {"failed", "error", "rejected"}:
+        payload.update(action_state="failed", status_label="Tool rejected")
+    elif any(
+        key in result for key in ("ptp_id", "callback_id", "dispute_id", "claim_id", "receipt_id", "status")
+    ):
+        payload.update(action_state="accepted", status_label="Tool acknowledged · demo preview")
+    else:
+        payload.update(action_state="unknown", status_label="Result unavailable")
+    return payload
+
+
+def _tool_call_details(record: ToolCallRecord) -> dict[str, Any]:
     args = record.arguments
     result = record.result or {}
     if result.get("error"):
@@ -169,10 +187,10 @@ def _tool_call_payload(record: ToolCallRecord) -> dict[str, Any]:
         priority = args.get("priority", "normal")
         cb_id = result.get("callback_id", "pending")
         return {
-            "kind": "Callback scheduled",
+            "kind": "Callback requested",
             "fields": f"{reason} · priority {priority}",
             "tool_line": f"schedule_callback → {cb_id}",
-            "annotation": f"Callback scheduled — {reason}" if reason else "Callback scheduled",
+            "annotation": f"Callback requested — {reason}" if reason else "Callback requested",
         }
     if record.name == "log_dispute":
         invoice = args.get("invoice_id", "")
@@ -222,12 +240,18 @@ def _account_context(
     historical: bool,
 ) -> dict[str, Any]:
     primary = next(
-        (inv for inv in invoices if inv.invoice_id in promise_invoice_ids or inv.invoice_number in promise_invoice_ids),
+        (
+            inv
+            for inv in invoices
+            if inv.invoice_id in promise_invoice_ids or inv.invoice_number in promise_invoice_ids
+        ),
         None,
     )
     if primary is None and invoices:
         primary = invoices[0]
-    deferred = next((inv for inv in invoices if primary is None or inv.invoice_number != primary.invoice_number), None)
+    deferred = next(
+        (inv for inv in invoices if primary is None or inv.invoice_number != primary.invoice_number), None
+    )
 
     def _invoice_payload(inv: Invoice | None) -> dict[str, Any] | None:
         if inv is None:
@@ -338,7 +362,8 @@ def _sheet_rows_preview(analysis: PostCallAnalysis, transcript: Transcript) -> l
                 "fields": (
                     f"DSP-{analysis.call_id} · invoice {analysis.dispute.invoice_id} · "
                     f"{analysis.dispute.reason_code.value if analysis.dispute.reason_code else ''} · "
-                    f"routed to {analysis.dispute.routing_target.value if analysis.dispute.routing_target else 'ops'}"
+                    "routed to "
+                    f"{analysis.dispute.routing_target.value if analysis.dispute.routing_target else 'ops'}"
                 ),
             }
         )
@@ -391,9 +416,15 @@ def _specialist_payload(name: str, result: Any) -> dict[str, Any]:
             "facts": [
                 ["Disclosed automated", "yes" if result.disclosed_automated else "no"],
                 ["Authority verified", "yes" if result.verified_authority else "no — hard violation"],
-                ["Within permitted facts", "yes" if result.stayed_within_permitted_facts else "no — hard violation"],
+                [
+                    "Within permitted facts",
+                    "yes" if result.stayed_within_permitted_facts else "no — hard violation",
+                ],
                 ["Discount offered", "yes — hard violation" if result.promised_discount_or_waiver else "no"],
-                ["Consequences threatened", "yes — hard violation" if result.threatened_consequences else "no"],
+                [
+                    "Consequences threatened",
+                    "yes — hard violation" if result.threatened_consequences else "no",
+                ],
                 ["Totals consistent", "no — hard violation" if result.misstated_total else "yes"],
                 ["qa_score", f"{result.qa_score:.2f}"],
             ],
@@ -502,18 +533,35 @@ async def replay_stream(scenario_key: str) -> AsyncGenerator[bytes, None]:
     )
 
     received = 0
-    while received < 5:
-        name, result = await queue.get()
-        received += 1
-        yield _sse("specialist", _specialist_payload(name, result))
-
-    analysis: PostCallAnalysis = await future
+    try:
+        async with asyncio.timeout(150):
+            while received < 5:
+                try:
+                    name, result = await asyncio.wait_for(queue.get(), timeout=0.5)
+                except TimeoutError:
+                    if future.done():
+                        await future
+                        if queue.empty():
+                            break
+                    continue
+                received += 1
+                yield _sse("specialist", _specialist_payload(name, result))
+            analysis: PostCallAnalysis = await future
+    except Exception:
+        yield _sse(
+            "session_error",
+            {
+                "message": "The saved conversation is available, but analysis could not finish. "
+                "No write decision was produced."
+            },
+        )
+        return
 
     input_tokens = sum(getattr(u, "prompt_tokens", 0) for u in usage_sink)
     output_tokens = sum(getattr(u, "completion_tokens", 0) for u in usage_sink)
     pipeline_cost = input_tokens * _INPUT_PRICE_PER_TOKEN + output_tokens * _OUTPUT_PRICE_PER_TOKEN
-    voice_cost = transcript.cost_usd or 0.0
-    total_cost = voice_cost + pipeline_cost
+    voice_cost = transcript.cost_usd
+    total_cost = voice_cost + pipeline_cost if voice_cost is not None else None
 
     yield _sse(
         "final",
@@ -529,7 +577,7 @@ async def replay_stream(scenario_key: str) -> AsyncGenerator[bytes, None]:
                 "voice_cost": voice_cost,
                 "pipeline_cost": pipeline_cost,
                 "total_cost": total_cost,
-                "monthly_cost": total_cost * 1000,
+                "monthly_cost": total_cost * 1000 if total_cost is not None else None,
                 "input_tokens": input_tokens,
                 "output_tokens": output_tokens,
             },

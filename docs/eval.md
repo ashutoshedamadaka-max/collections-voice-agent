@@ -1,139 +1,16 @@
-# Eval — specialist agreement with a human labeller
+# Evaluation evidence
 
-**n = 9.** This eval runs the real post-call pipeline against the nine saved calls in
-`fixtures/raw/` and reports how often it agrees with one person's independent judgement of the
-same calls. That is the entire scope. It is **not**:
+## Human benchmark: withdrawn, awaiting v2 review
 
-- a kept rate (not enough call volume for one to mean anything — see `README.md`'s Success
-  Metrics discussion and `docs/metrics.md`)
-- an accuracy estimate at production volume
-- a claim about real-world performance, since most of these nine calls are synthetic test
-  calls against a fake dataset, not real customers
+All nine original human labels are invalid because they were entered randomly across multiple parameters. Every accuracy/agreement figure and false-write/false-hold count derived from them is withdrawn. This is a label-quality finding, not evidence of agent failure or success.
 
-Read it as exactly what it is: on nine calls, did the pipeline's judgement match a human's.
+Original `fixtures/eval/labels.json` is preserved locally, excluded from evaluation. `fixtures/eval/benchmark_status.json` records the invalidation. New `label-calls` sessions use `labels_v2.json`; revisions append to a history file. Labels require reviewer identity, timestamp, source hash and evidence for each assessed field. Unknown fields are unscored rather than guessed. Reviewers describe supported records and human follow-up separately. A blind transcript label does not establish whether an unseen proposed record is safe to write, so that score remains unavailable.
 
-## First measured run — 2026-10-08
-
-The nine human labels were compared with the current post-call pipeline. These are agreement
-counts against one labeller, not estimates of production accuracy:
-
-| Judged field | Agreement |
-| --- | ---: |
-| Outcome type | 7/9 |
-| Promise captured | 8/9 |
-| Promise complete | 3/5 applicable calls |
-| Dispute existed | 8/9 |
-| Compliance violated | 7/9 |
-| Write decision (auto-write versus human review) | 4/9 |
-
-Six of nine calls disagreed on at least one field. The write-decision mismatches included
-**three false holds** (extra human review) and **two false writes** (the pipeline marked a call
-for auto-write when the human label called for review). The latter is the higher-risk direction.
-The next investigation should focus on outcome classification, dispute routing, promise
-completeness, and compliance false positives before considering unattended write-back. This
-priority is an inference from the small eval, not a claim about prevalence in production.
-
-The labels, cached analyses, and full transcripts stay local; the public demo publishes only
-these aggregate counts.
-
-## Why this didn't exist before
-
-Before this, the only thing checking the five specialists was the unit test suite
-(`tests/test_specialists.py` and friends) — and those check *code behaviour* given a fixed,
-hand-written input (does `validate_promise_facts` compute `amount_within_outstanding` correctly
-given this `PromiseExtraction`?), not whether a specialist's *judgement* on a real transcript is
-correct. `src/collections_agent/eval/` existed only as an empty placeholder package, and
-`fixtures/expected_outcomes/` was an empty directory with a `.gitkeep`. Nothing measured
-specialist judgement against ground truth. This is that measurement, for the first time, on the
-only real transcripts this project has.
-
-## How it works
-
-### 1. Labeling (`label-calls`)
-
-```powershell
-uv run collections-agent label-calls
-```
-
-Shows one saved call from `fixtures/raw/` at a time — the full transcript and any tool calls
-made — and asks for your own judgement on:
-
-- **Outcome type** (the same `CallOutcomeType` taxonomy the outcome specialist uses)
-- **Whether a promise to pay was captured**, and if so, **whether it was complete** (specific
-  amount, date, and method; date strictly in the future; amount within the outstanding balance;
-  method valid — the same four checks `docs/metrics.md` defines for a real PTP)
-- **Whether a dispute existed**
-- **Whether any compliance rule was actually broken** (discount/waiver offered, consequences
-  threatened, authority not verified before stating amounts, a fact stated beyond what was
-  given, or a misstated total)
-- **Whether the call should have been auto-written or held for review**
-
-Labels are saved to `fixtures/eval/labels.json` immediately after each call — nothing the
-pipeline said is shown while you label, and the file lives entirely separately from
-`fixtures/postcall/` (ad hoc pipeline runs) and `fixtures/eval/pipeline_runs/` (this eval's own
-pipeline-run cache), so there's no code path for a specialist's answer to influence a label.
-
-Resumable by design: already-labeled calls are skipped on the next run, and Ctrl-C mid-call
-saves nothing partial (the call you were on simply isn't marked labeled). Nine calls, labeled
-over however many sittings that takes.
-
-### 2. Comparison (`run-eval`)
-
-```powershell
-uv run collections-agent run-eval
-```
-
-For every labeled call, runs the real pipeline (`postcall/pipeline.py::run_postcall` — the same
-function the CLI's `run-postcall` and the demo console's replay/live modes use, not a separate
-eval-only code path) and compares its output to your label on each dimension. Pipeline output
-is cached per call under `fixtures/eval/pipeline_runs/` so re-running the report doesn't re-spend
-OpenAI credit; pass `--refresh` to force a fresh run (e.g. after a prompt or specialist change).
-
-Prints, in order:
-
-1. **Per-specialist agreement** — a count and percentage for each of the six judged dimensions,
-   against however many labels currently exist (not necessarily all nine — the report works on
-   a partial set and says so).
-2. **Write-decision accuracy, broken into direction** — *false holds* (you said `auto_write`,
-   the pipeline said `exception_queue` — an unnecessary hold) versus *false writes* (you said
-   `exception_queue`, the pipeline said `auto_write` — the pipeline auto-wrote something that
-   should have gone to a human; the more dangerous direction).
-3. **Every disagreement, in full** — not just the percentage. For each call with at least one
-   disagreeing field: the complete transcript and tool calls, a field-by-field human-vs-pipeline
-   comparison, and every specialist's own notes/confidence, so a disagreement can actually be
-   read and judged, not just counted.
-
-## Field-mapping notes (so the comparison is checkable, not a black box)
-
-- **"Promise complete"** is compared against the pipeline's
-  `promise.has_promise and not promise.downgraded_to_soft_commitment` — i.e. "ended up as a
-  real PTP, not a soft commitment." This field is only scored on calls where *you* said a
-  promise was captured; if the pipeline disagrees about whether a promise exists at all, that
-  shows up in the separate "promise captured" field, and this field will also disagree (an
-  unrecognized promise can't be a complete one).
-- **"Compliance violated"** is compared against the exact same hard-violation test the
-  supervisor itself uses to gate write-back (`pipeline.py::_hard_compliance_violations`,
-  restated in `eval/compare.py::_compliance_violation` for readability): a discount/waiver
-  offered, consequences threatened, authority not verified, a fact stated beyond what was
-  given, or a misstated total. A low `qa_score` alone, with no hard violation, does not count
-  as "violated" here.
-- **Account context for calls whose account no longer exists.** Four of the nine fixture calls
-  belong to "Rodriguez, Figueroa and Sanchez," an account reassigned when the fake dataset was
-  regenerated (`docs/FAILURES.md`, "fixtures coupled to generated data went stale silently").
-  For those, account/invoice facts are recovered from the call's own embedded system prompt
-  (`postcall/transcript.py::account_facts_from_system_prompt`) rather than a live Sheet row —
-  real data from the real call, just not from a live account. `eval/compare.py::CALL_ACCOUNTS`
-  is the explicit, by-hand mapping of which of the nine calls uses which path; update it if
-  `fixtures/raw/` ever gains or loses a file.
-- **`as_of` is the call's own recorded date**, not today — otherwise the promise validator's
-  future-dated check would spuriously fail (or pass) depending on which day the eval happens to
-  run, for reasons that have nothing to do with the call itself.
-
----
+`run-eval` rejects altered source transcripts and excludes uncertain/unusable calls. No valid reviewed labels means no score and no API calls. Do not use the model's predictions as replacement ground truth. See [rubric v2](EVAL_LABELING_RUBRIC_V2.md) for the diverse-case sampling and review procedure. The existing nine similar calls alone do not establish representative coverage.
 
 # Eval 2 — the live call, simulated as text (`sim-eval`)
 
-The agreement eval above grades the **post-call** pipeline on a finished transcript. Almost
+The replacement human eval will grade the **post-call** pipeline on a finished transcript. Almost
 every incident in `docs/FAILURES.md` happened **during** the call instead: a tool described
 aloud but never called, three questions bundled into one turn, raw digits read instead of the
 spoken form, the deferred invoice's callback never scheduled. Until this eval, those were only
@@ -155,14 +32,12 @@ caught by listening to individual live calls, at roughly $0.15–0.25 of Vapi cr
 uv run collections-agent sim-eval --dry-run          # cost estimate only, sends nothing
 uv run collections-agent sim-eval                    # all scenarios, gpt-4o-mini, $1.00 cap
 uv run collections-agent sim-eval -s promise_full_upi -s opt_out   # just these
-uv run collections-agent sim-eval --agent-model gpt-4o --max-usd 3 # the production model
+uv run collections-agent sim-eval --agent-model gpt-4o --max-usd 1.00 # the production model
 ```
 
-Spend is capped (`--max-usd`, default $1.00). Every request is costed from its real token
-usage, and the run stops *before* any request that could cross the cap. A full run of the 21
-scenarios on gpt-4o-mini, including the post-call pipeline, is estimated at about $0.25; on
-gpt-4o (the current in-call model) about $2.50. Results are saved per scenario under
-`fixtures/eval/sim_runs/<timestamp>/` (git-ignored).
+Application budget controls reserve a conservative input allowance and bounded output before each request, including concurrent specialists. SDK retries are disabled for simulations. Missing usage or a harness failure stops the run; unresolved reservations remain visible. Prices are versioned local configuration, not a provider/account billing limit. Verify prices before any paid run. The dry-run estimate is a planning estimate, not the amount reserved per request.
+
+Every new run records source hashes (including uncommitted changes), scenario inputs, models, prices, date and settings in `manifest.json`. Grader v2 checks successful tools of the relevant type and includes the opening in disclosure checks. Claims are regex heuristics and still require adversarial human review. End-to-end text results and conditional post-call diagnostics are reported separately. Harness errors stop on the affected scenario. Historical runs remain unchanged and cannot be compared directly to a new grader without labeling the version change.
 
 ## What is checked, in code
 

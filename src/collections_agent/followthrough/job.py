@@ -16,6 +16,7 @@ What this job does *not* need to do, and why (see docs/FAILURES.md for the fulle
 
 from __future__ import annotations
 
+import hashlib
 from datetime import date, timedelta
 
 from pydantic import BaseModel
@@ -42,6 +43,40 @@ _RESOLVED_STATUSES = (PTPStatus.KEPT, PTPStatus.PARTIAL, PTPStatus.BROKEN)
 class FollowthroughResult(BaseModel):
     resolved: list[PTP]
     accounts_updated: list[str]
+    attribution_warnings: list[str] = []
+
+
+def payment_key(payment: Payment) -> str:
+    """Prefer a bank/import ID; identical legacy rows conservatively count once."""
+    identity = (payment.invoice_id, payment.payment_id or payment.reference)
+    if not identity[1]:
+        identity = (
+            payment.invoice_id,
+            payment.paid_date.isoformat(),
+            payment.method.value,
+            payment.amount_paid,
+        )
+    return hashlib.sha256(repr(identity).encode()).hexdigest()
+
+
+def _ledger(payments: list[Payment]) -> dict[str, Payment]:
+    ledger: dict[str, Payment] = {}
+    for payment in payments:
+        key = payment_key(payment)
+        if key in ledger and ledger[key] != payment:
+            raise ValueError("Conflicting payment rows for the same transaction identity")
+        ledger[key] = payment
+    return ledger
+
+
+def _eligible(ptp: PTP, payment: Payment, grace_period_days: int) -> bool:
+    # Date-only bank entries on the capture day cannot prove payment followed the call.
+    return (
+        payment.invoice_id in ptp.invoice_ids
+        and ptp.captured_at.date()
+        < payment.paid_date
+        <= ptp.promised_date + timedelta(days=grace_period_days)
+    )
 
 
 def check_ptp(
@@ -49,6 +84,7 @@ def check_ptp(
     payments: list[Payment],
     as_of: date,
     grace_period_days: int = DEFAULT_GRACE_PERIOD_DAYS,
+    available: dict[str, float] | None = None,
 ) -> PTP:
     """Pure function. Returns `ptp` unchanged unless it's resolvable *now*.
 
@@ -70,9 +106,19 @@ def check_ptp(
     if as_of < check_date:
         return ptp
 
-    total_paid = sum(
-        p.amount_paid for p in payments if p.invoice_id in ptp.invoice_ids and p.paid_date <= check_date
-    )
+    ledger = _ledger(payments)
+    remaining = available if available is not None else {k: p.amount_paid for k, p in ledger.items()}
+    allocations: dict[str, float] = {}
+    need = ptp.amount_promised
+    for key, payment in sorted(ledger.items(), key=lambda item: (item[1].paid_date, item[0])):
+        if not _eligible(ptp, payment, grace_period_days):
+            continue
+        amount = min(need, remaining.get(key, 0))
+        if amount > 0:
+            allocations[key] = amount
+            remaining[key] -= amount
+            need -= amount
+    total_paid = sum(allocations.values())
 
     if total_paid >= ptp.amount_promised - ROUNDING_TOLERANCE:
         new_status = PTPStatus.KEPT
@@ -81,7 +127,9 @@ def check_ptp(
     else:
         new_status = PTPStatus.BROKEN
 
-    return ptp.model_copy(update={"status": new_status})
+    return ptp.model_copy(
+        update={"status": new_status, "payment_allocations": allocations, "resolved_on": as_of}
+    )
 
 
 def _reliability_score(account_ptps: list[PTP]) -> float:
@@ -101,13 +149,35 @@ def run_followthrough(
     all_ptps = read_ptps(backend)
     payments = payments_source.list_payments()
 
-    checked = [
-        check_ptp(p, payments, as_of, grace_period_days) if p.status == PTPStatus.OPEN else p
-        for p in all_ptps
-    ]
-    resolved_this_run = [
-        new for new, old in zip(checked, all_ptps, strict=True) if new.status != old.status
-    ]
+    ledger = _ledger(payments)
+    available = {k: p.amount_paid for k, p in ledger.items()}
+    warnings: list[str] = []
+    for ptp in all_ptps:
+        for key, amount in ptp.payment_allocations.items():
+            if amount < 0 or amount > available.get(key, 0) + ROUNDING_TOLERANCE:
+                raise ValueError(f"Ledger changed or overallocated: {ptp.ptp_id}; reconcile before running")
+            available[key] = max(0, available[key] - amount)
+    legacy_reserved: set[str] = set()
+    for ptp in all_ptps:
+        if ptp.status in (PTPStatus.KEPT, PTPStatus.PARTIAL) and ptp.resolved_on is None:
+            warnings.append(f"{ptp.ptp_id}: legacy attribution unknown; matching funds reserved")
+            for key, payment in ledger.items():
+                if _eligible(ptp, payment, grace_period_days):
+                    available[key] = 0
+                    legacy_reserved.add(key)
+    by_id = {}
+    for ptp in sorted(all_ptps, key=lambda p: (p.promised_date, p.captured_at, p.ptp_id)):
+        if ptp.status == PTPStatus.OPEN and any(
+            _eligible(ptp, ledger[key], grace_period_days) for key in legacy_reserved
+        ):
+            warnings.append(
+                f"{ptp.ptp_id}: attribution blocked by legacy promise; left open for reconciliation"
+            )
+            by_id[ptp.ptp_id] = ptp
+            continue
+        by_id[ptp.ptp_id] = check_ptp(ptp, payments, as_of, grace_period_days, available)
+    checked = [by_id[p.ptp_id] for p in all_ptps]
+    resolved_this_run = [new for new, old in zip(checked, all_ptps, strict=True) if new.status != old.status]
     if resolved_this_run:
         write_ptps(backend, resolved_this_run)
 
@@ -127,5 +197,7 @@ def run_followthrough(
             seed_accounts(backend, updated_accounts)
 
     return FollowthroughResult(
-        resolved=resolved_this_run, accounts_updated=sorted(affected_account_ids)
+        resolved=resolved_this_run,
+        accounts_updated=sorted(affected_account_ids),
+        attribution_warnings=warnings,
     )

@@ -37,9 +37,9 @@ def test_accepts_future_date():
 
 
 @time_machine.travel(FROZEN_NOW)
-def test_accepts_today():
+def test_rejects_today_consistently_with_postcall_policy():
     result = handle_record_ptp({**VALID_ARGS, "date": FROZEN_TODAY})
-    assert result["ptp_id"].startswith("PTP-")
+    assert result["error"] == "invalid_promise"
 
 
 @time_machine.travel(FROZEN_NOW)

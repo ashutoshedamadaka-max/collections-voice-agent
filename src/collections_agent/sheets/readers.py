@@ -12,6 +12,7 @@ cleanly or should fail loudly if genuinely malformed, matching this project's ex
 
 from __future__ import annotations
 
+import json
 import typing
 from typing import Any
 
@@ -53,6 +54,8 @@ def _coerce_row(row: dict[str, str], model: type[BaseModel]) -> dict[str, Any]:
             coerced[name] = False
         elif typing.get_origin(annotation) is list:
             coerced[name] = []
+        elif typing.get_origin(annotation) is dict:
+            coerced[name] = {}
         elif type(None) in typing.get_args(annotation):
             coerced[name] = None
     return coerced
@@ -64,6 +67,8 @@ def _split_list_fields(row: dict[str, str], model: type[BaseModel]) -> dict[str,
     (handled by _coerce_row), not [""]."""
     split: dict[str, Any] = dict(row)
     for name, field in model.model_fields.items():
+        if typing.get_origin(field.annotation) is dict and split.get(name):
+            split[name] = json.loads(split[name])
         if typing.get_origin(field.annotation) is list and split.get(name):
             split[name] = split[name].split(";")
     return split

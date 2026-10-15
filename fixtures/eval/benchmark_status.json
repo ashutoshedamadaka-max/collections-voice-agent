@@ -1,0 +1,11 @@
+{
+  "schema_version": 2,
+  "legacy_labels": "labels.json",
+  "legacy_status": "invalidated",
+  "invalidated_on": "2026-10-15",
+  "reason": "Owner confirmed all nine calls were randomly labeled across multiple parameters.",
+  "withdrawn_claims": ["field agreement", "write agreement", "false writes", "false holds"],
+  "replacement_labels": "labels_v2.json",
+  "replacement_status": "awaiting independent human review",
+  "policy": "Preserve legacy artifacts. Never treat pipeline predictions as human ground truth."
+}

@@ -131,7 +131,7 @@ class PTP(BaseModel):
     ptp_id: str
     account_id: str
     invoice_ids: list[str]
-    amount_promised: float
+    amount_promised: float = Field(gt=0, allow_inf_nan=False)
     promised_date: date
     payment_method: PaymentMethod
     reference_given: str | None = None
@@ -140,6 +140,10 @@ class PTP(BaseModel):
     confidence: float = Field(ge=0.0, le=1.0)
     status: PTPStatus = PTPStatus.OPEN
     call_id: str
+
+    # A durable allocation prevents the same ledger money fulfilling two promises.
+    payment_allocations: dict[str, float] = Field(default_factory=dict)
+    resolved_on: date | None = None
 
 
 class SoftCommitment(BaseModel):
@@ -202,10 +206,11 @@ class Payment(BaseModel):
     paid here. See followthrough/payments.py for why this stays swappable."""
 
     invoice_id: str
-    amount_paid: float
+    amount_paid: float = Field(gt=0, allow_inf_nan=False)
     paid_date: date
     method: PaymentMethod
     reference: str | None = None
+    payment_id: str | None = None
 
 
 class SuppressionResult(BaseModel):
@@ -386,13 +391,26 @@ class MetricsRow(BaseModel):
 
     date: date
     calls_made: int
-    calls_suppressed: int
-    contact_rate: float
-    structured_outcome_rate: float
-    promise_to_pay_kept_rate: float
-    promise_to_pay_kept_rate_by_value: float
+    calls_suppressed: int | None
+    contact_rate: float | None
+    structured_outcome_rate: float | None
+    promise_to_pay_kept_rate: float | None
+    promise_to_pay_kept_rate_by_value: float | None
     disputes_surfaced: int
-    human_review_rate: float
+    human_review_rate: float | None
+    contacted_calls: int = 0
+    business_outcome_calls: int = 0
+    record_review_calls: int = 0
+    resolved_promises: int = 0
+    kept_promises: int = 0
+    matured_unresolved_promises: int = 0
+    legacy_unverified_promises: int = 0
+    resolved_promised_value: float = 0
+    attributed_payment_value: float | None = None
+    attributed_recovery_rate: float | None = None
+    call_cost_usd: float | None = None
+    cost_per_contact_usd: float | None = None
+    metric_version: str = "2"
 
 
 class ContextPack(BaseModel):

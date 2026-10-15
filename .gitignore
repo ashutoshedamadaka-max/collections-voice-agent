@@ -31,15 +31,17 @@ fixtures/webhook_requests.jsonl
 # Demo console cap-tracking state (visitor/day counts, cumulative spend) — runtime state,
 # not fixture data.
 fixtures/demo_state.db
+fixtures/operations.db*
+fixtures/eval/labels*.json
+fixtures/eval/labels*.jsonl
 
 # Eval pipeline-run cache (fixtures/eval/pipeline_runs/) — regenerable any time via
 # `run-eval --refresh`, pure API output with no human effort invested, unlike
-# fixtures/eval/labels.json (the human labels themselves), which IS committed.
+# Human labels remain local; v1 is invalidated and v2 requires independent review.
 fixtures/eval/pipeline_runs/*.json
 !fixtures/eval/pipeline_runs/.gitkeep
 
 .pytest_cache/
 
-# Text-simulation runs (`sim-eval`) — one folder per run, regenerable; commit a chosen run's
-# folder deliberately if you want it kept as evidence.
+# Text-simulation runs remain local; publish reviewed aggregate evidence separately.
 fixtures/eval/sim_runs/

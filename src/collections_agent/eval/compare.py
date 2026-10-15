@@ -16,7 +16,7 @@ from typing import Any
 import typer
 
 from collections_agent.config import get_settings
-from collections_agent.eval.labels import HumanLabel, load_labels
+from collections_agent.eval.labels import HumanLabel, load_labels, source_hash
 from collections_agent.models.domain import ComplianceReview, Invoice, PostCallAnalysis
 from collections_agent.postcall.pipeline import run_postcall
 from collections_agent.postcall.transcript import RAW_DIR, account_facts_from_system_prompt, parse_transcript
@@ -80,9 +80,20 @@ def _invoices_for(call_id: str, raw: dict[str, Any], settings: Any) -> tuple[str
 
 
 def _load_or_run_pipeline(call_id: str, refresh: bool) -> PostCallAnalysis:
+    from collections_agent.eval.provenance import fingerprint
+
     cache_path = PIPELINE_CACHE_DIR / f"{call_id}.json"
+    provenance = {**fingerprint(), "input_sha256": source_hash(RAW_DIR / f"{call_id}.json")}
     if cache_path.exists() and not refresh:
-        return PostCallAnalysis.model_validate_json(cache_path.read_text(encoding="utf-8"))
+        cached = json.loads(cache_path.read_text(encoding="utf-8"))
+        if cached.get("provenance") == provenance:
+            return PostCallAnalysis.model_validate(cached["analysis"])
+    if not refresh:
+        typer.echo(
+            f"No current versioned pipeline cache for {call_id}. No API call made. "
+            "A paid refresh requires an approved budget."
+        )
+        raise typer.Exit(code=1)
 
     settings = get_settings()
     raw = _raw_for(call_id)
@@ -102,7 +113,10 @@ def _load_or_run_pipeline(call_id: str, refresh: bool) -> PostCallAnalysis:
         confidence_threshold=settings.confidence_threshold,
     )
     PIPELINE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    cache_path.write_text(analysis.model_dump_json(indent=2), encoding="utf-8")
+    cache_path.write_text(
+        json.dumps({"provenance": provenance, "analysis": analysis.model_dump(mode="json")}, indent=2),
+        encoding="utf-8",
+    )
     return analysis
 
 
@@ -111,6 +125,7 @@ def _compare_one(label: HumanLabel, analysis: PostCallAnalysis) -> dict[str, dic
     pipeline_violated = _compliance_violation(analysis.compliance)
 
     def field(human: Any, pipeline: Any, applicable: bool = True) -> dict[str, Any]:
+        applicable = bool(applicable) and human is not None
         return {
             "human": human,
             "pipeline": pipeline,
@@ -119,12 +134,16 @@ def _compare_one(label: HumanLabel, analysis: PostCallAnalysis) -> dict[str, dic
         }
 
     return {
-        "outcome": field(label.outcome.value, analysis.outcome.outcome.value),
+        "outcome": field(label.outcome.value if label.outcome else None, analysis.outcome.outcome.value),
         "promise_captured": field(label.promise_captured, analysis.promise.has_promise),
-        "promise_complete": field(label.promise_complete, pipeline_complete, applicable=label.promise_captured),
+        "promise_complete": field(
+            label.promise_complete, pipeline_complete, applicable=label.promise_captured
+        ),
         "dispute_existed": field(label.dispute_existed, analysis.dispute.has_dispute),
         "compliance_violated": field(label.compliance_violated, pipeline_violated),
-        "write_decision": field(label.write_decision.value, analysis.write_decision.value),
+        "write_decision": field(
+            label.write_decision.value if label.write_decision else None, analysis.write_decision.value
+        ),
     }
 
 
@@ -136,9 +155,9 @@ def _print_summary_table(results: dict[str, dict[str, dict]], n: int) -> None:
         applicable = [r[field_name] for r in results.values() if r[field_name]["applicable"]]
         agree_n = sum(1 for f in applicable if f["agree"])
         total = len(applicable)
-        pct = (agree_n / total * 100) if total else 0.0
+        pct = f"{agree_n / total * 100:.0f}%" if total else "N/A"
         scope_note = "" if total == n else f"  (n={total} applicable)"
-        typer.echo(f"  {FIELD_LABELS[field_name]:<22} {agree_n}/{total} ({pct:.0f}%){scope_note}")
+        typer.echo(f"  {FIELD_LABELS[field_name]:<22} {agree_n}/{total} ({pct}){scope_note}")
     typer.echo()
 
 
@@ -147,7 +166,7 @@ def _print_write_decision_breakdown(results: dict[str, dict[str, dict]]) -> None
     false_writes = []  # human: exception_queue, pipeline: auto_write — the dangerous direction
     for call_id, r in results.items():
         f = r["write_decision"]
-        if f["agree"]:
+        if not f["applicable"] or f["agree"]:
             continue
         if f["human"] == "auto_write" and f["pipeline"] == "exception_queue":
             false_holds.append(call_id)
@@ -206,7 +225,7 @@ def _print_disagreements(
         for field_name in FIELD_ORDER:
             f = r[field_name]
             if not f["applicable"]:
-                typer.echo(f"  {FIELD_LABELS[field_name]:<22} n/a (no promise captured)")
+                typer.echo(f"  {FIELD_LABELS[field_name]:<22} N/A (uncertain or not assessed)")
                 continue
             mark = "match" if f["agree"] else "DISAGREE"
             typer.echo(
@@ -226,10 +245,19 @@ def _print_disagreements(
 
 def run_comparison(refresh: bool = False) -> None:
     labels = load_labels()
+    labels = {cid: label for cid, label in labels.items() if label.assessability == "reviewed"}
+    for cid, label in labels.items():
+        source = RAW_DIR / f"{cid}.json"
+        if not source.exists() or source_hash(source) != label.input_sha256:
+            typer.echo(f"Input changed for {cid}; review the label again before evaluation.")
+            raise typer.Exit(code=1)
     all_raw = sorted(p.stem for p in RAW_DIR.glob("*.json"))
 
     if not labels:
-        typer.echo("No labels yet — run `label-calls` first.")
+        typer.echo(
+            "No reviewed v2 labels. The nine legacy labels are invalidated and excluded. "
+            "Run `label-calls` to rebuild evidence; no API calls made."
+        )
         raise typer.Exit(code=1)
 
     typer.echo(f"{len(labels)} of {len(all_raw)} fixture calls labeled.")

@@ -32,6 +32,7 @@ class Settings(BaseSettings):
 
     webhook_host: str = "0.0.0.0"
     webhook_port: int = 8000
+    operations_db_path: str = "fixtures/operations.db"
 
     # Demo console caps (webhooks/demo_caps.py) — all server-side, all configurable, because
     # the live demo spends real Vapi credit against a small, finite balance. See docs/

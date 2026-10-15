@@ -120,10 +120,37 @@ def load_accounts_and_invoices(settings: Settings) -> tuple[list[Account], list[
         from collections_agent.sheets.readers import read_accounts, read_invoices
 
         backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
-        return read_accounts(backend), read_invoices(backend)
+        return _with_local_suppressions(read_accounts(backend), settings), read_invoices(backend)
     if not FAKE_DATA_PATH.exists():
         raise FileNotFoundError(f"{FAKE_DATA_PATH} not found — run `gen-data` first.")
     raw = json.loads(FAKE_DATA_PATH.read_text(encoding="utf-8"))
     accounts = [Account.model_validate(a) for a in raw["accounts"]]
     invoices = [Invoice.model_validate(i) for i in raw["invoices"]]
-    return accounts, invoices
+    return _with_local_suppressions(accounts, settings), invoices
+
+
+def _with_local_suppressions(accounts: list[Account], settings: Settings) -> list[Account]:
+    from collections_agent.webhooks.operations import suppressed
+
+    return [
+        a.model_copy(update={"opted_out": True})
+        if suppressed(settings.operations_db_path, a.account_id, a.contact_phone)
+        else a
+        for a in accounts
+    ]
+
+
+def load_call_history(settings: Settings) -> tuple[list, list, list]:
+    """Fail visibly on a configured CRM read error instead of treating history as empty."""
+    from collections_agent.models.domain import PTP, CallLogEntry, Dispute
+    from collections_agent.sheets.readers import read_call_log, read_disputes, read_ptps
+
+    if settings.google_sheet_id:
+        backend = build_sheets_backend(settings.google_sheet_id, settings.google_service_account_json)
+        return read_ptps(backend), read_disputes(backend), read_call_log(backend)
+    raw = json.loads(FAKE_DATA_PATH.read_text(encoding="utf-8"))
+    return (
+        [PTP.model_validate(p) for p in raw.get("ptps", [])],
+        [Dispute.model_validate(d) for d in raw.get("disputes", [])],
+        [CallLogEntry.model_validate(c) for c in raw.get("call_log", [])],
+    )

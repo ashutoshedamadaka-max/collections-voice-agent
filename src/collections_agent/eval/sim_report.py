@@ -25,6 +25,7 @@ from collections_agent.eval.simulate import (
     PRICES_PER_MILLION,
     SIM_RUNS_DIR,
     BudgetExceeded,
+    BudgetUsageSink,
     CostMeter,
     compare_postcall,
     estimate_tokens,
@@ -84,8 +85,7 @@ def _run_postcall_for(
     from collections_agent.postcall.pipeline import run_postcall
 
     transcript = to_transcript(convo)
-    meter.ensure_room(SPECIALIST_MODEL, 5 * (estimate_tokens(transcript.model_dump()) + 1500), 5 * 400)
-    usages: list[Any] = []
+    usages = BudgetUsageSink(meter)
     try:
         analysis = run_postcall(
             call_id=transcript.call_id,
@@ -98,11 +98,10 @@ def _run_postcall_for(
             usage_sink=usages,
         )
         return analysis, None
-    except Exception as e:  # noqa: BLE001 - report it, keep the run going
+    except BudgetExceeded:
+        raise
+    except Exception as e:  # noqa: BLE001 - caller saves and stops on harness errors
         return None, f"{type(e).__name__}: {e}"
-    finally:
-        for usage in usages:
-            meter.record(SPECIALIST_MODEL, usage)
 
 
 def run_sim_eval(
@@ -141,11 +140,29 @@ def run_sim_eval(
 
     from openai import OpenAI
 
-    client = OpenAI(api_key=settings.openai_api_key)
+    client = OpenAI(api_key=settings.openai_api_key, max_retries=0, timeout=45)
     meter = CostMeter(max_usd=max_usd)
     run_id = datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
     run_dir = SIM_RUNS_DIR / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
+    from collections_agent.eval.provenance import fingerprint
+
+    manifest = {
+        **fingerprint(),
+        "run_id": run_id,
+        "as_of": str(as_of),
+        "agent_model": agent_model,
+        "customer_model": customer_model,
+        "specialist_model": SPECIALIST_MODEL,
+        "max_usd": max_usd,
+        "max_turns": max_turns,
+        "temperature": temperature,
+        "postcall": postcall,
+        "prices_per_million": PRICES_PER_MILLION,
+        "selected_scenarios": [m.scenario.id for m in materialized],
+        "materialized_context": [m.context_pack.model_dump(mode="json") for m in materialized],
+    }
+    (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
     results: list[dict[str, Any]] = []
     for ms in materialized:
@@ -166,13 +183,15 @@ def run_sim_eval(
 
         postcall_fields: dict[str, Any] = {}
         postcall_error = None
-        if postcall and convo.ended_reason != "budget":
+        budget_stopped = convo.ended_reason == "budget"
+        if postcall and convo.ended_reason not in ("budget", "error"):
             try:
                 analysis, postcall_error = _run_postcall_for(
                     ms, convo, meter, settings.openai_api_key, settings.confidence_threshold
                 )
             except BudgetExceeded as e:
                 analysis, postcall_error = None, str(e)
+                budget_stopped = True
             if analysis is not None:
                 postcall_fields = compare_postcall(ms, analysis)
 
@@ -194,6 +213,9 @@ def run_sim_eval(
             "error": convo.error,
             "checks": [asdict(c) for c in checks],
             "postcall": postcall_fields,
+            "postcall_expected": any(
+                value is not None for value in ms.scenario.expect.postcall.model_dump().values()
+            ),
             "postcall_error": postcall_error,
             "turns": convo.turns,
             "tool_calls": [asdict(c) for c in convo.tool_calls],
@@ -203,9 +225,13 @@ def run_sim_eval(
         (run_dir / f"{ms.scenario.id}.json").write_text(
             json.dumps(result, indent=2, default=str), encoding="utf-8"
         )
-        if convo.ended_reason == "budget":
+        if budget_stopped:
             typer.echo("\nSpending cap reached — stopping. Results so far are saved.")
             break
+        if convo.ended_reason == "error" or postcall_error:
+            typer.echo(f"\nHarness stopped on {ms.scenario.id}: {convo.error or postcall_error}")
+            _print_summary(results, meter, run_dir, agent_model, postcall)
+            raise typer.Exit(code=1)
 
     _print_summary(results, meter, run_dir, agent_model, postcall)
 
@@ -218,8 +244,39 @@ def _print_summary(
         typer.echo("No scenarios ran.")
         return
     passed = sum(r["agent_passed_must_haves"] for r in results)
+    (run_dir / "summary.json").write_text(
+        json.dumps(
+            {
+                "attempted": n,
+                "agent_passed": passed,
+                "spent_usd": meter.spent_usd,
+                "unsettled_reserved_usd": meter.reserved_usd,
+                "requests": meter.requests,
+                "results": results,
+            },
+            indent=2,
+            default=str,
+        ),
+        encoding="utf-8",
+    )
     typer.echo("\n" + "=" * 72)
     typer.echo(f"AGENT (in-call), model {agent_model}: {passed}/{n} scenarios passed every must-have check")
+    if postcall:
+        assessed = [r for r in results if r.get("postcall_expected", bool(r["postcall"]))]
+        end_to_end = sum(
+            r["agent_passed_must_haves"]
+            and bool(r["postcall"])
+            and not r["postcall_error"]
+            and all(f["agree"] for f in r["postcall"].values())
+            for r in assessed
+        )
+        typer.echo(
+            f"END-TO-END text checks: {end_to_end}/{len(assessed)} scenarios with post-call expectations "
+            "passed agent and post-call expectations"
+        )
+        typer.echo(
+            f"  {n - len(assessed)} attempted scenario(s) have no post-call expectation; unscored end-to-end."
+        )
 
     tally: dict[str, list[int]] = {}
     for r in results:
@@ -256,6 +313,10 @@ def _print_summary(
             )
 
     typer.echo(f"\nSpent ${meter.spent_usd:.4f} over {meter.requests} requests. Saved to {run_dir}")
+    if meter.reserved_usd > 0.000001:
+        typer.echo(
+            f"Unsettled request reservations: ${meter.reserved_usd:.4f}; actual additional cost unknown."
+        )
     typer.echo(
         "Scope: scripted scenarios, text only, simulated customer. Says nothing about speech-to-text, "
         "text-to-speech, interruptions or latency, and is not real-world accuracy."

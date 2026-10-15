@@ -472,7 +472,35 @@ def test_sim_eval_command_runs_and_saves_results(monkeypatch, tmp_path, isolated
     assert result.exit_code == 0, result.output
     assert "0/2 scenarios passed every must-have check" in result.output
     saved = sorted(p.name for p in (tmp_path / "runs").glob("*/*.json"))
-    assert saved == ["opt_out.json", "wrong_person.json"]
+    assert saved == ["manifest.json", "opt_out.json", "summary.json", "wrong_person.json"]
+
+
+def test_harness_error_stops_before_next_scenario(monkeypatch, tmp_path, isolated_log):
+    import openai
+    from typer.testing import CliRunner
+
+    from collections_agent import cli
+    from collections_agent.config import Settings
+    from collections_agent.eval import sim_report
+
+    class Crashes(FakeClient):
+        def __init__(self, **_kwargs):
+            super().__init__(customer=[], agent=[])
+
+        def _create(self, **kwargs):
+            raise RuntimeError("scripted harness failure")
+
+    monkeypatch.setattr(openai, "OpenAI", Crashes)
+    monkeypatch.setattr(sim_report, "SIM_RUNS_DIR", tmp_path / "runs")
+    monkeypatch.setattr("collections_agent.config.get_settings", lambda: Settings(openai_api_key="test"))
+    result = CliRunner().invoke(cli.app, ["sim-eval", "-s", "opt_out", "-s", "wrong_person", "--no-postcall"])
+    assert result.exit_code == 1
+    assert "Harness stopped on" in result.output
+    assert "scripted harness failure" in result.output
+    summary_path = next((tmp_path / "runs").glob("*/summary.json"))
+    summary = json.loads(summary_path.read_text())
+    assert summary["attempted"] == 1
+    assert summary["unsettled_reserved_usd"] > 0
 
 
 def test_sim_eval_dry_run_sends_nothing(monkeypatch):
