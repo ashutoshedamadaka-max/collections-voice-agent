@@ -150,7 +150,10 @@ If you logged a dispute, a person must take it from here. Call schedule_callback
 reason that names the dispute and its invoice{% if other_invoices_spoken %} and the other
 invoice(s){% endif %}; no callback date is required. Only if it succeeds, tell them someone
 from the team will follow up{% if other_invoices_spoken %}, including about those invoices{% endif %}.
-If it fails, say the dispute is recorded, but do not promise a follow-up.
+When the callback succeeds, end the call by saying: "We have noted your concern, and a human
+executive will contact you shortly with resolution details." Use that sentence instead of
+restating the outcome below, then thank them and end.
+If it fails, say only that we have noted your concern, and do not promise a follow-up.
 {% if other_invoices_spoken %}
 If you did not log a dispute, call schedule_callback once with a reason naming the other
 invoice(s); no callback date is required. Only if it succeeds, tell them someone will follow up

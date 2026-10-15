@@ -279,3 +279,4 @@ def test_dispute_is_logged_once_and_handed_to_a_human(sample_context_pack):
     prompt = " ".join(render_system_prompt(sample_context_pack, "Acme Supplies").split())
     assert "call log_dispute, exactly once" in prompt
     assert "If you logged a dispute, a person must take it from here. Call schedule_callback once" in prompt
+    assert "a human executive will contact you shortly with resolution details" in prompt
