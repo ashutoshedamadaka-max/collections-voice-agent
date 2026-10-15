@@ -280,3 +280,17 @@ def test_dispute_is_logged_once_and_handed_to_a_human(sample_context_pack):
     assert "call log_dispute, exactly once" in prompt
     assert "If you logged a dispute, a person must take it from here. Call schedule_callback once" in prompt
     assert "a human executive will contact you shortly with resolution details" in prompt
+
+
+def test_every_branch_has_an_ending_and_a_tool_failure_fallback(sample_context_pack):
+    prompt = " ".join(render_system_prompt(sample_context_pack, "Acme Supplies").split())
+    for line in (
+        "Thank you, that's recorded.",
+        "Our accounts team will verify the payment against that reference.",
+        "Thank you, we'll call you back then.",
+        "Thank you, we'll reach out to them.",
+        "A member of our team will call you back shortly.",
+        "Understood. We won't call you again.",
+        "never claim it was done",
+    ):
+        assert line in prompt

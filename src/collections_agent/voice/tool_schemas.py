@@ -46,7 +46,7 @@ TOOL_TIMEOUT_MESSAGES: list[dict[str, Any]] = [
         "role": "system",
         "content": (
             "The system didn't confirm this in time. Acknowledge what the caller just told "
-            "you, tell them it will be confirmed in writing, and continue the call naturally "
+            "you, tell them you couldn't confirm it just now, and continue the call naturally "
             "— do not go silent and do not repeat the request."
         ),
     },
