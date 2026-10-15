@@ -2237,11 +2237,10 @@
     document.getElementById("startCallBtn").style.display = "none";
     document.getElementById("endCallBtn").style.display = "flex";
     document.getElementById("endCallBtn").disabled = false;
-    setText("micNote", mode === "live" ? "Live microphone active — this is a real call." : "Replaying a saved call — no live microphone or audio in this pass.");
+    setText("micNote", mode === "live" ? "Preparing microphone access…" : "Replaying a saved call — no live microphone or audio in this pass.");
 
     renderPersonaBriefing(null, mode);
     document.getElementById("allowanceNote").style.display = "none";
-    document.getElementById("micCheck").style.display = "none";
     document.getElementById("replayLinkInline").style.display = "none";
 
     setText("centerTimer", "00:00");
@@ -2429,7 +2428,6 @@
 
   function startReplay(scenarioKey) {
     if (["connecting", "active", "analyzing"].indexOf(livePhase) !== -1) return;
-    stopMicTest();
     setLiveControls(false);
     if (eventSource) { eventSource.close(); eventSource = null; }
     currentScenario = scenarioKey;
@@ -2632,10 +2630,10 @@
     var attempt = ++liveAttempt;
     currentScenario = "live"; livePhase = "connecting"; liveSessionId = null;
     liveCallId = null; liveTurns = []; endReported = false;
-    resetUiForCall("live"); setLiveControls(false);
-    setText("livePillText", "Connecting");
-    setText("micNote", "Connecting your microphone to Northgate…");
     try {
+      resetUiForCall("live"); setLiveControls(false);
+      setText("livePillText", "Connecting");
+      setText("micNote", "Connecting your microphone to Northgate…");
       if (!window.Vapi) throw new Error("Voice calling could not load. Refresh the page and try again.");
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia)
         throw new Error("This browser cannot access a microphone. Use a current browser over HTTPS.");
