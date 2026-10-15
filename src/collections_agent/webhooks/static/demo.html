@@ -1446,6 +1446,94 @@
     .section-nav a { flex-grow: 1; }
     .cost-cell:has(#costMonthly) { grid-column: 1 / -1; }
   }
+  /* ---------- product story tabs: diagrams and tables ---------- */
+  .success-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 14px 18px; border: 1px solid #9ebeb0; border-radius: 12px; background: #e8f4ed; }
+  .success-bar strong { color: #174e43; font-size: 12px; margin-right: 6px; }
+  .success-bar span { padding: 6px 11px; border-radius: 99px; background: #ffffff; color: #2f5a50; font-size: 11.5px; line-height: 1.4; }
+  .call-map { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.25fr); gap: 22px; align-items: stretch; }
+  .call-step { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid #dce6e3; border-radius: 14px; background: #f9fcfa; }
+  .call-step::after { content: "→"; position: absolute; right: -18px; top: 40%; color: #91dfc3; font-size: 18px; }
+  .call-step .node-icon, .rung-num { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 8px; background: #ddf1e8; color: #166353; font: 700 10px var(--font-mono); }
+  .call-step strong { color: var(--ink); font-size: 14px; }
+  .call-step small { color: var(--text); font-size: 11px; line-height: 1.5; }
+  .call-fork { display: flex; flex-direction: column; gap: 10px; }
+  .call-fork > div { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 14px 16px; border-radius: 12px; }
+  .call-fork strong { font-size: 14px; }
+  .call-fork small { font-size: 11px; line-height: 1.45; }
+  .fork-ok { background: #def2e8; border: 1px solid #9fd2bc; color: #174e43; }
+  .fork-hold { background: #fff3dc; border: 1px solid #e8cf96; color: #5f4a1c; }
+  .path-table { border: 1px solid #dce6e3; border-radius: 14px; overflow: hidden; background: #fbfcfb; }
+  .path-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; padding: 12px 20px; border-top: 1px solid #e6eeea; font-size: 12.5px; line-height: 1.5; color: var(--text); align-items: center; }
+  .path-row strong { color: var(--ink); font-size: 13px; }
+  .path-head { border-top: 0; background: #eef5f1; color: #34766b; font: 700 10px var(--font-mono); letter-spacing: .7px; text-transform: uppercase; }
+  .path-result { justify-self: start; padding: 4px 10px; border-radius: 99px; background: #e4f4ed; color: #176a59; font-weight: 600; font-size: 11.5px; }
+  .decision-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .decision-grid .trade { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #d3e0dc; color: #6a5a35; font-size: 11.5px; }
+  .stack-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .stack-grid > div { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid #dce6e3; border-radius: 12px; background: #fbfcfb; }
+  .stack-grid span { color: #34766b; font: 700 10px var(--font-mono); letter-spacing: .6px; text-transform: uppercase; }
+  .stack-grid strong { color: var(--ink); font-size: 16px; }
+  .stack-grid small { color: var(--text); font-size: 11.5px; line-height: 1.5; }
+  .roadmap { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .roadmap li { counter-increment: step; display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1px solid #dce6e3; border-radius: 12px; background: #fbfcfb; }
+  .roadmap li::before { content: counter(step); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #176a59; color: #ffffff; font: 700 11px var(--font-mono); }
+  .roadmap li:nth-child(-n+2)::before { background: #c27a1c; }
+  .roadmap strong { color: var(--ink); font-size: 13.5px; }
+  .roadmap span { color: var(--text); font-size: 11.5px; line-height: 1.5; }
+  .quality-grid, .principles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .quality-grid > div { padding: 20px; border: 1px solid #dce6e3; border-radius: 14px; background: #fbfcfb; }
+  .quality-grid h3 { margin: 0 0 6px; color: var(--ink); font-size: 15px; }
+  .quality-grid p { margin: 0; color: var(--text); font-size: 12px; line-height: 1.6; }
+  .ladder { display: flex; flex-direction: column; gap: 8px; }
+  .rung { display: grid; grid-template-columns: 29px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 18px; border: 1px solid #dce6e3; border-radius: 12px; background: #fbfcfb; }
+  .rung:nth-child(1) { margin: 0 9%; } .rung:nth-child(2) { margin: 0 6%; } .rung:nth-child(3) { margin: 0 3%; }
+  .rung strong { display: block; color: var(--ink); font-size: 14px; }
+  .rung small { display: block; color: var(--text); font-size: 11.5px; line-height: 1.5; margin-top: 2px; }
+  .rung-tag { padding: 4px 10px; border-radius: 99px; background: #e4f4ed; color: #176a59; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .rung-tag.pending { background: #fff3dc; color: #7a5a1a; }
+  .model-compare { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; border: 1px solid #dce6e3; border-radius: 14px; background: #fbfcfb; }
+  .model-compare > div { display: grid; grid-template-columns: 110px minmax(0, 1fr) 64px 92px; gap: 14px; align-items: center; font-size: 12.5px; color: var(--text); }
+  .model-compare span { color: var(--ink); font-weight: 600; }
+  .model-compare strong { color: #185d4d; font-size: 15px; }
+  .model-compare .bar { height: 10px; border-radius: 99px; background: #e2ece8; overflow: hidden; }
+  .model-compare .bar i { display: block; height: 100%; border-radius: inherit; background: #368b72; }
+  .live-check { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 24px; padding: 22px 24px; border: 1px solid #dce6e3; border-radius: 16px; background: #fbfcfb; }
+  .live-check-head { display: flex; flex-direction: column; gap: 8px; }
+  .live-check .card-label { color: #34766b; font: 700 10px var(--font-mono); letter-spacing: .7px; }
+  .live-check h3 { margin: 0; color: var(--ink); font-size: 18px; }
+  .live-check p { margin: 0; color: var(--text); font-size: 12px; line-height: 1.6; }
+  .live-check ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .live-check li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; line-height: 1.45; color: var(--ink); }
+  .live-check li::before { flex: 0 0 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+  .live-check li.pass::before { content: "✓"; background: #def2e8; color: #176a59; }
+  .live-check li.warn::before { content: "!"; background: #fff3dc; color: #8a6116; }
+  .pilot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .pilot-grid > div { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid #dce6e3; border-radius: 12px; background: #fbfcfb; }
+  .pilot-grid strong { color: var(--ink); font-size: 14px; }
+  .pilot-grid small { color: var(--text); font-size: 11.5px; line-height: 1.5; }
+  .principles > div { display: flex; flex-direction: column; gap: 8px; padding: 20px; border: 1px solid #9ebeb0; border-radius: 14px; background: #e8f4ed; }
+  .principles span { color: #30806c; font: 700 10px var(--font-mono); }
+  .principles strong { color: #174e43; font-size: 15px; line-height: 1.3; }
+  .principles small { color: #41665a; font-size: 12px; line-height: 1.5; }
+  @media (max-width: 1050px) {
+    .call-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .call-step::after { display: none; }
+    .call-fork { grid-column: 1 / -1; flex-direction: row; }
+    .decision-grid, .stack-grid, .pilot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .roadmap, .quality-grid, .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .live-check { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .call-map, .decision-grid, .stack-grid, .pilot-grid, .roadmap, .quality-grid, .principles, .live-check ul { grid-template-columns: 1fr; }
+    .call-fork { flex-direction: column; }
+    .path-row { grid-template-columns: 1fr; gap: 4px; }
+    .path-head { display: none; }
+    .rung:nth-child(n) { margin: 0; }
+    .rung { grid-template-columns: 29px minmax(0, 1fr); }
+    .rung-tag { grid-column: 2; justify-self: start; }
+    .model-compare > div { grid-template-columns: 90px minmax(0, 1fr) 54px; }
+    .model-compare small { grid-column: 2 / -1; }
+  }
 </style>
 </head>
 <body>
@@ -1706,62 +1794,106 @@
   <div class="tab-panel" id="tabpanelBuilt" role="tabpanel" aria-labelledby="tabBtnBuilt" hidden>
     <div class="doc-page">
       <header class="story-hero">
-        <span class="story-kicker">SYSTEM DESIGN / 01</span>
-        <h1>From overdue invoice to a reviewable decision.</h1>
-        <p>A collections call is useful only if it produces a trustworthy next action. This system decides whom to call, conducts one focused conversation, then turns the transcript into structured evidence.</p>
-        <div class="story-metrics" aria-label="System at a glance">
+        <span class="story-kicker">THE PRODUCT / 01</span>
+        <h1>A collections call is only worth what it writes down.</h1>
+        <p>I built a voice agent that calls a customer about one overdue invoice, gets a clear outcome, and turns it into a record a finance team can trust. When it isn't sure, it hands the call to a person instead of guessing.</p>
+        <div class="story-metrics" aria-label="The product at a glance">
           <div><strong>1</strong><span>invoice per call</span></div>
-          <div><strong>3 min</strong><span>hard call limit</span></div>
-          <div><strong>5</strong><span>post-call specialists</span></div>
-          <div><strong>1</strong><span>supervised write decision</span></div>
+          <div><strong>3 min</strong><span>maximum call length</span></div>
+          <div><strong>5</strong><span>AI checks after every call</span></div>
+          <div><strong>~$0.36</strong><span>per 2-minute live call</span></div>
         </div>
       </header>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">01 / ARCHITECTURE</span><h2>From conversation to a business record</h2><p>Live calls and saved replays use the same analysis function. The pre-call engine and Sheets write-back are separate application paths; the public demo uses frozen synthetic context and previews writes.</p></div>
-        <div class="architecture-flow" aria-label="Account data flows through eligibility, voice call, analysis, and write-back">
-          <div class="architecture-node"><span class="node-icon">01</span><strong>Account data</strong><small>AR sheet · invoices · contact history</small></div>
-          <div class="architecture-node"><span class="node-icon">02</span><strong>Pre-call gate</strong><small>Suppress ineligible accounts · score priority · build context</small></div>
-          <div class="architecture-node"><span class="node-icon">03</span><strong>Voice agent</strong><small>Fixed opening · name confirmation · one invoice</small></div>
-          <div class="architecture-node"><span class="node-icon">04</span><strong>Post-call review</strong><small>Five parallel extractors · supervisor merge</small></div>
-          <div class="architecture-node"><span class="node-icon">05</span><strong>Next action</strong><small>Auto-write or human exception queue</small></div>
-        </div>
-        <p class="story-footnote">The write-back path reconciles rows by <code>call_id</code>, so retrying an analysis does not duplicate records. The public demo previews the row shape; it does not write to a customer Sheet. The original human benchmark was invalidated. Independent record-level review is required before real-customer use.</p>
-      </section>
-
-      <section class="story-section">
-        <div class="story-section-head"><span class="story-index">02 / EXECUTION</span><h2>Where each decision lives</h2><p>Code handles fixed rules. Models handle conversation and transcript interpretation. The supervisor routes low-confidence and rule-breaking calls to humans.</p></div>
+        <div class="story-section-head"><span class="story-index">01 / THE PROBLEM</span><h2>Who it's for, and what goes wrong today</h2><p>I ran collections at Trukker. The calls happened; the follow-through didn't.</p></div>
         <div class="story-card-grid three">
-          <article class="story-card"><div class="story-card-top"><span class="story-icon">⌁</span><span>BEFORE THE CALL</span></div><h3>Eligibility before outreach</h3><p>Code suppresses paid accounts, open disputes, active promises, opt-outs, wrong contacts, cooldowns, out-of-hours calls, and 90+ day debt routed to a person. The pre-call engine returns suppression reasons; dispatch-level logging remains a pilot requirement.</p><div class="story-card-rule"><strong>Priority</strong><code>balance × aging × broken-PTP escalation × contactability</code></div><p>The context pack carries contact, invoices, total balance, promise history, disputes, last contact, and language.</p></article>
-          <article class="story-card"><div class="story-card-top"><span class="story-icon">◉</span><span>DURING THE CALL</span></div><h3>A focused voice conversation</h3><p>Vapi starts with a fixed disclosure and name confirmation before the model speaks. Stronger recipient verification remains a pilot requirement. The agent works the most overdue invoice, asks for a concrete payment commitment when possible, and hands off other invoices.</p><div class="story-card-rule"><strong>Guardrails</strong><span>One question per turn · supplied invoice facts only · three-minute cap</span></div><p>Tool results must be checked before the agent says an action was completed.</p></article>
-          <article class="story-card"><div class="story-card-top"><span class="story-icon">◇</span><span>AFTER THE CALL</span></div><h3>Extract, validate, route</h3><p>Outcome, promise, dispute, compliance, and summary specialists read the transcript in parallel. Code validates dates, amounts, methods, and arithmetic.</p><div class="story-card-rule"><strong>Supervisor</strong><span>Low confidence, specific contradictions or a hard compliance finding sends the proposed result to record review.</span></div><p>The summary is descriptive; it cannot clear a write. A separate command persists eligible rows to Sheets.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg></span><span>THE USER</span></div>
+            <h3>A B2B collections team</h3><p>A small accounts-receivable team chasing hundreds of overdue invoices by phone, each call a few minutes long and mostly the same.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><span>THE PAIN</span></div>
+            <h3>Outcomes get lost</h3><p>A promise to pay lives in someone's notes. A dispute never reaches the team that can fix it. A week later, nobody knows what was agreed.</p></article>
+          <article class="story-card"><div class="story-card-top"><span class="story-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12l5 5 9-10"/></svg></span><span>THE GOAL</span></div>
+            <h3>Every call ends in a correct record</h3><p>Either the outcome is written down exactly, with amount, date and method, or a person is told the call needs a look.</p></article>
+        </div>
+        <div class="success-bar" aria-label="What success looks like">
+          <strong>What success looks like</strong>
+          <span>No promise recorded without an amount, a date and a method</span>
+          <span>Every dispute reaches a person</span>
+          <span>The agent never threatens, discounts or invents facts</span>
+          <span>Uncertain calls are held, not guessed</span>
         </div>
       </section>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">03 / INSPECT THE SYSTEM</span><h2>See the prompt and the rows</h2><p>These public artifacts show the instructions the agent follows and the shape of the ledger update. The sample rows are illustrative synthetic data.</p></div>
-        <div class="writeback-route" aria-label="Post-call write-back routing">
-          <div><strong>Call ends</strong><span>The transcript and tool events enter post-call analysis.</span></div>
-          <div><strong>Call_Log</strong><span>The write-back command saves a summary and outcome row; the public demo previews it.</span></div>
-          <div><strong>Specialized rows</strong><span>A cleared promise, soft commitment, or dispute goes to its matching tab.</span></div>
-          <div><strong>Exceptions</strong><span>Uncertain or rule-breaking calls are held for human review.</span></div>
+        <div class="story-section-head"><span class="story-index">02 / HOW A CALL WORKS</span><h2>From an overdue invoice to a next action</h2><p>One path for every call. The fork at the end is the most important design decision.</p></div>
+        <div class="call-map" aria-label="Account data, then who to call, then the call, then five checks, then save automatically or send to a person">
+          <div class="call-step"><span class="node-icon">01</span><strong>Account data</strong><small>Invoices, contacts and call history from the team's sheet</small></div>
+          <div class="call-step"><span class="node-icon">02</span><strong>Who to call</strong><small>Skips paid, disputed or opted-out accounts and calls outside hours; ranks the rest</small></div>
+          <div class="call-step"><span class="node-icon">03</span><strong>The call</strong><small>Discloses it's automated, confirms the person, works one invoice, records outcomes as it talks</small></div>
+          <div class="call-step"><span class="node-icon">04</span><strong>Five checks</strong><small>Outcome, promise, dispute, compliance and summary, each read independently</small></div>
+          <div class="call-fork">
+            <div class="fork-ok"><strong>Save automatically</strong><small>All checks pass and agree</small></div>
+            <div class="fork-hold"><strong>Send to a person</strong><small>Low confidence, a contradiction or a rule broken</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">03 / CONVERSATION DESIGN</span><h2>Every answer has a planned path</h2><p>I mapped what customers actually say to what the agent asks, what it records, and how it ends the call.</p></div>
+        <div class="path-table" role="table" aria-label="Customer answer, agent questions, result">
+          <div class="path-row path-head" role="row"><span role="columnheader">If the customer says…</span><span role="columnheader">The agent asks</span><span role="columnheader">The result</span></div>
+          <div class="path-row" role="row"><strong role="cell">"I'll pay"</strong><span role="cell">When? Full or part? Which method? Then reads it back.</span><span role="cell" class="path-result">Promise recorded</span></div>
+          <div class="path-row" role="row"><strong role="cell">"I dispute this"</strong><span role="cell">What's wrong? What would you like us to do?</span><span role="cell" class="path-result">Dispute case, handed to a person</span></div>
+          <div class="path-row" role="row"><strong role="cell">"Already paid"</strong><span role="cell">Payment reference? Date paid?</span><span role="cell" class="path-result">Payment claim to verify</span></div>
+          <div class="path-row" role="row"><strong role="cell">"I can't pay now"</strong><span role="cell">Why, once. Roughly when, once. Never pushes.</span><span role="cell" class="path-result">Delay noted</span></div>
+          <div class="path-row" role="row"><strong role="cell">"Can you waive the fee?"</strong><span role="cell">Declines in one sentence, carries on.</span><span role="cell" class="path-result">No discount, ever</span></div>
+          <div class="path-row" role="row"><strong role="cell">"Wrong person" / "Call later"</strong><span role="cell">Who should we call? / When suits you?</span><span role="cell" class="path-result">Callback booked</span></div>
+          <div class="path-row" role="row"><strong role="cell">"Get me a human" / "Stop calling"</strong><span role="cell">Nothing more.</span><span role="cell" class="path-result">Urgent callback / opt-out</span></div>
+        </div>
+        <p class="story-footnote">Each path ends with a fixed closing line, and a different fallback line if the system couldn't confirm the action. The agent only says "recorded" when the record was actually saved. <a href="/demo/assets/system-prompt.txt" target="_blank" rel="noopener">Read the full agent instructions ↗</a></p>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">04 / KEY DECISIONS</span><h2>Choices I made, and what they cost</h2><p>Each one traded something away on purpose.</p></div>
+        <div class="decision-grid">
+          <article><span>01 · SCOPE</span><h3>One invoice per call, finished properly</h3><p>Early calls tried to cover every invoice and ran out of time. Now the agent finishes one and books a callback for the rest.</p><p class="trade">Gave up: covering a whole account in one call.</p></article>
+          <article><span>02 · TRUST</span><h3>Maths and invoice matching stay in code</h3><p>The AI misjudged 85,000 + 280,500 = 365,500 as over the balance. The AI now only reads what was said; code checks the numbers.</p><p class="trade">Gave up: a simpler, AI-only pipeline.</p></article>
+          <article><span>03 · SAFETY</span><h3>A person handles every dispute</h3><p>The agent records the dispute and what the customer wants, then hands it off. It never says who's at fault or promises a credit.</p><p class="trade">Gave up: fully automated resolution.</p></article>
+          <article><span>04 · HONESTY</span><h3>Only claim what the system confirmed</h3><p>After a silent failure made the agent say "recorded" when nothing was saved, every action now has a fallback line.</p><p class="trade">Gave up: a smoother-sounding call when something breaks.</p></article>
+          <article><span>05 · QUALITY</span><h3>Five checks, and contradictions go to a person</h3><p>A single confidence score can't catch two checks that disagree. When they do, the call is held, even if each looks confident.</p><p class="trade">Gave up: some automation; more calls need a human look.</p></article>
+          <article><span>06 · COST</span><h3>A live demo with hard limits</h3><p>Three live calls a day, a spend floor and a per-visitor cap protect the budget. Replays of saved calls run the same analysis for free.</p><p class="trade">Gave up: unlimited live calls for visitors.</p></article>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">05 / WHAT IT'S BUILT WITH</span><h2>The stack, in one line each</h2></div>
+        <div class="stack-grid">
+          <div><span>Phone call</span><strong>Vapi</strong><small>Runs the call and the agent's voice</small></div>
+          <div><span>Hearing the customer</span><strong>Soniox</strong><small>Picked after the cheaper option misheard invoice numbers</small></div>
+          <div><span>The agent's brain</span><strong>GPT-4o</strong><small>A live experiment; GPT-4o-mini scored about the same in text tests at 1/7 the cost</small></div>
+          <div><span>The five checks</span><strong>GPT-4o-mini</strong><small>Plus code for every number, date and invoice match</small></div>
+          <div><span>Backend</span><strong>Python · FastAPI</strong><small>Hosted on Render; 397 automated tests</small></div>
+          <div><span>Records</span><strong>Google Sheets</strong><small>Call log, promises, disputes and a review queue</small></div>
         </div>
         <div class="evidence-links">
-          <article class="evidence-link-card"><span class="card-label">SYNTHETIC SHEET EXAMPLE</span><h3>Inspect the write-back tabs</h3><p>Download a sample workbook with the exact output column names and example rows in Call_Log, PTP_Register, Soft_Commitments, Disputes, and Exceptions. These are fictional records, not rows from a live visitor call.</p><a href="/demo/assets/writeback-example.xlsx" download>Download example workbook ↗</a></article>
-          <article class="evidence-link-card"><span class="card-label">AGENT INSTRUCTIONS</span><h3>Read the system prompt</h3><p>Open the actual Jinja prompt template. Account and invoice values are filled in for each call. The fixed opening and tool definitions are configured separately, so this template is the conversation layer rather than a complete Vapi payload.</p><a href="/demo/assets/system-prompt.txt" target="_blank" rel="noopener noreferrer">Open prompt template ↗</a></article>
+          <article class="evidence-link-card"><span class="card-label">SAMPLE OUTPUT</span><h3>See what gets recorded</h3><p>A sample workbook with the real column names: call log, promises, soft commitments, disputes and the review queue. All rows are fictional.</p><a href="/demo/assets/writeback-example.xlsx" download>Download sample workbook</a></article>
+          <article class="evidence-link-card"><span class="card-label">AGENT INSTRUCTIONS</span><h3>Read what the agent is told</h3><p>The actual instructions the agent follows, with every conversation path and its closing line. Account details are filled in per call.</p><a href="/demo/assets/system-prompt.txt" target="_blank" rel="noopener">Open the instructions</a></article>
         </div>
-        <p class="story-footnote">The public demo previews proposed ledger rows. It never writes a visitor call to the customer Sheet. The example workbook illustrates the schema; it is not a live or continuously updated Google Sheet.</p>
-        <p class="story-footnote">Explore the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/CASE_STUDY.md" target="_blank" rel="noopener noreferrer">product case study ↗</a> and <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/tree/master/src/collections_agent" target="_blank" rel="noopener noreferrer">implementation ↗</a>.</p>
       </section>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">04 / TRADE-OFFS</span><h2>Design choices worth defending</h2></div>
-        <div class="decision-grid">
-          <article><span>01</span><h3>One invoice, fully handled</h3><p>Early calls tried to cover every invoice and ran out of time. A complete outcome on the oldest debt plus a separate callback is more useful than several partial conversations.</p></article>
-          <article><span>02</span><h3>Arithmetic stays in code</h3><p>The model extracts what the caller said. Deterministic checks decide whether a promise is complete, future-dated, within the balance, and supported by a valid method.</p></article>
-          <article><span>03</span><h3>90+ days goes to a human</h3><p>This is a product boundary for higher-risk conversations, not a limitation of the voice stack.</p></article>
-          <article><span>04</span><h3>Live demo with a replay fallback</h3><p>Server-side spend, daily, and visitor caps protect the finite Vapi balance. When a live call is unavailable, a saved conversation still runs through the actual analysis path.</p></article>
-        </div>
+        <div class="story-section-head"><span class="story-index">06 / WHAT'S NEXT</span><h2>Before a real customer hears it</h2><p>In priority order. The first two are about knowing it works; the rest make it better.</p></div>
+        <ol class="roadmap">
+          <li><strong>Re-build the human benchmark</strong><span>Independent reviewers label real calls, with evidence for each judgment.</span></li>
+          <li><strong>Controlled audio tests</strong><span>Accents, interruptions and noisy lines, measured on real audio.</span></li>
+          <li><strong>Stronger identity checks</strong><span>Confirming a name isn't enough before discussing money.</span></li>
+          <li><strong>Faster call start</strong><span>The browser takes about 7 seconds to connect before the greeting.</span></li>
+          <li><strong>A review queue for the team</strong><span>A simple screen for the calls held for a person.</span></li>
+        </ol>
+        <p class="story-footnote">Go deeper: the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/CASE_STUDY.md" target="_blank" rel="noopener noreferrer">product case study ↗</a> and the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/tree/master/src/collections_agent" target="_blank" rel="noopener noreferrer">code ↗</a>.</p>
       </section>
     </div>
   </div>
@@ -1772,57 +1904,90 @@
     <div class="doc-page">
       <header class="story-hero eval-hero">
         <span class="story-kicker">EVALUATION / 02</span>
-        <h1>Test the conversation. Inspect the consequence.</h1>
-        <p>A good call needs the right understanding, a supported action and an accurate record. This evaluation separates those checks and shows the evidence available for each.</p>
-        <div class="story-metrics" aria-label="Evaluation evidence status">
-          <div><strong>21</strong><span>scripted text scenarios</span></div>
+        <h1>How I know what works, and what I can't claim yet.</h1>
+        <p>A voice agent can sound great and still write the wrong record. So I test four things separately, with cheap tests on every change and expensive ones only where they add something new.</p>
+        <div class="story-metrics" aria-label="Evaluation at a glance">
+          <div><strong>397</strong><span>automated tests on every change</span></div>
+          <div><strong>17–18 / 21</strong><span>simulated calls handled correctly</span></div>
+          <div><strong>~1.5 s</strong><span>median reply time (small sample)</span></div>
           <div><strong>Pending</strong><span>independent human benchmark</span></div>
-          <div><strong>N/A</strong><span>validated audio success rate</span></div>
         </div>
       </header>
+
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">01 / EVIDENCE</span><h2>Three layers of evaluation</h2></div>
-        <div class="eval-flow">
-          <div><span class="eval-step">1</span><h3>Deterministic checks</h3><p>Validate payment amounts, invoice identity, attribution, durable actions and retry behavior with offline regression tests.</p></div>
-          <div><span class="eval-step">2</span><h3>Text simulations</h3><p>Exercise the prompt, tools and post-call pipeline. A successful tool call must match the action claimed. Text checks cannot measure speech or interruptions.</p></div>
-          <div><span class="eval-step">3</span><h3>Human and audio review</h3><p>Rebuild distinct cases with evidence and uncertainty. Measure record correctness separately from human follow-up. Audio benchmarks remain pending.</p></div>
+        <div class="story-section-head"><span class="story-index">01 / WHAT "GOOD" MEANS</span><h2>Four questions for every call</h2><p>A call passes only if all four are yes.</p></div>
+        <div class="quality-grid">
+          <div><span class="eval-step">1</span><h3>Did it understand?</h3><p>The outcome, amount, date and invoice match what the customer actually said.</p></div>
+          <div><span class="eval-step">2</span><h3>Did it act?</h3><p>Every "I've recorded that" is backed by a tool call that succeeded.</p></div>
+          <div><span class="eval-step">3</span><h3>Is the record right?</h3><p>The saved row is correct, or the call was held for a person.</p></div>
+          <div><span class="eval-step">4</span><h3>Did it behave?</h3><p>Disclosed it's automated, no threats, no discounts, no invented facts.</p></div>
         </div>
       </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">02 / THE TESTING LADDER</span><h2>Cheap tests often, expensive tests where they count</h2><p>Each rung catches problems the one below can't.</p></div>
+        <div class="ladder">
+          <div class="rung"><span class="rung-num">4</span><div><strong>Independent human review</strong><small>Catches: whether the records are truly right. Status: rebuilding.</small></div><span class="rung-tag pending">Pending</span></div>
+          <div class="rung"><span class="rung-num">3</span><div><strong>Scripted live calls</strong><small>Catches: audio, timing and real tool failures. Up to 3 a day.</small></div><span class="rung-tag">Ongoing</span></div>
+          <div class="rung"><span class="rung-num">2</span><div><strong>Simulated conversations</strong><small>An AI plays 21 customer scenarios. Catches: wrong branches and claims without actions. About $0.05 a run.</small></div><span class="rung-tag">21 scenarios</span></div>
+          <div class="rung"><span class="rung-num">1</span><div><strong>Automated tests</strong><small>Catches: maths, matching, duplicates and retries. Free, on every change.</small></div><span class="rung-tag">397 tests</span></div>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">03 / RESULTS</span><h2>What the tests showed</h2></div>
+        <div class="model-compare" aria-label="Model comparison in simulated calls">
+          <div><span>GPT-4o-mini</span><div class="bar"><i style="width: 85.7%"></i></div><strong>18 / 21</strong><small>$0.05 per run</small></div>
+          <div><span>GPT-4o</span><div class="bar"><i style="width: 81%"></i></div><strong>17 / 21</strong><small>$0.38 per run</small></div>
+        </div>
+        <p class="story-footnote"><strong>The product call:</strong> the bigger model cost 7× more and did no better in this test. One run per model isn't enough to decide, so the live agent is running GPT-4o as an experiment while I plan a repeated, budgeted comparison. Both runs were on 14 October 2026, text only, with the older, looser checker.</p>
+
+        <div class="live-check">
+          <div class="live-check-head"><span class="card-label">SCRIPTED LIVE CALL · 15 OCT 2026</span><h3>A quantity dispute, end to end</h3><p>The script mixed four situations into one call: a discount request, a document request, a dispute and the closing.</p></div>
+          <ul>
+            <li class="pass">Declined the discount without saying "policy"</li>
+            <li class="pass">Requested the delivery challan, once</li>
+            <li class="pass">Logged the dispute once, with what the customer wanted</li>
+            <li class="pass">Didn't ask a disputing customer for a payment date</li>
+            <li class="pass">Handed the dispute to a person, then said so</li>
+            <li class="pass">Result: safe to record automatically</li>
+            <li class="warn">Asked for dispute details the customer had already given</li>
+            <li class="warn">Saved the invoice as spoken, not as the real ID (now fixed)</li>
+          </ul>
+        </div>
+      </section>
+
       <section class="story-section" aria-labelledby="latencyEvidenceTitle">
-        <div class="story-section-head"><span class="story-index">02 / MEASURED VOICE TIMING</span><h2 id="latencyEvidenceTitle">How long does the agent take to respond?</h2><p>Provider-reported turn timings from the two saved demo examples. These are historical test calls, separate from your current session.</p></div>
+        <div class="story-section-head"><span class="story-index">04 / SPEED</span><h2 id="latencyEvidenceTitle">How quickly does the agent reply?</h2><p>Time from the customer finishing a sentence to the agent starting to speak, from two saved demo calls.</p></div>
         <span class="evidence-status" id="latencyEvidenceStatus">Loading saved evidence</span>
         <div class="evidence-metrics" aria-live="polite">
-          <div class="evidence-metric"><span>Typical turn · median / p50</span><strong id="latencyMedian">N/A</strong><small>Half of measured turns were faster</small></div>
-          <div class="evidence-metric"><span>Slower turns · p95</span><strong id="latencyP95">N/A</strong><small>Nearest-rank percentile</small></div>
-          <div class="evidence-metric"><span>Evidence size</span><strong id="latencySamples">N/A</strong><small id="latencyCallCount">Saved examples only</small></div>
+          <div class="evidence-metric"><span>Typical reply (median)</span><strong id="latencyMedian">N/A</strong><small>Half of replies were faster</small></div>
+          <div class="evidence-metric"><span>Slow replies (95th percentile)</span><strong id="latencyP95">N/A</strong><small>1 in 20 replies was slower</small></div>
+          <div class="evidence-metric"><span>Sample size</span><strong id="latencySamples">N/A</strong><small id="latencyCallCount">Saved examples only</small></div>
         </div>
-        <p class="evidence-caption" id="latencyEvidenceNote">No timing is inferred when provider measurements are missing.</p>
-        <details class="evidence-detail"><summary>What this timing does—and does not—measure</summary><p>Turn latency is the provider-reported response interval, not a separately verified measurement at the listener. Component timings can overlap. The small sample does not establish production performance, model superiority, interruption recovery or time to a substantive answer.</p><p>p50 is the median; p95 uses the nearest-rank method over measured turns. Inspect the <a href="/demo/evidence/latency" target="_blank" rel="noopener noreferrer">aggregate timing evidence</a>. It contains no visitor transcripts or account details.</p></details>
+        <p class="evidence-caption" id="latencyEvidenceNote">No timing is shown if the provider didn't measure it.</p>
+        <details class="evidence-detail"><summary>What this number does and doesn't tell you</summary><p>These are the voice provider's own timings from a small number of turns. They show the agent responds at conversational speed, but they aren't a production measurement and don't cover interruptions or how quickly the agent gets to a useful answer.</p></details>
       </section>
+
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">03 / HISTORICAL TEXT RUNS</span><h2>Useful diagnostics, limited evidence</h2></div>
-        <div class="eval-risk-grid">
-          <div><strong>gpt-4o-mini: 18 / 21</strong><span>In-call scenario passes. One text run on 14 October 2026; $0.0515 agent, customer and post-call API cost.</span></div>
-          <div><strong>gpt-4o: 17 / 21</strong><span>In-call scenario passes. One text run on 14 October 2026; $0.3780 agent, customer and post-call API cost.</span></div>
-        </div>
-        <p class="story-footnote">Historical evaluator v1. These figures do not include end-to-end post-call agreement and are not a model ranking. Evaluator v2 adds stricter checks; a fresh budgeted experiment is pending.</p>
-      </section>
-      <section class="story-section">
-        <div class="story-section-head"><span class="story-index">04 / MODEL AND HUMAN REVIEW</span><h2>Who checks the meaning?</h2></div>
+        <div class="story-section-head"><span class="story-index">05 / WHAT I WON'T CLAIM</span><h2>Withdrawing a number is part of the job</h2></div>
         <div class="evidence-panel">
-          <div><h3>Model-based operational checks</h3><p>Five AI specialists interpret the transcript. Compliance review judges qualitative rule violations; code checks amounts, dates and known contradictions. These are product components whose outputs also need independent evaluation.</p></div>
-          <div><h3>Independent judging · pending calibration</h3><p>A separate conversation judge must assess intent, corrections, unsupported commitments and summary faithfulness against human-reviewed examples. No calibrated judge accuracy or safe-write score is claimed.</p></div>
+          <div><span class="evidence-mark" aria-hidden="true">!</span><h3>The first human benchmark was withdrawn</h3><p>My first set of human labels for nine calls turned out to be unreliable, so every accuracy number built on them is withdrawn. The replacement needs evidence for each judgment and separates "was the record right" from "did the business follow up".</p></div>
+          <div><span class="evidence-mark" aria-hidden="true">?</span><h3>Not measured yet</h3><p>Audio success rate, interruption handling and real-world record accuracy. Until they're measured, the page shows them as pending, not as zero failures.</p></div>
         </div>
-        <details class="evidence-detail"><summary>Why the original nine-call benchmark is withdrawn</summary><p>The original labels were not reviewed reliably. All derived agreement and false-write/false-hold counts are withdrawn. Replacement review uses distinct cases, evidence spans and uncertainty. A correct dispute record can still require human follow-up; those are separate judgments.</p></details>
       </section>
+
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">05 / METRIC CONTRACT</span><h2>Show the denominator and what it means</h2></div>
-        <div class="evidence-panel">
-          <div><h3>Business and workflow</h3><p>Contact rate, record review rate, matured promise fulfillment, attributed payment recovery and cost per contact. Human follow-up is a separate workflow, not an extraction error.</p></div>
-          <div><h3>Voice quality and reliability</h3><p>Historical response timings are available above. Controlled audio task completion, interruption recovery, full action fulfillment and production latency remain unvalidated. Missing signals display N/A.</p></div>
+        <div class="story-section-head"><span class="story-index">06 / PILOT METRICS</span><h2>How I'd judge a real pilot</h2><p>Each metric counted against a stated base, so a small sample can't look like a big result.</p></div>
+        <div class="pilot-grid">
+          <div><strong>Contact rate</strong><small>Calls that reached the right person ÷ calls attempted</small></div>
+          <div><strong>Record accuracy</strong><small>Correct records ÷ records reviewed by a person</small></div>
+          <div><strong>Promises kept</strong><small>Promises paid on time ÷ promises past their date</small></div>
+          <div><strong>Cash recovered</strong><small>Payments linked to a call, after reconciliation</small></div>
+          <div><strong>Cost per contact</strong><small>Voice and AI spend ÷ successful contacts</small></div>
+          <div><strong>Human workload</strong><small>Calls held for review ÷ calls made</small></div>
         </div>
-        <div class="eval-status"><span class="status-dot"></span><span><strong>Release evidence:</strong> independent labels, audio tests and deployment reliability checks are still required before a real-customer pilot.</span></div>
-        <p class="story-footnote">Inspect the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/eval.md" target="_blank" rel="noopener noreferrer">evaluation method ↗</a>, <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/metrics.md" target="_blank" rel="noopener noreferrer">metric definitions ↗</a>, and <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/CALL_REVIEW_GUIDE_V2.md" target="_blank" rel="noopener noreferrer">human review guide ↗</a>.</p>
+        <p class="story-footnote">Read the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/eval.md" target="_blank" rel="noopener noreferrer">evaluation method ↗</a> and <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/metrics.md" target="_blank" rel="noopener noreferrer">metric definitions ↗</a>.</p>
       </section>
     </div>
   </div>
@@ -1833,31 +1998,46 @@
     <div class="doc-page">
       <header class="story-hero lessons-hero">
         <span class="story-kicker">FIELD NOTES / 03</span>
-        <h1>The real calls changed the system.</h1>
-        <p>These are incidents from manual testing, recorded in the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/FAILURES.md" target="_blank" rel="noopener noreferrer">failure log ↗</a>. Each exposed a gap between a passing implementation and the behavior a caller actually experienced.</p>
-        <div class="story-metrics" aria-label="Lessons at a glance"><div><strong>3</strong><span>deep investigations</span></div><div><strong>8</strong><span>additional field findings</span></div><div><strong>1</strong><span>principle: verify with real calls</span></div></div>
+        <h1>What broke, and what it changed.</h1>
+        <p>Every one of these passed its tests and still failed on a real call. Each is written up in the <a href="https://github.com/ashutoshedamadaka-max/collections-voice-agent/blob/master/docs/FAILURES.md" target="_blank" rel="noopener noreferrer">failure log ↗</a>.</p>
+        <div class="story-metrics" aria-label="Lessons at a glance"><div><strong>4</strong><span>deep investigations</span></div><div><strong>12</strong><span>smaller field findings</span></div><div><strong>4</strong><span>principles I now build by</span></div></div>
       </header>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">01 / INCIDENTS</span><h2>Three failures that changed the design</h2></div>
-        <div class="lesson-stack">
-          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-30 · DATA MATCHING</span><h3>A spoken hyphen downgraded a valid promise</h3></div><div class="lesson-chain"><div><small>OBSERVED</small><p>A complete, in-full promise landed in the exception queue with <code>amount_within_outstanding=false</code>.</p></div><div><small>ROOT CAUSE</small><p>The transcript said <code>US-CS/26-27/0002</code>; the account record said <code>USCS/26-27/0002</code>. Exact string matching missed the invoice.</p></div><div><small>CHANGE</small><p>Normalize invoice references to uppercase letters and digits before matching.</p></div></div><p class="lesson-takeaway">Saved-call replay exposed a production-shaped data mismatch that hand-written fixtures had hidden.</p></article>
-          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-17 · PROMPT BEHAVIOR</span><h3>Passing tests missed two conversation regressions</h3></div><div class="lesson-chain"><div><small>OBSERVED</small><p>The agent bundled amount, date, and method into one turn, then sometimes recorded the full invoice balance without asking what the caller would pay.</p></div><div><small>ROOT CAUSE</small><p>More specific branch wording contradicted the one-question rule. Tests checked that phrases existed, not what the branch instructed the agent to do.</p></div><div><small>CHANGE</small><p>Make each required ask explicit and sequential, with a regression test for the will-pay branch.</p></div></div><p class="lesson-takeaway">A prompt is executable behavior; a green test suite does not prove its branches work in conversation.</p></article>
-          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-16 · ARITHMETIC</span><h3>The model was asked to verify its own math</h3></div><div class="lesson-chain"><div><small>OBSERVED</small><p>A promise of 365,500 against 85,000 + 280,500 was marked over balance. A separate misstated total passed compliance with a perfect score.</p></div><div><small>ROOT CAUSE</small><p>Both specialists relied on language-model arithmetic where an exact comparison was required.</p></div><div><small>CHANGE</small><p>Keep extraction in the model; validate balance, dates, methods, and stated totals in code.</p></div></div><p class="lesson-takeaway">Use the model to read unstructured speech, then let code decide deterministic facts.</p></article>
+        <div class="story-section-head"><span class="story-index">01 / PRINCIPLES</span><h2>What I'd tell the next team</h2></div>
+        <div class="principles">
+          <div><span>01</span><strong>Test with real calls, not just tests</strong><small>Almost every serious bug here passed automated tests first.</small></div>
+          <div><span>02</span><strong>The agent may only say what the system confirmed</strong><small>A failure the customer can't hear is still a failure.</small></div>
+          <div><span>03</span><strong>Let the AI read, let code decide</strong><small>Numbers, dates and IDs belong in code, not in a model's judgment.</small></div>
+          <div><span>04</span><strong>Check the measurement too</strong><small>Bad labels made a bad benchmark look like a good one.</small></div>
         </div>
       </section>
 
       <section class="story-section">
-        <div class="story-section-head"><span class="story-index">02 / MORE SIGNAL</span><h2>Smaller incidents, concrete fixes</h2></div>
+        <div class="story-section-head"><span class="story-index">02 / INCIDENTS</span><h2>Four failures that changed the design</h2></div>
+        <div class="lesson-stack">
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-10-15 · SILENT FAILURE</span><h3>The agent said "recorded" when nothing was saved</h3></div><div class="lesson-chain"><div><small>WHAT HAPPENED</small><p>A customer gave a complete promise to pay. The agent confirmed it, but the results page held it for review as a contradiction.</p></div><div><small>WHY</small><p>The password the voice platform sends with each request no longer matched the server's, so every action was rejected. The agent was told to say "it will be confirmed in writing" when an action failed.</p></div><div><small>WHAT CHANGED</small><p>Re-matched the password and confirmed the fix on the next live call. The agent now says it couldn't confirm, and every path has a fallback line.</p></div></div><p class="lesson-takeaway">The customer heard a perfect call. Only the logs showed nothing was saved.</p></article>
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-30 · DATA MATCHING</span><h3>A spoken hyphen downgraded a valid promise</h3></div><div class="lesson-chain"><div><small>WHAT HAPPENED</small><p>A complete promise to pay in full was sent to the review queue as over the balance.</p></div><div><small>WHY</small><p>The transcript said <code>US-CS/26-27/0002</code>; the record said <code>USCS/26-27/0002</code>. An exact match missed it.</p></div><div><small>WHAT CHANGED</small><p>Invoice IDs are compared on letters and digits only. In October the dispute check got the same fix.</p></div></div><p class="lesson-takeaway">Real speech is messier than hand-written test data.</p></article>
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-17 · CONVERSATION</span><h3>Passing tests missed two conversation regressions</h3></div><div class="lesson-chain"><div><small>WHAT HAPPENED</small><p>The agent asked for amount, date and method in one breath, and sometimes recorded the full balance without asking.</p></div><div><small>WHY</small><p>A detailed instruction contradicted the one-question-at-a-time rule. Tests checked the wording existed, not what it made the agent do.</p></div><div><small>WHAT CHANGED</small><p>Each question is now its own step, with a test for the will-pay path.</p></div></div><p class="lesson-takeaway">Instructions are behavior. Read them like code.</p></article>
+          <article class="lesson-case"><div class="lesson-heading"><span>2026-09-16 · ARITHMETIC</span><h3>The AI was asked to check its own maths</h3></div><div class="lesson-chain"><div><small>WHAT HAPPENED</small><p>A promise of 365,500 against 85,000 + 280,500 was marked over the balance.</p></div><div><small>WHY</small><p>The check relied on the model's arithmetic where an exact comparison was needed.</p></div><div><small>WHAT CHANGED</small><p>The AI extracts what was said; code checks balances, dates, methods and totals.</p></div></div><p class="lesson-takeaway">Use the AI to understand speech, then let code decide the facts.</p></article>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <div class="story-section-head"><span class="story-index">03 / FIELD FINDINGS</span><h2>Smaller incidents, concrete fixes</h2></div>
         <div class="field-note-grid">
-          <article><span>WEBHOOKS</span><h3>Dead air was a routing failure</h3><p>An expired tool endpoint left the caller in silence. Add a pre-call reachability check and a spoken timeout fallback.</p></article>
-          <article><span>TOOL USE</span><h3>Speech is not execution</h3><p>The agent said it logged a dispute without calling the tool. Tighten tool instructions and log raw webhook requests, including no-op requests.</p></article>
-          <article><span>PRIORITY</span><h3>A passing test asserted the wrong rule</h3><p>Broken promises lowered priority until real promise history exercised the formula. They now escalate it.</p></article>
-          <article><span>INTEGRATION</span><h3>The fake backend was too forgiving</h3><p>It accepted a new Sheet field that the real writer silently dropped. Test the real header mapping.</p></article>
-          <article><span>PROVIDER DATA</span><h3>The summary field never arrived</h3><p>The saved payloads did not contain usable summaries. A dedicated specialist now generates a factual summary from the same transcript.</p></article>
-          <article><span>SCOPE</span><h3>English is the bounded release scope</h3><p>Language experiments exposed failures beyond pronunciation. The current demo focuses on English; multilingual end-to-end quality has not been validated.</p></article>
-          <article><span>MEASUREMENT</span><h3>The labels needed their own quality gate</h3><p>The first human benchmark was withdrawn when its labels proved unreliable. The replacement requires evidence, uncertainty and separate judgments for record correctness and business follow-up.</p></article>
-          <article><span>FOLLOW-THROUGH</span><h3>One payment cannot keep two promises</h3><p>Old matching could count money received before a promise or reuse it across promises. Allocations now persist, and legacy results require reconciliation before they count as verified fulfillment.</p></article>
+          <article><span>DISPUTES · OCT</span><h3>One dispute, two records</h3><p>The agent logged a dispute, then logged it again with more detail. Contradictory instructions caused it; the agent now asks first and logs once.</p></article>
+          <article><span>HANDOFF · OCT</span><h3>"Someone will follow up" with no one assigned</h3><p>The agent promised a follow-up without booking one. Every dispute now books a callback before the agent says a person will call.</p></article>
+          <article><span>AUDIO · OCT</span><h3>The microphone was on, but silent</h3><p>Two calls failed because no sound reached the agent. The page now makes visitors pass a mic test that listens for their voice.</p></article>
+          <article><span>DEMO · OCT</span><h3>A stuck "demo in progress"</h3><p>The local preview silently dropped the cancel request, so a finished session kept the line busy. A filter assumed the wrong ID format.</p></article>
+          <article><span>WEBHOOKS</span><h3>Dead air was a routing failure</h3><p>An expired endpoint left a caller in silence. Added a reachability check before calls and a spoken fallback on timeouts.</p></article>
+          <article><span>TOOL USE</span><h3>Saying isn't doing</h3><p>The agent said it logged a dispute without calling the tool. Instructions now require the action first, then the confirmation.</p></article>
+          <article><span>PRIORITY</span><h3>A passing test checked the wrong rule</h3><p>Broken promises lowered an account's priority until real data exercised it. They now raise it.</p></article>
+          <article><span>INTEGRATION</span><h3>The fake backend was too forgiving</h3><p>It accepted a field the real Sheets writer silently dropped. Tests now use the real column mapping.</p></article>
+          <article><span>PROVIDER DATA</span><h3>The summary never arrived</h3><p>The voice platform's summary field was always empty, so a dedicated check now writes the summary.</p></article>
+          <article><span>SCOPE</span><h3>English first, on purpose</h3><p>Hindi experiments failed in ways beyond pronunciation. The release is English-only until the rest is validated.</p></article>
+          <article><span>MEASUREMENT</span><h3>The labels needed checking too</h3><p>The first human benchmark was withdrawn when its labels proved unreliable.</p></article>
+          <article><span>FOLLOW-THROUGH</span><h3>One payment can't keep two promises</h3><p>Old matching could count the same payment twice. Payment allocations are now stored, one payment per promise.</p></article>
         </div>
       </section>
     </div>

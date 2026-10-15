@@ -1058,3 +1058,43 @@ permits.
 **Lesson:** read the failing transcripts before trusting a failure count. A simulated customer
 is itself a model and can be wrong; here it produced a third of the date failures, and without
 the transcripts they would have been "fixed" in the agent prompt, where nothing was broken.
+
+## 2026-10-15 — live testing: a silent auth failure, a stuck demo lock, and a duplicated dispute
+
+Four live demo calls on the hosted backend surfaced five problems, all of which passed the
+offline test suite.
+
+**1. Every tool call was rejected, and the caller couldn't tell.** A complete promise to pay
+(full amount, 30 October, NEFT) was held for review as a contradiction. Vapi recorded "No result
+returned" for `record_ptp` and `schedule_callback`; Render's log showed `401 Unauthorized` on
+every `/vapi/tool-calls` request, including the end-of-call report. The Vapi credential
+`northgate-demo-webhook` held a different secret from the server's `VAPI_SERVER_SECRET`. With
+no report, the server fell back to the browser transcript, which carries no tool calls, so the
+promise specialist and outcome specialist disagreed. Meanwhile the tool-failure message told the
+agent to say the details "will be confirmed in writing", so the call sounded complete. **Fix:**
+re-set the credential's token to the server secret; the next live call returned results for every
+tool. The failure message now says the action couldn't be confirmed, and every prompt branch has
+an ending line (spoken only on success) and a fallback line.
+
+**2. The demo stayed "in progress" after the call.** The loopback preview only forwarded session
+paths shaped like UUIDs, but session IDs are `secrets.token_urlsafe(32)`. The `connected` and
+`cancel` requests 404'd locally, so the hosted reservation was never released until it expired.
+**Fix:** accept the real token shape, with a test using one.
+
+**3. No customer audio reached the agent.** Two calls ended with
+`assistant-did-not-receive-customer-audio`. Mic permission was granted, but no sound arrived.
+**Fix:** the live call button now unlocks only after a mic test that hears the visitor's voice.
+
+**4. One dispute, two records.** The agent called `log_dispute` immediately, then again when the
+customer added what they wanted, creating two dispute IDs. The tool description said "call this
+immediately" while the prompt said to ask first. It also told the customer "someone will follow
+up" without calling `schedule_callback`. **Fix:** ask what's wrong and what they want, log once,
+hand off through `schedule_callback`, and only then say a person will call.
+
+**5. The dispute record stored the invoice as spoken.** The tool call had `USCS/26-27/0002`, but
+the dispute specialist read `US-CS/26.27/0002` from the transcript. **Fix:** resolve the
+specialist's invoice to the real ID, as the promise check already did.
+
+**Lesson:** the customer heard a perfect call in case 1. Only the provider's per-tool results
+and the server log showed nothing was saved. Check both after every live test, not just the
+transcript.
