@@ -1540,6 +1540,10 @@
 
       <div class="center-bottom">
       <p class="status-line" id="statusLine" aria-live="polite">Ready to replay a saved call.</p>
+      <div class="mic-check" id="micCheck">
+        <button type="button" class="mic-check-btn" id="micCheckBtn">1. Test your microphone</button>
+        <div class="mic-level-wrap"><div class="mic-level-bar"><div class="mic-level-fill" id="micLevelFill"></div></div></div>
+      </div>
       <div class="controls-row">
         <button type="button" class="round-btn" id="muteMicBtn" aria-label="Mute microphone" disabled>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.2 11.2a6.8 6.8 0 0013.6 0"/><path d="M12 18v3"/></svg>
@@ -2726,6 +2730,64 @@
     }
   }
 
+  var micOk = false, liveAvailable = false, micCheckRun = 0;
+
+  function syncStartBtn() {
+    var b = document.getElementById("startCallBtn");
+    b.disabled = !(liveAvailable && micOk);
+    if (liveAvailable) b.title = micOk ? "Start a live voice call" : "Test your microphone first";
+  }
+
+  function setMicCheck(passed, label, note) {
+    micOk = passed; syncStartBtn();
+    var btn = document.getElementById("micCheckBtn");
+    btn.classList.toggle("passed", passed);
+    btn.textContent = label;
+    document.getElementById("micLevelFill").classList.toggle("ok", passed);
+    setText("micNote", note);
+  }
+
+  // Passing means we actually heard sound, not just that permission was granted.
+  async function runMicCheck() {
+    var run = ++micCheckRun, stream, ctx;
+    var fill = document.getElementById("micLevelFill");
+    setMicCheck(false, "Listening…", "Say “hello” out loud…");
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({audio: true});
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var analyser = ctx.createAnalyser(), buf = new Uint8Array(analyser.fftSize);
+      ctx.createMediaStreamSource(stream).connect(analyser);
+      var heard = 0, deadline = Date.now() + 10000;
+      while (run === micCheckRun && Date.now() < deadline && heard < 6) {
+        analyser.getByteTimeDomainData(buf);
+        var peak = 0;
+        for (var i = 0; i < buf.length; i++) peak = Math.max(peak, Math.abs(buf[i] - 128) / 128);
+        fill.style.width = Math.min(100, peak * 300) + "%";
+        heard = peak > 0.04 ? heard + 1 : 0;
+        await new Promise(function (r) { setTimeout(r, 50); });
+      }
+      if (run !== micCheckRun) return;
+      if (heard >= 6) setMicCheck(true, "✓ Microphone working", "Microphone ready. Now choose Talk to the agent, then listen for the greeting.");
+      else setMicCheck(false, "Test again", "We couldn't hear anything. Check that your mic isn't muted and the right input is selected, then test again.");
+    } catch (err) {
+      if (run !== micCheckRun) return;
+      var blocked = err && (err.name === "NotAllowedError" || err.name === "SecurityError");
+      setMicCheck(false, "Test again", blocked
+        ? "Microphone access is blocked. Allow it in your browser's address bar, then test again."
+        : "No working microphone was found. Plug one in or pick another input, then test again.");
+    } finally {
+      if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+      if (ctx) ctx.close();
+      fill.style.width = "0%";
+    }
+  }
+
+  document.getElementById("micCheckBtn").addEventListener("click", runMicCheck);
+  if (navigator.mediaDevices && navigator.mediaDevices.addEventListener)
+    navigator.mediaDevices.addEventListener("devicechange", function () {
+      if (micOk) setMicCheck(false, "1. Test your microphone", "Your audio device changed. Please test your microphone again.");
+    });
+
   async function initPage(preserveResult) {
     document.getElementById("replayLinkInline").style.display = "";
     document.getElementById("fallbackNote").style.display = "none";
@@ -2741,20 +2803,22 @@
       }
       renderAllowanceNote(status);
 
-      if (status.available) {
-        startBtn.disabled = false;
-        startBtn.title = "Start a live voice call";
+      liveAvailable = !!status.available;
+      document.getElementById("micCheckBtn").disabled = !liveAvailable;
+      if (liveAvailable) {
         startBtn.setAttribute("aria-label", "Talk to the agent");
-        setText("micNote", "Choose Talk to the agent once. Allow microphone access, then listen for the greeting.");
+        setText("micNote", micOk
+          ? "Microphone ready. Choose Talk to the agent, then listen for the greeting."
+          : "Step 1: test your microphone. Step 2: the call button unlocks once we hear you.");
       } else {
-        startBtn.disabled = true;
         startBtn.title = status.message || "Live calling is unavailable right now";
         setText("micNote", "Live calling is unavailable. Choose Replay a demo to explore a saved conversation.");
       }
+      syncStartBtn();
       if (!preserveResult) setText("statusLine", "Ready.");
     } catch (err) {
       // Status check itself failing must never brick the page — fail open to replay.
-      startBtn.disabled = true;
+      liveAvailable = false; syncStartBtn();
       startBtn.title = "Live availability could not be checked";
       if (!preserveResult) renderPersonaBriefing(null, "replay");
       setText("micNote", "Live availability could not be checked. You can still replay a demo.");
