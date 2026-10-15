@@ -1534,6 +1534,152 @@
     .model-compare > div { grid-template-columns: 90px minmax(0, 1fr) 54px; }
     .model-compare small { grid-column: 2 / -1; }
   }
+  /* ---------- demo phases: the page follows the call ---------- */
+  #tabpanelDemo { gap: 18px; }
+  .journey-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .journey-strip .journey-step { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 10px; padding: 12px 16px; text-align: left; font: inherit; color: #b4c6c9; background: transparent; border: 1px solid #ffffff1f; border-radius: 12px; cursor: pointer; }
+  .journey-strip .journey-step:hover { background: #ffffff0d; }
+  .journey-strip .journey-num { display: grid; place-items: center; width: 24px; height: 24px; margin: 0; border-radius: 50%; border: 1px solid #5d7b7f; color: inherit; font: 700 10px var(--font-mono); }
+  .journey-strip .journey-step strong { font-size: 13px; font-weight: 600; color: #e3efec; }
+  .journey-strip .journey-state { font-style: normal; font-size: 11px; font-weight: 700; color: #91dfc3; }
+  .journey-strip .journey-desc { grid-column: 2 / -1; margin: 0; color: #9fb7b8; font: 11px/1.5 var(--font-ui); }
+  .journey-strip .journey-step.is-current { background: #ffffff; border-color: #ffffff; }
+  .journey-strip .journey-step.is-current strong { color: var(--ink); }
+  .journey-strip .journey-step.is-current .journey-num { background: var(--green); border-color: var(--green); color: #ffffff; }
+  .journey-strip .journey-step.is-current .journey-state { color: var(--green); }
+  .journey-strip .journey-step.is-current .journey-desc { color: var(--text); }
+  #tabpanelDemo[data-phase="call"] .journey-step.is-current .journey-state { color: #b4322b; }
+  .journey-strip .journey-step.is-done .journey-num { background: #91dfc32e; border-color: transparent; color: #91dfc3; font-size: 0; }
+  .journey-strip .journey-step.is-done .journey-num::after { content: "✓"; font-size: 12px; }
+
+  /* The console fits a laptop screen instead of an 830px column. */
+  .panel-center, .panel-right { height: clamp(520px, calc(100dvh - 190px), 720px); }
+  .panel-briefing { min-height: 0; height: clamp(520px, calc(100dvh - 190px), 720px); overflow-y: auto; }
+
+  .intel-strip { display: flex; align-items: center; gap: 20px; padding: 16px 22px; border: 1.5px dashed #a3c0c266; border-radius: 14px; color: #e8f1f0; transition: background-color .25s ease, border-color .25s ease; }
+  .intel-strip-num { flex: 0 0 auto; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #5d7b7f; color: #a3c0c2; font: 700 11px var(--font-mono); }
+  .intel-strip-text strong { display: block; font-size: 15px; font-weight: 600; }
+  .intel-strip-text span { display: block; margin-top: 3px; color: #a3c0c2; font-size: 12px; line-height: 1.5; }
+  .intel-strip-chips { margin-left: auto; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+  .strip-chip { padding: 8px 12px; border-radius: 8px; background: #ffffff14; color: #e8f1f0; font-size: 12px; animation: enter-soft .25s ease-out; }
+  .strip-chip::before { content: "✓ "; color: #7fd8c2; font-weight: 700; }
+  .strip-chip[data-action-state="failed"]::before { content: "! "; color: #f0b36b; }
+  #tabpanelDemo[data-phase="call"] .intel-strip { border-style: solid; border-color: #7fd8c24d; background: #7fd8c20f; }
+  #tabpanelDemo[data-phase="call"] .intel-strip-num { border-color: #7fd8c2; color: #7fd8c2; }
+
+  .recap-bar { display: none; align-items: center; flex-wrap: wrap; gap: 12px 18px; padding: 12px 14px 12px 20px; background: #102c31; border: 1px solid #23474b; border-radius: 14px; color: #e8f1f0; animation: enter-soft .3s ease-out; }
+  .recap-status { display: flex; align-items: center; gap: 8px; color: #a3c0c2; font-size: 13px; }
+  .recap-duration { font: 600 13px var(--font-mono); }
+  .recap-outcome { flex: 1 1 260px; min-width: 0; font-size: 13.5px; font-weight: 600; }
+  .recap-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .recap-actions button { height: 40px; padding: 0 14px; border: 1px solid #ffffff2e; border-radius: 9px; background: transparent; color: #e8f1f0; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .recap-actions button:hover { background: #ffffff14; }
+  .recap-actions .recap-primary { background: #81d9b7; border-color: #81d9b7; color: #113e32; }
+  .recap-actions .recap-primary:hover { background: #a3e8ce; }
+
+  /* Phase visibility. Nothing is removed: hidden parts return through the recap bar. */
+  #tabpanelDemo[data-phase="results"] .recap-bar { display: flex; }
+  #tabpanelDemo[data-phase="results"] .intel-strip { display: none; }
+  #tabpanelDemo:not([data-phase="results"]) .intelligence-section,
+  #tabpanelDemo:not([data-phase="results"]) .cost-bar-wrap { display: none; }
+  #tabpanelDemo[data-phase="results"]:not(.console-open) .panel-center,
+  #tabpanelDemo[data-phase="results"]:not(.console-open) .panel-briefing,
+  #tabpanelDemo[data-phase="results"]:not(.console-open):not(.transcript-open) .panel-right { display: none; }
+  #tabpanelDemo[data-phase="results"]:not(.console-open) .columns { display: block; height: 0; margin-top: -18px; }
+  #tabpanelDemo[data-phase="results"] .intelligence-section { animation: enter-soft .35s ease-out; }
+  #tabpanelDemo.console-open .columns { animation: enter-soft .25s ease-out; }
+
+  .drawer-close { display: none; }
+  #tabpanelDemo.transcript-open .panel-right { display: flex; position: fixed; top: 0; right: 0; bottom: 0; z-index: 50; width: min(460px, 100vw); height: auto; max-height: none; border-radius: 18px 0 0 18px; box-shadow: -18px 0 48px #04131780; animation: drawer-in .22s ease-out; }
+  #tabpanelDemo.transcript-open .drawer-close { display: grid; place-items: center; width: 36px; height: 36px; margin-left: 10px; border: 0; border-radius: 8px; background: #f0f4f3; color: var(--ink); cursor: pointer; }
+  @keyframes drawer-in { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* Results: verdict first, then evidence, sized to fit one laptop screen. */
+  .intelligence-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); grid-template-areas: "decision decision" "captured analysis"; gap: 14px; align-items: stretch; }
+  .decision-panel { grid-area: decision; }
+  .captured-panel { grid-area: captured; }
+  .analysis-panel { grid-area: analysis; grid-column: auto; }
+  .insight-panel { padding: 18px; }
+  #capturedCards { grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+  .captured-card { padding: 12px 14px; }
+  .analysis-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; }
+  .analysis-hint { color: var(--muted); font-size: 11px; }
+  #specialistChips { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 12px; align-items: stretch; }
+  #specialistChips #chip-summary { grid-column: auto; }
+  #specialistChips .chip { padding: 12px; cursor: pointer; }
+  #specialistChips .chip.pending { cursor: default; }
+  #specialistChips .chip .chip-detail { display: none; }
+  #specialistChips .chip.selected { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); background: #f4fbf8; }
+  #specialistChips .chip:hover:not(.pending):not(.selected) { border-color: #9fcdbc; }
+  #specialistChips .chip:focus-visible { outline-offset: 2px; }
+  .specialist-detail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 28px; margin-top: 12px; padding: 14px 16px; border-radius: 12px; background: #f3f6f6; font-size: 12px; animation: enter-soft .2s ease-out; }
+  .specialist-detail[hidden] { display: none; }
+  .specialist-detail .specialist-detail-title, .specialist-detail .summary-text { grid-column: 1 / -1; }
+  .specialist-detail-title { color: var(--ink); font-size: 13px; font-weight: 600; }
+  .specialist-detail .summary-text { color: var(--ink); font-size: 13px; line-height: 1.6; }
+  .specialist-detail .fact-line { display: flex; justify-content: space-between; gap: 12px; padding: 0 0 5px; border-bottom: 1px solid #e3eaea; }
+  .specialist-detail .fact-line .k { color: var(--muted); }
+  .specialist-detail .fact-line.flag { color: var(--danger); font-weight: 600; }
+  /* Results fit one laptop screen: tighter furniture once the call is over. */
+  #tabpanelDemo[data-phase="results"] .journey-strip .journey-step { padding: 9px 14px; }
+  #tabpanelDemo[data-phase="results"] .intelligence-section .section-heading { margin-bottom: 6px; }
+  #tabpanelDemo[data-phase="results"] .intelligence-section > .panel-subhead { margin: 0 0 12px; }
+  #tabpanelDemo[data-phase="results"] .decision-panel { padding: 14px 18px; }
+  #tabpanelDemo[data-phase="results"] .journey-strip .journey-desc { display: none; }
+  #tabpanelDemo[data-phase="results"] { gap: 12px; }
+  #tabpanelDemo[data-phase="results"]:not(.console-open) .columns { margin-top: -12px; }
+  #tabpanelDemo[data-phase="results"] #decisionSection .decision-card { margin-top: 4px !important; }
+  #tabpanelDemo[data-phase="results"] .intelligence-section .section-heading h2 { font-size: 19px; }
+
+  #decisionSection .decision-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px 28px; align-items: start; padding: 18px 20px; }
+  #decisionSection .decision-card > * { grid-column: 1; }
+  #decisionSection .decision-card .decision-title { font-family: var(--font-ui); font-size: 22px; letter-spacing: -.4px; }
+  #decisionSection .decision-card .decision-body { font-size: 13px; }
+  #decisionSection .decision-card > .sheet-rows { grid-column: 2; grid-row: 1 / span 6; display: flex; flex-direction: column; gap: 8px; margin: 0; }
+  #decisionSection .decision-card > .sheet-link { grid-column: 1; margin: 0; }
+  .verdict-summary { padding: 12px 14px; border-radius: 10px; background: #ffffffb8; }
+  .verdict-summary[hidden] { display: none; }
+  .verdict-summary span { display: block; margin-bottom: 4px; color: var(--green-ink); font-size: 12px; font-weight: 600; }
+  .verdict-summary p { margin: 0; color: var(--ink); font-size: 13px; line-height: 1.6; }
+  .sheet-rows-title { color: var(--green-ink); font-size: 12px; font-weight: 600; }
+  #decisionSection .sheet-row { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 9px; background: #ffffff; }
+  #decisionSection .row-label { color: var(--ink); font-size: 13px; font-weight: 600; }
+  #decisionSection .sheet-row .tab-name { color: var(--muted); font: 600 10px var(--font-mono); }
+  #decisionSection .sheet-row .row-fields { color: var(--text); font: 11px/1.5 var(--font-mono); }
+
+  .cost-bar { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .cost-bar .cost-cell { padding: 14px 16px; border-right: 1px solid var(--border-soft); }
+  .cost-bar > div:last-child { border-right: 0; }
+  .cost-bar .cost-cell .cost-value { font-size: 20px; }
+
+  @media (max-width: 1199px) {
+    .panel-center, .panel-briefing { height: 720px; }
+    .panel-right { height: 480px; }
+  }
+  @media (max-width: 1050px) {
+    .intelligence-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "decision" "captured" "analysis"; }
+    #specialistChips { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    #decisionSection .decision-card { grid-template-columns: minmax(0, 1fr); }
+    #decisionSection .decision-card > .sheet-rows { grid-column: 1; grid-row: auto; }
+    .cost-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .intel-strip { flex-wrap: wrap; }
+    .intel-strip-chips { margin-left: 52px; justify-content: flex-start; }
+  }
+  @media (max-width: 699px) {
+    .journey-strip { grid-template-columns: minmax(0, 1fr); }
+    .panel-center { height: 580px; }
+    .panel-briefing { height: auto; overflow: visible; }
+    .panel-right { height: 460px; }
+    #specialistChips { grid-template-columns: minmax(0, 1fr); }
+    #specialistChips .chip .chip-detail { display: block; }
+    .specialist-detail, .specialist-detail:not([hidden]) { display: none; }
+    .analysis-hint { display: none; }
+    .intel-strip-chips { margin-left: 0; }
+    .recap-actions { width: 100%; }
+    .recap-actions button { flex: 1 1 auto; }
+    .cost-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #tabpanelDemo.transcript-open .panel-right { border-radius: 0; }
+  }
 </style>
 </head>
 <body>
@@ -1576,11 +1722,23 @@
     </div>
   </div>
 
-  <div class="journey-strip" aria-label="How to explore this demo">
-    <div><span>01</span><strong>Take the customer role</strong><p>Read the briefing, then talk or replay a saved example.</p></div>
-    <div><span>02</span><strong>Follow the conversation</strong><p>Inspect what was said and which tools were acknowledged.</p></div>
-    <div><span>03</span><strong>Review the next action</strong><p>See the analysis and proposed records. Writes are previewed.</p></div>
-  </div>
+  <nav class="journey-strip" aria-label="Demo progress">
+    <button type="button" class="journey-step is-current" data-step="1" aria-current="step"><span class="journey-num">01</span><strong>Take the customer role</strong><em class="journey-state"></em><span class="journey-desc">Read the briefing, then talk or replay a saved example.</span></button>
+    <button type="button" class="journey-step" data-step="2"><span class="journey-num">02</span><strong>Follow the conversation</strong><em class="journey-state"></em><span class="journey-desc">Inspect what was said and which tools were acknowledged.</span></button>
+    <button type="button" class="journey-step" data-step="3"><span class="journey-num">03</span><strong>Review the next action</strong><em class="journey-state"></em><span class="journey-desc">See the analysis and proposed records. Writes are previewed.</span></button>
+  </nav>
+
+  <section class="recap-bar" id="recapBar" aria-label="Call recap">
+    <span class="recap-status"><span class="dot idle" aria-hidden="true"></span><span id="recapStatus">Call ended</span></span>
+    <span class="recap-duration" id="recapDuration">00:00</span>
+    <span class="recap-outcome" id="recapOutcome">Analysing the call…</span>
+    <div class="recap-actions">
+      <button type="button" id="recapTranscriptBtn" aria-expanded="false" aria-controls="transcriptPanel">Show transcript</button>
+      <button type="button" id="recapConsoleBtn" aria-expanded="false">Back to call console</button>
+      <button type="button" id="recapFlaggedBtn" style="display:none;">Replay a flagged call</button>
+      <button type="button" class="recap-primary" id="recapReplayBtn">Replay a demo</button>
+    </div>
+  </section>
 
   <main class="columns" aria-label="Voice workspace">
 
@@ -1696,7 +1854,7 @@
     </section>
 
     <!-- RIGHT: conversation -->
-    <section class="panel panel-right" aria-label="Conversation">
+    <section class="panel panel-right" id="transcriptPanel" aria-label="Conversation">
       <div class="panel-head">
         <span class="icon" style="color: var(--text);" aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 12.6a5.6 5.6 0 01-5.6 5.6H9l-4.4 3.1v-8.7A5.6 5.6 0 0110.2 7h4.2a5.6 5.6 0 015.6 5.6z"/></svg>
@@ -1704,6 +1862,9 @@
         <span class="title">Conversation</span><span class="transcript-label">LIVE TRANSCRIPT</span>
         <div class="spacer"></div>
         <span class="lang-pill">ENGLISH</span>
+        <button type="button" class="drawer-close" id="transcriptCloseBtn" aria-label="Close transcript">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
       </div>
       <div class="panel-body" id="transcriptBody" aria-live="polite">
         <div class="transcript-meta">Start a live call or replay a saved conversation. Each turn will appear here.</div>
@@ -1716,6 +1877,15 @@
 
   </main>
 
+  <aside class="intel-strip" id="intelStrip" aria-label="Call intelligence preview">
+    <span class="intel-strip-num" aria-hidden="true">03</span>
+    <div class="intel-strip-text">
+      <strong id="intelStripTitle">Call intelligence appears here after your call</strong>
+      <span id="intelStripText">A save-or-review verdict, the records the agent captured, and five independent checks of the call.</span>
+    </div>
+    <div class="intel-strip-chips" id="intelStripChips" aria-live="polite"></div>
+  </aside>
+
   <section class="intelligence-section" aria-labelledby="intelligenceTitle">
     <div class="section-heading">
       <div><span class="eyebrow">FROM CONVERSATION TO ACTION</span><h2 id="intelligenceTitle">Call intelligence</h2></div>
@@ -1723,22 +1893,19 @@
     </div>
     <p class="panel-subhead">Preview of what would be written to the ledger — nothing here is spoken back with more certainty than the system actually has.</p>
     <div class="intelligence-grid">
-      <section class="insight-panel" aria-label="What the agent captured">
-                <div id="capturedSection">
+      <section class="insight-panel decision-panel" aria-label="Write decision"><div id="decisionSection"></div></section>
+      <section class="insight-panel captured-panel" aria-label="What the agent captured">
+        <div id="capturedSection">
           <span class="section-title">Captured live</span>
           <div id="capturedCards"></div>
         </div>
-
-
       </section>
-      <section class="insight-panel decision-panel" aria-label="Write decision"><div id="decisionSection"></div></section>
       <section class="insight-panel analysis-panel" aria-label="Specialist analysis">
-                <div id="specialistSection">
-          <span class="section-title">Analysis</span>
+        <div id="specialistSection">
+          <div class="analysis-head"><span class="section-title">Analysis · five independent checks</span><span class="analysis-hint" id="analysisHint">Select a check to see its details</span></div>
           <div id="specialistChips"></div>
+          <div class="specialist-detail" id="specialistDetail" aria-live="polite" hidden></div>
         </div>
-
-
       </section>
     </div>
   </section>
@@ -1776,6 +1943,11 @@
         <span class="cost-note">same call cost × 1,000</span>
       </div>
       <div class="cost-divider"></div>
+      <div class="cost-cell">
+        <span class="cost-label">Typical reply time</span>
+        <span class="cost-value" id="costLatency">—</span>
+        <span class="cost-note">median across saved demo calls</span>
+      </div>
 
     </div>
     <p class="cost-fx-note">Reported voice cost plus model usage at configured prices. Illustration excludes hosting, retries and human operations; it is not a monthly forecast.</p>
@@ -2133,12 +2305,65 @@
     }).join("");
   }
 
+  var selectedSpecialist = null, specialistPicked = false, lastSummaryText = null;
+
+  function resetSpecialistSelection() {
+    selectedSpecialist = null; specialistPicked = false; lastSummaryText = null;
+    var detail = document.getElementById("specialistDetail");
+    detail.innerHTML = ""; detail.hidden = true;
+  }
+
+  function isViolation(name) {
+    var el = name && document.getElementById("chip-" + name);
+    return !!(el && el.classList.contains("violation"));
+  }
+
+  function selectSpecialist(name, byUser) {
+    var chip = document.getElementById("chip-" + name);
+    var src = chip && chip.querySelector(".chip-detail");
+    if (!src) return;
+    if (byUser) specialistPicked = true;
+    selectedSpecialist = name;
+    SPECIALIST_ORDER.forEach(function (n) {
+      var el = document.getElementById("chip-" + n);
+      if (el && !el.classList.contains("pending")) {
+        el.classList.toggle("selected", n === name);
+        el.setAttribute("aria-pressed", String(n === name));
+      }
+    });
+    var detail = document.getElementById("specialistDetail");
+    detail.hidden = false;
+    detail.innerHTML = '<span class="specialist-detail-title"></span>' + src.innerHTML;
+    detail.querySelector(".specialist-detail-title").textContent = SPECIALIST_LABELS[name] + " · details";
+  }
+
+  function onSpecialistActivate(event) {
+    var chip = event.target.closest(".chip:not(.pending)");
+    if (!chip || !chip.id) return;
+    if (event.type === "keydown") {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+    }
+    selectSpecialist(chip.id.replace("chip-", ""), true);
+  }
+  document.getElementById("specialistChips").addEventListener("click", onSpecialistActivate);
+  document.getElementById("specialistChips").addEventListener("keydown", onSpecialistActivate);
+
+  function updateVerdictSummary() {
+    var box = document.querySelector("#decisionSection .verdict-summary");
+    if (!box || !lastSummaryText) return;
+    box.querySelector("p").textContent = lastSummaryText;
+    box.hidden = false;
+  }
+
   function renderSpecialistsEmpty() {
+    resetSpecialistSelection();
     document.getElementById("specialistChips").innerHTML =
       '<div class="empty-state">Analysis begins once the call ends — the five specialists and the supervisor merge run after, not during, the call.</div>';
   }
 
   function renderSpecialistsPending() {
+    resetSpecialistSelection();
     document.getElementById("specialistChips").innerHTML = SPECIALIST_ORDER.map(function (name) {
       return (
         '<div class="chip pending" id="chip-' + name + '">' +
@@ -2166,6 +2391,18 @@
     if (!payload.facts) {
       el.querySelector(".summary-text").textContent = payload.text;
     }
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("aria-pressed", "false");
+    if (payload.name === "summary") { lastSummaryText = payload.text; updateVerdictSummary(); }
+    // Show the outcome by default; a flagged check takes over until the visitor picks one.
+    if (specialistPicked) {
+      if (selectedSpecialist === payload.name) selectSpecialist(payload.name, false);
+    } else if (payload.violation && !isViolation(selectedSpecialist)) {
+      selectSpecialist(payload.name, false);
+    } else if (!isViolation(selectedSpecialist) && (payload.name === "outcome" || !selectedSpecialist)) {
+      selectSpecialist(payload.name, false);
+    }
   }
 
   /* ---------------- write decision ---------------- */
@@ -2180,9 +2417,17 @@
       '<span class="section-title">Write decision</span><div class="empty-state" style="margin-top:8px;">Analysis is running — the write decision is pending until every specialist resolves.</div>';
   }
 
+  var TAB_LABELS = {
+    Call_Log: "A note in the customer's call history",
+    PTP_Register: "A promise to pay, tracked until it's kept",
+    Soft_Commitments: "A soft commitment, not yet a firm promise",
+    Disputes: "A dispute case, routed to the right team",
+    Exceptions: "A review-queue entry for a person to check"
+  };
+
   function renderDecisionFinal(payload) {
-    var rowsHtml = payload.sheet_rows.map(function (r) {
-      return '<div class="sheet-row"><span class="tab-name">' + r.tab + '</span><span class="row-fields"></span></div>';
+    var rowsHtml = payload.sheet_rows.map(function () {
+      return '<div class="sheet-row"><span class="row-label"></span><span class="tab-name"></span><span class="row-fields"></span></div>';
     }).join("");
     var el = document.getElementById("decisionSection");
     var isAuto = payload.write_decision === "auto_write";
@@ -2192,7 +2437,8 @@
         '<div class="decision-head"><span class="decision-icon">' + (isAuto ? ICON_CHECK : ICON_WARN) + '</span><span class="decision-title">' + (isAuto ? "Eligible to save" : "Record review needed") + '</span></div>' +
         '<div class="decision-body"></div>' +
         (payload.decision_note ? '<div class="decision-note"></div>' : "") +
-        '<div class="sheet-rows">' + rowsHtml + '</div>' +
+        '<div class="verdict-summary" hidden><span>Summary of the call</span><p></p></div>' +
+        '<div class="sheet-rows"><span class="sheet-rows-title">What gets recorded in the company&#39;s books</span>' + rowsHtml + '</div>' +
         '<div class="sheet-link"><a href="/demo/assets/writeback-example.xlsx" download>Download synthetic sheet example →</a></div>' +
       '</div>';
     el.querySelector(".decision-body").textContent = isAuto
@@ -2201,8 +2447,13 @@
     if (payload.decision_note) {
       el.querySelector(".decision-note").textContent = payload.decision_note;
     }
-    var rowFieldEls = el.querySelectorAll(".row-fields");
-    payload.sheet_rows.forEach(function (r, i) { rowFieldEls[i].textContent = r.fields; });
+    var rowEls = el.querySelectorAll(".sheet-row");
+    payload.sheet_rows.forEach(function (r, i) {
+      rowEls[i].querySelector(".row-label").textContent = TAB_LABELS[r.tab] || r.tab;
+      rowEls[i].querySelector(".tab-name").textContent = r.tab;
+      rowEls[i].querySelector(".row-fields").textContent = r.fields;
+    });
+    updateVerdictSummary();
   }
 
   /* ---------------- captured-live cards ---------------- */
@@ -2355,15 +2606,62 @@
   /* Workspace geometry is stable; only its session state changes. */
   var intelligenceRevealed = false;
 
+  /* The page follows the call: setup, then the call (console in focus), then results (intelligence in focus). */
+  var demoPanel = document.getElementById("tabpanelDemo");
+  var PHASE_STEP = { setup: 1, call: 2, results: 3 };
+  var STRIP_COPY = {
+    setup: ["Call intelligence appears here after your call",
+      "A save-or-review verdict, the records the agent captured, and five independent checks of the call."],
+    call: ["Call intelligence is building",
+      "Actions appear here as the agent records them. Full analysis runs the moment the call ends, and the page moves to it."]
+  };
+
+  function smoothScroll(el, block) {
+    el.scrollIntoView({ block: block, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+
+  function syncRecapButtons() {
+    var transcriptOpen = demoPanel.classList.contains("transcript-open");
+    var consoleOpen = demoPanel.classList.contains("console-open");
+    var t = document.getElementById("recapTranscriptBtn");
+    t.textContent = transcriptOpen ? "Hide transcript" : "Show transcript";
+    t.setAttribute("aria-expanded", String(transcriptOpen));
+    var c = document.getElementById("recapConsoleBtn");
+    c.textContent = consoleOpen ? "Hide call console" : "Back to call console";
+    c.setAttribute("aria-expanded", String(consoleOpen));
+  }
+
+  function setDemoView(view) {
+    demoPanel.classList.remove("console-open", "transcript-open");
+    if (view) demoPanel.classList.add(view);
+    syncRecapButtons();
+  }
+
+  function setPhase(phase) {
+    demoPanel.setAttribute("data-phase", phase);
+    setDemoView(null);
+    var current = PHASE_STEP[phase];
+    document.querySelectorAll(".journey-step").forEach(function (el) {
+      var n = Number(el.getAttribute("data-step"));
+      el.classList.toggle("is-current", n === current);
+      el.classList.toggle("is-done", n < current);
+      el.querySelector(".journey-state").textContent =
+        n === current ? (phase === "call" ? "Live" : "You are here") : (n < current ? "Done" : "");
+      if (n === current) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
+    });
+    if (STRIP_COPY[phase]) {
+      setText("intelStripTitle", STRIP_COPY[phase][0]);
+      setText("intelStripText", STRIP_COPY[phase][1]);
+    }
+  }
+
   function revealCallIntelligence() {
+    if (demoPanel.getAttribute("data-phase") !== "results") setPhase("results");
     if (intelligenceRevealed) return;
     requestAnimationFrame(function () {
-      if (intelligenceRevealed || !document.getElementById("tabpanelDemo").classList.contains("active")) return;
+      if (intelligenceRevealed || !demoPanel.classList.contains("active")) return;
       intelligenceRevealed = true;
-      document.querySelector(".intelligence-section").scrollIntoView({
-        block: "start",
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
-      });
+      smoothScroll(document.querySelector(".journey-strip"), "start");
     });
   }
 
@@ -2379,6 +2677,8 @@
 
   function unsettleLayout() {
     intelligenceRevealed = false;
+    document.getElementById("intelStripChips").innerHTML = "";
+    setPhase("call");
     document.querySelector(".page-shell").classList.add("call-locked");
     document.querySelector("#tabpanelDemo .columns").classList.remove("settled");
     // Bring the voice controls into view when the user explicitly starts a session.
@@ -2545,6 +2845,11 @@
   function handleToolCall(payload) {
     appendCapturedCard(payload);
     appendAnnotation(payload.annotation);
+    var chip = document.createElement("span");
+    chip.className = "strip-chip";
+    chip.setAttribute("data-action-state", payload.action_state || "unknown");
+    chip.textContent = payload.kind;
+    document.getElementById("intelStripChips").appendChild(chip);
   }
 
   function handleCallEnded(payload) {
@@ -2576,6 +2881,9 @@
 
     renderSpecialistsPending();
     renderDecisionPending();
+    setText("recapStatus", currentScenario === "live" ? "Call ended" : "Replay ended");
+    setText("recapDuration", label);
+    setText("recapOutcome", "Analysing the call · five checks running…");
     revealCallIntelligence();
   }
 
@@ -2605,6 +2913,11 @@
     setText("micNote", currentScenario === "live" ? "Call complete." : "Replay complete.");
 
     document.getElementById("replayBtn").style.display = (isAuto && currentScenario !== "flagged") ? "inline-flex" : "none";
+    document.getElementById("recapFlaggedBtn").style.display = (isAuto && currentScenario !== "flagged") ? "" : "none";
+    setText("recapStatus", currentScenario === "live" ? "Call complete" : "Replay complete");
+    setText("recapOutcome", (isAuto ? "Eligible to save" : "Held for review · " + payload.reason_label) +
+      " · call with " + currentContactName);
+    if (!selectedSpecialist) selectSpecialist("outcome", false);
     setText("transcriptFooterText", "Transcript complete · analysis complete");
     initPage(true);
     settleLayout();
@@ -2643,6 +2956,8 @@
     document.getElementById("replayLinkInline").style.display = "";
     document.getElementById("startCallBtn").style.display = "flex";
     document.getElementById("endCallBtn").style.display = "none";
+    if (demoPanel.getAttribute("data-phase") === "results") setText("recapOutcome", message);
+    else setPhase("setup");
     settleLayout();
   }
 
@@ -2705,6 +3020,9 @@
       document.getElementById("decisionSection").innerHTML = '<span class="section-title">Write decision</span><div class="empty-state" style="margin-top:8px;">No decision was produced.</div>';
       liveCost.pipelineStatus = "error";
       renderCostBar();
+      setText("recapOutcome", message);
+    } else {
+      setPhase("setup");
     }
     settleLayout();
     await initPage(true);
@@ -2883,6 +3201,7 @@
       setText("latencyMedian", seconds(turns.p50_ms));
       setText("latencyP95", seconds(turns.p95_ms));
       setText("latencySamples", available ? turns.samples + " turns" : "N/A");
+      setText("costLatency", seconds(turns.p50_ms));
       setText("latencyCallCount", data.calls_with_turn_measurements + " of " + data.calls_inspected + " saved examples measured");
       status.textContent = available ? "Measured · historical examples" : "No measured turns available";
       status.classList.toggle("pending", !available);
@@ -3027,9 +3346,9 @@
     document.getElementById("endCallBtn").style.display = "none";
     document.getElementById("liveDot").className = "dot idle";
     setText("livePillText", "Idle");
+    setPhase("setup");
     settleLayout();
     initPage();
-    revealCallIntelligence();
   });
 
   document.getElementById("replayBtn").addEventListener("click", function () {
@@ -3040,6 +3359,42 @@
     startReplay("clean");
   });
 
+  document.getElementById("recapTranscriptBtn").addEventListener("click", function () {
+    var opening = !demoPanel.classList.contains("transcript-open");
+    setDemoView(opening ? "transcript-open" : null);
+    if (opening) document.getElementById("transcriptCloseBtn").focus();
+  });
+  document.getElementById("transcriptCloseBtn").addEventListener("click", function () {
+    setDemoView(null);
+    document.getElementById("recapTranscriptBtn").focus();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && demoPanel.classList.contains("transcript-open")) {
+      setDemoView(null);
+      document.getElementById("recapTranscriptBtn").focus();
+    }
+  });
+  document.getElementById("recapConsoleBtn").addEventListener("click", function () {
+    var opening = !demoPanel.classList.contains("console-open");
+    setDemoView(opening ? "console-open" : null);
+    if (opening) requestAnimationFrame(function () { smoothScroll(document.querySelector("#tabpanelDemo .columns"), "start"); });
+  });
+  document.getElementById("recapReplayBtn").addEventListener("click", function () { startReplay("clean"); });
+  document.getElementById("recapFlaggedBtn").addEventListener("click", function () { startReplay("flagged"); });
+  document.querySelectorAll(".journey-step").forEach(function (step) {
+    step.addEventListener("click", function () {
+      var n = Number(step.getAttribute("data-step"));
+      var results = demoPanel.getAttribute("data-phase") === "results";
+      if (n === 3) {
+        smoothScroll(results ? document.querySelector(".journey-strip") : document.getElementById("intelStrip"), results ? "start" : "center");
+      } else {
+        if (results) setDemoView("console-open");
+        requestAnimationFrame(function () { smoothScroll(document.querySelector("#tabpanelDemo .columns"), "start"); });
+      }
+    });
+  });
+
+  setPhase("setup");
   resetCaptured();
   renderSpecialistsEmpty();
   renderDecisionEmpty();
