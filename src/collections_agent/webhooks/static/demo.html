@@ -1440,7 +1440,7 @@
   .cost-fx-note { color: #c7dcd9; font-size: 12px; line-height: 1.65; }
   .cost-cell .cost-note { color: #52645f; font-size: 11px; line-height: 1.5; }
   .page-footer .note { color: #c7dcd9; font-size: 12px; line-height: 1.65; }
-  .section-heading .section-caption { white-space: nowrap; }
+  .section-heading .section-caption { min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
   @media (max-width: 699px) {
     .section-heading { flex-wrap: wrap; gap: 8px; }
     .section-nav a { flex-grow: 1; }
@@ -1891,6 +1891,7 @@
     document.getElementById(t.btn).addEventListener("click", function () {
       activateTab(t.panel);
       history.replaceState(null, "", "#" + t.panel);
+      window.scrollTo({ top: 0, behavior: "instant" });
     });
   });
 
