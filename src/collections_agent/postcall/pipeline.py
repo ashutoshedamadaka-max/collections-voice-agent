@@ -126,7 +126,7 @@ def run_postcall(
         futures = {
             pool.submit(extract_outcome, transcript, api_key, usage_sink): "outcome",
             pool.submit(validate_promise, transcript, invoices, as_of, api_key, usage_sink): "promise",
-            pool.submit(classify_dispute, transcript, api_key, usage_sink): "dispute",
+            pool.submit(classify_dispute, transcript, api_key, usage_sink, invoices): "dispute",
             pool.submit(review_compliance, transcript, invoices, api_key, usage_sink): "compliance",
             pool.submit(extract_summary, transcript, api_key, usage_sink): "summary",
         }

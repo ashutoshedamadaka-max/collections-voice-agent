@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from collections_agent.models.domain import DisputeClassification
+from collections_agent.models.domain import DisputeClassification, Invoice
 from collections_agent.postcall.openai_client import extract_structured
 from collections_agent.postcall.specialists._common import format_transcript_for_llm
+from collections_agent.postcall.specialists.promise import _matches_invoice
 from collections_agent.postcall.transcript import Transcript
 
 SYSTEM_PROMPT = (
@@ -24,12 +25,22 @@ SYSTEM_PROMPT = (
 
 
 def classify_dispute(
-    transcript: Transcript, api_key: str, usage_sink: list | None = None
+    transcript: Transcript,
+    api_key: str,
+    usage_sink: list | None = None,
+    invoices: list[Invoice] | None = None,
 ) -> DisputeClassification:
-    return extract_structured(
+    result = extract_structured(
         SYSTEM_PROMPT,
         format_transcript_for_llm(transcript),
         DisputeClassification,
         api_key,
         usage_sink=usage_sink,
     )
+    # The model copies the invoice as spoken ("US-CS/26.27/0002"); the ledger needs the real ID,
+    # as the promise specialist already does.
+    if invoices and result.invoice_id:
+        matches = [inv for inv in invoices if _matches_invoice(inv, [result.invoice_id])]
+        if len(matches) == 1:
+            result = result.model_copy(update={"invoice_id": matches[0].invoice_id})
+    return result

@@ -23,6 +23,8 @@ back to English — not a crash, but also not a silent attempt to keep serving i
 
 from __future__ import annotations
 
+import re
+
 DEFAULT_LANGUAGE = "en"
 
 _SUPPORTED_LANGUAGES = ("en", "hi")
@@ -95,6 +97,7 @@ def opening_message(
     for the assistant's base/fallback config, which has no per-call ContextPack to draw one
     from."""
     lang = resolve(preferred_language)
+    company_name = re.sub(r"\bCo\.", "Company", company_name)  # TTS reads "Co." as "core"
     if contact_name:
         return _OPENING_WITH_NAME[lang].format(company=company_name, contact_name=contact_name)
     return _OPENING_GENERIC[lang].format(company=company_name)

@@ -294,3 +294,9 @@ def test_every_branch_has_an_ending_and_a_tool_failure_fallback(sample_context_p
         "never claim it was done",
     ):
         assert line in prompt
+
+
+def test_opening_spells_out_company_abbreviation():
+    from collections_agent.voice.language import opening_message
+
+    assert "Northgate Materials Company's" in opening_message(None, "Northgate Materials Co.")

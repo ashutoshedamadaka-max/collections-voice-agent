@@ -317,3 +317,16 @@ def test_openai_client_module_is_the_single_call_site():
         source = inspect.getsource(module)
         assert "OpenAI(" not in source
         assert openai_client_module.extract_structured.__name__ in source
+
+
+def test_classify_dispute_replaces_spoken_invoice_with_real_id(capture_call, make_invoice):
+    inv = make_invoice("ACC-1", amount=100_000, days_overdue=10)
+    spoken = inv.invoice_number.replace("-", "- ", 1)  # model re-punctuates what it heard
+    capture_call(
+        dispute,
+        DisputeClassification(has_dispute=True, invoice_id=spoken, confidence=0.9),
+    )
+
+    result = dispute.classify_dispute(TRANSCRIPT, api_key="key", invoices=[inv])
+
+    assert result.invoice_id == inv.invoice_id
